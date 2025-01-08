@@ -24,6 +24,7 @@
 @import "@ionic/angular/css/text-alignment.css";
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
+@import "assets/fonts/fonts.scss";
 
 /**
  * Ionic Dark Mode
@@ -34,20 +35,151 @@
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import "@ionic/angular/css/palettes/dark.system.css";
-
+// @import "@ionic/angular/css/palettes/dark.system.css";
 
 :root {
-  --ion-color-primary: #1D78BF;
-	--ion-color-primary-rgb: 29,120,191;
-	--ion-color-primary-contrast: #ffffff;
-	--ion-color-primary-contrast-rgb: 255,255,255;
-	--ion-color-primary-shade: #1a6aa8;
-	--ion-color-primary-tint: #3486c5;
+  /*Colores */
+  --ion-color-primary: #1d78bf;
+  --ion-color-primary-rgb: 29, 120, 191;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #1a6aa8;
+  --ion-color-primary-tint: #3486c5;
 
+  // Variable app
+  --color: #040b15;
+  --ion-text-color: #040b15;
+  --ion-font-family: "Roboto", "sans-serif" !important;
+  --ion-background-color: #fafafa;
+  // tabbar
   --ion-tab-bar-background: #ffffff;
+  --ion-tab-bar-border-color: #d5d6dd;
+  //toolbar
+  --ion-toolbar-background: #050508;
+  --ion-toolbar-color: #fff;
+  --ion-toolbar-border-color: #6c6e80;
 
-  body.dark {
-    --ion-tab-bar-background: #000000;
+  --ion-item-background: #ffffff;
+  --ion-border-color: #d5d6dd;
+  --inner-border-width: 0px 0px 0.5px 0px;
+
+  // Tamaños letras
+  --FS9: 9px;
+  --FS10: 10px;
+  --FS11: 11px;
+  --FS12: 12px;
+  --FS13: 13px;
+  --FS14: 14px;
+  --FS15: 15px;
+  --FS16: 16px;
+  --FS18: 18px;
+  --FS20: 20px;
+  --FS22: 22px;
+  --FS24: 24px;
+  --FS26: 26px;
+
+  --ion-color-step-900: #f2f2f3;
+  --ion-color-step-800: #d5d6dd;
+  --ion-color-step-700: #828599;
+  --ion-color-step-600: #6c6f80;
+  --ion-color-step-500: #575866;
+  --ion-color-step-400: #41424d;
+  --ion-color-step-300: #2b2c33;
+  --ion-color-step-200: #16161a;
+  --ion-color-step-100: #050508;
+
+  --ion-color-1: #F6D5E3;
+  --ion-color-1-primary:#E381AB;
+  --ion-color-1-shade:#d8bbc8;
+  --ion-color-2: #FFE4CC;
+  --ion-color-2-primary:#FFB066;
+  --ion-color-2-shade:#e0c9b4;
+  --ion-color-3: #FEEBE6;
+  --ion-color-3-shade:#e0cfca;
+  --ion-color-4: #FFF9DB;
+  --ion-color-4-shade:#e0dbc1;
+  --ion-color-5: #F1F7D4;
+  --ion-color-5-shade:#d4d9bb;
+  --ion-color-6: #EDF3F8;
+  --ion-color-6-shade:#d1d6da;
+
+  body {
+    font-family: "Roboto", sans-serif;
+
+    section {
+      .section-header {
+        font-size: var(--FS14);
+        color: var(--color);
+        padding-top: 0px;
+        padding-left: 25px;
+        padding-bottom: 3px;
+      }
+      .section-content {
+        margin-bottom: 15px;
+        background-color: var(--ion-item-background);
+        margin-inline: 15px;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0px 4px 8px 0px rgba(194, 201, 252, 0.15);
+
+        ion-list {
+          padding: 0;
+          margin-top: 0;
+          margin-bottom: 0;
+          background-color: transparent;
+          border-radius: 8px;
+
+          > ion-item:last-child {
+            --inner-border-width: 0 !important;
+            --border-width: 0 !important;
+          }
+        }
+      }
+    }
+
+    ion-list {
+      &.list-inset {
+        box-shadow: 0px 4px 8px 0px rgba(194, 201, 252, 0.15);
+      }
+    }
+
+    ion-icon {
+      &.rounded {
+        background: #a7b0f1;
+        color: #000;
+        border-radius: 50%;
+        padding: 4px;
+        font-size: 24px;
+        margin-inline-end: 11px;
+      }
+      &[slot="end"] {
+        font-size: 18px;
+      }
+    }
+
+    &.dark {
+      --color: #ffffff;
+      --ion-text-color: #ffffff;
+      --ion-background-color: #161619;
+
+      --ion-color-step-400: #828599;
+
+      // tabbar
+      --ion-tab-bar-background: #2b2c33;
+      --ion-tab-bar-border-color: #040b15;
+      --ion-tab-bar-color: #828499;
+      --ion-tab-bar-color-selected: #ffffff;
+      //toolbar
+      --ion-toolbar-border-color: #2b2c33;
+
+      --ion-item-background: #2b2c33;
+      --ion-border-color: #41424d;
+
+      ion-list {
+        &.list-inset {
+          box-shadow: 0px 4px 8px rgba(74, 78, 110, 0.15);
+        }
+      }
+    }
   }
 }

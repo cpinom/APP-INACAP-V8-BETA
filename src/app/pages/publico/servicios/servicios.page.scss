@@ -1,0 +1,80 @@
+section.social-media {
+  .section-content {
+    background-color: transparent;
+    box-shadow: none;
+    margin-inline: 10px;
+
+    ion-row {
+      ion-col {
+        ion-button {
+          width: 100%;
+          height: 90px;
+          --color: var(--color);
+
+          &.facebook {
+            --background: var(--ion-color-1);
+            --background-activated: var(--ion-color-1-shade);
+
+            ion-icon {
+              &.rounded {
+              background-color: var(--ion-color-1-primary);
+              }
+              &.launch {
+                color: var(--ion-color-1-primary);
+                }
+            }
+          }
+          &.instagram {
+            --background: var(--ion-color-2);
+            --background-activated: var(--ion-color-2-shade);
+
+            ion-icon {
+              &.rounded {
+              background-color: var(--ion-color-2-primary);
+              }
+              &.launch {
+                color: var(--ion-color-2-primary);
+                }
+            }
+          }
+          &.x {
+            --background: var(--ion-color-3);
+            --background-activated: var(--ion-color-3-shade);
+          }
+          &.youtube {
+            --background: var(--ion-color-4);
+            --background-activated: var(--ion-color-4-shade);
+          }
+          &.linkedin {
+            --background: var(--ion-color-5);
+            --background-activated: var(--ion-color-5-shade);
+          }
+          &.tiktok {
+            --background: var(--ion-color-6);
+            --background-activated: var(--ion-color-6-shade);
+          }
+
+          .btn-inner {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            text-align: left;
+            position: relative;
+
+            .rounded {
+              padding: 10px;
+              margin: 0 0 10px;
+            }
+
+            .launch {
+              position: absolute;
+              right: 0;
+              top: 0;
+              font-size: 18px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

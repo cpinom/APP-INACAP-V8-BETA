@@ -1,0 +1,31 @@
+ion-header {
+  ion-toolbar {
+    ion-button {
+      ion-icon {
+        font-size: 32px;
+      }
+    }
+
+    ion-title {
+      img {
+        height: 25px;
+        margin-top: 5px;
+      }
+      .logo {
+        display: flex;
+        justify-content: center;
+        align-items: baseline;
+        height: 42px;
+
+        svg {
+          margin-right: 2px;
+
+          &.letra-p {
+            bottom: -8px;
+            position: relative;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "APP-INACAP-V8-BETA",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

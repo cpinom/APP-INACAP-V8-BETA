@@ -36,7 +36,8 @@ export class ServiciosPage implements OnInit {
     await Browser.open({ url: url });
   }
   async abrirNavegador(url: string) {
-    await this.openUrl(this.data[url]);
+    const name = this.data[url];
+    await this.openUrl(name);
   }
 
 }

@@ -37,9 +37,37 @@ export class PublicService {
       return Promise.reject(error);
     }
   }
+  public post = async (url: string, params: any) => {
+    const options: HttpOptions = {
+      method: 'post',
+      url: url,
+      responseType: 'json',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      data: params
+    };
+
+    try {
+      const response = await CapacitorHttp.post(options);
+
+      if (response.status == 200) {
+        return response.data;
+      }
+      else {
+        return Promise.reject(response);
+      }
+    }
+    catch (error) {
+      return Promise.reject(error);
+    }
+  }
 
   getContacto() {
     return this.get(`${this.baseUrl}/api/v3/contacto`);
+  }
+  validarDocumento(params: any) {
+    return this.post(`${this.baseUrl}/api/v5/validar-documento`, params);
   }
 
 }

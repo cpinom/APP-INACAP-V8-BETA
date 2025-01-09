@@ -51,6 +51,7 @@
   --ion-text-color: #040b15;
   --ion-font-family: "Roboto", "sans-serif" !important;
   --ion-background-color: #fafafa;
+  --ion-overlay-background-color: #fff;
   // tabbar
   --ion-tab-bar-background: #ffffff;
   --ion-tab-bar-border-color: #d5d6dd;
@@ -88,20 +89,41 @@
   --ion-color-step-200: #16161a;
   --ion-color-step-100: #050508;
 
-  --ion-color-1: #F6D5E3;
+  // Listado de colores 
   --ion-color-1-primary:#E381AB;
+  --ion-color-1-background: #F6D5E3;
+  --ion-color-1-foreground: #CE2D71;
   --ion-color-1-shade:#d8bbc8;
-  --ion-color-2: #FFE4CC;
+
   --ion-color-2-primary:#FFB066;
+  --ion-color-2-background: #FFE4CC;
+  --ion-color-2-foreground: #FF7E06;
   --ion-color-2-shade:#e0c9b4;
-  --ion-color-3: #FEEBE6;
+
+  --ion-color-3-primary:#FCC3B5;
+  --ion-color-3-background: #FEEBE6;
+  --ion-color-3-foreground: #FA9A84;
   --ion-color-3-shade:#e0cfca;
-  --ion-color-4: #FFF9DB;
+
+  --ion-color-4-primary:#F6D001;
+  --ion-color-4-background: #FFF9DB;
+  --ion-color-4-foreground: #F6D001;
   --ion-color-4-shade:#e0dbc1;
-  --ion-color-5: #F1F7D4;
+
+  --ion-color-5-primary:#DDEB93;
+  --ion-color-5-background: #F1F7D4;
+  --ion-color-5-foreground: #C1DB3A;
   --ion-color-5-shade:#d4d9bb;
-  --ion-color-6: #EDF3F8;
+
+  --ion-color-6-primary:#C8DCE9;
+  --ion-color-6-background: #EDF3F8;
+  --ion-color-6-foreground: #A0C3D9;
   --ion-color-6-shade:#d1d6da;
+
+  --ion-color-7-primary:#A7B0F1;
+  --ion-color-7-background: #DCDFF9;
+  --ion-color-7-foreground: #717FE8;
+  --ion-color-7-shade:#939bd4;
 
   body {
     font-family: "Roboto", sans-serif;
@@ -129,11 +151,21 @@
           background-color: transparent;
           border-radius: 8px;
 
+          ion-item {
+            ion-label {
+              font-size: var(--FS14);
+            }
+          }
+
           > ion-item:last-child {
             --inner-border-width: 0 !important;
             --border-width: 0 !important;
           }
         }
+      }
+
+      &.margin {
+        margin-inline: 15px;
       }
     }
 
@@ -174,6 +206,15 @@
 
       --ion-item-background: #2b2c33;
       --ion-border-color: #41424d;
+
+      // Listado de colores
+      --ion-color-1-background: #3B2B32;
+      --ion-color-2-background: #3B332B;
+      --ion-color-3-background: #3B2E2B;
+      --ion-color-4-background: #3B382B;
+      --ion-color-5-background: #383B2B;
+      --ion-color-6-background: #2B353B;
+      --ion-color-7-background: #2B2D3B;
 
       ion-list {
         &.list-inset {

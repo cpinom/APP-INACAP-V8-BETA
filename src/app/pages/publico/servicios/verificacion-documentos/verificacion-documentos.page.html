@@ -7,4 +7,66 @@
 </ion-header>
 
 <ion-content>
+
+  <ion-list inset="true" class="card-list">
+
+    <ion-item detail="false">
+      <ion-icon slot="start" src="assets/icon/verified.svg" class="rounded"></ion-icon>
+      <ion-label>
+        <h2>Validación de Certificados y Documentos</h2>
+        <!-- <p>Aquí podrá validar los Certificados y Diplomas de Título emitidos por INACAP.</p> -->
+      </ion-label>
+    </ion-item>
+
+  </ion-list>
+
+  <section class="instrucciones">
+    <div class="section-header">Instrucciones</div>
+    <div class="section-content">
+      <ion-list>
+        <ion-item>
+          <ion-label>
+            Aquí podrás validar los Certificados y Diplomas de Título emitidos por:
+            <ul>
+              <li>La Universidad Tecnológica de Chile INACAP</li>
+              <li>El Instituto Profesional INACAP</li>
+              <li>El Centro de Formación Técnica INACAP</li>
+              <li>La Dirección Nacional de Capacitación INACAP</li>
+            </ul>
+            Para realizarlo debes ingresar el <b>Código de Verificación</b>,
+            para el caso de los certificados o el número que aparece debajo del código de barras para los diplomas,
+            indicado en las imágenes a continuación <ion-icon src="assets/icon/help_outline.svg"
+              (click)="mdlImagenes.present()"></ion-icon>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+
+  <form [formGroup]="form" (ngSubmit)="validar()">
+    <section>
+      <div class="section-header">Ingrese código de verificación</div>
+      <div class="section-content">
+        <ion-list>
+          <ion-item>
+            <ion-input type="text" placeholder="Ej: C4CECC4C9AB14146" formControlName="codigo" clearInput>
+              <ion-button fill="clear" slot="end" color="medium" (click)="cargarDocumento(documentosInput)">
+                <ion-icon slot="icon-only" src="assets/icon/file_upload.svg"></ion-icon>
+              </ion-button>
+            </ion-input>
+          </ion-item>
+        </ion-list>
+      </div>
+    </section>
+    <section class="margin">
+      <ion-button type="submit" expand="block" color="primary" shape="round">Validar</ion-button>
+    </section>
+  </form>
+
+  <ion-modal #mdlImagenes [breakpoints]="[0, 0.5]" [initialBreakpoint]="0.5" [canDismiss]="true"></ion-modal>
+
+  <input type="file" #documentosInput style="display: none;" (change)="cargarDocumentoWeb($event)"
+    accept="application/pdf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,image/*" />
+
+
 </ion-content>

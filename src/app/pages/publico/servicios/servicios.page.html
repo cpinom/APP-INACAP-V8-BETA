@@ -2,6 +2,11 @@
 
 <ion-content>
 
+  <section class="image">
+    <img src="assets/images/publico/servicios-publico.jpg" />
+    <h4 class="title">Más</h4>
+  </section>
+
   <ion-list inset="true">
 
     @if (data && data.saldoBipPublico) {
@@ -38,12 +43,13 @@
   </ion-list>
 
   <ion-list inset="true">
-    <ion-item detail="true" routerLink="verificacion-documentos">
+    <ion-item detail="false" routerLink="verificacion-documentos">
       <ion-icon slot="start" src="assets/icon/verified.svg" class="rounded"></ion-icon>
       <ion-label>
-        <h2>Verificación de Certificados</h2>
+        <h2>Validación de Certificados</h2>
         <p>Aquí podrá validar los Certificados y Diplomas de Título emitidos por INACAP.</p>
       </ion-label>
+      <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
     </ion-item>
   </ion-list>
 
@@ -70,14 +76,13 @@
       </ion-list>
     </div>
   </section>
-  }
 
   <section class="social-media">
     <div class="section-header">Nuestras Redes Sociales</div>
     <div class="section-content">
       <ion-row>
         <ion-col size="6">
-          <ion-button class="facebook">
+          <ion-button class="facebook" (click)="abrirNavegador('urlFacebook')">
             <div class="btn-inner">
               <ion-icon src="assets/icon/facebook.svg" class="rounded"></ion-icon>
               <ion-label>Facebook</ion-label>
@@ -86,7 +91,7 @@
           </ion-button>
         </ion-col>
         <ion-col size="6">
-          <ion-button class="instagram">
+          <ion-button class="instagram" (click)="abrirNavegador('urlInstagram')">
             <div class="btn-inner">
               <ion-icon src="assets/icon/instagram.svg" class="rounded"></ion-icon>
               <ion-label>Instagram</ion-label>
@@ -95,19 +100,44 @@
           </ion-button>
         </ion-col>
         <ion-col size="6">
-          <ion-button class="x">1</ion-button>
+          <ion-button class="x" (click)="abrirNavegador('urlTwitter')">
+            <div class="btn-inner">
+              <ion-icon src="assets/icon/x.svg" class="rounded"></ion-icon>
+              <ion-label>X (Ex Twitter)</ion-label>
+              <ion-icon src="assets/icon/launch.svg" class="launch"></ion-icon>
+            </div>
+          </ion-button>
         </ion-col>
         <ion-col size="6">
-          <ion-button class="youtube">1</ion-button>
+          <ion-button class="youtube" (click)="abrirNavegador('urlYoutube')">
+            <div class="btn-inner">
+              <ion-icon src="assets/icon/youtube.svg" class="rounded"></ion-icon>
+              <ion-label>Youtube</ion-label>
+              <ion-icon src="assets/icon/launch.svg" class="launch"></ion-icon>
+            </div>
+          </ion-button>
         </ion-col>
         <ion-col size="6">
-          <ion-button class="linkedin">1</ion-button>
+          <ion-button class="linkedin" (click)="abrirNavegador('urlLinkedin')">
+            <div class="btn-inner">
+              <ion-icon src="assets/icon/linkedin.svg" class="rounded"></ion-icon>
+              <ion-label>Linkedin</ion-label>
+              <ion-icon src="assets/icon/launch.svg" class="launch"></ion-icon>
+            </div>
+          </ion-button>
         </ion-col>
         <ion-col size="6">
-          <ion-button class="tiktok">1</ion-button>
+          <ion-button class="tiktok" (click)="openUrl('https://www.tiktok.com/@inacap_oficial')">
+            <div class="btn-inner">
+              <ion-icon src="assets/icon/tiktok.svg" class="rounded"></ion-icon>
+              <ion-label>TikTok</ion-label>
+              <ion-icon src="assets/icon/launch.svg" class="launch"></ion-icon>
+            </div>
+          </ion-button>
         </ion-col>
       </ion-row>
     </div>
   </section>
+  }
 
 </ion-content>

@@ -45,11 +45,11 @@
 
   <form [formGroup]="form" (ngSubmit)="validar()">
     <section>
-      <div class="section-header">Ingrese código de verificación</div>
+      <div class="section-header">Ingresa el código de verificación</div>
       <div class="section-content">
         <ion-list>
           <ion-item>
-            <ion-input type="text" placeholder="Ej: C4CECC4C9AB14146" formControlName="codigo" clearInput>
+            <ion-input [errorText]="codigoError" type="text" placeholder="Ej: C4CECC4C9AB14146" formControlName="codigo" clearInput helperText="Puedes cargar un documento o imagen.">
               <ion-button fill="clear" slot="end" color="medium" (click)="cargarDocumento(documentosInput)">
                 <ion-icon slot="icon-only" src="assets/icon/file_upload.svg"></ion-icon>
               </ion-button>

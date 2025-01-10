@@ -66,6 +66,9 @@ export class PublicService {
   getContacto() {
     return this.get(`${this.baseUrl}/api/v3/contacto`);
   }
+  validarCodigoDocumento(codigoVerificacion: string) {
+    return this.get(`${this.baseUrl}/api/v5/validar-codigo-documento?codigoVerificacion=${codigoVerificacion}`);
+  }
   validarDocumento(params: any) {
     return this.post(`${this.baseUrl}/api/v5/validar-documento`, params);
   }

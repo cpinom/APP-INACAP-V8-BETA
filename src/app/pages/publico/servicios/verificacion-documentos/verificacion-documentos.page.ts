@@ -3,6 +3,7 @@ import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Platform } from '@ionic/angular';
 import { DialogService } from 'src/app/core/services/dialog.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
+import { MediaService } from 'src/app/core/services/media.service';
 import { PublicService } from 'src/app/core/services/public.service';
 import { UtilsService } from 'src/app/core/services/utils.service';
 
@@ -23,6 +24,7 @@ enum TipoCertificado {
 export class VerificacionDocumentosPage implements OnInit {
 
   @ViewChild('documentosInput') adjuntarEl!: ElementRef;
+  tipoCertificado!: TipoCertificado;
   form: FormGroup;
   certificadoValido: any;
   detalle: any;
@@ -32,11 +34,14 @@ export class VerificacionDocumentosPage implements OnInit {
     private dialog: DialogService,
     private utils: UtilsService,
     private error: ErrorHandlerService,
-    private api: PublicService
-  ) {
+    private api: PublicService,
+    private media: MediaService) {
 
     this.form = this.fb.group({
-      codigo: ['', Validators.required]
+      codigo: ['', Validators.compose([
+        Validators.pattern(/^[A-Za-z0-9]+$/),
+        Validators.required
+      ])]
     });
 
     this.codigo?.valueChanges.subscribe((value) => {
@@ -47,17 +52,53 @@ export class VerificacionDocumentosPage implements OnInit {
     });
 
   }
+  ngOnInit() { }
+  async validar() {
+    if (this.form.valid) {
+      const loading = await this.dialog.showLoading({ message: 'Validando...' });
 
-  ngOnInit() {
+      try {
+        const response = await this.api.validarCodigoDocumento(this.codigo?.value);
+
+        if (response.success) {
+          await this.procesarResultado(response.data);
+        }
+        else {
+          await this.presentError('INACAP', 'No se pudo validar el certificado. Vuelve a intentarlo.');
+        }
+      }
+      catch (error: any) {
+        await this.presentError('INACAP', 'El servicio no se encuentra disponible o presenta algunos problemas de cobertura, reintente en un momento.');
+      }
+      finally {
+        await loading.dismiss();
+      }
+
+    }
   }
-  validar() {
-    debugger
-  }
-  cargarDocumento(inputEl: any) {
+  async cargarDocumento(inputEl: any) {
     if (this.pt.is('mobileweb')) {
       inputEl.click();
     }
     else {
+      const media = await this.media.getMedia();
+
+      if (media) {
+        const fileSize = media.size / 1024 / 1024;
+        const base64String = media.data;
+
+        if (fileSize >= 150) {
+          this.presentError('INACAP', 'Los documentos no pueden exceder los 150 MB.');
+          return;
+        }
+
+        try {
+          await this.uploadBase64Fragmented(base64String, media.name);
+        }
+        catch (error: any) {
+          await this.presentError('INACAP', 'No se pudo procesar el archivo. Vuelve a intentarlo.');
+        }
+      }
     }
   }
   async cargarDocumentoWeb(event: any) {
@@ -110,15 +151,10 @@ export class VerificacionDocumentosPage implements OnInit {
           }
           else if (response.code == 200) {
             await loading.dismiss();
-
-            debugger
-            // this.items = response.data.items;
-            // this.snackbar.showToast('Archivo cargado correctamente.', 3000, 'success');
+            await this.procesarResultado(response.data.info);
           }
           else if (response.code == 404) {
             await loading.dismiss();
-
-            debugger
             await this.presentError('INACAP', 'Certificado no válido.');
           }
         }
@@ -134,6 +170,30 @@ export class VerificacionDocumentosPage implements OnInit {
       await loading.dismiss();
     }
   }
+  async procesarResultado(info: any) {
+    debugger
+    this.detalle = info;
+    this.certificadoValido = true;
+
+    const tdetCcod = this.detalle[1];
+
+    if (tdetCcod != '559') {
+      if (tdetCcod == "899" || tdetCcod == "593" || tdetCcod == "949" || tdetCcod == "952" || tdetCcod == "594") {
+        this.tipoCertificado = TipoCertificado.Grado;
+      }
+      else {
+        if (tdetCcod == "900" || tdetCcod == "570" || tdetCcod == "57") {
+          this.tipoCertificado = TipoCertificado.Normal;
+        }
+        else {
+          this.tipoCertificado = TipoCertificado.Otro;
+        }
+      }
+    }
+    else {
+      this.tipoCertificado = TipoCertificado.Capacitacion;
+    }
+  }
   async presentError(title: string, message: string) {
     const alert = await this.dialog.showAlert({
       cssClass: 'alert-message',
@@ -144,7 +204,14 @@ export class VerificacionDocumentosPage implements OnInit {
 
     return alert;
   }
-
   get codigo() { return this.form.get('codigo'); }
+  get codigoError() {
+    if (this.codigo?.touched) {
+      if (this.codigo?.hasError('required')) return 'Campo es obligatorio.';
+      if (this.codigo?.hasError('pattern')) return 'Sólo puede ingresar caracteres alfanuméricos.';
+    }
+
+    return;
+  }
 
 }

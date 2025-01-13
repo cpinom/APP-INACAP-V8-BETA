@@ -36,7 +36,7 @@
             Para realizarlo debes ingresar el <b>Código de Verificación</b>,
             para el caso de los certificados o el número que aparece debajo del código de barras para los diplomas,
             indicado en las imágenes a continuación <ion-icon src="assets/icon/help_outline.svg"
-              (click)="mdlImagenes.present()"></ion-icon>
+              (click)="imagenesMdl.present()"></ion-icon>
           </ion-label>
         </ion-item>
       </ion-list>
@@ -49,7 +49,8 @@
       <div class="section-content">
         <ion-list>
           <ion-item>
-            <ion-input [errorText]="codigoError" type="text" placeholder="Ej: C4CECC4C9AB14146" formControlName="codigo" clearInput helperText="Puedes cargar un documento o imagen.">
+            <ion-input [errorText]="codigoError" type="text" placeholder="Ej: C4CECC4C9AB14146" formControlName="codigo"
+              clearInput helperText="Puedes cargar un documento o imagen.">
               <ion-button fill="clear" slot="end" color="medium" (click)="cargarDocumento(documentosInput)">
                 <ion-icon slot="icon-only" src="assets/icon/file_upload.svg"></ion-icon>
               </ion-button>
@@ -63,7 +64,240 @@
     </section>
   </form>
 
-  <ion-modal #mdlImagenes [breakpoints]="[0, 0.5]" [initialBreakpoint]="0.5" [canDismiss]="true"></ion-modal>
+  <ion-modal #imagenesMdl [breakpoints]="[0, 0.5]" [initialBreakpoint]="0.5" [canDismiss]="true"></ion-modal>
+
+  <ion-modal class="mdl-detalle" #detalleMdl [breakpoints]="[0, 0.9]" [initialBreakpoint]="0.9" [canDismiss]="true">
+    <ng-template>
+      <ion-content>
+        <div class="header">
+          <ion-button class="btn-cerrar" shape="round" color="secondary" fill="clear" size="small"
+            (click)="detalleMdl.dismiss()">
+            <ion-icon name="close-outline"></ion-icon>
+          </ion-button>
+        </div>
+        <div class="content">
+          <div class="icono">
+            <ion-icon src="assets/icon/check_circle.svg"></ion-icon>
+          </div>
+          <h2 class="titulo">Certificado Válido</h2>
+          <ion-list inset="true">
+            @if (tipoCertificado == 1) {
+            <ion-item>
+              <ion-label>
+                <p class="label">Nombre Estudiante</p>
+                <h2>{{detalle[3]}}</h2>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <p class="label">RUT</p>
+                <h2>{{detalle[7]}}</h2>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <p class="label">Grado Académico</p>
+                <h2>{{detalle[13] != 'null' ? detalle[13] : 'Sin datos'}}</h2>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <p class="label">Fecha de Grado Académico</p>
+                <h2>{{detalle[14]}}</h2>
+              </ion-label>
+            </ion-item>
+            <ion-item *ngIf="detalle[6] != 'null'">
+              <ion-label>
+                <p class="label">N° de Registro</p>
+                <h2>{{detalle[6]}}</h2>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <p class="label">Instituci&oacute;n</p>
+                <h2>{{detalle[5]}}</h2>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <p class="label">Certificado</p>
+                <h2>{{detalle[2]}}</h2>
+              </ion-label>
+            </ion-item>
+            <ion-item *ngIf="detalle[10] != 'null'">
+              <ion-label>
+                <p class="label">Observación</p>
+                <h2>{{detalle[10]}}</h2>
+              </ion-label>
+            </ion-item>
+            }
+            @else if (tipoCertificado == 2) {
+            <ion-item>
+              <ion-label>
+                <p class="label">Nombre Estudiante</p>
+                <h2>{{detalle[3]}}</h2>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <p class="label">RUT</p>
+                <h2>{{detalle[7]}}</h2>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <p class="label">Título</p>
+                <h2>{{detalle[12]}}</h2>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <p class="label">Fecha de Titulaci&oacute;n</p>
+                <h2>{{detalle[11] ? detalle[11] : 'Sin dato'}}</h2>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <p class="label">N&#186; de Registro</p>
+                <h2>{{detalle[6]}}</h2>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <p class="label">Instituci&oacute;n</p>
+                <h2>{{detalle[5]}}</h2>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <p class="label">Certificado</p>
+                <h2>{{detalle[2]}}</h2>
+              </ion-label>
+            </ion-item>
+            <ion-item *ngIf="detalle[10] != 'null'">
+              <ion-label>
+                <p class="label">{{detalle[10] == 'null' ? '' : 'Observación'}}</p>
+                <h2>{{detalle[10] == 'null' ? '' : detalle[10]}}</h2>
+              </ion-label>
+            </ion-item>
+            }
+            @else if (tipoCertificado == 3) {
+            <ion-item>
+              <ion-label>
+                <p class="label">Nombre Estudiante</p>
+                <h2>{{detalle[3]}}</h2>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <p class="label">Programa de Estudio</p>
+                <h2>{{detalle[0]}}</h2>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <p class="label">Fecha de Emisión</p>
+                <h2>{{detalle[4]}}</h2>
+              </ion-label>
+            </ion-item>
+            <ion-item *ngIf="detalle[6] != 'null'">
+              <ion-label>
+                <p class="label">N° de Registro</p>
+                <h2>{{detalle[6]}}</h2>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <p class="label">Institución</p>
+                <h2>{{detalle[5]}}</h2>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <p class="label">Certificado</p>
+                <h2>{{detalle[2]}}</h2>
+              </ion-label>
+            </ion-item>
+            <ion-item *ngIf="detalle[10] != 'null'">
+              <ion-label>
+                <p class="label">Observación</p>
+                <h2>{{detalle[10]}}</h2>
+              </ion-label>
+            </ion-item>
+            }
+            @else if (tipoCertificado == 4) {
+            <ion-item>
+              <ion-label>
+                <p class="label">Nombre Participante</p>
+                <h2>{{detalle[0]}}</h2>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <p class="label">ID Participante</p>
+                <h2>{{detalle[2]}}</h2>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <p class="label">Nombre del Curso</p>
+                <h2>{{detalle[3]}}</h2>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <p class="label">Sede</p>
+                <h2>{{detalle[4]}}</h2>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <p class="label">Dirección de Ejecución</p>
+                <h2>{{detalle[5] ? detalle[5] : 'Sin dato'}}</h2>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <p class="label">Fecha de Inicio</p>
+                <h2>{{detalle[6]}}</h2>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <p class="label">Fecha de Término</p>
+                <h2>{{detalle[7]}}</h2>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <p class="label">Duración del Curso</p>
+                <h2>{{detalle[8]}}</h2>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <p class="label">% Asistencia</p>
+                <h2>{{detalle[9] ? detalle[9] + '%' : 'Sin dato'}}</h2>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <p class="label">Nota</p>
+                <h2>{{detalle[10] ? detalle[10] : 'Sin dato'}}</h2>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <p class="label">Estado</p>
+                <h2>{{detalle[11]}}</h2>
+              </ion-label>
+            </ion-item>
+            }
+          </ion-list>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 
   <input type="file" #documentosInput style="display: none;" (change)="cargarDocumentoWeb($event)"
     accept="application/pdf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,image/*" />

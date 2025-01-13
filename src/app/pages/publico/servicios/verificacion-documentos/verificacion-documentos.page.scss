@@ -26,9 +26,42 @@
   }
 }
 
-
 section.instrucciones {
   ul {
     padding-left: 20px;
+  }
+}
+
+.mdl-detalle {
+  .header {
+    display: flex;
+    justify-content: end;
+    padding: 15px 15px 0 15px;
+
+    .btn-cerrar {
+      --padding-start: 10px;
+      --padding-end: 10px;
+
+      ion-icon {
+        color: var(--ion-color-medium);
+        font-size: 32px;
+      }
+    }
+  }
+  .content {
+    .icono {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+
+      ion-icon {
+        font-size: 100px;
+        color: var(--ion-color-success);
+      }
+    }
+
+    .titulo {
+      text-align: center;
+    }
   }
 }

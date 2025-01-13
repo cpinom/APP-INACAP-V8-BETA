@@ -1,6 +1,6 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, viewChild, ViewChild } from '@angular/core';
 import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Platform } from '@ionic/angular';
+import { IonModal, Platform } from '@ionic/angular';
 import { DialogService } from 'src/app/core/services/dialog.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { MediaService } from 'src/app/core/services/media.service';
@@ -24,6 +24,7 @@ enum TipoCertificado {
 export class VerificacionDocumentosPage implements OnInit {
 
   @ViewChild('documentosInput') adjuntarEl!: ElementRef;
+  @ViewChild('detalleMdl') detalleMdl!: IonModal;
   tipoCertificado!: TipoCertificado;
   form: FormGroup;
   certificadoValido: any;
@@ -51,8 +52,38 @@ export class VerificacionDocumentosPage implements OnInit {
       }
     });
 
+    if (this.pt.is('mobileweb')) {
+      this.codigo?.setValue('4F7A62895DC969B2');
+    }
+
   }
-  ngOnInit() { }
+  ngOnInit() {
+
+    if (this.pt.is('mobileweb')) {
+      this.tipoCertificado = TipoCertificado.Otro;
+      this.detalle = [
+        "INGENIERÍA EN INFORMÁTICA",
+        "455",
+        "CONCENTRACION DE NOTAS PARA BECAS Y CREDITOS",
+        "BENJAMIN ANTONIO AHUMADA FERNANDEZ",
+        "19-11-2024",
+        "INSTITUTO PROFESIONAL",
+        "null",
+        "21407160-6",
+        "0",
+        "null",
+        "null",
+        "",
+        "null",
+        "null"
+      ]
+
+      setTimeout(async () => {
+        await this.detalleMdl.present();
+      }, 1000);
+    }
+
+  }
   async validar() {
     if (this.form.valid) {
       const loading = await this.dialog.showLoading({ message: 'Validando...' });
@@ -61,10 +92,17 @@ export class VerificacionDocumentosPage implements OnInit {
         const response = await this.api.validarCodigoDocumento(this.codigo?.value);
 
         if (response.success) {
-          await this.procesarResultado(response.data);
+          await loading.dismiss();
+
+          if (response.code == 200) {
+            await this.procesarResultado(response.data);
+          }
+          else {
+            await this.presentError('INACAP', 'No se pudo validar el certificado. Vuelve a intentarlo.');
+          }
         }
         else {
-          await this.presentError('INACAP', 'No se pudo validar el certificado. Vuelve a intentarlo.');
+          throw Error(response);
         }
       }
       catch (error: any) {
@@ -171,27 +209,33 @@ export class VerificacionDocumentosPage implements OnInit {
     }
   }
   async procesarResultado(info: any) {
-    debugger
-    this.detalle = info;
-    this.certificadoValido = true;
+    if (info) {
+      this.detalle = info;
+      this.certificadoValido = true;
 
-    const tdetCcod = this.detalle[1];
+      const tdetCcod = this.detalle[1];
 
-    if (tdetCcod != '559') {
-      if (tdetCcod == "899" || tdetCcod == "593" || tdetCcod == "949" || tdetCcod == "952" || tdetCcod == "594") {
-        this.tipoCertificado = TipoCertificado.Grado;
-      }
-      else {
-        if (tdetCcod == "900" || tdetCcod == "570" || tdetCcod == "57") {
-          this.tipoCertificado = TipoCertificado.Normal;
+      if (tdetCcod != '559') {
+        if (tdetCcod == "899" || tdetCcod == "593" || tdetCcod == "949" || tdetCcod == "952" || tdetCcod == "594") {
+          this.tipoCertificado = TipoCertificado.Grado;
         }
         else {
-          this.tipoCertificado = TipoCertificado.Otro;
+          if (tdetCcod == "900" || tdetCcod == "570" || tdetCcod == "57") {
+            this.tipoCertificado = TipoCertificado.Normal;
+          }
+          else {
+            this.tipoCertificado = TipoCertificado.Otro;
+          }
         }
       }
+      else {
+        this.tipoCertificado = TipoCertificado.Capacitacion;
+      }
+
+      await this.detalleMdl.present();
     }
     else {
-      this.tipoCertificado = TipoCertificado.Capacitacion;
+      throw Error('No se pudo obtener información del certificado.');
     }
   }
   async presentError(title: string, message: string) {

@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/publico" text="Volver"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="user">
+    <ion-avatar>
+      <avatar-comp></avatar-comp>
+    </ion-avatar>
+    <h1>¡Hola {{nombrePersona}}!</h1>
+  </div>
+  <h1>¿Con qué cuenta quiere ingresar?</h1>
+  <div class="buttons">
+    @if (mostrarAlumno) {
+    <ion-button expand="block" shape="round" class="alumno" (click)="redirectToProfile('/alumno')">
+      <ion-icon slot="start" src="assets/icon/school.svg"></ion-icon>
+      <span>Estudiante</span>
+    </ion-button>
+    }
+    @if (mostrarDocente) {
+    <ion-button expand="block" shape="round" class="docente" (click)="redirectToProfile('/docente')">
+      <ion-icon slot="start" src="assets/icon/class.svg"></ion-icon>
+      <span>Docente</span>
+    </ion-button>
+    }
+    @if (mostrarExalumno) {
+    <ion-button expand="block" shape="round" class="exalumno" (click)="redirectToProfile('/exalumno')">
+      <ion-icon slot="start" src="assets/icon/group.svg"></ion-icon>
+      <span>Exalumno</span>
+    </ion-button>
+    }
+    <div class="or-separator">
+      <span class="or-text">o</span>
+    </div>
+    <ion-button expand="block" shape="round" color="medium" (click)="logout()">
+      <span>Cerrar Sesión</span>
+    </ion-button>
+  </div>
+</ion-content>

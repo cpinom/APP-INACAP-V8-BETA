@@ -1,0 +1,22 @@
+<ion-header class="periodos">
+  <ion-toolbar>
+    <ion-title routerLink="/publico/inicio" aria-label="Ir al inicio">APP INACAP</ion-title>
+    <ion-buttons slot="start">
+      <ion-button routerLink="configuraciones" role="button" aria-label="Ir a configuraciones">
+        <ion-icon src="assets/icon/settings.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="notificacionesTap()" role="button" aria-label="Ver notificaciones">
+        <ion-badge *ngIf="mostrarNotificaciones">1</ion-badge>
+        <ion-icon src="assets/icon/notifications.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-button (click)="logout()">Cerrar</ion-button>
+
+</ion-content>

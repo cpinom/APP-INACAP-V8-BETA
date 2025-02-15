@@ -4,6 +4,7 @@ import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { LoginPageModule } from './core/components/login/login.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -13,7 +14,8 @@ import { AppRoutingModule } from './app-routing.module';
       mode: 'ios',
       innerHTMLTemplatesEnabled: true
     }),
-    AppRoutingModule
+    AppRoutingModule,
+    LoginPageModule
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }

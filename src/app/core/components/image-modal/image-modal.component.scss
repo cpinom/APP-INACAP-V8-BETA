@@ -1,0 +1,33 @@
+ion-content {
+  --background: transparent !important;
+
+  &::part(scroll) {
+      overflow: hidden;
+  }
+
+  .image-container {
+      display: flex;
+      height: 100%;
+      align-items: center;
+      justify-content: center;
+
+      .image-center {
+          background-color: #999;
+          width: 300px;
+          height: 300px;
+          overflow: hidden;
+          border-radius: 50%;
+
+          img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+          }
+      }
+  }
+}
+
+
+::ng-deep body.dark ion-content {
+  --background: transparent;
+}

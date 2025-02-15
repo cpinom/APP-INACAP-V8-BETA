@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Mi Intranet</ion-title>
+    <ion-buttons slot="end">
+      <ion-button icon-only role="button" aria-label="Cancelar" (click)="cancelar()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <form [formGroup]="loginForm" (submit)="login()">
+    <div class="titulo">
+      <div class="logo">
+        <img [src]="resolverLogo()" />
+      </div>
+    </div>
+    @if (userCache) {
+    <div class="user">
+      <h1>Hola, {{userCache?.persTnombre}}</h1>
+      <a (click)="borrarUsuario()">Cambiar de usuario</a>
+    </div>
+    }
+    <div class="fields">
+      <ion-list>
+        @if (!userCache) {
+        <ion-item [disabled]="procesando">
+          <ion-input #usuario label="Usuario" labelPlacement="stacked" formControlName="usuario" tabindex="1"
+            placeholder="Ingresa tu RUN o usuario INACAPMail" [errorText]="usuarioError"></ion-input>
+        </ion-item>
+        }
+        <ion-item [disabled]="procesando">
+          <ion-input label="Contraseña" type="password" formControlName="clave" tabindex="2"
+            placeholder="Ingresa tu contraseña" [errorText]="claveError">
+            <ion-input-password-toggle slot="end" color="medium"></ion-input-password-toggle>
+          </ion-input>
+        </ion-item>
+      </ion-list>
+    </div>
+    <ion-button type="submit" color="danger" expand="block" shape="round" [disabled]="procesando" tabindex="3">
+      @if (procesando) {
+      <ion-spinner name="crescent"></ion-spinner>
+      }
+      @else {
+      <span>Iniciar Sesión</span>
+      }
+    </ion-button>
+    <p class="recuperar">
+      ¿Ha olvidado su contraseña?
+      <a (click)="abrirNavegador('https://www.inacap.cl/tportalvp/recuperar_clave/')">Ingrese aquí</a>
+    </p>
+  </form>
+
+  <a class="politicas-seguridad" (click)="politicas()">Políticas de privacidad INACAP</a>
+
+</ion-content>

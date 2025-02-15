@@ -1,0 +1,64 @@
+ion-header {
+  ion-title {
+    letter-spacing: 0;
+  }
+
+  ion-buttons {
+    ion-button {
+      ion-icon {
+        font-size: 32px;
+      }
+
+      ion-badge {
+        background: var(--ion-color-danger);
+        position: absolute;
+        top: 0px;
+        right: -2.5px;
+        font-size: 10px;
+        width: 18px;
+        height: 18px;
+        padding: 4px;
+        border-radius: 9px;
+      }
+
+      &.profile-btn {
+        background-color: #d8d8d8;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        overflow: hidden;
+        --padding-bottom: 0;
+        --padding-end: 0;
+        --padding-start: 0;
+        --padding-top: 0;
+        margin-left: 8px;
+
+        ion-img {
+          width: 100%;
+        }
+        span {
+          color: #333333;
+          font-size: var(--FS16);
+        }
+      }
+    }
+
+    &[slot="end"] {
+      right: 4px;
+    }
+  }
+}
+
+ion-tabs {
+  ion-tab-bar {
+    ion-label {
+      font-size: var(--FS11);
+    }
+    avatar-comp {
+      background-color: transparent !important;
+      height: 24px;
+      width: 24px;
+      margin-top: 3px;
+    }
+  }
+}

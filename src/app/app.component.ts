@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,14 @@ import { Component } from '@angular/core';
   standalone: false
 })
 export class AppComponent {
-  constructor() { }
+
+  private pt = inject(Platform);
+
+  constructor() {
+    this.initializeApp();
+  }
+
+  async initializeApp() {
+  }
+
 }

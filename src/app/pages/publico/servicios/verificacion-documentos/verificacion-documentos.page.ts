@@ -59,7 +59,7 @@ export class VerificacionDocumentosPage implements OnInit {
   }
   ngOnInit() {
 
-    if (this.pt.is('mobileweb')) {
+    /*if (this.pt.is('mobileweb')) {
       this.tipoCertificado = TipoCertificado.Otro;
       this.detalle = [
         "INGENIERÍA EN INFORMÁTICA",
@@ -81,7 +81,7 @@ export class VerificacionDocumentosPage implements OnInit {
       setTimeout(async () => {
         await this.detalleMdl.present();
       }, 1000);
-    }
+    }*/
 
   }
   async validar() {

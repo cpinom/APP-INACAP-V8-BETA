@@ -63,6 +63,25 @@ export class PublicService {
     }
   }
 
+  async getImage(url: string): Promise<any> {
+    const options: HttpOptions = {
+      url: `${this.baseUrl}/api/v3/${url}`,
+      responseType: 'blob',
+      headers: {}
+    };
+
+    try {
+      const response = await CapacitorHttp.get(options);
+
+      if (response.status == 200) {
+        return response.data;
+      }
+      else {
+        return Promise.reject(response);
+      }
+    }
+    catch (error) { }
+  }
   getContacto() {
     return this.get(`${this.baseUrl}/api/v3/contacto`);
   }

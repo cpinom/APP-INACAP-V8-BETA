@@ -1,0 +1,32 @@
+<ion-tabs>
+
+  <ion-tab-bar slot="bottom">
+    
+    <ion-tab-button tab="inicio" (click)="checkTap($event, 0)">
+      <ion-icon src="assets/icon/home.svg"></ion-icon>
+      <ion-label>Inicio</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="cursos" (click)="checkTap($event, 1)">
+      <ion-icon src="assets/icon/book.svg"></ion-icon>
+      <ion-label>Cursos</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="horario" (click)="checkTap($event, 2)">
+      <ion-icon src="assets/icon/access_time.svg"></ion-icon>
+      <ion-label>Horario</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="servicios" (click)="checkTap($event, 3)">
+      <ion-icon src="assets/icon/list_alt.svg"></ion-icon>
+      <ion-label>Servicios</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button (click)="perfil()">
+      <avatar-comp></avatar-comp>
+      <ion-label>Perfil</ion-label>
+    </ion-tab-button>
+
+  </ion-tab-bar>
+
+</ion-tabs>

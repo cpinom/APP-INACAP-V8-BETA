@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Browser } from '@capacitor/browser';
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +38,9 @@ export class UtilsService {
       // Leer el archivo como Data URL (Base64)
       reader.readAsDataURL(file);
     });
+  }
+  async openLink(url: string) {
+    return await Browser.open({ url: url });
   }
 
 }

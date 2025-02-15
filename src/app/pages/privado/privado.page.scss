@@ -1,0 +1,93 @@
+ion-content {
+  --padding-top: 15px;
+  --padding-bottom: 15px;
+  --padding-start: 15px;
+  --padding-end: 15px;
+
+  h1 {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .user {
+    margin-top: 20px;
+
+    ion-avatar {
+      height: 100px;
+      width: 100px;
+      margin: 0 auto;
+
+      avatar-comp {
+        height: 100%;
+        width: 100%;
+      }
+    }
+    h1 {
+      margin: 15px 0;
+    }
+  }
+
+  ion-button {
+    margin-top: 20px;
+    --padding-top: 12px;
+    --padding-bottom: 12px;
+    height: 46px;
+
+    &.alumno {
+      --background: #20405b;
+      --background-activated: #1c3850;
+    }
+    &.docente {
+      --background: #6cc4c4;
+      --background-activated: #5facac;
+    }
+    &.exalumno {
+      --background: #b44545;
+      --background-activated: #9e3d3d;
+    }
+    &.logout {
+      --background: #8d9091;
+      --background-activated: #7c7f80;
+      margin-top: 0;
+    }
+  }
+
+  .or-separator {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 0 20px;
+    margin: 15px 0;
+
+    &::after,
+    &::before {
+      content: "";
+      width: 50%;
+      height: 1px;
+      background-color: rgba(0, 0, 0, 0.35);
+    }
+
+    .or-text {
+      font-size: var(--FS16);
+      line-height: 1.42857;
+      font-weight: 400;
+      color: rgba(0, 0, 0, 0.6);
+      margin: 0 12px;
+    }
+  }
+}
+
+::ng-deep body.dark .or-separator {
+  &::after,
+  &::before {
+    background-color: #ccc !important;
+  }
+  .or-text {
+    color: #fff !important;
+  }
+}

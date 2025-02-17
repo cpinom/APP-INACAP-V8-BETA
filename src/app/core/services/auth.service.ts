@@ -96,13 +96,13 @@ export class AuthService {
 
       if (profiles == 1) {
         if (auth.user.esAlumno) {
-          auth.user.perfil = '/alumno';
+          auth.user.perfil = '/dashboard-alumno';
         }
         else if (auth.user.esDocente) {
-          auth.user.perfil = '/docente';
+          auth.user.perfil = '/dashboard-docente';
         }
         else if (auth.user.esExalumno) {
-          auth.user.perfil = '/exalumno';
+          auth.user.perfil = '/dashboard-exalumno';
         }
       }
     }

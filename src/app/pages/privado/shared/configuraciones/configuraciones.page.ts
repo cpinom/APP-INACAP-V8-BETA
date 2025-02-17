@@ -416,12 +416,12 @@ export class ConfiguracionesPage implements OnInit {
 
   }
   get mostrarCalendario() { return false; }
-  get mostrarNotificaciones() { return this.router.url.startsWith('/alumno'); }
+  get mostrarNotificaciones() { return this.router.url.startsWith('/dashboard-alumno'); }
   get mostrarFaceID() { return this.pt.is('ios'); }
   get backUrl() { return this.router.url.replace('/configuraciones', ''); }
   get Vista() {
-    return this.router.url.startsWith('/alumno')
-      ? this.router.url.startsWith('/docente') ? VISTAS_ALUMNO.CONFIGURACIONES : VISTAS_DOCENTE.CONFIGURACIONES
+    return this.router.url.startsWith('/dashboard-alumno')
+      ? this.router.url.startsWith('/dashboard-docente') ? VISTAS_ALUMNO.CONFIGURACIONES : VISTAS_DOCENTE.CONFIGURACIONES
       : VISTAS_EXALUMNO.CONFIGURACIONES;
   }
 

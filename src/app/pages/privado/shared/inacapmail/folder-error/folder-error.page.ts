@@ -20,14 +20,14 @@ export class FolderErrorPage implements OnInit {
     this.events.app.next({ action: 'mail:folder-error-reload' })
   }
   get returnPath() {
-    if (this.router.url.startsWith('/alumno/inicio')) {
-      return '/alumno/inicio';
+    if (this.router.url.startsWith('/dashboard-alumno/inicio')) {
+      return '/dashboard-alumno/inicio';
     } 
-    else if (this.router.url.startsWith('/docente/inicio')) {
-      return '/docente/inicio';
+    else if (this.router.url.startsWith('/dashboard-docente/inicio')) {
+      return '/dashboard-docente/inicio';
     } 
-    else if (this.router.url.startsWith('/exalumno/inicio')) {
-      return '/exalumno/inicio';
+    else if (this.router.url.startsWith('/dashboard-exalumno/inicio')) {
+      return '/dashboard-exalumno/inicio';
     }
     return '';
   }

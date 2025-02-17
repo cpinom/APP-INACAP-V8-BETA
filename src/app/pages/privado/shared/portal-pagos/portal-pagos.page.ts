@@ -242,7 +242,7 @@ export class PortalPagosPage implements OnInit {
     return this.router.url.replace('/portal-pagos', '');
   }
   get backText() {
-    if (this.router.url.indexOf('/alumno/inicio') > -1)
+    if (this.router.url.indexOf('/dashboard-alumno/inicio') > -1)
       return 'Inicio';
     return 'Servicios';
   }

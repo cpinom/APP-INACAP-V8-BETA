@@ -442,9 +442,9 @@ export class MensajeComponent implements OnInit, OnDestroy {
   }
   get subject() { return this.mensajeForm.get('asunto'); }
   get body() { return this.mensajeForm.get('cuerpo'); }
-  get esAlumno() { return this.router.url.startsWith('/alumno'); }
-  get esDocente() { return this.router.url.startsWith('/docente'); }
-  get esExalumno() { return this.router.url.startsWith('/exalumno'); }
+  get esAlumno() { return this.router.url.startsWith('/dashboard-alumno'); }
+  get esDocente() { return this.router.url.startsWith('/dashboard-docente'); }
+  get esExalumno() { return this.router.url.startsWith('/dashboard-exalumno'); }
   get Vista() {
     return this.esAlumno ? VISTAS_ALUMNO.ENVIA_CORREO : (this.esDocente ? VISTAS_DOCENTE.ENVIA_CORREO : VISTAS_EXALUMNO.ENVIA_CORREO);
   }

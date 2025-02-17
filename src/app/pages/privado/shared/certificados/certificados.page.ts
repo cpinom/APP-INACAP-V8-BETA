@@ -92,7 +92,7 @@ export class CertificadosPage implements OnInit {
     let auth = await this.auth.getAuth();
 
     if (auth.perfil) {
-      this.esExalumno = auth.perfil == '/exalumno' ? 1 : 0
+      this.esExalumno = auth.perfil == '/dashboard-exalumno' ? 1 : 0
     }
     else {
       this.esExalumno = auth.user.esExalumno ? 1 : 0;

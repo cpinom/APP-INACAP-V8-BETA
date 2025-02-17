@@ -75,14 +75,14 @@ export class FolderContentPage implements OnInit, OnDestroy {
       }
     });
 
-    if (this.router.url.startsWith('/alumno/inicio')) {
-      this.returnPath = '/alumno/inicio';
+    if (this.router.url.startsWith('/dashboard-alumno/inicio')) {
+      this.returnPath = '/dashboard-alumno/inicio';
     }
-    else if (this.router.url.startsWith('/docente/inicio')) {
-      this.returnPath = '/docente/inicio';
+    else if (this.router.url.startsWith('/dashboard-docente/inicio')) {
+      this.returnPath = '/dashboard-docente/inicio';
     }
-    else if (this.router.url.startsWith('/exalumno/inicio')) {
-      this.returnPath = '/exalumno/inicio';
+    else if (this.router.url.startsWith('/dashboard-exalumno/inicio')) {
+      this.returnPath = '/dashboard-exalumno/inicio';
     }
   }
   ngOnDestroy() {

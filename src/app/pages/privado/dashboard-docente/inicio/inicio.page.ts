@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, viewChild, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { DocenteService } from 'src/app/core/services/http/docente.service';
 import { AlertController, IonContent, IonModal, IonRouterOutlet, LoadingController, NavController, Platform } from '@ionic/angular';
@@ -17,6 +17,7 @@ import * as moment from 'moment';
 import { EstacionamientosService } from 'src/app/core/services/http/estacionamientos.service';
 import { AppGlobal } from 'src/app/app.global';
 import { VISTAS_DOCENTE } from 'src/app/core/constants/docente';
+import { PeriodosComponent } from 'src/app/core/components/periodos/periodos.component';
 
 @Component({
   selector: 'app-inicio',
@@ -27,6 +28,7 @@ export class InicioPage implements OnInit {
 
   @ViewChild(IonContent) content!: IonContent;
   @ViewChild('ramos', { read: ElementRef }) public ramosContent!: ElementRef<any>;
+  @ViewChild(PeriodosComponent) periodosCmp!: PeriodosComponent;
   avisosDestacados: any;
   cargandoClases!: boolean;
   fechaSemana: any = moment();
@@ -81,7 +83,7 @@ export class InicioPage implements OnInit {
     moment.locale('es');
 
     this.scrollObs = this.events.app.subscribe((event: any) => {
-      if (event.action == 'scrollTop' && event.index == 0 && this.router.url == '/docente/inicio') {
+      if (event.action == 'scrollTop' && event.index == 0 && this.router.url == '/dashboard-docente/inicio') {
         this.content?.scrollToTop(500);
         this.ramosContent && this.ramosContent.nativeElement.scrollTo({ left: 0, behavior: 'smooth' });
       }
@@ -95,7 +97,7 @@ export class InicioPage implements OnInit {
       await this.guardarPeriodo(value);
     });
 
-    this.theme = this.pt.is('ios') ? 'ios' : 'material';
+    this.theme = this.pt.is('ios') || this.pt.is('mobileweb') ? 'ios' : 'material';
     this.themeVariant = this.profile.isDarkMode() ? 'dark' : 'light';
   }
   async ngOnInit() {
@@ -330,6 +332,9 @@ export class InicioPage implements OnInit {
       }
     }
   }
+  async periodoSeleccionado(periCcod: any) {
+    this.periodo?.setValue(periCcod);
+  }
   async guardarPeriodo(periCcod: any) {
     const loading = await this.dialog.showLoading({ message: 'Guardando...' });
     let revertirCambios = false;
@@ -369,6 +374,7 @@ export class InicioPage implements OnInit {
         const periodo = (principal.periodos as any[]).filter(t => t.periCcod == principal.periodo)[0];
 
         this.periodo?.setValue(periodo.periCcod, { emitEvent: false });
+        this.periodosCmp?.aplicarPeriodo(periodo.periCcod);
       }
       catch { }
     }

@@ -62,7 +62,7 @@ export class SolicitudesAcademicasPage implements OnInit {
     // let auth = await this.auth.getAuth();
 
     // if (auth.perfil) {
-    //   this.esExalumno = auth.perfil == '/exalumno'
+    //   this.esExalumno = auth.perfil == '/dashboard-exalumno'
     // } else {
     //   this.esExalumno = auth.user.esExalumno;
     // }
@@ -238,7 +238,7 @@ export class SolicitudesAcademicasPage implements OnInit {
   get planCcod() { return this.carreraForm.get('planCcod'); }
   get backUrl() { return this.router.url.replace('/solicitudes-academicas', ''); }
   get backText() { return 'Volver'; }
-  get esExalumno() { return this.router.url.startsWith('/exalumno'); }
+  get esExalumno() { return this.router.url.startsWith('/dashboard-exalumno'); }
 
 }
 

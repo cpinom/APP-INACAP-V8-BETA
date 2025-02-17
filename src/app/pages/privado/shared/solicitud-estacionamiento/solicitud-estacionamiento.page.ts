@@ -251,8 +251,8 @@ export class SolicitudEstacionamientoPage implements OnInit {
   }
 
   get backUrl() { return this.router.url.replace('/solicitud-estacionamiento', ''); }
-  get esAlumno() { return this.router.url.startsWith('/alumno') }
-  get esDocente() { return this.router.url.startsWith('/docente') }
+  get esAlumno() { return this.router.url.startsWith('/dashboard-alumno') }
+  get esDocente() { return this.router.url.startsWith('/dashboard-docente') }
   get idPostulacion() { return this.solicitudForm.get('aepoNcorr'); }
   get tipoPerfil() { return this.solicitudForm.get('aepeNcorr'); }
   get tipoVehiculo() { return this.solicitudForm.get('aeveNcorr'); }

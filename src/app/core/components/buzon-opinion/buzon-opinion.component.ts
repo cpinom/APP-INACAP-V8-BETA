@@ -143,7 +143,7 @@ export class BuzonOpinionComponent implements OnInit {
     return this.rol == 'alumno' ? '1' : '2';
   }
   get backPath() {
-    return this.rol == 'alumno' ? '/alumno/dae' : '/docente/servicios';
+    return this.rol == 'alumno' ? '/dashboard-alumno/dae' : '/dashboard-docente/servicios';
   }
 
 }

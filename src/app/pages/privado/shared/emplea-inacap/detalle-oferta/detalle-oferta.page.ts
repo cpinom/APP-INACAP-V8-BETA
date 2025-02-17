@@ -51,7 +51,7 @@ export class DetalleOfertaPage implements OnInit {
   formatFecha(fechaString: string) {
     return moment(fechaString, 'YYYY-MM-DD').locale('es').format('D [de] MMMM, YYYY');
   }
-  get esAlumno() { return this.router.url.startsWith('/alumno/servicios') }
-  get esExalumno() { return this.router.url.startsWith('/exalumno/empleos') }
+  get esAlumno() { return this.router.url.startsWith('/dashboard-alumno/servicios') }
+  get esExalumno() { return this.router.url.startsWith('/dashboard-exalumno/empleos') }
 
 }

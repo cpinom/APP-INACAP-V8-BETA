@@ -522,7 +522,7 @@ export class SolicitudPracticaPage implements OnInit {
   get condicion() { return this.praticaForm.get('condicion'); }
   get backUrl() { return this.router.url.replace('/solicitud-practica', ''); }
   get backText() {
-    return this.router.url.startsWith('/alumno/inicio/ofertas-practica') ? 'Ofertas de Práctica' : 'Solicitudes';
+    return this.router.url.startsWith('/dashboard-alumno/inicio/ofertas-practica') ? 'Ofertas de Práctica' : 'Solicitudes';
   }
 
 }

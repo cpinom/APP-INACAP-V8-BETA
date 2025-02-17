@@ -376,8 +376,8 @@ export class EmpleaInacapPage implements OnInit {
   get comuna() { return this.formFiltros.get('comuna'); }
   get carrera() { return this.formFiltros.get('carrera'); }
   get tipos() { return this.formFiltros.get('tipos'); }
-  get esAlumno() { return this.router.url.startsWith('/alumno') }
-  get esExalumno() { return this.router.url.startsWith('/exalumno') }
-  get mostrarConfiguraciones() { return this.router.url.startsWith('/exalumno/empleos') }
+  get esAlumno() { return this.router.url.startsWith('/dashboard-alumno') }
+  get esExalumno() { return this.router.url.startsWith('/dashboard-exalumno') }
+  get mostrarConfiguraciones() { return this.router.url.startsWith('/dashboard-exalumno/empleos') }
 
 }

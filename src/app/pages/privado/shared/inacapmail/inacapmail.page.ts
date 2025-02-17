@@ -48,13 +48,13 @@ export class InacapmailPage implements OnInit, OnDestroy {
     });
 
     if (this.esAlumno) {
-      this.returnPath = '/alumno/inicio';
+      this.returnPath = '/dashboard-alumno/inicio';
     }
     else if (this.esDocente) {
-      this.returnPath = '/docente/inicio';
+      this.returnPath = '/dashboard-docente/inicio';
     }
     else {
-      this.returnPath = '/exalumno/inicio';
+      this.returnPath = '/dashboard-exalumno/inicio';
     }
   }
   ngOnInit() {
@@ -190,9 +190,9 @@ export class InacapmailPage implements OnInit, OnDestroy {
       }
     }
   }
-  get esAlumno() { return this.router.url.startsWith('/alumno'); }
-  get esDocente() { return this.router.url.startsWith('/docente'); }
-  get esExalumno() { return this.router.url.startsWith('/exalumno'); }
+  get esAlumno() { return this.router.url.startsWith('/dashboard-alumno'); }
+  get esDocente() { return this.router.url.startsWith('/dashboard-docente'); }
+  get esExalumno() { return this.router.url.startsWith('/dashboard-exalumno'); }
   get Vista() {
     return this.esAlumno ? VISTAS_ALUMNO.INACAPMAIL : (this.esDocente ? VISTAS_DOCENTE.INACAPMAIL : VISTAS_EXALUMNO.INACAPMAIL);
   }

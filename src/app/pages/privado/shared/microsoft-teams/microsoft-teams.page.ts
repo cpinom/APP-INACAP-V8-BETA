@@ -112,6 +112,6 @@ export class MicrosoftTeamsPage implements OnInit {
     return moment(fecha.inicio).format('DD/MM/YYYY') + ' ' + moment(fecha.inicio).format('HH:mm') + ' - ' + moment(fecha.fin).format('HH:mm');
   }
   get backUrl() { return this.router.url.replace('/microsoft-teams', ''); }
-  get Vista() { return this.router.url.startsWith('/alumno') ? VISTAS_ALUMNO.MICROSOFTTEAMS : VISTAS_DOCENTE.MICROSOFTTEAMS; }
+  get Vista() { return this.router.url.startsWith('/dashboard-alumno') ? VISTAS_ALUMNO.MICROSOFTTEAMS : VISTAS_DOCENTE.MICROSOFTTEAMS; }
 
 }

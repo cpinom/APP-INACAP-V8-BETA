@@ -283,11 +283,11 @@ export class CursoPage implements OnInit {
   }
   get backText() {
     const { url } = this.router;
-    return url.startsWith('/docente/inicio') ? 'Inicio' : 'Cursos';
+    return url.startsWith('/dashboard-docente/inicio') ? 'Inicio' : 'Cursos';
   }
   get backUrl() {
     const { url } = this.router;
-    return url.startsWith('/docente/inicio') ? '/docente/inicio' : '/docente/cursos';
+    return url.startsWith('/dashboard-docente/inicio') ? '/dashboard-docente/inicio' : '/dashboard-docente/cursos';
   }
 
 }

@@ -54,7 +54,6 @@ export class NotificacionesPage implements OnInit, OnDestroy {
     this.api.marcarVista(VISTAS_DOCENTE.NOTIFICACIONES);
   }
   async cargar() {
-    debugger
     try {
       const info = await Device.getId();
       const npreTuuid = info.uuid || 'web';

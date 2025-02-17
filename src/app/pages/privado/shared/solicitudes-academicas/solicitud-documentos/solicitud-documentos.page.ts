@@ -810,12 +810,12 @@ export class SolicitudDocumentosPage implements OnInit {
     return isValid;
   }
   get backUrl() {
-    return this.router.url.startsWith('/alumno/inicio/solicitud-justificacion-inasistencia')
+    return this.router.url.startsWith('/dashboard-alumno/inicio/solicitud-justificacion-inasistencia')
       ? this.router.url.replace('/solicitud-justificacion-inasistencia', '')
       : this.router.url.replace('/solicitud-documentos', '');
   }
   get backText() {
-    return this.router.url.startsWith('/alumno/inicio/solicitud-justificacion-inasistencia')
+    return this.router.url.startsWith('/dashboard-alumno/inicio/solicitud-justificacion-inasistencia')
       ? 'Inicio'
       : 'Solicitudes';
   }

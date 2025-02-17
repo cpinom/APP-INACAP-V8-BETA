@@ -32,13 +32,13 @@ export class PrivadoPage implements OnInit {
     
     await this.authService.setProfile(rol);
 
-    if (rol === '/alumno') {
+    if (rol === '/dashboard-alumno') {
       await this.nav.navigateForward('dashboard-alumno');
     }
-    else if (rol === '/docente') {
+    else if (rol === '/dashboard-docente') {
       await this.nav.navigateForward('dashboard-docente');
     }
-    else if (rol === '/exalumno') {
+    else if (rol === '/dashboard-exalumno') {
       await this.nav.navigateForward('dashboard-exalumno');
     }
   }

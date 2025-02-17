@@ -131,6 +131,9 @@ export class CursosPage implements OnInit {
       this.cargar(true);
     }, 500);
   }
+  async periodoSeleccionado(periCcod: any) {
+    this.periodo?.setValue(periCcod);
+  }
   async guardarPeriodo(periCcod: any) {
     let loading = await this.dialog.showLoading({ message: 'Guardando...' });
     let revertirCambios = false;

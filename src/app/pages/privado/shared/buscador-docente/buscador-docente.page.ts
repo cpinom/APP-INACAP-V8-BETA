@@ -255,6 +255,6 @@ export class BuscadorDocentePage implements OnInit {
   get sala() { return this.formSala.get('salaCcod'); }
   get salaText() { return this.formSala.get('salaTdesc'); }
   get backUrl() { return this.router.url.replace('/buscador-docente', ''); }
-  get esDocente() { return this.router.url.startsWith('/docente'); }
+  get esDocente() { return this.router.url.startsWith('/dashboard-docente'); }
 
 }

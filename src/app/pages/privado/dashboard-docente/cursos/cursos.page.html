@@ -14,7 +14,7 @@
     </ion-buttons>
     <!-- <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar> -->
   </ion-toolbar>
-  <ion-toolbar class="periodos" *ngIf="principal && principal.periodos.length > 1">
+  <!-- <ion-toolbar class="periodos" *ngIf="principal && principal.periodos.length > 1">
     <form [formGroup]="periodoForm">
       <ion-item>
         <ion-select label="Período" formControlName="periodo" okText="Actualizar" cancelText="Cerrar">
@@ -24,7 +24,11 @@
         </ion-select>
       </ion-item>
     </form>
-  </ion-toolbar>
+  </ion-toolbar> -->
+  @if (principal && principal.periodos.length > 1) {
+  <app-periodos [periodos]="principal.periodos" [selected]="periodo?.value"
+    (onPeriodoSelected)="periodoSeleccionado($event)"></app-periodos>
+  }
 </ion-header>
 
 <ion-content>

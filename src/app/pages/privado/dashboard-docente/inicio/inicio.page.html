@@ -2,7 +2,8 @@
   <ion-toolbar>
     <ion-title routerLink="/publico/inicio" aria-label="Ir al inicio">APP INACAP</ion-title>
     <ion-buttons slot="start">
-      <ion-button routerLink="configuraciones" role="button" aria-label="Ir a configuraciones">
+      <ion-button routerLink="configuraciones" routerDirection="forward" role="button"
+        aria-label="Ir a configuraciones">
         <ion-icon src="assets/icon/settings.svg"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -13,18 +14,10 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-  <app-periodos></app-periodos>
-  <ion-toolbar class="periodos" *ngIf="principal && principal.periodos.length > 1">
-    <form [formGroup]="periodoForm">
-      <ion-item>
-        <ion-select label="Periodo" formControlName="periodo" okText="Actualizar" cancelText="Cerrar">
-          <ion-select-option *ngFor="let item of principal.periodos" [value]="item.periCcod">
-            {{item.periTdesc}}
-          </ion-select-option>
-        </ion-select>
-      </ion-item>
-    </form>
-  </ion-toolbar>
+  @if (principal && principal.periodos.length > 1) {
+  <app-periodos [periodos]="principal.periodos" [selected]="periodo?.value"
+    (onPeriodoSelected)="periodoSeleccionado($event)"></app-periodos>
+  }
 </ion-header>
 
 <ion-content>
@@ -100,8 +93,9 @@
   <ng-container *ngIf="!mostrarError">
 
     <!-- Ramos -->
-    <section #ramos class="ramos" *ngIf="mostrarData && cursos && cursos.length">
-      <ion-card class="docente" color="white" *ngFor="let item of cursos" (click)="seccionTap(item)">
+    <section #ramos class="ramos no-margin-top" *ngIf="mostrarData && cursos && cursos.length">
+      @for (item of cursos; track $index) {
+      <ion-card class="docente color_{{$index+1}}" (click)="seccionTap(item)">
         <ion-card-header>
           <ion-card-title>{{item.asigTdesc}}</ion-card-title>
           <ion-card-subtitle>Sección {{item.seccCompleta}}</ion-card-subtitle>
@@ -131,6 +125,7 @@
           </ion-list>
         </ion-card-content>
       </ion-card>
+      }
     </section>
 
     <section *ngIf="mostrarData && cursos && cursos.length == 0" class="empty-state">

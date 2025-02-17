@@ -167,9 +167,9 @@ export class MensajeService {
       })
     })
   }
-  get esAlumno() { return this.router.url.startsWith('/alumno'); }
-  get esDocente() { return this.router.url.startsWith('/docente'); }
-  get esExalumno() { return this.router.url.startsWith('/exalumno'); }
+  get esAlumno() { return this.router.url.startsWith('/dashboard-alumno'); }
+  get esDocente() { return this.router.url.startsWith('/dashboard-docente'); }
+  get esExalumno() { return this.router.url.startsWith('/dashboard-exalumno'); }
 
 }
 

@@ -1,14 +1,14 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { FileOpener } from '@capacitor-community/file-opener';
 import { Directory, Filesystem } from '@capacitor/filesystem';
 import { ActionSheetController, LoadingController, Platform } from '@ionic/angular';
+import { AppGlobal } from 'src/app/app.global';
 import { DialogService } from 'src/app/core/services/dialog.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
+import { OneDriveService } from 'src/app/core/services/http/onedrive.service';
 import { MediaService } from 'src/app/core/services/media.service';
-import { OneDriveService } from 'src/app/core/services/onedrive.service';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
-import { Global } from './../../../../../app.global';
 import { UtilsService } from 'src/app/core/services/utils.service';
 
 @Component({
@@ -24,20 +24,22 @@ export class FolderContentPage implements OnInit {
   data: any;
   items: any;
 
-  constructor(private router: Router,
-    private pt: Platform,
-    private media: MediaService,
-    private snackbar: SnackbarService,
-    private api: OneDriveService,
-    private error: ErrorHandlerService,
-    private action: ActionSheetController,
-    private loading: LoadingController,
-    private dialog: DialogService,
-    private global: Global,
-    private utils: UtilsService) { }
+  private router = inject(Router);
+  private pt = inject(Platform);
+  private media = inject(MediaService);
+  private snackbar = inject(SnackbarService);
+  private api = inject(OneDriveService);
+  private error = inject(ErrorHandlerService);
+  private action = inject(ActionSheetController);
+  private loading = inject(LoadingController);
+  private dialog = inject(DialogService);
+  private global = inject(AppGlobal);
+  private utils = inject(UtilsService);
+
+  constructor() { }
 
   async ngOnInit() {
-    this.data = this.router.getCurrentNavigation().extras.state;
+    this.data = this.router.getCurrentNavigation()?.extras.state;
 
     if (!this.data) {
       await this.router.navigate([this.backUrl], { replaceUrl: true });
@@ -59,7 +61,7 @@ export class FolderContentPage implements OnInit {
       }
     }
     catch (error: any) {
-      if (error.status == 401) {
+      if (error && error.status == 401) {
         this.error.handle(error);
       }
     }
@@ -191,7 +193,7 @@ export class FolderContentPage implements OnInit {
 
       }
     }
-    catch (error) {
+    catch (error: any) {
       return Promise.reject(error);
     }
     finally {
@@ -237,8 +239,8 @@ export class FolderContentPage implements OnInit {
         throw Error();
       }
     }
-    catch (error) {
-      if (error.status == 401) {
+    catch (error: any) {
+      if (error && error.status == 401) {
         this.error.handle(error);
         return;
       }
@@ -264,8 +266,8 @@ export class FolderContentPage implements OnInit {
         throw Error();
       }
     }
-    catch (error) {
-      if (error.status == 401) {
+    catch (error: any) {
+      if (error && error.status == 401) {
         this.error.handle(error);
         return;
       }

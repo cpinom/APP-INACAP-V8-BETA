@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActionSheetController, ModalController } from '@ionic/angular';
 import { DialogService } from 'src/app/core/services/dialog.service';
-import { DocenteService } from 'src/app/core/services/docente/docente.service';
+import { DocenteService } from 'src/app/core/services/http/docente.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
 

@@ -1,17 +1,18 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonContent, IonInfiniteScroll, IonModal, NavController } from '@ionic/angular';
 import * as moment from 'moment';
 import { Subject, Subscription, debounceTime } from 'rxjs';
-import { VISTAS_ALUMNO, VISTAS_EXALUMNO } from 'src/app/app.constants';
-import { AlumnoService } from 'src/app/core/services/alumno/alumno.service';
+import { AlumnoService } from 'src/app/core/services/http/alumno.service';
 import { DialogService } from 'src/app/core/services/dialog.service';
-import { EmpleaInacapService } from 'src/app/core/services/emplea-inacap.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { EventsService } from 'src/app/core/services/events.service';
-import { ExalumnoService } from 'src/app/core/services/exalumno/exalumno.service';
 import { ProfileService } from 'src/app/core/services/profile.service';
+import { EmpleaInacapService } from 'src/app/core/services/http/emplea-inacap.service';
+import { ExalumnoService } from 'src/app/core/services/http/exalumno.service';
+import { VISTAS_ALUMNO } from 'src/app/core/constants/alumno';
+import { VISTAS_EXALUMNO } from 'src/app/core/constants/exalumno';
 
 @Component({
   selector: 'app-emplea-inacap',
@@ -20,29 +21,31 @@ import { ProfileService } from 'src/app/core/services/profile.service';
 })
 export class EmpleaInacapPage implements OnInit {
 
-  @ViewChild(IonContent) content: IonContent;
-  @ViewChild(IonInfiniteScroll) infiniteItem: IonInfiniteScroll;
+  @ViewChild(IonContent) content!: IonContent;
+  @ViewChild(IonInfiniteScroll) infiniteItem!: IonInfiniteScroll;
   programa: any;
-  empleos: any[];
+  empleos: any[] | undefined;
   filtros: any;
-  mostrarData: boolean;
+  mostrarData = false;
   subscription: Subscription;
   formFiltros: FormGroup;
   filtro = '';
   filtroSubscription: Subscription;
   filtroChanged: Subject<string> = new Subject<string>();
-  filtrosMarcados = [];
+  filtrosMarcados: { id: any; name: string; key: string }[] = [];
 
-  constructor(private api: EmpleaInacapService,
-    private exalumno: ExalumnoService,
-    private alumno: AlumnoService,
-    public nav: NavController,
-    private router: Router,
-    private events: EventsService,
-    private fb: FormBuilder,
-    private dialog: DialogService,
-    private error: ErrorHandlerService,
-    private profile: ProfileService) {
+  private api = inject(EmpleaInacapService);
+  private exalumno = inject(ExalumnoService);
+  private alumno = inject(AlumnoService);
+  private nav = inject(NavController);
+  private router = inject(Router);
+  private events = inject(EventsService);
+  private fb = inject(FormBuilder);
+  private dialog = inject(DialogService);
+  private error = inject(ErrorHandlerService);
+  private profile = inject(ProfileService);
+
+  constructor() {
 
     this.subscription = this.events.app.subscribe((event: any) => {
       if (event.action == 'scrollTop' && event.index == 1) {
@@ -54,7 +57,7 @@ export class EmpleaInacapPage implements OnInit {
       .pipe(debounceTime(750))
       .subscribe(() => {
         this.mostrarData = false;
-        this.empleos = null;
+        this.empleos = undefined;
         this.filtros.page = 1;
         this.filtrar()
       });
@@ -66,7 +69,7 @@ export class EmpleaInacapPage implements OnInit {
       tipos: []
     });
 
-    this.region.valueChanges.subscribe((regionId: any) => {
+    this.region?.valueChanges.subscribe((regionId: any) => {
       if (regionId) {
         this.cargarComunas(regionId);
       }
@@ -77,10 +80,10 @@ export class EmpleaInacapPage implements OnInit {
     await this.cargarFiltros();
 
     if (this.filtros) {
-      this.region.setValue(this.filtros.usuario.region, { emitEvent: false });
-      this.comuna.setValue(this.filtros.usuario.comuna);
-      this.carrera.setValue(this.filtros.usuario.carrera);
-      this.tipos.setValue(this.filtros.usuario.tipos);
+      this.region?.setValue(this.filtros.usuario.region, { emitEvent: false });
+      this.comuna?.setValue(this.filtros.usuario.comuna);
+      this.carrera?.setValue(this.filtros.usuario.carrera);
+      this.tipos?.setValue(this.filtros.usuario.tipos);
       await this.filtrar();
     }
 
@@ -147,29 +150,29 @@ export class EmpleaInacapPage implements OnInit {
   }
   async commitFiltros() {
     this.filtrosMarcados = [];
-    this.filtros.usuario.region = this.region.value;
-    this.filtros.usuario.comuna = this.comuna.value;
-    this.filtros.usuario.carrera = this.carrera.value;
-    this.filtros.usuario.tipos = this.tipos.value;
+    this.filtros.usuario.region = this.region?.value;
+    this.filtros.usuario.comuna = this.comuna?.value;
+    this.filtros.usuario.carrera = this.carrera?.value;
+    this.filtros.usuario.tipos = this.tipos?.value;
     await this.api.setStorage('filtros', this.filtros);
 
     if (this.filtros.usuario.region != -1) {
-      const region = this.filtros.regiones.find(t => t.id == this.filtros.usuario.region);
+      const region = this.filtros.regiones.find((t: any) => t.id == this.filtros.usuario.region);
       this.filtrosMarcados.push({ id: region.id, name: `Región - <b>${region.name}</b>`, key: 'region' });
     }
 
     if (this.filtros.usuario.comuna != -1) {
-      const comuna = this.filtros.usuario.comunas.find(t => t.id == this.filtros.usuario.comuna);
+      const comuna = this.filtros.usuario.comunas.find((t: any) => t.id == this.filtros.usuario.comuna);
       this.filtrosMarcados.push({ id: comuna.id, name: `Comuna - <b>${comuna.name}</b>`, key: 'comuna' });
     }
 
     if (this.filtros.usuario.carrera != -1) {
-      const carrera = this.filtros.carreras.find(t => t.id == this.filtros.usuario.carrera);
+      const carrera = this.filtros.carreras.find((t: any) => t.id == this.filtros.usuario.carrera);
       this.filtrosMarcados.push({ id: carrera.id, name: `Carrera - <b>${carrera.name}</b>`, key: 'carrera' });
     }
 
     if (this.filtros.usuario.tipos != -1) {
-      const tipos = this.filtros.tipos.find(t => t.id == this.filtros.usuario.tipos);
+      const tipos = this.filtros.tipos.find((t: any) => t.id == this.filtros.usuario.tipos);
       this.filtrosMarcados.push({ id: tipos.id, name: `Fecha publicación - <b>${tipos.name}</b>`, key: 'tipos' });
     }
 
@@ -181,12 +184,12 @@ export class EmpleaInacapPage implements OnInit {
       let result = await this.api.getComunas(region);
 
       if (result.success) {
-        this.comuna.setValue(-1);
+        this.comuna?.setValue(-1);
         this.filtros.usuario.comunas = result.data.comunas;
       }
     }
     catch {
-      this.comuna.setValue(-1);
+      this.comuna?.setValue(-1);
       this.filtros.usuario.comunas = [];
     }
     finally {
@@ -213,10 +216,10 @@ export class EmpleaInacapPage implements OnInit {
       }
     }
 
-    this.region.setValue(usuario.region, { emitEvent: false });
-    this.comuna.setValue(usuario.comuna);
-    this.carrera.setValue(usuario.carrera);
-    this.tipos.setValue(usuario.tipos);
+    this.region?.setValue(usuario.region, { emitEvent: false });
+    this.comuna?.setValue(usuario.comuna);
+    this.carrera?.setValue(usuario.carrera);
+    this.tipos?.setValue(usuario.tipos);
 
     await mdl.present();
   }
@@ -224,7 +227,7 @@ export class EmpleaInacapPage implements OnInit {
     await this.cargarFiltros();
 
     this.mostrarData = false;
-    this.empleos = null;
+    this.empleos = undefined;
     this.filtros.page = 1;
 
     await this.filtrar();
@@ -236,13 +239,13 @@ export class EmpleaInacapPage implements OnInit {
     });
   }
   async filtrarSubmit(mdl?: IonModal) {
-    this.filtros.usuario.region = this.region.value;
-    this.filtros.usuario.comuna = this.comuna.value;
-    this.filtros.usuario.carrera = this.carrera.value;
-    this.filtros.usuario.tipos = this.tipos.value;
+    this.filtros.usuario.region = this.region?.value;
+    this.filtros.usuario.comuna = this.comuna?.value;
+    this.filtros.usuario.carrera = this.carrera?.value;
+    this.filtros.usuario.tipos = this.tipos?.value;
     this.api.setStorage('filtros', this.filtros);
     this.mostrarData = false;
-    this.empleos = null;
+    this.empleos = undefined;
     this.filtros.page = 1;
     mdl && (await mdl.dismiss());
     await this.filtrar();
@@ -275,7 +278,7 @@ export class EmpleaInacapPage implements OnInit {
         throw Error();
       }
     }
-    catch (error) {
+    catch (error: any) {
       if (error && error.status == 401) {
         this.error.handle(error);
         return;
@@ -286,18 +289,18 @@ export class EmpleaInacapPage implements OnInit {
     }
   }
   limpiarFiltros() {
-    this.region.setValue(-1, { emitEvent: false });
-    this.comuna.setValue(-1);
-    this.carrera.setValue(-1);
-    this.tipos.setValue(-1);
+    this.region?.setValue(-1, { emitEvent: false });
+    this.comuna?.setValue(-1);
+    this.carrera?.setValue(-1);
+    this.tipos?.setValue(-1);
     this.filtros.usuario.comunas = [];
   }
   resetFiltros() {
     if (this.filtros) {
-      this.region.setValue(this.filtros.region, { emitEvent: false })
-      this.comuna.setValue(-1);
-      this.carrera.setValue(this.filtros.carrera);
-      this.tipos.setValue(0);
+      this.region?.setValue(this.filtros.region, { emitEvent: false })
+      this.comuna?.setValue(-1);
+      this.carrera?.setValue(this.filtros.carrera);
+      this.tipos?.setValue(0);
       this.filtros.usuario.comunas = this.filtros.comunas;
     }
   }
@@ -307,19 +310,19 @@ export class EmpleaInacapPage implements OnInit {
 
     switch (filtro.key) {
       case 'region':
-        this.region.setValue(-1, { emitEvent: false });
-        this.comuna.setValue(-1);
+        this.region?.setValue(-1, { emitEvent: false });
+        this.comuna?.setValue(-1);
         this.filtros.usuario.comunas = [];
         break;
       case 'comuna':
-        this.comuna.setValue(-1);
+        this.comuna?.setValue(-1);
         this.filtros.usuario.comunas = [];
         break;
       case 'carrera':
-        this.carrera.setValue(-1);
+        this.carrera?.setValue(-1);
         break;
       case 'tipos':
-        this.tipos.setValue(-1);
+        this.tipos?.setValue(-1);
         break;
     }
 
@@ -338,7 +341,7 @@ export class EmpleaInacapPage implements OnInit {
   detalleEmpleo(params: any) {
     this.nav.navigateForward(`${this.router.url}/detalle-oferta`, { state: params });
   }
-  formatFecha(data) {
+  formatFecha(data: string) {
     let fecha = moment(data, 'YYYY-MM-DD');
     let valid = fecha.isValid();
 
@@ -346,7 +349,7 @@ export class EmpleaInacapPage implements OnInit {
     else return data;
   }
   resolverCarreras(carreras: any[]) {
-    let carrerasList = [];
+    let carrerasList: any[] = [];
 
     try {
       carreras.forEach(carrera => {

@@ -51,8 +51,8 @@
                 <!-- <ion-label position="stacked" style="white-space: normal">Motivo</ion-label> -->
                 <ion-textarea label="Motivo" labelPlacement="stacked" rows="4" formControlName="motivo" placeholder="Ingrese motivo"></ion-textarea>
               </ion-item>
-              <div class="invalid" *ngIf="submitted && motivo.hasError('required')">Campo obligatorio.</div>
-              <div class="invalid" *ngIf="submitted && motivo.hasError('maxlength')">El motivo no debe superar los 1000 caracteres.</div>
+              <div class="invalid" *ngIf="submitted && motivo?.hasError('required')">Campo obligatorio.</div>
+              <div class="invalid" *ngIf="submitted && motivo?.hasError('maxlength')">El motivo no debe superar los 1000 caracteres.</div>
             </ion-list>
           </div>
         </section>        
@@ -70,9 +70,9 @@
           <ion-list>
             <ion-item detail="true" (click)="mostrarCausales(causalesModal)">
               <ion-label position="fixed">Causales</ion-label>
-              <ion-label class="ion-text-right">{{causalInterrupcion.value ? causalInterrupcion.value.tcieTdesc : 'Seleccione...'}}</ion-label>
+              <ion-label class="ion-text-right">{{causalInterrupcion?.value ? causalInterrupcion?.value.tcieTdesc : 'Seleccione...'}}</ion-label>
             </ion-item>
-            <div class="invalid" *ngIf="submitted && causalInterrupcion.hasError('required')">Campo obligatorio.</div>
+            <div class="invalid" *ngIf="submitted && causalInterrupcion?.hasError('required')">Campo obligatorio.</div>
           </ion-list>
         </div>
       </section>      
@@ -121,29 +121,29 @@
               
               <ion-item detail="true" (click)="mostrarVias(viasModal)">
                 <ion-label style="max-width: 30%">Convalidación</ion-label>
-                <ion-label class="ion-text-right">{{viaConvalidacion.value ? viaConvalidacion.value.viasTdesc : 'Seleccione...'}}</ion-label>
+                <ion-label class="ion-text-right">{{viaConvalidacion?.value ? viaConvalidacion?.value.viasTdesc : 'Seleccione...'}}</ion-label>
               </ion-item>
-              <div class="invalid" *ngIf="submitted && viaConvalidacion.hasError('required')">Campo obligatorio.</div>
+              <div class="invalid" *ngIf="submitted && viaConvalidacion?.hasError('required')">Campo obligatorio.</div>
               
-              <ng-container *ngIf="viaConvalidacion.value && viaConvalidacion.value.tieneOrganizacion == 'SI'">
+              <ng-container *ngIf="viaConvalidacion?.value && viaConvalidacion?.value.tieneOrganizacion == 'SI'">
                 
                 <ion-item>
                   <!-- <ion-label position="stacked">Institución donde lo obtuvo</ion-label> -->
                   <ion-select label="Institución donde lo obtuvo" labelPlacement="stacked" style="max-width: 100%" placeholder="Seleccione..." formControlName="organismoAutorizado" okText="Aceptar" cancelText="Cancelar">
-                    <ion-select-option [value]="item.orgaCcod" *ngFor="let item of viaConvalidacion.value.organizasmosAutorizados">
+                    <ion-select-option [value]="item.orgaCcod" *ngFor="let item of viaConvalidacion?.value.organizasmosAutorizados">
                       {{item.orgaTdesc}}
                     </ion-select-option>
                   </ion-select>
                 </ion-item>
-                <div class="invalid" *ngIf="submitted && organismoAutorizado.hasError('required')">Campo obligatorio.</div>
+                <div class="invalid" *ngIf="submitted && organismoAutorizado?.hasError('required')">Campo obligatorio.</div>
                 
-                <ion-item *ngIf="organismoAutorizado.value == 0">
+                <ion-item *ngIf="organismoAutorizado?.value == 0">
                   <!-- <ion-label position="stacked">Indique Institución</ion-label> -->
                   <ion-input label="Indique Institución" labelPlacement="stacked" placeholder="Ingrese..." formControlName="otroOrganismo" clearInput></ion-input>
                 </ion-item>
-                <div class="invalid" *ngIf="submitted && otroOrganismo.hasError('required')">Campo obligatorio.</div>
-                <div class="invalid" *ngIf="submitted && otroOrganismo.hasError('pattern')">No se permiten caracteres especiales.</div>
-                <div class="invalid" *ngIf="submitted && otroOrganismo.hasError('maxlength')">El nombre no debe exceder los 100 caracteres.</div>
+                <div class="invalid" *ngIf="submitted && otroOrganismo?.hasError('required')">Campo obligatorio.</div>
+                <div class="invalid" *ngIf="submitted && otroOrganismo?.hasError('pattern')">No se permiten caracteres especiales.</div>
+                <div class="invalid" *ngIf="submitted && otroOrganismo?.hasError('maxlength')">El nombre no debe exceder los 100 caracteres.</div>
 
               </ng-container>            
             </ion-list>
@@ -198,7 +198,7 @@
                   </ion-select-option>
                 </ion-select>
               </ion-item>
-              <div class="invalid" *ngIf="submitted && tipoTrabajador.hasError('required')">Campo obligatorio.</div>
+              <div class="invalid" *ngIf="submitted && tipoTrabajador?.hasError('required')">Campo obligatorio.</div>
             </ion-list>
           </form>
         </div>
@@ -219,8 +219,8 @@
                   </ng-template>
                 </ion-popover>
               </ion-item>
-              <div class="invalid" *ngIf="submitted && nacimiento.hasError('required')">Campo obligatorio.</div>
-              <div class="invalid" *ngIf="submitted && nacimiento.hasError('pattern')">Formato incorrecto Ej: DD/MM/AAAA.</div>
+              <div class="invalid" *ngIf="submitted && nacimiento?.hasError('required')">Campo obligatorio.</div>
+              <div class="invalid" *ngIf="submitted && nacimiento?.hasError('pattern')">Formato incorrecto Ej: DD/MM/AAAA.</div>
             </ion-list>
           </form>
         </div>
@@ -247,7 +247,7 @@
               <!-- <ion-label position="stacked" style="white-space: normal">Motivo</ion-label> -->
               <ion-textarea label="Motivo" labelPlacement="stacked" rows="6" formControlName="motivo" placeholder="Ingrese un motivo"></ion-textarea>
             </ion-item>
-            <div class="invalid" *ngIf="submitted && motivo.invalid">Campo obligatorio.</div>
+            <div class="invalid" *ngIf="submitted && motivo?.invalid">Campo obligatorio.</div>
           </form>
         </div>
       </section>
@@ -275,7 +275,7 @@
                 </ion-select-option>
               </ion-select>
             </ion-item>
-            <div class="invalid" *ngIf="submitted && colegio.hasError('required')">Campo obligatorio.</div>
+            <div class="invalid" *ngIf="submitted && colegio?.hasError('required')">Campo obligatorio.</div>
           </form>
         </div>
       </section>
@@ -347,7 +347,7 @@
         </ion-card>
       </ion-header>
       <ion-content>
-        <section class="first">
+        <section>
           <div class="section-content">
             <div class="detalle-solicitud" style="padding-inline: 20px">
               <div class="image">

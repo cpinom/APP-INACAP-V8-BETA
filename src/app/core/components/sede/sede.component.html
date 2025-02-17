@@ -1,0 +1,240 @@
+<ng-container *ngIf="sede">
+
+  <ion-card color="white" class="primary-card">
+    <ion-card-header>
+      <ion-card-title *ngIf="sedes.length == 1">INACAP {{sede.sedeTdesc}}</ion-card-title>
+      <div *ngIf="sedes.length > 1" class="select-container">
+        <ion-select interface="action-sheet" [(ngModel)]="_sedeCcod" (ionChange)="cargarSede()">
+          <ion-select-option *ngFor="let item of sedes" [value]="item.sedeCcod">INACAP {{item.sedeTdesc | titleCase}}</ion-select-option>
+        </ion-select>
+      </div>
+    </ion-card-header>
+    <ion-card-content class="botones-sede">
+      <ion-button fill="outline" color="info" shape="round" (click)="mostrarRuta()">
+        <ion-icon src="assets/icon/directions.svg"></ion-icon> Ver Mapa
+      </ion-button>
+      <ion-button fill="outline" color="info" shape="round" class="round" *ngIf="sede.sedeTfono"
+        href="tel:{{sede.sedeTfono}}" role="button" aria-label="Llamar a la sede">
+        <ion-icon slot="icon-only" src="assets/icon/phone.svg"></ion-icon>
+      </ion-button>
+      <ion-button fill="outline" color="info" shape="round" class="round" *ngIf="sede.sedeTemail"
+        (click)="nuevoCorreo(sede.sedeTemail)" role="button" aria-label="Enviar un correo a la sede">
+        <ion-icon slot="icon-only" src="assets/icon/mail.svg"></ion-icon>
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card class="secondary-card eventos" color="white">
+    <ion-card-header>
+      <ion-card-title>Próximos Eventos</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list class="ion-no-margin">
+        <ion-item *ngIf="eventos.length === 0">
+          <ion-label color="medium">No hay eventos próximos</ion-label>
+        </ion-item>
+        <ion-item *ngFor="let item of eventos" detail="true" role="button" (click)="abrirNavegador(item.url)">
+          <div slot="start" [innerHTML]="resolverFechaEvento(item.fecha)"></div>
+          <ion-label class="ion-no-padding">
+            <h2>{{item.titulo}}</h2>
+            <!-- <p>{{item.fecha}}</p> -->
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <section *ngIf="mostrarServicios">
+    <div class="section-header">Servicios de la Sede</div>
+    <div class="section-content">
+      <ion-list class="sedeDetalle">
+        <ion-item detail="true" class="ion-activatable" (click)="mostrarBiblioteca()" *ngIf="bibliotecaData">
+          <ion-icon slot="start" src="assets/icon/local_library.svg" color="medium"></ion-icon>
+          <ion-label>
+            <h2>Biblioteca</h2>
+          </ion-label>
+        </ion-item>
+        <ng-container *ngIf="cafeterias && cafeterias.length">
+          <ion-item class="ion-activatable" *ngFor="let item of cafeterias" (click)="mostrarCafeteria(item)" detail="true">
+            <ion-icon slot="start" src="assets/icon/restaurant.svg" color="medium"></ion-icon>
+            <ion-label>
+              <h2>{{item.apcaTtitulo}}</h2>
+            </ion-label>
+          </ion-item>
+        </ng-container>
+        <ion-item detail="true" class="ion-activatable" (click)="reservasTap()" *ngIf="mostrarReservas">
+          <ion-icon slot="start" src="assets/icon/account_balance.svg" color="medium"></ion-icon>
+          <ion-label>
+            <h2>Reserva de Espacios</h2>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-header">Información de la Sede</div>
+    <div class="section-content">
+      <ion-list class="sedeDetalle">
+        <ion-item class="ion-activatable" detail="false" (click)="mostrarRuta()">
+          <ion-icon slot="start" src="assets/icon/room.svg" color="medium"></ion-icon>
+          <ion-label>{{sede.sedeTdireccion}} {{sede.ciudTcomuna ? ',' + sede.ciudTcomuna : ''}}</ion-label>
+        </ion-item>
+        <ion-item class="ion-activatable" href="tel:{{sede.sedeTfono}}" detail="false" role="button" *ngIf="sede.sedeTfono">
+          <ion-icon slot="start" src="assets/icon/phone.svg" color="medium"></ion-icon>
+          <ion-label>{{sede.sedeTfono}}</ion-label>
+        </ion-item>
+        <ion-item class="ion-activatable" (click)="nuevoCorreo(sede.sedeTemail)" detail="false" role="button"
+          *ngIf="sede.sedeTemail">
+          <ion-icon slot="start" src="assets/icon/email.svg" color="medium"></ion-icon>
+          <ion-label>{{sede.sedeTemail}}</ion-label>
+        </ion-item>
+        <ion-item class="ion-activatable" (click)="abrirNavegador(sede.sedeTlinkportal)" detail="false" role="button">
+          <ion-icon slot="start" src="assets/icon/laptop.svg" color="medium"></ion-icon>
+          <ion-label>Portal Web</ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+
+</ng-container>
+
+<ion-modal #cafeteria [presentingElement]="routerOutlet" [canDismiss]="true" (didDismiss)="onModalDismiss($event)">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Cafetería</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="cafeteria.dismiss()">
+            <ion-icon name="close"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ng-container *ngIf="cafeteriaData">
+        <ion-card color="white" class="primary-card">
+          <ion-card-header>
+            <ion-card-title>{{cafeteriaData.apcaTtitulo}}</ion-card-title>
+            <ion-card-subtitle *ngIf="cafeteriaData.apcaTnota">{{cafeteriaData.apcaTnota}}</ion-card-subtitle>
+          </ion-card-header>
+        </ion-card>
+        <section>
+          <div class="section-content">
+            <ion-list>
+              <ion-item class="ubicacion" lines="none">
+                <ion-label>
+                  <p class="label">Ubicación</p>
+                  <h2>{{cafeteriaData.apcaTubicacion}}</h2>
+                </ion-label>
+              </ion-item>
+
+              <div class="horario-container" *ngIf="cafeteriaData.horario.length">
+                <div class="horario" style="margin-right: 15px;">
+                  <h3 class="label">Horario de Atención</h3>
+                  <div scrollX="true" class="fixed">
+                    <ul>
+                      <ng-container *ngFor="let item of cafeteriaData.horario">
+                        <li>
+                          <div class="scroll-item">
+                            <div class="title">{{item.diasTdesc}}</div>
+                            <div class="content">
+                              <p class="start-time">{{item.achoThorario}}</p>
+                              <p class="classroom" *ngIf="item.achoTencargado">{{item.achoTencargado}}</p>
+                            </div>
+                          </div>
+                        </li>
+                      </ng-container>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </ion-list>
+          </div>
+        </section>
+        <section *ngIf="cafeteriaData.documento == 1">
+          <div class="section-header">Menú</div>
+          <div class="section-content">
+            <ion-list>
+              <ion-item class="ion-activatable has-icon" (click)="descargarMenu()" detail="true">
+                <ion-icon slot="start" src="assets/icon/picture_as_pdf.svg"></ion-icon>
+                <ion-label>Ver Menú</ion-label>
+              </ion-item>
+            </ion-list>
+          </div>
+        </section>
+      </ng-container>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+<ion-modal #biblioteca [presentingElement]="routerOutlet" [canDismiss]="true"  (didDismiss)="onModalDismiss($event)">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Biblioteca</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="biblioteca.dismiss()">
+            <ion-icon name="close"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-card color="white" class="primary-card">
+        <ion-card-header>
+          <ion-card-title>{{bibliotecaData.apbiTtitulo}}</ion-card-title>
+          <ion-card-subtitle *ngIf="sede">{{sede.sedeTdesc}}</ion-card-subtitle>
+        </ion-card-header>
+      </ion-card>
+      <section>
+        <div class="section-content">
+          <ion-list>
+            <ion-item *ngIf="bibliotecaData.apbiTubicacion">
+              <ion-label>
+                <p class="label">Ubicación</p>
+                <h2>{{bibliotecaData.apbiTubicacion}}</h2>
+                <span *ngIf="bibliotecaData.apbiTnota" style="font-size: 14px;">{{bibliotecaData.apbiTnota}}</span>
+              </ion-label>
+            </ion-item>
+            <div class="horario-container" *ngIf="bibliotecaData.horario.length">
+              <div class="horario" style="margin-right: 15px;">
+                <h3 class="label">Horario de Atención</h3>
+                <div scrollX="true" class="fixed">
+                  <ul>
+                    <ng-container *ngFor="let item of bibliotecaData.horario">
+                      <li>
+                        <div class="scroll-item">
+                          <div class="title">{{item.diasTdesc}}</div>
+                          <div class="content">
+                            <p class="start-time">{{item.abhoThorario}}</p>
+                            <p class="classroom" *ngIf="item.abhoTencargado">{{item.abhoTencargado}}</p>
+                          </div>
+                        </div>
+                      </li>
+                    </ng-container>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <ion-item *ngIf="bibliotecaData.abbiTlinkportal" (click)="abrirNavegador(bibliotecaData.abbiTlinkportal)" detail="true">
+              <ion-icon slot="start" src="assets/icon/laptop.svg"></ion-icon>
+              <ion-label>Portal Web Biblioteca</ion-label>
+            </ion-item>
+          </ion-list>
+        </div>
+      </section>
+      <!-- <section *ngIf="cafeteriaData.documento == 1">
+        <div class="section-header">Menú</div>
+        <div class="section-content">
+          <ion-list>
+            <ion-item (click)="descargarMenu()">
+              <ion-icon slot="start" src="assets/icon/picture_as_pdf.svg"></ion-icon>
+              <ion-label>Ver Menú</ion-label>
+            </ion-item>
+          </ion-list>
+        </div>
+      </section> -->
+    </ion-content>
+  </ng-template>
+</ion-modal>

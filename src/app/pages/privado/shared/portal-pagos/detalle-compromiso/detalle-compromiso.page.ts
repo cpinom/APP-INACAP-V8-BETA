@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { Component, inject, OnInit } from '@angular/core';
+import { DialogService } from 'src/app/core/services/dialog.service';
 
 @Component({
   selector: 'app-detalle-compromiso',
@@ -10,12 +10,14 @@ export class DetalleCompromisoPage implements OnInit {
 
   data: any;
 
-  constructor(private modalCtrl: ModalController) { }
+  private dialog = inject(DialogService);
+
+  constructor() { }
 
   ngOnInit() { }
 
-  cerrar() {
-    this.modalCtrl.dismiss();
+  async cerrar() {
+    await this.dialog.dismissModal();
   }
 
 }

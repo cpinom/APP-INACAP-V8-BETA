@@ -1,7 +1,7 @@
 import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
-import { PublicService } from '../../services/public.service';
+import { PublicService } from '../../services/http/public.service';
 import { EventsService } from '../../services/events.service';
 import { Directory, Filesystem } from '@capacitor/filesystem';
 import * as desconocido from 'src/scripts/foto.desconocido';
@@ -56,7 +56,7 @@ export class AvatarComponent implements OnInit {
         this.imgSrc = 'data:image/png;base64,' + result.data;
         this.isLoading = false;
       }
-      catch (error) {
+      catch (error: any) {
         this.imgSrc = await this.syncAvatar(auth.user);
       }
     }
@@ -91,7 +91,7 @@ export class AvatarComponent implements OnInit {
     try {
       imgData = 'data:image/png;base64,' + await this.publicApi.getImage(url);
     }
-    catch (error) {
+    catch (error: any) {
       imgData = desconocido.imgBase64;
     }
 

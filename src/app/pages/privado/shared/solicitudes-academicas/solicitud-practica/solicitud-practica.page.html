@@ -46,20 +46,20 @@
                 <ion-item>
                   <ion-input label="RUT Empresa" labelPlacement="stacked" type="text" placeholder="Ingrese RUT" formControlName="rut" clearInput></ion-input>
                 </ion-item>
-                <div class="invalid" *ngIf="submitted && rut.hasError('required')">Campo obligatorio.</div>
-                <div class="invalid" *ngIf="submitted && rut.hasError('rut')">Rut inválido.</div>
+                <div class="invalid" *ngIf="submitted && rut?.hasError('required')">Campo obligatorio.</div>
+                <div class="invalid" *ngIf="submitted && rut?.hasError('rut')">Rut inválido.</div>
                 <ion-item>
                   <ion-input label="Nombre Empresa" labelPlacement="stacked" type="text" placeholder="Ingrese Nombre Empresa" formControlName="nombre" clearInput></ion-input>
                 </ion-item>
-                <div class="invalid" *ngIf="submitted && nombre.hasError('required')">Campo obligatorio.</div>
-                <div class="invalid" *ngIf="submitted && nombre.hasError('maxlength')">Máximo de 100 caracteres permitidos.</div>
-                <div class="invalid" *ngIf="submitted && nombre.hasError('pattern')">Campo con caracteres no permitidos.</div>
+                <div class="invalid" *ngIf="submitted && nombre?.hasError('required')">Campo obligatorio.</div>
+                <div class="invalid" *ngIf="submitted && nombre?.hasError('maxlength')">Máximo de 100 caracteres permitidos.</div>
+                <div class="invalid" *ngIf="submitted && nombre?.hasError('pattern')">Campo con caracteres no permitidos.</div>
                 <ion-item>
                   <ion-input label="Dirección Empresa" labelPlacement="stacked" type="text" placeholder="Ingrese Dirección Empresa" formControlName="direccion" clearInput></ion-input>
                 </ion-item>
-                <div class="invalid" *ngIf="submitted && direccion.hasError('required')">Campo obligatorio.</div>
-                <div class="invalid" *ngIf="submitted && direccion.hasError('maxlength')">Máximo de 100 caracteres permitidos.</div>
-                <div class="invalid" *ngIf="submitted && direccion.hasError('pattern')">Campo con caracteres no permitidos.</div>
+                <div class="invalid" *ngIf="submitted && direccion?.hasError('required')">Campo obligatorio.</div>
+                <div class="invalid" *ngIf="submitted && direccion?.hasError('maxlength')">Máximo de 100 caracteres permitidos.</div>
+                <div class="invalid" *ngIf="submitted && direccion?.hasError('pattern')">Campo con caracteres no permitidos.</div>
                 <ion-item>
                   <ion-select label="País" labelPlacement="stacked" placeholder="Seleccione..." formControlName="pais" okText="Aceptar" cancelText="Cancelar">
                     <ion-select-option [value]="item.paisCcod" *ngFor="let item of data.paises">
@@ -67,8 +67,8 @@
                     </ion-select-option>
                   </ion-select>
                 </ion-item>
-                <div class="invalid" *ngIf="submitted && pais.invalid">Campo obligatorio.</div>
-                <ng-container *ngIf="pais.value == 1">
+                <div class="invalid" *ngIf="submitted && pais?.invalid">Campo obligatorio.</div>
+                <ng-container *ngIf="pais?.value == 1">
                   <ion-item>
                     <ion-select label="Región" labelPlacement="stacked" placeholder="Seleccione..." formControlName="region" okText="Aceptar" cancelText="Cancelar">
                       <ion-select-option [value]="item.regiCcod" *ngFor="let item of data.regiones">
@@ -76,8 +76,8 @@
                       </ion-select-option>
                     </ion-select>
                   </ion-item>
-                  <div class="invalid" *ngIf="submitted && region.invalid">Campo obligatorio.</div>
-                  <ng-container *ngIf="region.valid">
+                  <div class="invalid" *ngIf="submitted && region?.invalid">Campo obligatorio.</div>
+                  <ng-container *ngIf="region?.valid">
                     <ion-item>
                       <ion-select label="Ciudad" labelPlacement="stacked" placeholder="Seleccione..." formControlName="ciudad" okText="Aceptar" cancelText="Cancelar">
                         <ion-select-option [value]="item.codigo" *ngFor="let item of data.ciudades">
@@ -85,9 +85,9 @@
                         </ion-select-option>
                       </ion-select>
                     </ion-item>
-                    <div class="invalid" *ngIf="submitted && ciudad.invalid">Campo obligatorio.</div>
+                    <div class="invalid" *ngIf="submitted && ciudad?.invalid">Campo obligatorio.</div>
                   </ng-container>
-                  <ng-container *ngIf="ciudad.valid">
+                  <ng-container *ngIf="ciudad?.valid">
                     <ion-item>
                       <ion-select label="Comuna" labelPlacement="stacked" placeholder="Seleccione..." formControlName="comuna" okText="Aceptar" cancelText="Cancelar">
                         <ion-select-option [value]="item.codigo" *ngFor="let item of data.comunas">
@@ -95,44 +95,44 @@
                         </ion-select-option>
                       </ion-select>
                     </ion-item>
-                    <div class="invalid" *ngIf="submitted && comuna.invalid">Campo obligatorio.</div>
+                    <div class="invalid" *ngIf="submitted && comuna?.invalid">Campo obligatorio.</div>
                   </ng-container>
                 </ng-container>
-                <ng-container *ngIf="pais.value != 1">
+                <ng-container *ngIf="pais?.value != 1">
                   <ion-item>
                     <ion-input label="Ciudad/Lugar en que realizará la práctica" labelPlacement="stacked" type="text" placeholder="Ingrese Ciudad/Lugar" formControlName="ciudadExtranjera" clearInput></ion-input>
                   </ion-item>
-                  <div class="invalid" *ngIf="submitted && ciudadExtranjera.hasError('required')">Campo obligatorio.</div>
-                  <div class="invalid" *ngIf="submitted && ciudadExtranjera.hasError('maxlength')">Máximo de 100 caracteres permitidos.</div>
-                  <div class="invalid" *ngIf="submitted && ciudadExtranjera.hasError('pattern')">Campo con caracteres no permitidos.</div>
+                  <div class="invalid" *ngIf="submitted && ciudadExtranjera?.hasError('required')">Campo obligatorio.</div>
+                  <div class="invalid" *ngIf="submitted && ciudadExtranjera?.hasError('maxlength')">Máximo de 100 caracteres permitidos.</div>
+                  <div class="invalid" *ngIf="submitted && ciudadExtranjera?.hasError('pattern')">Campo con caracteres no permitidos.</div>
                 </ng-container>
                 <ion-item>
                   <ion-input label="RUT Contacto" labelPlacement="stacked" type="text" placeholder="Ingrese RUT Contacto" formControlName="rutContacto" clearInput></ion-input>
                 </ion-item>
-                <div class="invalid" *ngIf="submitted && rutContacto.hasError('required')">Campo obligatorio.</div>
-                <div class="invalid" *ngIf="submitted && rutContacto.hasError('rut')">Rut inválido.</div>
+                <div class="invalid" *ngIf="submitted && rutContacto?.hasError('required')">Campo obligatorio.</div>
+                <div class="invalid" *ngIf="submitted && rutContacto?.hasError('rut')">Rut inválido.</div>
                 <ion-item>
                   <ion-input label="Nombre Contacto" labelPlacement="stacked" type="text" placeholder="Ingrese Nombre Contacto" formControlName="nombreContacto" clearInput></ion-input>
                 </ion-item>
-                <div class="invalid" *ngIf="submitted && nombreContacto.hasError('required')">Campo obligatorio.</div>
-                <div class="invalid" *ngIf="submitted && nombreContacto.hasError('maxlength')">Máximo de 100 caracteres permitidos.</div>
-                <div class="invalid" *ngIf="submitted && nombreContacto.hasError('pattern')">Campo con caracteres no permitidos.</div>
+                <div class="invalid" *ngIf="submitted && nombreContacto?.hasError('required')">Campo obligatorio.</div>
+                <div class="invalid" *ngIf="submitted && nombreContacto?.hasError('maxlength')">Máximo de 100 caracteres permitidos.</div>
+                <div class="invalid" *ngIf="submitted && nombreContacto?.hasError('pattern')">Campo con caracteres no permitidos.</div>
                 <ion-item>
                   <ion-input label="Cargo Contacto" labelPlacement="stacked" type="text" placeholder="Ingrese Cargo Contacto" formControlName="cargoContacto" clearInput></ion-input>
                 </ion-item>
-                <div class="invalid" *ngIf="submitted && cargoContacto.hasError('required')">Campo obligatorio.</div>
-                <div class="invalid" *ngIf="submitted && cargoContacto.hasError('maxlength')">Máximo de 100 caracteres permitidos.</div>
-                <div class="invalid" *ngIf="submitted && cargoContacto.hasError('pattern')">Campo con caracteres no permitidos.</div>
+                <div class="invalid" *ngIf="submitted && cargoContacto?.hasError('required')">Campo obligatorio.</div>
+                <div class="invalid" *ngIf="submitted && cargoContacto?.hasError('maxlength')">Máximo de 100 caracteres permitidos.</div>
+                <div class="invalid" *ngIf="submitted && cargoContacto?.hasError('pattern')">Campo con caracteres no permitidos.</div>
                 <ion-item>
                   <ion-input label="Teléfono Contacto" labelPlacement="stacked" formControlName="telefonoContacto" placeholder="+569XXXXXXXX" inputmode="tel" clearInput></ion-input>
                 </ion-item>
-                <div class="invalid" *ngIf="submitted && telefonoContacto.hasError('required')">Campo obligatorio.</div>
-                <div class="invalid" *ngIf="submitted && telefonoContacto.hasError('pattern')">Teléfono inválido (Ej: +56990009000)</div>
+                <div class="invalid" *ngIf="submitted && telefonoContacto?.hasError('required')">Campo obligatorio.</div>
+                <div class="invalid" *ngIf="submitted && telefonoContacto?.hasError('pattern')">Teléfono inválido (Ej: +56990009000)</div>
                 <ion-item>
                   <ion-input label="Correo electrónico Contacto" labelPlacement="stacked" type="text" inputmode="email" placeholder="Ingrese Correo electrónico" formControlName="correoContacto" clearInput></ion-input>
                 </ion-item>
-                <div class="invalid" *ngIf="submitted && correoContacto.hasError('pattern')">Correo inválido.</div>
-                <div class="invalid" *ngIf="submitted && correoContacto.hasError('required')">Campo obligatorio.</div>
+                <div class="invalid" *ngIf="submitted && correoContacto?.hasError('pattern')">Correo inválido.</div>
+                <div class="invalid" *ngIf="submitted && correoContacto?.hasError('required')">Campo obligatorio.</div>
                 <ion-item>
                   <ion-select label="Sector Productivo" labelPlacement="stacked" interface="action-sheet" [interfaceOptions]="{ header: 'Sector Productivo' }" placeholder="Seleccione..." formControlName="sector" okText="Aceptar" cancelText="Cancelar">
                     <ion-select-option [value]="item.clacCcod" *ngFor="let item of data.sectores">
@@ -140,24 +140,24 @@
                     </ion-select-option>
                   </ion-select>
                 </ion-item>
-                <div class="invalid" *ngIf="submitted && sector.invalid">Campo obligatorio</div>
+                <div class="invalid" *ngIf="submitted && sector?.invalid">Campo obligatorio</div>
                 
-                <ng-container *ngIf="tipos.valid">
-                  <ng-container *ngIf="tipos.value == 4">
+                <ng-container *ngIf="tipos?.valid">
+                  <ng-container *ngIf="tipos?.value == 4">
                     <ion-item>
                       <ion-select label="Horas de práctica" labelPlacement="stacked" placeholder="Seleccione..." formControlName="horasPractica" okText="Aceptar" cancelText="Cancelar">
                         <ion-select-option [value]="item.horas" *ngFor="let item of data.horasPracticas">{{item.horas}}</ion-select-option>
                       </ion-select>
                     </ion-item>
-                    <div class="invalid" *ngIf="submitted && horasPractica.hasError('required')">Campo obligatorio.</div>
+                    <div class="invalid" *ngIf="submitted && horasPractica?.hasError('required')">Campo obligatorio.</div>
                   </ng-container>
-                  <ng-container *ngIf="tipos.value != 4">
+                  <ng-container *ngIf="tipos?.value != 4">
                     <ion-item>
                       <ion-input label="Horas de práctica" labelPlacement="stacked" type="text" inputmode="numeric" placeholder="Ingrese número de horas" formControlName="horasPracticaIngreso" clearInput></ion-input>
                     </ion-item>
-                    <div class="invalid" *ngIf="submitted && horasPracticaIngreso.hasError('required')">Campo obligatorio.</div>
-                    <div class="invalid" *ngIf="submitted && horasPracticaIngreso.hasError('pattern')">Debe ingresar sólo dígitos.</div>
-                    <div class="invalid" *ngIf="submitted && horasPracticaIngreso.hasError('min')">Las horas deben ser mayor a 0.</div>
+                    <div class="invalid" *ngIf="submitted && horasPracticaIngreso?.hasError('required')">Campo obligatorio.</div>
+                    <div class="invalid" *ngIf="submitted && horasPracticaIngreso?.hasError('pattern')">Debe ingresar sólo dígitos.</div>
+                    <div class="invalid" *ngIf="submitted && horasPracticaIngreso?.hasError('min')">Las horas deben ser mayor a 0.</div>
                   </ng-container>
                 </ng-container>
 
@@ -166,7 +166,7 @@
                     <ion-select-option [value]="item.comopCcod" *ngFor="let item of data.preguntas">{{item.comopTdesc}}</ion-select-option>
                   </ion-select>
                 </ion-item>
-                <div class="invalid" *ngIf="submitted && preguntas.invalid">Campo obligatorio.</div>
+                <div class="invalid" *ngIf="submitted && preguntas?.invalid">Campo obligatorio.</div>
               </ion-list>
             </div>
           </section>
@@ -188,24 +188,24 @@
                     </ion-select-option>
                   </ion-select>
                 </ion-item>
-                <div class="invalid" *ngIf="submitted && tipos.hasError('required')">Campo obligatorio.</div>
+                <div class="invalid" *ngIf="submitted && tipos?.hasError('required')">Campo obligatorio.</div>
                 <ion-item>
                   <ion-input label="RUT Empresa" labelPlacement="stacked" type="text" placeholder="Ingrese RUT" formControlName="rut" clearInput></ion-input>
                 </ion-item>
-                <div class="invalid" *ngIf="submitted && rut.hasError('required')">Campo obligatorio.</div>
-                <div class="invalid" *ngIf="submitted && rut.hasError('rut')">Rut inválido.</div>
+                <div class="invalid" *ngIf="submitted && rut?.hasError('required')">Campo obligatorio.</div>
+                <div class="invalid" *ngIf="submitted && rut?.hasError('rut')">Rut inválido.</div>
                 <ion-item>
                   <ion-input label="Nombre Empresa" labelPlacement="stacked" type="text" placeholder="Ingrese Nombre Empresa" formControlName="nombre" clearInput></ion-input>
                 </ion-item>
-                <div class="invalid" *ngIf="submitted && nombre.hasError('required')">Campo obligatorio.</div>
-                <div class="invalid" *ngIf="submitted && nombre.hasError('maxlength')">Máximo de 100 caracteres permitidos.</div>
-                <div class="invalid" *ngIf="submitted && nombre.hasError('pattern')">Campo con caracteres no permitidos.</div>
+                <div class="invalid" *ngIf="submitted && nombre?.hasError('required')">Campo obligatorio.</div>
+                <div class="invalid" *ngIf="submitted && nombre?.hasError('maxlength')">Máximo de 100 caracteres permitidos.</div>
+                <div class="invalid" *ngIf="submitted && nombre?.hasError('pattern')">Campo con caracteres no permitidos.</div>
                 <ion-item>
                   <ion-input label="Dirección Empresa" labelPlacement="stacked" type="text" placeholder="Ingrese Dirección Empresa" formControlName="direccion" clearInput></ion-input>
                 </ion-item>
-                <div class="invalid" *ngIf="submitted && direccion.hasError('required')">Campo obligatorio.</div>
-                <div class="invalid" *ngIf="submitted && direccion.hasError('maxlength')">Máximo de 100 caracteres permitidos.</div>
-                <div class="invalid" *ngIf="submitted && direccion.hasError('pattern')">Campo con caracteres no permitidos.</div>
+                <div class="invalid" *ngIf="submitted && direccion?.hasError('required')">Campo obligatorio.</div>
+                <div class="invalid" *ngIf="submitted && direccion?.hasError('maxlength')">Máximo de 100 caracteres permitidos.</div>
+                <div class="invalid" *ngIf="submitted && direccion?.hasError('pattern')">Campo con caracteres no permitidos.</div>
                 <ion-item>
                   <ion-select label="País" labelPlacement="stacked" placeholder="Seleccione..." formControlName="pais" okText="Aceptar" cancelText="Cancelar">
                     <ion-select-option [value]="item.paisCcod" *ngFor="let item of data.paises">
@@ -213,8 +213,8 @@
                     </ion-select-option>
                   </ion-select>
                 </ion-item>
-                <div class="invalid" *ngIf="submitted && pais.hasError('required')">Campo obligatorio.</div>
-                <ng-container *ngIf="pais.valid && pais.value == 1">
+                <div class="invalid" *ngIf="submitted && pais?.hasError('required')">Campo obligatorio.</div>
+                <ng-container *ngIf="pais?.valid && pais?.value == 1">
                   <ion-item>
                     <ion-select label="Región" labelPlacement="stacked" placeholder="Seleccione..." formControlName="region" okText="Aceptar" cancelText="Cancelar">
                       <ion-select-option [value]="item.regiCcod" *ngFor="let item of data.regiones">
@@ -222,8 +222,8 @@
                       </ion-select-option>
                     </ion-select>
                   </ion-item>
-                  <div class="invalid" *ngIf="submitted && region.hasError('required')">Campo obligatorio.</div>
-                  <ng-container *ngIf="region.valid">
+                  <div class="invalid" *ngIf="submitted && region?.hasError('required')">Campo obligatorio.</div>
+                  <ng-container *ngIf="region?.valid">
                     <ion-item>
                       <ion-select label="Ciudad" labelPlacement="stacked" placeholder="Seleccione..." formControlName="ciudad" okText="Aceptar" cancelText="Cancelar">
                         <ion-select-option [value]="item.codigo" *ngFor="let item of data.ciudades">
@@ -231,9 +231,9 @@
                         </ion-select-option>
                       </ion-select>
                     </ion-item>
-                    <div class="invalid" *ngIf="submitted && ciudad.hasError('required')">Campo obligatorio.</div>
+                    <div class="invalid" *ngIf="submitted && ciudad?.hasError('required')">Campo obligatorio.</div>
                   </ng-container>
-                  <ng-container *ngIf="ciudad.valid">
+                  <ng-container *ngIf="ciudad?.valid">
                     <ion-item>
                       <ion-select label="Comuna" labelPlacement="stacked" placeholder="Seleccione..." formControlName="comuna" okText="Aceptar" cancelText="Cancelar">
                         <ion-select-option [value]="item.codigo" *ngFor="let item of data.comunas">
@@ -241,16 +241,16 @@
                         </ion-select-option>
                       </ion-select>
                     </ion-item>
-                    <div class="invalid" *ngIf="submitted && comuna.hasError('required')">Campo obligatorio.</div>
+                    <div class="invalid" *ngIf="submitted && comuna?.hasError('required')">Campo obligatorio.</div>
                   </ng-container>
                 </ng-container>
-                <ng-container *ngIf="pais.valid && pais.value != 1">
+                <ng-container *ngIf="pais?.valid && pais?.value != 1">
                   <ion-item>
                     <ion-input label="Ciudad/Lugar en que realizará la práctica" labelPlacement="stacked" type="text" placeholder="Ingrese Ciudad/Lugar" formControlName="ciudadExtranjera" clearInput></ion-input>
                   </ion-item>
-                  <div class="invalid" *ngIf="submitted && ciudadExtranjera.hasError('required')">Campo obligatorio.</div>
-                  <div class="invalid" *ngIf="submitted && ciudadExtranjera.hasError('maxlength')">Máximo de 100 caracteres permitidos.</div>
-                  <div class="invalid" *ngIf="submitted && ciudadExtranjera.hasError('pattern')">Campo con caracteres no permitidos.</div>
+                  <div class="invalid" *ngIf="submitted && ciudadExtranjera?.hasError('required')">Campo obligatorio.</div>
+                  <div class="invalid" *ngIf="submitted && ciudadExtranjera?.hasError('maxlength')">Máximo de 100 caracteres permitidos.</div>
+                  <div class="invalid" *ngIf="submitted && ciudadExtranjera?.hasError('pattern')">Campo con caracteres no permitidos.</div>
                 </ng-container>
                 <ion-item>
                   <ion-select label="Sector Productivo" labelPlacement="stacked" interface="action-sheet" [interfaceOptions]="{ header: 'Sector Productivo' }" placeholder="Seleccione..." formControlName="sector" okText="Aceptar" cancelText="Cancelar">
@@ -259,19 +259,19 @@
                     </ion-select-option>
                   </ion-select>
                 </ion-item>
-                <div class="invalid" *ngIf="submitted && sector.hasError('required')">Campo obligatorio.</div>
+                <div class="invalid" *ngIf="submitted && sector?.hasError('required')">Campo obligatorio.</div>
                 <ion-item>
                   <ion-select label="Horas de práctica" labelPlacement="stacked" placeholder="Seleccione..." formControlName="horasPractica" okText="Aceptar" cancelText="Cancelar">
                     <ion-select-option [value]="item.horas" *ngFor="let item of data.horasPracticas">{{item.horas}}</ion-select-option>
                   </ion-select>
                 </ion-item>
-                <div class="invalid" *ngIf="submitted && horasPractica.hasError('required')">Campo obligatorio.</div>
+                <div class="invalid" *ngIf="submitted && horasPractica?.hasError('required')">Campo obligatorio.</div>
                 <ion-item>
                   <ion-select label="Condición Estudiante" labelPlacement="stacked" interface="action-sheet" [interfaceOptions]="{ header: 'Condición Estudiante' }" placeholder="Seleccione..." formControlName="condicion" okText="Aceptar" cancelText="Cancelar">
                     <ion-select-option [value]="item.ttraCcod" *ngFor="let item of data.tiposAlumnos">{{item.ttraTdesc}}</ion-select-option>
                   </ion-select>
                 </ion-item>
-                <div class="invalid" *ngIf="submitted && condicion.hasError('required')">Campo obligatorio.</div>
+                <div class="invalid" *ngIf="submitted && condicion?.hasError('required')">Campo obligatorio.</div>
               </ion-list>
             </div>
           </section>
@@ -293,21 +293,21 @@
                     </ion-select-option>
                   </ion-select>
                 </ion-item>
-                <div class="invalid" *ngIf="submitted && tipos.hasError('required')">Campo obligatorio.</div>
+                <div class="invalid" *ngIf="submitted && tipos?.hasError('required')">Campo obligatorio.</div>
                 <ion-item>
                   <ion-select label="Motivo de Homologación" labelPlacement="stacked" placeholder="Seleccione..." formControlName="motivo" okText="Aceptar" cancelText="Cancelar">
                     <ion-select-option [value]="1">Otros Estudios</ion-select-option>
                     <ion-select-option [value]="2">Actividades de Vinculación con el Medio</ion-select-option>
                   </ion-select>
                 </ion-item>
-                <div class="invalid" *ngIf="submitted && motivo.hasError('required')">Campo obligatorio.</div>
-                <ng-container *ngIf="motivo.value == 2">
+                <div class="invalid" *ngIf="submitted && motivo?.hasError('required')">Campo obligatorio.</div>
+                <ng-container *ngIf="motivo?.value == 2">
                   <ion-item>
                     <ion-input label="Horas de práctica" labelPlacement="stacked" type="text" inputmode="numeric" placeholder="Ingrese número de horas" formControlName="horasPractica" clearInput></ion-input>
                   </ion-item>
-                  <div class="invalid" *ngIf="submitted && horasPractica.hasError('required')">Campo obligatorio.</div>
-                  <div class="invalid" *ngIf="submitted && horasPractica.hasError('pattern')">Debe ingresar sólo dígitos.</div>
-                  <div class="invalid" *ngIf="submitted && horasPractica.hasError('min')">Las horas a homologar deben ser mayor a 0.</div>
+                  <div class="invalid" *ngIf="submitted && horasPractica?.hasError('required')">Campo obligatorio.</div>
+                  <div class="invalid" *ngIf="submitted && horasPractica?.hasError('pattern')">Debe ingresar sólo dígitos.</div>
+                  <div class="invalid" *ngIf="submitted && horasPractica?.hasError('min')">Las horas a homologar deben ser mayor a 0.</div>
                 </ng-container>
               </ion-list>
             </div>
@@ -338,7 +338,7 @@
         </ion-card>
       </ion-header>
       <ion-content>
-        <section class="first">
+        <section>
           <div class="section-content">
             <div class="detalle-solicitud" style="padding-inline: 20px">
               <div class="image">

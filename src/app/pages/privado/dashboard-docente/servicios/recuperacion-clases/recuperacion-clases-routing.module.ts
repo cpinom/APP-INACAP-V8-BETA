@@ -7,10 +7,10 @@ const routes: Routes = [
     path: '',
     component: RecuperacionClasesPage
   },
-  {
-    path: 'detalle-solicitud/:reclNcorr',
-    loadChildren: () => import('src/app/pages/privado/docente/cursos/curso/recuperacion/detalle-solicitud/detalle-solicitud.module').then(m => m.DetalleSolicitudPageModule)
-  }
+  // {
+  //   path: 'detalle-solicitud/:reclNcorr',
+  //   loadChildren: () => import('src/app/pages/privado/dashboard-docente/cursos/curso/recuperacion/detalle-solicitud/detalle-solicitud.module').then(m => m.DetalleSolicitudPageModule)
+  // }
 ];
 
 @NgModule({

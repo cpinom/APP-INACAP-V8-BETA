@@ -5,9 +5,10 @@ import { CodeInputComponent } from 'angular-code-input';
 import { IonNav, ModalController } from '@ionic/angular';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
-import { DocenteService } from 'src/app/core/services/docente/docente.service';
+import { DocenteService } from 'src/app/core/services/http/docente.service';
 import { EventsService } from 'src/app/core/services/events.service';
 import { DialogService } from 'src/app/core/services/dialog.service';
+import { PrivateService } from 'src/app/core/services/http/private.service';
 
 enum Movimientos {
   CORREO = 1,
@@ -24,16 +25,16 @@ export class EditarTelefonoPage implements OnInit {
   @ViewChild('codeInput') codeInput !: CodeInputComponent;
   form: FormGroup;
   perfil: any;
-  submitted: boolean;
+  submitted!: boolean;
   mostrarCodigo = false;
   modo = 0;
-  actualizarCorreo: boolean;
-  actualizarCelular: boolean;
+  actualizarCorreo!: boolean;
+  actualizarCelular!: boolean;
   regexCelular = /^\+569\d{8}$/;
 
   constructor(private fb: FormBuilder,
     private profile: ProfileService,
-    private api: DocenteService,
+    private api: PrivateService,
     private nav: IonNav,
     private snackbar: SnackbarService,
     private dialog: DialogService,
@@ -61,8 +62,8 @@ export class EditarTelefonoPage implements OnInit {
   }
   async cancelar() {
     this.mostrarCodigo = false;
-    this.accoTpin.clearValidators();
-    this.accoTpin.updateValueAndValidity();
+    this.accoTpin?.clearValidators();
+    this.accoTpin?.updateValueAndValidity();
   }
   async validar() {
     this.submitted = true;
@@ -79,8 +80,8 @@ export class EditarTelefonoPage implements OnInit {
 
         if (response.success) {
           this.mostrarCodigo = true;
-          this.accoTpin.setValidators([Validators.required, Validators.minLength(6), Validators.maxLength(6)]);
-          this.accoTpin.updateValueAndValidity();
+          this.accoTpin?.setValidators([Validators.required, Validators.minLength(6), Validators.maxLength(6)]);
+          this.accoTpin?.updateValueAndValidity();
 
           setTimeout(() => {
             this.codeInput.focusOnField(0);
@@ -90,7 +91,7 @@ export class EditarTelefonoPage implements OnInit {
           this.snackbar.showToast(response.message);
         }
       }
-      catch (error) {
+      catch (error: any) {
         if (this.modo == 1) {
           this.modalCtrl.dismiss();
         }
@@ -108,7 +109,7 @@ export class EditarTelefonoPage implements OnInit {
   async confirmar() {
     if (this.codigoValido) {
       const loading = await this.dialog.showLoading({ message: 'Validando...' });
-      const params = { accoTpin: this.accoTpin.value, accoTmovimiento: Movimientos.TELEFONO };
+      const params = { accoTpin: this.accoTpin?.value, accoTmovimiento: Movimientos.TELEFONO };
 
       try {
         const response = await this.api.confirmarPin(params);
@@ -130,10 +131,10 @@ export class EditarTelefonoPage implements OnInit {
           }
         }
         else {
-          this.error.handle(response.message, null, true);
+          this.error.handle(response.message, undefined, true);
         }
       }
-      catch (error) {
+      catch (error: any) {
         if (this.modo == 1) {
           this.modalCtrl.dismiss();
         }
@@ -145,7 +146,7 @@ export class EditarTelefonoPage implements OnInit {
     }
   }
   onPinChanged(code: string) {
-    this.accoTpin.setValue(code);
+    this.accoTpin?.setValue(code);
   }
   onPinCompleted(code: string) { }
   async presentSuccess(callback: Function) {
@@ -171,7 +172,7 @@ export class EditarTelefonoPage implements OnInit {
   get celularConfirma() { return this.form.get('persTcelularConfirma') }
   get accoTpin() { return this.form.get('accoTpin') }
   get telefonosIguales() {
-    if (this.celular.valid && this.celularConfirma.valid) {
+    if (this.celular?.valid && this.celularConfirma?.valid) {
       if (this.celular.value == this.celularConfirma.value) {
         return true;
       }
@@ -181,7 +182,7 @@ export class EditarTelefonoPage implements OnInit {
     return true;
   }
   get codigoValido() {
-    return this.accoTpin.valid;
+    return this.accoTpin?.valid;
   }
   get textoBtnCancelar() {
     return this.modo == 1 ? 'Volver' : 'Cancelar';

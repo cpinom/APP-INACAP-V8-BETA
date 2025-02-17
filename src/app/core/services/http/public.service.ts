@@ -33,7 +33,7 @@ export class PublicService {
         return Promise.reject(response);
       }
     }
-    catch (error) {
+    catch (error: any) {
       return Promise.reject(error);
     }
   }
@@ -58,7 +58,7 @@ export class PublicService {
         return Promise.reject(response);
       }
     }
-    catch (error) {
+    catch (error: any) {
       return Promise.reject(error);
     }
   }
@@ -80,7 +80,26 @@ export class PublicService {
         return Promise.reject(response);
       }
     }
-    catch (error) { }
+    catch (error: any) { }
+  }
+  async getBlob(url: string): Promise<any> {
+    const options: HttpOptions = {
+      url: url,
+      responseType: 'blob',
+      headers: {}
+    };
+
+    try {
+      const response = await CapacitorHttp.get(options);
+
+      if (response.status == 200) {
+        return response.data;
+      }
+      else {
+        return Promise.reject(response);
+      }
+    }
+    catch (error: any) { }
   }
   getContacto() {
     return this.get(`${this.baseUrl}/api/v3/contacto`);

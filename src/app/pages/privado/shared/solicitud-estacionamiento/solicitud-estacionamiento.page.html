@@ -49,20 +49,20 @@
                   <ion-select-option [value]="item.aeveNcorr" *ngFor="let item of data.vehiculos">{{item.aeveTnombre}}</ion-select-option>
                 </ion-select>
               </ion-item>
-              <div class="invalid" *ngIf="submitted && tipoVehiculo.hasError('required')">Campo obligatorio.</div>
-              <ng-container *ngIf="tipoVehiculo.valid">
+              <div class="invalid" *ngIf="submitted && tipoVehiculo?.hasError('required')">Campo obligatorio.</div>
+              <ng-container *ngIf="tipoVehiculo?.valid">
                 <ion-item>
                   <ion-input label="Patente Vehículo" labelPlacement="stacked" formControlName="aepoTpatente" placeholder="Ingresar Patente..." clearInput></ion-input>
                 </ion-item>
-                <div class="invalid" *ngIf="submitted && patente.hasError('required')">Campo obligatorio.</div>
-                <div class="invalid" *ngIf="submitted && patente.hasError('patente')">Patente inválida.</div>
+                <div class="invalid" *ngIf="submitted && patente?.hasError('required')">Campo obligatorio.</div>
+                <div class="invalid" *ngIf="submitted && patente?.hasError('patente')">Patente inválida.</div>
               </ng-container>
               <ion-item>
                 <ion-checkbox formControlName="acuerdo" color="danger" labelPlacement="end">
                   <span class="ion-text-wrap">Tomo conocimiento de las condiciones para la Postulación de Estacionamiento.</span>
                 </ion-checkbox>
               </ion-item>
-              <div class="invalid" *ngIf="submitted && acuerdo.hasError('required')">Campo obligatorio.</div>
+              <div class="invalid" *ngIf="submitted && acuerdo?.hasError('required')">Campo obligatorio.</div>
               <ion-item>
                 <ion-icon slot="start" src="assets/icon/info.svg"></ion-icon>
                 <ion-label style="font-size: 14px !important; text-align: left;">

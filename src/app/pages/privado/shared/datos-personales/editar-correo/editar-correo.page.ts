@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IonNav, ModalController, Platform } from '@ionic/angular';
 import { CodeInputComponent } from 'angular-code-input';
-import { AlumnoService } from 'src/app/core/services/alumno/alumno.service';
+import { AlumnoService } from 'src/app/core/services/http/alumno.service';
 import { DialogService } from 'src/app/core/services/dialog.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { EventsService } from 'src/app/core/services/events.service';
@@ -100,8 +100,8 @@ export class EditarCorreoPage implements OnInit {
 
           if (response.success) {
             this.mostrarCodigo = true;
-            this.accoTpin.setValidators([Validators.required, Validators.minLength(6), Validators.maxLength(6)]);
-            this.accoTpin.updateValueAndValidity();
+            this.accoTpin?.setValidators([Validators.required, Validators.minLength(6), Validators.maxLength(6)]);
+            this.accoTpin?.updateValueAndValidity();
 
             setTimeout(() => {
               this.codeInput.focusOnField(0);
@@ -112,7 +112,7 @@ export class EditarCorreoPage implements OnInit {
           }
         }
       }
-      catch (error) {
+      catch (error: any) {
         if (this.modo == 1) {
           this.modalCtrl.dismiss();
         }
@@ -126,7 +126,7 @@ export class EditarCorreoPage implements OnInit {
   async confirmar() {
     if (this.codigoValido) {
       const loading = await this.dialog.showLoading({ message: 'Validando...' });
-      const params = { accoTpin: this.accoTpin.value, accoTmovimiento: Movimientos.CORREO };
+      const params = { accoTpin: this.accoTpin?.value, accoTmovimiento: Movimientos.CORREO };
 
       try {
         const response = await this.api.confirmarPin(params);
@@ -140,10 +140,10 @@ export class EditarCorreoPage implements OnInit {
           });
         }
         else {
-          this.error.handle(response.message, null, true);
+          this.error.handle(response.message, undefined, true);
         }
       }
-      catch (error) {
+      catch (error: any) {
         this.error.handle(error);
       }
       finally {
@@ -152,7 +152,7 @@ export class EditarCorreoPage implements OnInit {
     }
   }
   onPinChanged(code: string) {
-    this.accoTpin.setValue(code);
+    this.accoTpin?.setValue(code);
   }
   onPinCompleted(code: string) { }
   async presentSuccess(callback: Function) {
@@ -178,7 +178,7 @@ export class EditarCorreoPage implements OnInit {
   get correoConfirma() { return this.form.get('persTemailConfirma') }
   get accoTpin() { return this.form.get('accoTpin') }
   get correosIguales() {
-    if (this.correo.valid && this.correoConfirma.valid) {
+    if (this.correo?.valid && this.correoConfirma?.valid) {
       if (this.correo.value == this.correoConfirma.value) {
         return true;
       }
@@ -188,7 +188,7 @@ export class EditarCorreoPage implements OnInit {
     return true;
   }
   get codigoValido() {
-    return this.accoTpin.valid;
+    return this.accoTpin?.valid;
   }
   get textoBtnCancelar() {
     return this.modo == 1 ? 'Volver' : 'Cancelar';

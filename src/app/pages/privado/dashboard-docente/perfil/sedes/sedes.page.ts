@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { VISTAS_DOCENTE } from 'src/app/app.constants';
 import { SedeComponent } from 'src/app/core/components/sede/sede.component';
-import { DocenteService } from 'src/app/core/services/docente/docente.service';
+import { VISTAS_DOCENTE } from 'src/app/core/constants/docente';
+import { DocenteService } from 'src/app/core/services/http/docente.service';
 import { ProfileService } from 'src/app/core/services/profile.service';
 
 @Component({
@@ -11,7 +11,7 @@ import { ProfileService } from 'src/app/core/services/profile.service';
 })
 export class SedesPage implements OnInit {
 
-  @ViewChild(SedeComponent, { static: true }) sedeCmp;
+  @ViewChild(SedeComponent, { static: true }) sedeCmp!: SedeComponent;
   mostrarCargando = true;
   mostrarError = false;
 
@@ -27,12 +27,12 @@ export class SedesPage implements OnInit {
   }
   async cargar() {
     let perfil = await this.profile.getStorage('principal');
-    let sedes = perfil.sedes.filter(t => t.sedeCcod != 33);
+    let sedes = perfil.sedes.filter((t: any) => t.sedeCcod != 33);
 
     await this.sedeCmp.loadData(sedes);
   }
   async recargar() {
-    this.sedeCmp._sedeCcod = undefined;
+    this.sedeCmp._sedeCcod = '';
     this.mostrarCargando = true;
     this.mostrarError = false;
     setTimeout(() => {

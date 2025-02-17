@@ -6,8 +6,7 @@ import { EventsService } from 'src/app/core/services/events.service';
 
 @Component({
   selector: 'app-folder-error',
-  templateUrl: './folder-error.page.html',
-  styleUrls: ['./folder-error.page.scss'],
+  templateUrl: './folder-error.page.html'
 })
 export class FolderErrorPage implements OnInit {
 
@@ -30,6 +29,7 @@ export class FolderErrorPage implements OnInit {
     else if (this.router.url.startsWith('/exalumno/inicio')) {
       return '/exalumno/inicio';
     }
+    return '';
   }
 
 }

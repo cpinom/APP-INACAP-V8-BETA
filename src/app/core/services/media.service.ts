@@ -61,7 +61,7 @@ export class MediaService {
         });
       }
     }
-    catch (error) {
+    catch (error: any) {
       console.log('Error result');
       console.log(error);
       return Promise.resolve(null);

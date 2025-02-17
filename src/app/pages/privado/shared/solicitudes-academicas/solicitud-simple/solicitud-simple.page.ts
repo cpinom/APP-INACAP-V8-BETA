@@ -1,16 +1,16 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ActionSheetController, AlertController, IonPopover, LoadingController, NavController } from '@ionic/angular';
+import { ActionSheetController, IonPopover, NavController } from '@ionic/angular';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
-import { SolicitudesService } from 'src/app/core/services/solicitudes.service';
-// import { format } from 'date-fns';
-import { VISTAS_ALUMNO } from 'src/app/app.constants';
 
 
 import * as $ from 'jquery';
 import { EventsService } from 'src/app/core/services/events.service';
+import { SolicitudesService } from 'src/app/core/services/http/solicitudes.service';
+import { DialogService } from 'src/app/core/services/dialog.service';
+import { VISTAS_ALUMNO } from 'src/app/core/constants/alumno';
 
 @Component({
   selector: 'app-solicitud',
@@ -21,27 +21,27 @@ export class SolicitudPage implements OnInit {
 
   @ViewChild('datePicker') datePicker!: IonPopover;
   data: any;
-  showMore: boolean;
+  showMore!: boolean;
   solicitud: any;
-  tipoSolicitud: number;
-  solicitudForm: FormGroup;
+  tipoSolicitud!: number;
+  solicitudForm!: FormGroup;
   justificacionCausales = false;
   submitted = false;
   fechaMaxima: string = ''; //format(new Date(), 'yyyy-MM-dd');
 
   // 25, 34, 40, 
 
-  constructor(private router: Router,
-    private api: SolicitudesService,
-    private loading: LoadingController,
-    private formBuilder: FormBuilder,
-    private error: ErrorHandlerService,
-    private snackbar: SnackbarService,
-    private alert: AlertController,
-    private events: EventsService,
-    private nav: NavController,
-    private action: ActionSheetController) {
-    this.solicitud = this.router.getCurrentNavigation().extras.state;
+  private router = inject(Router);
+  private api = inject(SolicitudesService);
+  private dialog = inject(DialogService);
+  private formBuilder = inject(FormBuilder);
+  private error = inject(ErrorHandlerService);
+  private snackbar = inject(SnackbarService);
+  private nav = inject(NavController);
+  private action = inject(ActionSheetController);
+
+  constructor() {
+    this.solicitud = this.router.getCurrentNavigation()?.extras.state;
   }
 
   async ngOnInit() {
@@ -54,10 +54,8 @@ export class SolicitudPage implements OnInit {
   }
 
   async cargar() {
-    let loading = await this.loading.create({ message: 'Cargando...' });
-    let params = { planCcod: this.solicitud.planCcod, tisoCcod: this.solicitud.tisoCcod };
-
-    await loading.present();
+    const loading = await this.dialog.showLoading({ message: 'Cargando...' });
+    const params = { planCcod: this.solicitud.planCcod, tisoCcod: this.solicitud.tisoCcod };
 
     try {
       let result = await this.api.getDatosSolicitud(params);
@@ -68,7 +66,7 @@ export class SolicitudPage implements OnInit {
       this.tipoSolicitud = this.solicitud.tisoCcod;
       this.setupForm();
     }
-    catch (error) {
+    catch (error: any) {
       this.error.handle(error, async () => {
         await this.nav.navigateBack(this.backUrl);
       });
@@ -104,7 +102,7 @@ export class SolicitudPage implements OnInit {
         ])]
       });
 
-      this.data.evaluaciones.forEach(item => {
+      this.data.evaluaciones.forEach(() => {
         this.evaluaciones.push(new FormControl(false))
       });
 
@@ -130,7 +128,7 @@ export class SolicitudPage implements OnInit {
       let errorSolicitud = '';
       let data = this.solicitud; // await this.api.getStorage('solicitud');
       let planCcod = data.planCcod;
-      let params = {
+      let params: any = {
         tisoCcod: this.tipoSolicitud,
         planCcod: planCcod
       };
@@ -138,9 +136,9 @@ export class SolicitudPage implements OnInit {
       switch (this.tipoSolicitud) {
         case 5:
         case 7: {
-          let asignaturas = [];
+          let asignaturas: any[] = [];
 
-          this.data.asignaturas.forEach(item => {
+          this.data.asignaturas.forEach((item: any) => {
             if (item.checked) {
               asignaturas.push(this.tipoSolicitud == 7 ? item.seccCcod : item.asigCcod);
             }
@@ -149,26 +147,26 @@ export class SolicitudPage implements OnInit {
           if (asignaturas.length == 0) {
             enviarSolicitud = false;
             errorSolicitud = 'Debe seleccionar al menos una asignatura.';
-          } 
+          }
           else {
             params['asignaturas'] = asignaturas;
 
             if (this.tipoSolicitud == 7) {
-              params['motivo'] = this.motivo.value
+              params['motivo'] = this.motivo?.value
             }
           }
 
           break;
         }
         case 12: {
-          params['sedeCcod'] = this.sede.value;
-          params['motivo'] = this.motivo.value;
+          params['sedeCcod'] = this.sede?.value;
+          params['motivo'] = this.motivo?.value;
           break;
         }
         case 15: {
-          let secciones = [];
+          let secciones: any[] = [];
 
-          this.data.secciones.forEach(seccion => {
+          this.data.secciones.forEach((seccion: any) => {
             if (seccion.ssecSelected) {
               secciones.push({
                 ssecElimina: seccion.ssecNcorr,
@@ -180,7 +178,7 @@ export class SolicitudPage implements OnInit {
           if (secciones.length == 0) {
             enviarSolicitud = false;
             errorSolicitud = 'Debe cambiar al menos una sección.';
-          } 
+          }
           else {
             params['secciones'] = secciones;
           }
@@ -192,7 +190,7 @@ export class SolicitudPage implements OnInit {
           break;
         }
         case 22: {
-          params['oferNcorr'] = this.programa.value;
+          params['oferNcorr'] = this.programa?.value;
           break;
         }
         // case 34: {
@@ -219,19 +217,19 @@ export class SolicitudPage implements OnInit {
         //   }
         // }
         case 35: {
-          let causales = [];
-          let documentos = [];
+          let causales: any[] = [];
+          let documentos: any[] = [];
           params['causales_otros'] = '';
 
-          this.data.causales.forEach(item => {
+          this.data.causales.forEach((item: any) => {
             if (item.checked) {
               causales.push(item.tacoCcod);
 
               if (item.tacoCcod == 7) {
-                params['causales_otros'] = this.motivo.value;
+                params['causales_otros'] = this.motivo?.value;
               }
 
-              let dependencia = this.data.dependencias.filter(dep => {
+              let dependencia = this.data.dependencias.filter((dep: any) => {
                 if (item.tacoCcod == dep.tacoCcod)
                   return dep.camsTid;
               });
@@ -245,7 +243,7 @@ export class SolicitudPage implements OnInit {
           if (causales.length == 0) {
             enviarSolicitud = false;
             errorSolicitud = 'Debe seleccionar al menos una causa.';
-          } 
+          }
           else {
             params['causales'] = causales.join(',');
             params['documentos'] = documentos;
@@ -254,9 +252,9 @@ export class SolicitudPage implements OnInit {
           break;
         }
         case 45: {
-          let asignaturas = [];
+          let asignaturas: any[] = [];
 
-          this.data.asignaturas.forEach(item => {
+          this.data.asignaturas.forEach((item: any) => {
             if (item.checked) {
               asignaturas.push(item.asigCcod);
             }
@@ -265,14 +263,14 @@ export class SolicitudPage implements OnInit {
           if (asignaturas.length == 0) {
             enviarSolicitud = false;
             errorSolicitud = 'Debe seleccionar al menos una asignatura.';
-          } 
+          }
           else if (asignaturas.length > 2) {
             enviarSolicitud = false;
             errorSolicitud = 'Sólo puede seleccionar un máximo de 2 asignaturas.';
-          } 
+          }
           else {
             params['asignaturas'] = asignaturas;
-            params['sedeCcod'] = this.sede.value;
+            params['sedeCcod'] = this.sede?.value;
           }
 
           break;
@@ -286,11 +284,9 @@ export class SolicitudPage implements OnInit {
           return;
         }
 
-        let loading = await this.loading.create({ message: 'Procesando...' });
+        let loading = await this.dialog.showLoading({ message: 'Procesando...' });
         let message = '';
         let mostrarExito = false;
-
-        await loading.present();
 
         try {
           let result = await this.api.procesarSolicitud(params);
@@ -298,11 +294,11 @@ export class SolicitudPage implements OnInit {
           if (result.success) {
             mostrarExito = true;
             message = result.html || '<span>La solicitud ha sido ingresada correctamente.</span>';
-          } 
+          }
           else {
             message = result.message
           }
-        } catch (error) {
+        } catch (error: any) {
           this.error.handle(error);
           return
         } finally {
@@ -317,11 +313,11 @@ export class SolicitudPage implements OnInit {
           await this.presentSuccess(message);
           await this.router.navigate([this.backUrl], { replaceUrl: true });
           // this.events.notifyDataChanged('app:soli citudes-academicas-inicio', {});
-        } 
+        }
         else {
           this.error.handle(message);
         }
-      } 
+      }
       else {
         this.snackbar.showToast(errorSolicitud);
       }
@@ -329,7 +325,7 @@ export class SolicitudPage implements OnInit {
   }
 
   async sedesChange() {
-    let sedeCcod = this.sede.value;
+    let sedeCcod = this.sede?.value;
     let params = { sedeCcod: sedeCcod };
     let result = await this.api.getAsignaturasPendientes(params);
     this.data.asignaturas = result;
@@ -339,13 +335,13 @@ export class SolicitudPage implements OnInit {
     if (data.tacoCcod == 7) {
       let control = this.motivo;
       if (data.checked) {
-        control.setValidators(Validators.required);
-        control.updateValueAndValidity();
-      } 
+        control?.setValidators(Validators.required);
+        control?.updateValueAndValidity();
+      }
       else {
-        control.clearValidators();
-        control.setValue('');
-        control.updateValueAndValidity();
+        control?.clearValidators();
+        control?.setValue('');
+        control?.updateValueAndValidity();
       }
 
       this.justificacionCausales = data.checked;
@@ -353,7 +349,7 @@ export class SolicitudPage implements OnInit {
   }
 
   mostrarCambiosCarga(seccion: any) {
-    return seccion.ssecSelected == 0 ? 'Sin cambio...' : seccion.disponibles.find(t => t.ssecNcorr == seccion.ssecSelected).ssecTdesc;
+    return seccion.ssecSelected == 0 ? 'Sin cambio...' : seccion.disponibles.find((t: any) => t.ssecNcorr == seccion.ssecSelected).ssecTdesc;
   }
 
   async confirmarEnvio(): Promise<boolean> {
@@ -362,7 +358,7 @@ export class SolicitudPage implements OnInit {
         header: '¿Segur@ que quiere enviar la Solicitud?',
         buttons: [
           {
-            text: 'Continuar',            
+            text: 'Continuar',
             role: 'destructive',
             handler: () => {
               resolve(true)
@@ -383,7 +379,7 @@ export class SolicitudPage implements OnInit {
   }
 
   async presentSuccess(message: string) {
-    let alert = await this.alert.create({
+    await this.dialog.showAlert({
       header: 'Detalle Solicitud',
       backdropDismiss: false,
       keyboardClose: false,
@@ -395,11 +391,9 @@ export class SolicitudPage implements OnInit {
         }
       ]
     });
-
-    await alert.present();
   }
 
-  trimString(string, length) {
+  trimString(string: string, length: number) {
     return string.length > length
       ? string.substring(0, length) + "..."
       : string;
@@ -426,7 +420,7 @@ export class SolicitudPage implements OnInit {
 
     let isValid = false;
 
-    this.evaluaciones.value.forEach((evaluacion, i) => {
+    this.evaluaciones.value.forEach((evaluacion: any) => {
       if (evaluacion === true) {
         isValid = true;
       }

@@ -1,6 +1,6 @@
 import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { DocenteService } from 'src/app/core/services/docente/docente.service';
+import { DocenteService } from 'src/app/core/services/http/docente.service';
 import { AlertController, IonContent, IonModal, IonRouterOutlet, LoadingController, NavController, Platform } from '@ionic/angular';
 import { ProfileService } from 'src/app/core/services/profile.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
@@ -14,7 +14,7 @@ import { Subscription } from 'rxjs';
 import { localeEs, MbscEventcalendarView, MbscEventClickEvent, MbscPageChangeEvent } from '@mobiscroll/angular';
 import { DialogService } from 'src/app/core/services/dialog.service';
 import * as moment from 'moment';
-import { EstacionamientosService } from 'src/app/core/services/estacionamientos.service';
+import { EstacionamientosService } from 'src/app/core/services/http/estacionamientos.service';
 import { AppGlobal } from 'src/app/app.global';
 import { VISTAS_DOCENTE } from 'src/app/core/constants/docente';
 
@@ -352,7 +352,7 @@ export class InicioPage implements OnInit {
       }
     }
     catch (error: any) {
-      if (error.status == 401) {
+      if (error && error.status == 401) {
         this.error.handle(error);
         return;
       }

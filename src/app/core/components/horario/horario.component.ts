@@ -1,7 +1,7 @@
 import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { Platform } from '@ionic/angular';
-import { AlumnoService } from 'src/app/core/services/alumno/alumno.service';
-import { DocenteService } from 'src/app/core/services/docente/docente.service';
+import { AlumnoService } from 'src/app/core/services/http/alumno.service';
+import { DocenteService } from 'src/app/core/services/http/docente.service';
 import { ProfileService } from '../../services/profile.service';
 import * as moment from 'moment';
 import { MbscEventClickEvent, MbscEventcalendarView, MbscPageChangeEvent, localeEs } from '@mobiscroll/angular';
@@ -158,7 +158,7 @@ export class HorarioComponent implements OnInit {
       this.planificacion = true;
       this.onCompleteLoad.emit();
     }
-    catch (error) {
+    catch (error: any) {
       this.onError.emit(error);
       return;
     }

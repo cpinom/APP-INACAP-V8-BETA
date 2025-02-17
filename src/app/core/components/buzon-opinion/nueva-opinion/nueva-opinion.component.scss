@@ -1,0 +1,36 @@
+// @import "src/theme/formulario.scss";
+
+section {
+    ion-list {
+        ion-item {
+            --padding-start: 15px !important;
+        }
+    }
+    &.thumbnail-section {
+        margin-bottom: 15px;
+
+        .section-content {
+            margin-bottom: 0;
+            ion-list {
+                // border-bottom: 1px solid #ccc;
+
+                ion-thumbnail.ios {
+                    // margin-bottom: 15px;
+                }
+                ion-label.ios {
+                    // padding-top: 0;
+                }
+            }
+            ion-button.eliminarFoto {
+                border-top: 1px solid #ccc;
+                --box-shadow: none !important;
+            }
+        }
+    }
+}
+
+::ng-deep .dark {
+    ion-button.eliminarFoto {
+        border-color: var(--ion-color-dark-tint) !important;
+    }
+}

@@ -1,0 +1,60 @@
+<ng-container>
+
+  <ion-card color="white" class="primary-card">
+    <ion-card-header>
+      <ion-card-title>Buzón de Opiniones</ion-card-title>
+    </ion-card-header>
+    @if (mostrarData && sugerencias) {
+    <ion-card-content style="padding-top: 0">
+      <ion-button color="info" shape="round" expand="full" (click)="nuevaOpinion()" [disabled]="mostrarCargando">
+        <ion-label>Nueva Opinión</ion-label>
+      </ion-button>
+    </ion-card-content>
+    }
+  </ion-card>
+
+  @if (mostrarCargando) {
+  <div class="loaderInacap">
+    <ion-spinner name="lines" color="info"></ion-spinner>
+  </div>
+  }
+
+  @if (mostrarData && sugerencias) {
+  @if (sugerencias.length > 0) {
+  <section>
+    <div class="section-header">Opiniones</div>
+    <div class="section-content">
+      <ion-list>
+        @for (item of sugerencias; track $index) {
+        <ion-item (click)="detalleOpinion(item.resoNcorr)" detail="true">
+          <ion-label>
+            <h2>{{item.resoTsugerencia}}</h2>
+            <p>Estado: {{item.esreTdesc}}</p>
+            <p>Fecha: {{formatFecha(item.resoFsolicitud)}}</p>
+          </ion-label>
+        </ion-item>
+        }
+      </ion-list>
+    </div>
+  </section>
+  }
+  @if (sugerencias.length == 0) {
+  <section class="empty-state">
+    <div>
+      <p>Sin opiniones históricas en este momento.</p>
+    </div>
+  </section>
+  }
+  }
+
+  @if (mostrarData && !sugerencias) {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Información no disponible en este momento.</p>
+      <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+    </div>
+  </section>
+  }
+
+</ng-container>

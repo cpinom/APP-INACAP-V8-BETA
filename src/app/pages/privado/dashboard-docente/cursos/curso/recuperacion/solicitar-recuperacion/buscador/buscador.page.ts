@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IonNav, IonPopover, Platform } from '@ionic/angular';
-import { DocenteService } from 'src/app/core/services/docente/docente.service';
+import { DocenteService } from 'src/app/core/services/http/docente.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { DisponibilidadPage } from '../disponibilidad/disponibilidad.page';
 import { EstudiantesPage } from '../estudiantes/estudiantes.page';
@@ -78,7 +78,7 @@ export class BuscadorPage implements OnInit {
           throw Error();
         }
       }
-      catch (error) {
+      catch (error: any) {
         this.error.handle(error);
       }
       finally {

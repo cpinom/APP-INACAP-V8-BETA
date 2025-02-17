@@ -1,19 +1,16 @@
 import { Injectable } from '@angular/core';
-import { PrivateService } from '../private.service';
-import { Preferences } from '@capacitor/preferences';
+import { PrivateService } from '../http/private.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExalumnoService extends PrivateService {
 
-  private storagePrefix: string = 'Exalumno-MOVIL';
-  private apiPrefix = 'api';
-  private baseUrl = '';
+  public override storagePrefix: string = 'Exalumno-MOVIL';
 
   constructor() {
     super();
-    this.baseUrl = `${this.global.Api}/${this.apiPrefix}`;
+    this.baseUrl = `${this.global.Api}/api`;
   }
 
   getPrincipal() {
@@ -86,17 +83,6 @@ export class ExalumnoService extends PrivateService {
   }
   filtrarEmprendimientos(params: any) {
     return this.post(`${this.baseUrl}/v4/exalumno/vitrina/filtrar`, params)
-  }
-  async setStorage(key: string, value: any) {
-    await Preferences.set({
-      key: `${this.storagePrefix}-${key}`,
-      value: JSON.stringify(value)
-    });
-  }
-  async getStorage(key: string) {
-    return Preferences.get({ key: `${this.storagePrefix}-${key}` }).then(result => {
-      return result.value ? JSON.parse(result.value) : null;
-    });
   }
 
 }

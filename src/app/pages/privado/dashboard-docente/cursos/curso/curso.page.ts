@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { DocenteService } from 'src/app/core/services/docente/docente.service';
+import { DocenteService } from 'src/app/core/services/http/docente.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import Chart from 'chart.js/auto';
 import 'jquery-knob';
@@ -112,8 +112,8 @@ export class CursoPage implements OnInit {
 
       }
     }
-    catch (error) {
-      if (error.status == 401) {
+    catch (error: any) {
+      if (error && error.status == 401) {
         this.error.handle(error);
       }
     } finally {

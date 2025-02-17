@@ -1,6 +1,5 @@
-import { inject, Injectable } from '@angular/core';
-import { PrivateService } from '../private.service';
-import { AppGlobal } from 'src/app/app.global';
+import { Injectable } from '@angular/core';
+import { PrivateService } from '../http/private.service';
 import { Preferences } from '@capacitor/preferences';
 
 @Injectable({
@@ -12,6 +11,7 @@ export class DocenteService extends PrivateService {
 
   constructor() {
     super();
+    this.baseUrl += '/api';
   }
 
   getPrincipalV6() {
@@ -45,6 +45,9 @@ export class DocenteService extends PrivateService {
   }
   getCorreosV5() {
     return this.get(`${this.baseUrl}/v5/inacapmail/summary`);
+  }
+  getAlumnos(): Promise<any> {
+    return this.get(`${this.baseUrl}/v3/docente/alumnos`);
   }
   getComunicaciones() {
     return this.get(`${this.baseUrl}/docente/v6/comunicaciones`);
@@ -104,11 +107,7 @@ export class DocenteService extends PrivateService {
   getEstudiantesTutoriaV6(): Promise<any> {
     return this.get(`${this.baseUrl}/docente/v6/alumnos-tutoria`);
   }
-
-  async removeStorage(key: string) {
-    await Preferences.remove({ key: `${this.storagePrefix}-${key}` });
-  }
-  async clearStorage() {
+  override async clearStorage() {
     await Preferences.remove({ key: `${this.storagePrefix}-cursos` });
     await Preferences.remove({ key: `${this.storagePrefix}-users` });
   }

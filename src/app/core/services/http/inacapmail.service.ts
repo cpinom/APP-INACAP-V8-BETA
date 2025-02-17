@@ -7,13 +7,11 @@ import { Preferences } from "@capacitor/preferences";
 })
 export class InacapMailService extends PrivateService {
 
-  private storagePrefix: string = 'InacapMail-MOVIL';
-  private apiPrefix = 'api';
-  private baseUrl: string = '';
+  public override storagePrefix: string = 'InacapMail-MOVIL';
 
   constructor() {
     super();
-    this.baseUrl = `${this.global.Api}/${this.apiPrefix}`;
+    this.baseUrl = `${this.global.Api}/api`;
   }
   getMailSummary(folderId?: string) {
     return this.get(`${this.baseUrl}/v4/inacapmail/summary?folderId=${folderId}`);
@@ -93,21 +91,7 @@ export class InacapMailService extends PrivateService {
   replyAllMessageV5(params: any) {
     return this.post(`${this.baseUrl}/v5/inacapmail/reply-all-message`, params);
   }
-  async setStorage(key: string, value: any) {
-    await Preferences.set({
-      key: `${this.storagePrefix}-${key}`,
-      value: JSON.stringify(value)
-    });
-  }
-  async getStorage(key: string) {
-    return Preferences.get({ key: `${this.storagePrefix}-${key}` }).then(result => {
-      return result.value ? JSON.parse(result.value) : null;
-    });
-  }
-  async removeStorage(key: string) {
-    await Preferences.remove({ key: `${this.storagePrefix}-${key}` });
-  }
-  async clearStorage() {
+  override async clearStorage() {
     await Preferences.remove({ key: `${this.storagePrefix}-user` });
     await Preferences.remove({ key: `${this.storagePrefix}-folders` });
     await Preferences.remove({ key: `${this.storagePrefix}-inboxId` });

@@ -1,6 +1,5 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { PrivateService } from './private.service';
-import { AppGlobal } from 'src/app/app.global';
 import { Preferences } from '@capacitor/preferences';
 
 @Injectable({
@@ -8,14 +7,12 @@ import { Preferences } from '@capacitor/preferences';
 })
 export class ClinicasAcademicasService extends PrivateService {
 
-  private storagePrefix: string = 'Clinicas-MOVIL';
+  public override storagePrefix: string = 'Clinicas-MOVIL';
   private apiPrefix = 'api';
-  private appGlobal = inject(AppGlobal);
-  private baseUrl: string = '';
 
   constructor() {
     super();
-    this.baseUrl = `${this.appGlobal.Api}/${this.apiPrefix}`;
+    this.baseUrl = `${this.global.Api}/${this.apiPrefix}`;
   }
 
   getDocentePrincipal(sedeCcod: any) {
@@ -39,21 +36,5 @@ export class ClinicasAcademicasService extends PrivateService {
   cancelarAgenda(params: any) {
     return this.delete(`${this.baseUrl}/clinicas-academicas/v1/cancelar-agenda`, params);
   }
-
-  async setStorage(key: string, value: any) {
-    await Preferences.set({
-      key: `${this.storagePrefix}-${key}`,
-      value: JSON.stringify(value)
-    });
-  }
-  async getStorage(key: string) {
-    return Preferences.get({ key: `${this.storagePrefix}-${key}` }).then(result => {
-      return result.value ? JSON.parse(result.value) : null;
-    });
-  }
-  async removeStorage(key: string) {
-    await Preferences.remove({ key: `${this.storagePrefix}-${key}` });
-  }
-  async clearStorage() { }
 
 }

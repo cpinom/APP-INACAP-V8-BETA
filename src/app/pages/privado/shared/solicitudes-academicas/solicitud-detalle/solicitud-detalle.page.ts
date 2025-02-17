@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { DialogService } from 'src/app/core/services/dialog.service';
 import { UtilsService } from 'src/app/core/services/utils.service';
 
 @Component({
@@ -9,21 +10,23 @@ import { UtilsService } from 'src/app/core/services/utils.service';
 })
 export class SolicitudDetallePage implements OnInit {
 
-  data: any
+  data: any;
 
-  constructor(private modalCtrl: ModalController,
-    private utils: UtilsService) { }
+  private dialog = inject(DialogService);
+  private utils = inject(UtilsService);
+
+  constructor() { }
 
   ngOnInit() { }
   async cerrar() {
-    await this.modalCtrl.dismiss();
+    await this.dialog.dismissModal();
   }
-  async descargar(url) {
+  async descargar(url: string) {
     if (!url) return;
     await this.utils.openLink(url);
   }
   async anular() {
-    await this.modalCtrl.dismiss({ anular: true });
+    await this.dialog.dismissModal({ anular: true });
   }
 
 }

@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActionSheetController, IonModal, IonRouterOutlet, NavController, Platform } from '@ionic/angular';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
-import { CertificadosService } from 'src/app/core/services/certificados.service';
+import { CertificadosService } from 'src/app/core/services/http/certificados.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { UtilsService } from 'src/app/core/services/utils.service';
 import { Router } from '@angular/router';
@@ -150,14 +150,14 @@ export class CertificadosPage implements OnInit {
           return Promise.resolve();
         }
       }
-      catch (error) {
+      catch (error: any) {
         return Promise.reject();
       }
       finally {
         loading.dismiss();
       }
     }
-    catch (error) {
+    catch (error: any) {
       return Promise.resolve();
     }
 
@@ -254,7 +254,7 @@ export class CertificadosPage implements OnInit {
         }
       }
     }
-    catch (error) {
+    catch (error: any) {
       this.error.handle(error, async () => {
         await this.nav.navigateBack(this.backUrl);
       });
@@ -311,7 +311,7 @@ export class CertificadosPage implements OnInit {
       this.disponibles = result.disponibles;
       this.api.setStorage('carrCcod', carrera.carrCcod);
     }
-    catch (error) {
+    catch (error: any) {
       this.error.handle(error);
     }
     finally {
@@ -337,7 +337,7 @@ export class CertificadosPage implements OnInit {
       try {
         data['accion'] = await this.api.getDetalleCertificado(params);
       }
-      catch (error) {
+      catch (error: any) {
         this.error.handle(error);
       }
       finally {
@@ -483,7 +483,7 @@ export class CertificadosPage implements OnInit {
         await this.api.enviarCorreo(params);
         this.snackbar.showToast('Su solicitud está siendo procesada. En breve llegará el certificado al correo indicado.', 3000, 'success');
       }
-      catch (error) {
+      catch (error: any) {
         this.error.handle(error);
       }
       finally {
@@ -504,7 +504,7 @@ export class CertificadosPage implements OnInit {
         this.historial = await this.api.eliminarCertificado(params);
         this.snackbar.showToast('El certificado solicitado ha sido eliminado correctamente.', 3000, 'success');
       }
-      catch (error) {
+      catch (error: any) {
         this.error.handle(error);
       }
       finally {

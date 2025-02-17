@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ActionSheetController, AlertController, IonModal, IonPopover, IonRouterOutlet, NavController, Platform } from '@ionic/angular';
@@ -6,9 +6,9 @@ import * as moment from 'moment';
 import { DialogService } from 'src/app/core/services/dialog.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { EventsService } from 'src/app/core/services/events.service';
+import { SolicitudesService } from 'src/app/core/services/http/solicitudes.service';
 import { MediaService } from 'src/app/core/services/media.service';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
-import { SolicitudesService } from 'src/app/core/services/solicitudes.service';
 
 export enum SOLICITUD {
   JUSTIFICACION_INASISTENCIA = 1,
@@ -31,15 +31,15 @@ export class SolicitudDocumentosPage implements OnInit {
   @ViewChild('datePicker') datePicker!: IonPopover;
   solicitud: any;
   data: any;
-  showMore: boolean;
-  presentingElement = null;
+  showMore!: boolean;
+  presentingElement: HTMLElement | null = null;
   causalSel: any;
   tiposDocumentos: any;
   tipoDocumento: any;
   deshabilitaEnviar = false;
-  archivos: [];
+  archivos: any[] = [];
   viaConvalidacionSel: any;
-  solicitudForm: FormGroup;
+  solicitudForm!: FormGroup;
   submitted = false;
   patternStr = '^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ!@#"\'\n\r\$%\^\&*\ \)\(+=.,_-]+$';
   terminos = false;
@@ -48,20 +48,21 @@ export class SolicitudDocumentosPage implements OnInit {
   justificacionCausales = false;
   documentosCausales = [];
 
-  constructor(private router: Router,
-    private nav: NavController,
-    private api: SolicitudesService,
-    private dialog: DialogService,
-    private snackbar: SnackbarService,
-    private routerOutlet: IonRouterOutlet,
-    private pt: Platform,
-    private error: ErrorHandlerService,
-    private fb: FormBuilder,
-    private action: ActionSheetController,
-    private events: EventsService,
-    private media: MediaService,
-    private alert: AlertController) {
-    this.solicitud = this.router.getCurrentNavigation().extras.state;
+  private router = inject(Router);
+  private nav = inject(NavController);
+  private api = inject(SolicitudesService);
+  private dialog = inject(DialogService);
+  private snackbar = inject(SnackbarService);
+  private routerOutlet = inject(IonRouterOutlet);
+  private pt = inject(Platform);
+  private error = inject(ErrorHandlerService);
+  private fb = inject(FormBuilder);
+  private action = inject(ActionSheetController);
+  private events = inject(EventsService);
+  private media = inject(MediaService);
+
+  constructor() {
+    this.solicitud = this.router.getCurrentNavigation()?.extras.state;
   }
   async ngOnInit() {
     if (!this.solicitud) {
@@ -80,11 +81,11 @@ export class SolicitudDocumentosPage implements OnInit {
 
       if (result.success) {
         if (this.solicitud.tisoCcod == SOLICITUD.JUSTIFICACION_INASISTENCIA) {
-          result.data.evaluaciones = result.data.evaluaciones.sort((a, b) => {
+          result.data.evaluaciones = (result.data.evaluaciones as any[]).sort((a, b) => {
             return (parseInt(a.caliNcorr) < parseInt(b.caliNcorr)) ? -1 : 1;
           });
         }
-        
+
         this.data = result.data;
         this.data.glosa = result.glosa;
         this.data.titulo = this.solicitud.tisoTdesc;
@@ -95,7 +96,7 @@ export class SolicitudDocumentosPage implements OnInit {
         await this.presentError(result.message, true);
       }
     }
-    catch (error) {
+    catch (error: any) {
       this.error.handle(error, async () => {
         if (error.status != 401) {
           await this.nav.navigateBack(this.backUrl);
@@ -115,7 +116,7 @@ export class SolicitudDocumentosPage implements OnInit {
       message = 'Se produjo un problema cargando estos datos.';
     }
 
-    const alert = await this.alert.create({
+    await this.dialog.showAlert({
       keyboardClose: false,
       backdropDismiss: false,
       header: 'Solicitudes',
@@ -132,8 +133,6 @@ export class SolicitudDocumentosPage implements OnInit {
         }
       ]
     });
-
-    await alert.present();
   }
   async setupForm() {
 
@@ -148,7 +147,7 @@ export class SolicitudDocumentosPage implements OnInit {
         ])]
       });
 
-      this.data.evaluaciones.forEach(item => {
+      this.data.evaluaciones.forEach((item: any) => {
         this.evaluaciones.push(new FormControl(false))
       });
     }
@@ -167,28 +166,28 @@ export class SolicitudDocumentosPage implements OnInit {
         otroOrganismo: ['']
       });
 
-      this.viaConvalidacion.valueChanges.subscribe((via) => {
+      this.viaConvalidacion?.valueChanges.subscribe((via) => {
         if (via.tieneOrganizacion == 'SI') {
-          this.organismoAutorizado.clearValidators();
-          this.organismoAutorizado.setValidators([Validators.required]);
-        } 
+          this.organismoAutorizado?.clearValidators();
+          this.organismoAutorizado?.setValidators([Validators.required]);
+        }
         else {
-          this.organismoAutorizado.clearValidators();
+          this.organismoAutorizado?.clearValidators();
         }
         // this.organismoAutorizado.setValue('');
-        this.organismoAutorizado.updateValueAndValidity();
+        this.organismoAutorizado?.updateValueAndValidity();
       })
 
-      this.organismoAutorizado.valueChanges.subscribe((orgaCcod) => {
+      this.organismoAutorizado?.valueChanges.subscribe((orgaCcod) => {
         if (orgaCcod == 0) {
-          this.otroOrganismo.clearValidators();
-          this.otroOrganismo.setValidators([Validators.required, Validators.maxLength(100), Validators.pattern(this.patternStr)]);
-        } 
+          this.otroOrganismo?.clearValidators();
+          this.otroOrganismo?.setValidators([Validators.required, Validators.maxLength(100), Validators.pattern(this.patternStr)]);
+        }
         else {
-          this.otroOrganismo.clearValidators();
+          this.otroOrganismo?.clearValidators();
         }
         // this.otroOrganismo.setValue('');
-        this.otroOrganismo.updateValueAndValidity();
+        this.otroOrganismo?.updateValueAndValidity();
       })
     }
     else if (this.solicitud.tisoCcod == 19) {
@@ -196,7 +195,7 @@ export class SolicitudDocumentosPage implements OnInit {
         tipoTrabajador: ['', Validators.required]
       });
 
-      this.tipoTrabajador.valueChanges.subscribe(() => {
+      this.tipoTrabajador?.valueChanges.subscribe(() => {
         this.tipoTrabajadorChange();
       })
     }
@@ -210,15 +209,15 @@ export class SolicitudDocumentosPage implements OnInit {
         nacimientoPicker: [this.fechaMaxima]
       });
 
-      this.nacimiento.valueChanges.subscribe((value) => {
+      this.nacimiento?.valueChanges.subscribe((value) => {
         if (!value) {
-          this.solicitudForm.get('nacimientoPicker').setValue('', { emitEvent: false });
+          this.solicitudForm.get('nacimientoPicker')?.setValue('', { emitEvent: false });
         }
       })
 
-      this.solicitudForm.get('nacimientoPicker').valueChanges.subscribe((date) => {
+      this.solicitudForm.get('nacimientoPicker')?.valueChanges.subscribe((date) => {
         const value = moment(date, 'YYYY-MM-DD').format('DD/MM/YYYY');
-        this.nacimiento.setValue(value);
+        this.nacimiento?.setValue(value);
         this.datePicker && this.datePicker.dismiss();
       })
     }
@@ -239,7 +238,7 @@ export class SolicitudDocumentosPage implements OnInit {
   async procesar(modal: IonModal) {
     this.submitted = true;
 
-    let params = {
+    let params: any = {
       tisoCcod: this.solicitud.tisoCcod,
       planCcod: this.solicitud.planCcod
     };
@@ -253,20 +252,20 @@ export class SolicitudDocumentosPage implements OnInit {
         return;
       }
 
-      params['ttraCcod'] = this.causalInterrupcion.value.tcieCcod;
+      params['ttraCcod'] = this.causalInterrupcion?.value.tcieCcod;
     }
     else if (this.solicitud.tisoCcod == 14) {
       if (!this.solicitudForm.valid) {
         return;
       }
 
-      params['ttraCcod'] = this.viaConvalidacion.value.viasCcod;
+      params['ttraCcod'] = this.viaConvalidacion?.value.viasCcod;
     }
     else if (this.solicitud.tisoCcod == 19) {
       if (!this.solicitudForm.valid) {
         return;
       }
-      params['ttraCcod'] = this.tipoTrabajador.value;
+      params['ttraCcod'] = this.tipoTrabajador?.value;
     }
     else if (this.solicitud.tisoCcod == SOLICITUD.ESTUDIANTE_HIJOS_MENOR) {
       if (!this.solicitudForm.valid) {
@@ -275,7 +274,7 @@ export class SolicitudDocumentosPage implements OnInit {
       params['ttraCcod'] = 0;
     }
     else if (this.solicitud.tisoCcod == SOLICITUD.ANULACION_CONTRATO) {
-      let marcaCausales = this.data.causales.filter(t => t.checked == true).length > 0;
+      let marcaCausales = this.data.causales.filter((t: any) => t.checked == true).length > 0;
       let archivosObligatorios = 0;
 
       if (!marcaCausales) {
@@ -283,7 +282,7 @@ export class SolicitudDocumentosPage implements OnInit {
         return;
       }
 
-      this.tiposDocumentos.forEach(doc => {
+      this.tiposDocumentos.forEach((doc: any) => {
         if (doc.obliAlumno == 1 && doc.archivos.length == 0) {
           archivosObligatorios++;
         }
@@ -341,9 +340,9 @@ export class SolicitudDocumentosPage implements OnInit {
         return;
       }
 
-      let evaluaciones = [];
+      let evaluaciones: any[] = [];
 
-      this.evaluaciones.value.forEach((evaluacion, i) => {
+      this.evaluaciones.value.forEach((evaluacion: boolean, i: string | number) => {
         if (evaluacion == true) {
           evaluaciones.push(this.data.evaluaciones[i].caliNcorr);
         }
@@ -354,7 +353,7 @@ export class SolicitudDocumentosPage implements OnInit {
       }
 
       params['evaluaciones'] = evaluaciones;
-      params['motivo'] = this.motivo.value;
+      params['motivo'] = this.motivo?.value;
       params['entregaJustificacion'] = '0';
     }
     else if (this.solicitud.tisoCcod == 4) {
@@ -365,18 +364,18 @@ export class SolicitudDocumentosPage implements OnInit {
       delete params['ttraCcod'];
     }
     else if (this.solicitud.tisoCcod == 9) {
-      params['tcieCcod'] = this.causalInterrupcion.value.tcieCcod;
+      params['tcieCcod'] = this.causalInterrupcion?.value.tcieCcod;
       params['documentos'] = [this.tiposDocumentos[0].camsTid];
       params['documentosAdjuntos'] = this.totalArchivos;
       delete params['ttraCcod'];
     }
     else if (this.solicitud.tisoCcod == 14) {
-      let viasSeleccionada = this.viaConvalidacion.value;
+      let viasSeleccionada = this.viaConvalidacion?.value;
 
       params['viasCcod'] = viasSeleccionada.viasCcod;
       params['validaTieneOrg'] = viasSeleccionada.tieneOrganizacion;
-      params['orgaCcod'] = this.organismoAutorizado.value;
-      params['orgaOtro'] = this.otroOrganismo.value;
+      params['orgaCcod'] = this.organismoAutorizado?.value;
+      params['orgaOtro'] = this.otroOrganismo?.value;
       delete params['ttraCcod'];
 
       if (viasSeleccionada.viasCcod == 1) {
@@ -417,20 +416,20 @@ export class SolicitudDocumentosPage implements OnInit {
       params['entregaDeclaracion'] = '0';
     }
     else if (this.solicitud.tisoCcod == SOLICITUD.ESTUDIANTE_HIJOS_MENOR) {
-      params['fechaNacimiento'] = this.nacimiento.value;
+      params['fechaNacimiento'] = this.nacimiento?.value;
       params['entregaCertificado'] = '0';
     }
     else if (this.solicitud.tisoCcod == SOLICITUD.ANULACION_CONTRATO) {
-      let causales = [];
-      let documentos = [];
+      let causales: any[] = [];
+      let documentos: any[] = [];
 
-      params['causales_otros'] = this.justificacionCausales ? this.motivo.value : '';
+      params['causales_otros'] = this.justificacionCausales ? this.motivo?.value : '';
 
-      this.data.causales.forEach(causal => {
+      this.data.causales.forEach((causal: any) => {
         if (causal.checked == true) {
           causales.push(causal.tacoCcod);
 
-          let dependencia = this.data.dependencias.find(t => t.tacoCcod == causal.tacoCcod);
+          let dependencia = this.data.dependencias.find((t: any) => t.tacoCcod == causal.tacoCcod);
 
           if (dependencia) {
             documentos.push(dependencia.camsTid);
@@ -466,12 +465,12 @@ export class SolicitudDocumentosPage implements OnInit {
         // if (this.data && this.data.archivos && this.data.archivos.length) {
         //   this.data.archivos = [];
         // }
-      } 
+      }
       else {
         message = result.message
       }
     }
-    catch (error) {
+    catch (error: any) {
       this.error.handle(error);
       return
     }
@@ -499,7 +498,7 @@ export class SolicitudDocumentosPage implements OnInit {
 
     if (this.pt.is('mobileweb')) {
       inputEl.click();
-    } 
+    }
     else {
       let file = await this.media.getMedia();
 
@@ -519,23 +518,23 @@ export class SolicitudDocumentosPage implements OnInit {
               return;
             }
 
-            this.tipoDocumento.archivos = result.data.filter(t => t.stiaNcorr == this.tipoDocumento.stiaNcorr);
+            this.tipoDocumento.archivos = result.data.filter((t: any) => t.stiaNcorr == this.tipoDocumento.stiaNcorr);
             this.resolverTerminos();
           }
-          catch (error) {
+          catch (error: any) {
             this.presentError('No fue posible cargar el archivo.');
           }
           finally {
             await loading.dismiss();
           }
-        } 
+        }
         else {
           this.presentError('El archivo no pueden exceder los 3 MB.');
         }
       }
     }
   }
-  async adjuntarArchivoWeb(event) {
+  async adjuntarArchivoWeb(event: any) {
     if (event.target.files.length > 0) {
       let formData = new FormData();
       let file = event.target.files[0];
@@ -554,22 +553,22 @@ export class SolicitudDocumentosPage implements OnInit {
             return;
           }
 
-          this.tipoDocumento.archivos = result.data.filter(t => t.stiaNcorr == this.tipoDocumento.stiaNcorr);
+          this.tipoDocumento.archivos = result.data.filter((t: any) => t.stiaNcorr == this.tipoDocumento.stiaNcorr);
           this.resolverTerminos();
         }
-        catch (error) {
+        catch (error: any) {
           this.presentError('No fue posible cargar el archivo.');
         }
         finally {
           await loading.dismiss();
         }
-      } 
+      }
       else {
         this.presentError('El archivo no puede exceder los 3 MB.');
       }
     }
   }
-  async eliminarArchivo(data, soarNcorr) {
+  async eliminarArchivo(data: any, soarNcorr: any) {
     this.tipoDocumento = data;
     let loading = await this.dialog.showLoading({ message: 'Eliminando archivo...' });
 
@@ -582,7 +581,7 @@ export class SolicitudDocumentosPage implements OnInit {
         this.resolverTerminos();
       }
     }
-    catch (error) {
+    catch (error: any) {
       this.error.handle(error);
     }
     finally {
@@ -590,8 +589,8 @@ export class SolicitudDocumentosPage implements OnInit {
     }
   }
   async mostrarCausales(modal: IonModal) {
-    if (this.causalInterrupcion.value) {
-      this.causalSel = this.causalInterrupcion.value;
+    if (this.causalInterrupcion?.value) {
+      this.causalSel = this.causalInterrupcion?.value;
     }
     await modal.present();
   }
@@ -599,10 +598,10 @@ export class SolicitudDocumentosPage implements OnInit {
     modal.dismiss();
 
     if (this.causalSel) {
-      this.causalInterrupcion.setValue(this.causalSel);
+      this.causalInterrupcion?.setValue(this.causalSel);
 
       let snackbar = await this.snackbar.create('Cargando...', false, 'secondary');
-      let params = { tisoCcod: this.solicitud.tisoCcod, identCcod: this.causalInterrupcion.value.tcieCcod };
+      let params = { tisoCcod: this.solicitud.tisoCcod, identCcod: this.causalInterrupcion?.value.tcieCcod };
 
       await snackbar.present();
 
@@ -617,7 +616,7 @@ export class SolicitudDocumentosPage implements OnInit {
         }
       }
       catch (error: any) {
-        if (error.status == 401) {
+        if (error && error.status == 401) {
           this.error.handle(error);
           return;
         }
@@ -633,7 +632,7 @@ export class SolicitudDocumentosPage implements OnInit {
     this.events.app.next({ action: 'app:modal-dismiss' });
   }
   async tipoTrabajadorChange() {
-    if (this.tipoTrabajador.valid) {
+    if (this.tipoTrabajador?.valid) {
       let snackbar = await this.snackbar.create('Cargando...', false, 'secondary');
       let params = { tisoCcod: this.solicitud.tisoCcod, identCcod: this.tipoTrabajador.value };
 
@@ -655,7 +654,7 @@ export class SolicitudDocumentosPage implements OnInit {
     }
   }
   async mostrarVias(modal: IonModal) {
-    if (this.viaConvalidacion.value) {
+    if (this.viaConvalidacion?.value) {
       this.viaConvalidacionSel = this.viaConvalidacion.value
     }
     await modal.present();
@@ -664,10 +663,10 @@ export class SolicitudDocumentosPage implements OnInit {
     await modal.dismiss();
 
     if (this.viaConvalidacionSel) {
-      this.viaConvalidacion.setValue(this.viaConvalidacionSel);
+      this.viaConvalidacion?.setValue(this.viaConvalidacionSel);
 
       let snackbar = await this.snackbar.create('Cargando...', false, 'secondary');
-      let params = { tisoCcod: this.solicitud.tisoCcod, identCcod: this.viaConvalidacion.value.viasCcod };
+      let params = { tisoCcod: this.solicitud.tisoCcod, identCcod: this.viaConvalidacion?.value.viasCcod };
 
       this.deshabilitaEnviar = true;
       await snackbar.present();
@@ -696,36 +695,36 @@ export class SolicitudDocumentosPage implements OnInit {
     if (data.tacoCcod == 7) {
       let control = this.motivo;
       if (data.checked) {
-        control.setValidators(Validators.required);
-        control.updateValueAndValidity();
-      } 
+        control?.setValidators(Validators.required);
+        control?.updateValueAndValidity();
+      }
       else {
-        control.clearValidators();
-        control.setValue('');
-        control.updateValueAndValidity();
+        control?.clearValidators();
+        control?.setValue('');
+        control?.updateValueAndValidity();
       }
 
       this.justificacionCausales = data.checked;
     }
 
     let tiposDocumentosCopy = Object.assign([], this.tiposDocumentos);
-    let causales = this.data.causales.filter(t => t.checked == true);
+    let causales = this.data.causales.filter((t: any) => t.checked == true);
 
     this.tiposDocumentos = [];
 
     if (causales.length) {
-      causales.forEach(causal => {
-        let documentoPrevio = tiposDocumentosCopy.find(t => t.tacoCcod == causal.tacoCcod);
+      causales.forEach((causal: any) => {
+        let documentoPrevio = tiposDocumentosCopy.find((t: any) => t.tacoCcod == causal.tacoCcod);
         let archivos = [];
 
         if (documentoPrevio) {
           archivos = documentoPrevio.archivos;
         }
 
-        let documentos = this.data.documentosAnulacion.filter(t => t.tacoCcod == causal.tacoCcod);
+        let documentos = this.data.documentosAnulacion.filter((t: any) => t.tacoCcod == causal.tacoCcod);
 
         if (documentos.length) {
-          documentos = documentos.map(t => { return Object.assign({ archivos: archivos }, t) });
+          documentos = documentos.map((t: any) => { return Object.assign({ archivos: archivos }, t) });
         }
 
         this.tiposDocumentos = this.tiposDocumentos.concat(documentos);
@@ -765,7 +764,7 @@ export class SolicitudDocumentosPage implements OnInit {
     if (this.solicitud.tisoCcod == 14 || this.solicitud.tisoCcod == SOLICITUD.ANULACION_CONTRATO) return true;
     return false;
   }
-  trimString(string, length) {
+  trimString(string: any, length: number) {
     return string.length > length
       ? string.substring(0, length) + "..."
       : string;
@@ -788,7 +787,7 @@ export class SolicitudDocumentosPage implements OnInit {
     let contadorArchivos = 0;
 
     if (this.tiposDocumentos && this.tiposDocumentos.length) {
-      this.tiposDocumentos.forEach(tipo => {
+      this.tiposDocumentos.forEach((tipo: any) => {
         contadorArchivos += tipo.archivos.length
       });
     }
@@ -802,7 +801,7 @@ export class SolicitudDocumentosPage implements OnInit {
 
     let isValid = false;
 
-    this.evaluaciones.value.forEach((evaluacion, i) => {
+    this.evaluaciones.value.forEach((evaluacion: any) => {
       if (evaluacion === true) {
         isValid = true;
       }

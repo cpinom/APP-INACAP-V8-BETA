@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { AlertController, IonItemSliding, IonRouterOutlet, LoadingController, ModalController } from '@ionic/angular';
+import { Component, inject, OnInit } from '@angular/core';
+import { IonItemSliding, IonRouterOutlet } from '@ionic/angular';
 import { Compromiso } from 'src/app/core/interfaces/pagos.interfaces';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
-import { PortalPagosService } from 'src/app/core/services/portalpagos.service';
-import { SnackbarService } from 'src/app/core/services/snackbar.service';
 import { Router } from '@angular/router';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import { PagosService } from 'src/app/core/services/pagos.service';
-import { VISTAS_ALUMNO } from 'src/app/app.constants';
 import { DetalleCompromisoPage } from './detalle-compromiso/detalle-compromiso.page';
 import { DetallePagoPage } from './detalle-pago/detalle-pago.page';
+import { PortalPagosService } from 'src/app/core/services/http/portalpagos.service';
+import { PagosService } from 'src/app/core/services/http/pagos.service';
+import { DialogService } from 'src/app/core/services/dialog.service';
+import { VISTAS_ALUMNO } from 'src/app/core/constants/alumno';
 
 @Component({
   selector: 'app-portal-pagos',
@@ -19,24 +19,23 @@ import { DetallePagoPage } from './detalle-pago/detalle-pago.page';
 export class PortalPagosPage implements OnInit {
 
   form: FormGroup;
-  compromisos: Compromiso[];
+  compromisos!: Compromiso[];
   formasPago: any;
-  pagoId: number;
+  pagoId!: number;
   montoCarro: string = '0';
   mostrarCompromisos = false;
   mostrarCargando = true;
   mostrarData = false;
 
-  constructor(private api: PortalPagosService,
-    private snackbar: SnackbarService,
-    private error: ErrorHandlerService,
-    private loading: LoadingController,
-    private modalCtrl: ModalController,
-    private router: Router,
-    private fb: FormBuilder,
-    private pagos: PagosService,
-    private routerOutlet: IonRouterOutlet,
-    private alertCtrl: AlertController) {
+  private api = inject(PortalPagosService);
+  private error = inject(ErrorHandlerService);
+  private dialog = inject(DialogService);
+  private router = inject(Router);
+  private fb = inject(FormBuilder);
+  private pagos = inject(PagosService);
+  private routerOutlet = inject(IonRouterOutlet);
+
+  constructor() {
 
     this.form = this.fb.group({
       compromisos: new FormArray([])
@@ -59,8 +58,8 @@ export class PortalPagosPage implements OnInit {
       this.montoCarro = result.montoCarro.trim();
       this.formasPago = result.formasPago;
     }
-    catch (error) {
-      if (error.status == 401) {
+    catch (error: any) {
+      if (error && error.status == 401) {
         this.error.handle(error);
       }
     }
@@ -86,8 +85,8 @@ export class PortalPagosPage implements OnInit {
       this.procesarCompromisos(compromisos);
       this.montoCarro = result.montoCarro.trim();
     }
-    catch (error) {
-      if (error.status == 401) {
+    catch (error: any) {
+      if (error && error.status == 401) {
         this.error.handle(error);
       }
     }
@@ -120,41 +119,43 @@ export class PortalPagosPage implements OnInit {
   async procesarCompromiso(control: any) {
     let compromiso: Compromiso = control.data;
     let checked = control.compromiso === true;
-    let loading = await this.loading.create({ message: 'Procesando...' });
+    let loading = await this.dialog.showLoading({ message: 'Procesando...' });
     let params = { paonNcorr: this.pagoId, dpaoNcorr: compromiso.dpaoNcorr };
-    let method = checked ? 'agregarCarro' : 'eliminarCarro';
+    // let method = checked ? 'agregarCarro' : 'eliminarCarro';
 
     try {
       await loading.present();
 
-      let result = await this.api[method](params);
+      // let result = await this.api[method](params);
+      let result = checked == true ? await this.api.agregarCarro(params) : await this.api.eliminarCarro(params);
+
 
       if (result.success) {
         this.montoCarro = (result.message as string).trim();
-      } 
+      }
       else {
         if (result.message) {
-          this.presentAlert(result.message);
+          await this.presentAlert(result.message);
         }
 
         this.procesarCompromisos(result.compromisos);
       }
     }
-    catch (error) {
+    catch (error: any) {
       this.error.handle(error);
     }
     finally {
       await loading.dismiss();
     }
   }
-  presentAlert(message: string) {
-    this.alertCtrl.create({
+  async presentAlert(message: string) {
+    await this.dialog.showAlert({
       header: 'Portal de Pagos',
       message: message,
       buttons: [{
         text: 'Aceptar'
       }]
-    }).then(alert => alert.present())
+    })
   }
   async pagar() {
     try {
@@ -168,7 +169,7 @@ export class PortalPagosPage implements OnInit {
 
       if (pagoResult.success) {
         detalleResult = await this.api.getPagoExito(params);
-      } 
+      }
       else {
         detalleResult = await this.api.getPagoFracaso(params);
       }
@@ -178,7 +179,7 @@ export class PortalPagosPage implements OnInit {
         await this.mostrarDetallePago(detalleResult, pagoResult.success);
       }
     }
-    catch (error) {
+    catch (error: any) {
       if (error && error.code == 0) return;
       this.error.handle(error);
     }
@@ -186,9 +187,7 @@ export class PortalPagosPage implements OnInit {
   async detalleCompromiso(item: any, e: Event, sliding: IonItemSliding) {
     e.stopPropagation();
 
-    const loading = await this.loading.create({ message: 'Cargando...' });
-
-    await loading.present();
+    const loading = await this.dialog.showLoading({ message: 'Cargando...' });
 
     try {
       const result = await this.api.getDetalleCompromiso({ dpaoNcorr: item.dpaoNcorr });
@@ -196,19 +195,17 @@ export class PortalPagosPage implements OnInit {
       Object.assign(result, {
         institucion: item.institucion,
         carrTdesc: item.carrera
-      })
+      });
 
-      const modal = await this.modalCtrl.create({
+      await loading.dismiss();
+      await this.dialog.showModal({
         component: DetalleCompromisoPage,
         componentProps: { data: result },
         canDismiss: true,
         presentingElement: this.routerOutlet.nativeEl
       });
-
-      await loading.dismiss();
-      await modal.present();
     }
-    catch (error) {
+    catch (error: any) {
       this.error.handle(error);
     }
     finally {
@@ -218,7 +215,7 @@ export class PortalPagosPage implements OnInit {
     await sliding.close();
   }
   async mostrarDetallePago(detallePago: any, pagoExito: boolean) {
-    const modal = await this.modalCtrl.create({
+    const modal = await this.dialog.showModal({
       component: DetallePagoPage,
       handle: false,
       componentProps: {
@@ -228,8 +225,6 @@ export class PortalPagosPage implements OnInit {
       canDismiss: true,
       presentingElement: this.routerOutlet.nativeEl
     });
-
-    await modal.present();
 
     const modalResult = await modal.onWillDismiss();
 
@@ -253,7 +248,7 @@ export class PortalPagosPage implements OnInit {
   }
   get compromisosSeleccionados() {
     if (this.compromisosCtrl.value) {
-      return this.compromisosCtrl.value.filter(t => t.compromiso == true).length > 0;
+      return this.compromisosCtrl.value.filter((t: any) => t.compromiso == true).length > 0;
     }
     return false;
   }

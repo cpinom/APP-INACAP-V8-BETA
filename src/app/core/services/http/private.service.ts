@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { AuthService } from './auth.service';
+import { AuthService } from '../auth.service';
 import { CapacitorHttp, HttpOptions } from '@capacitor/core';
 import { AppGlobal } from 'src/app/app.global';
 import { Preferences } from '@capacitor/preferences';
@@ -122,11 +122,39 @@ export class PrivateService {
       return result.value ? JSON.parse(result.value) : null;
     });
   }
+  async setStorage(key: string, value: any) {
+    await Preferences.set({
+      key: `${this.storagePrefix}-${key}`,
+      value: JSON.stringify(value)
+    });
+  }
+  async removeStorage(key: string) {
+    await Preferences.remove({ key: `${this.storagePrefix}-${key}` });
+  }
+  async clearStorage() { }
   getPreferencias(): Promise<any> {
     return this.get(`${this.baseUrl}/api/v3/persona/preferencias`);
   }
   guardarPreferencias(params: any): Promise<any> {
     return this.post(`${this.baseUrl}/api/v3/persona/preferencias`, params);
+  }
+  confirmarTelefono(params: any): Promise<any> {
+    return this.post(`${this.baseUrl}/v4/persona/confirmar-telefono`, params);
+  }
+  confirmarPin(params: any): Promise<any> {
+    return this.post(`${this.baseUrl}/v4/persona/confirmar-pin`, params);
+  }
+  confirmarCorreo(params: any): Promise<any> {
+    return this.post(`${this.baseUrl}/v4/persona/confirmar-correo`, params);
+  }
+  actualizarCorreoSecundario(params: any): Promise<any> {
+    return this.post(`${this.baseUrl}/v4/persona/actualizar-correo-secundario`, params);
+  }
+  getDetalleSedeV5(sedeCcod: any) {
+    return this.get(`${this.baseUrl}/api/v5/detalle-sede?sedeCcod=${sedeCcod}`);
+  }
+  descargarMenuCafeteria(params: any) {
+    return this.post(`${this.baseUrl}/api/v4/detalle-sede/menu-cafeteria`, params);
   }
   marcarVista(apesTevento: string, apesTdescripcion?: string, apesTvalor?: string) {
     if (!this.global.Integration) {

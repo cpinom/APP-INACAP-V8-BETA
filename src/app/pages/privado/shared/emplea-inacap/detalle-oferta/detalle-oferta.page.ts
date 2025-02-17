@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-// import { Share } from '@capacitor/share';
 import * as moment from 'moment';
-import { VISTAS_ALUMNO, VISTAS_EXALUMNO } from 'src/app/app.constants';
-import { AlumnoService } from 'src/app/core/services/alumno/alumno.service';
-import { ExalumnoService } from 'src/app/core/services/exalumno/exalumno.service';
+import { VISTAS_ALUMNO } from 'src/app/core/constants/alumno';
+import { VISTAS_EXALUMNO } from 'src/app/core/constants/exalumno';
+import { AlumnoService } from 'src/app/core/services/http/alumno.service';
+import { ExalumnoService } from 'src/app/core/services/http/exalumno.service';
 import { UtilsService } from 'src/app/core/services/utils.service';
 
 @Component({
@@ -16,15 +16,17 @@ export class DetalleOfertaPage implements OnInit {
 
   data: any;
 
-  constructor(public router: Router,
-    private utils: UtilsService,
-    private exalumno: ExalumnoService,
-    private alumno: AlumnoService) {
+  private router = inject(Router);
+  private utils = inject(UtilsService);
+  private exalumno = inject(ExalumnoService);
+  private alumno = inject(AlumnoService);
+
+  constructor() {
 
     moment.locale('es');
 
-    if (router.getCurrentNavigation().extras.state) {
-      this.data = this.router.getCurrentNavigation().extras.state;
+    if (this.router.getCurrentNavigation()?.extras.state) {
+      this.data = this.router.getCurrentNavigation()?.extras.state;
     }
     else {
       if (this.esExalumno) {
@@ -43,13 +45,10 @@ export class DetalleOfertaPage implements OnInit {
       this.exalumno.marcarVista(VISTAS_EXALUMNO.DETALLE_EMPLEO);
     }
   }
-  abrirWebTrabajando(url) {
+  abrirWebTrabajando(url: string) {
     this.utils.openLink(`${url}#apply`);
   }
-  // async compartir() {
-  //   await Share.share({ url: this.data.url })
-  // }
-  formatFecha(fechaString) {
+  formatFecha(fechaString: string) {
     return moment(fechaString, 'YYYY-MM-DD').locale('es').format('D [de] MMMM, YYYY');
   }
   get esAlumno() { return this.router.url.startsWith('/alumno/servicios') }

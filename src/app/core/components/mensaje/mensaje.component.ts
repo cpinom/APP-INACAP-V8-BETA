@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { DomSanitizer } from '@angular/platform-browser';
 import { IonInput, IonTextarea, Platform } from '@ionic/angular';
 import { ErrorHandlerService } from '../../services/error-handler.service';
-import { InacapMailService } from '../../services/inacapmail.service';
+import { InacapMailService } from '../../services/http/inacapmail.service';
 import { SnackbarService } from '../../services/snackbar.service';
 import { UtilsService } from '../../services/utils.service';
 import { MediaService } from '../../services/media.service';
@@ -151,7 +151,7 @@ export class MensajeComponent implements OnInit, OnDestroy {
 
     if (this.messageId) {
       this.api.deleteMessageV5(this.messageId).catch(error => {
-        if (error.status == 401) {
+        if (error && error.status == 401) {
           this.error.handle(error);
         }
       });
@@ -201,7 +201,7 @@ export class MensajeComponent implements OnInit, OnDestroy {
         this.body?.setValue('\n\n\n\n\n\n\n\n\nEnviado desde APP INACAP', { emitEvent: false });
       }
     }
-    catch (error) { }
+    catch (error: any) { }
   }
   bindMessageBody() {
     if (this.isReply) {
@@ -235,7 +235,7 @@ export class MensajeComponent implements OnInit, OnDestroy {
     try {
       await this.api.updateMessageV5(params);
     } catch (error: any) {
-      if (error.status == 401) {
+      if (error && error.status == 401) {
         this.error.handle(error);
       }
     }
@@ -274,7 +274,7 @@ export class MensajeComponent implements OnInit, OnDestroy {
               content: base64.replace(/^data:(.*,)?/, '')
             };
           }
-          catch (error) {
+          catch (error: any) {
             this.adjuntos.splice(index, 1);
             this.snackbar.showToast('No fue posible cargar el archivo.', 2000);
           }
@@ -313,7 +313,7 @@ export class MensajeComponent implements OnInit, OnDestroy {
           content: base64.replace(/^data:(.*,)?/, '')
         };
       }
-      catch (error) {
+      catch (error: any) {
         this.adjuntos.splice(index, 1);
         this.snackbar.showToast('No fue posible cargar el archivo.', 2000);
       }
@@ -353,7 +353,7 @@ export class MensajeComponent implements OnInit, OnDestroy {
         }
       }
       catch (error: any) {
-        if (error.status == 401) {
+        if (error && error.status == 401) {
           this.error.handle(error);
         }
       }

@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { ClinicasAcademicasService } from 'src/app/core/services/clinicas-academicas.service';
+import { ClinicasAcademicasService } from 'src/app/core/services/http/clinicas-academicas.service';
 import { DialogService } from 'src/app/core/services/dialog.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 

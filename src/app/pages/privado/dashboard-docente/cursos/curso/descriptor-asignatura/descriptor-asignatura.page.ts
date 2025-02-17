@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { DocenteService } from 'src/app/core/services/docente/docente.service';
+import { DocenteService } from 'src/app/core/services/http/docente.service';
 import $ from "jquery";
 import { UtilsService } from 'src/app/core/services/utils.service';
 import { IonContent } from '@ionic/angular';
@@ -44,7 +44,7 @@ export class DescriptorAsignaturaPage implements OnInit {
       }
     }
     catch (error: any) {
-      if (error.status == 401) {
+      if (error && error.status == 401) {
         this.error.handle(error)
       }
     }

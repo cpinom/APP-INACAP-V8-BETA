@@ -52,8 +52,8 @@
           <h2 *ngIf="message.data.from">{{message.data.from.emailAddress.name}}</h2>
           <p *ngIf="message.data.toRecipients.length">
             Para: {{message.data.toRecipients[0].emailAddress.address}}
-            <span *ngIf="message.data.toRecipients.length > 1" #tooltip="matTooltip"
-              [matTooltip]="resolverDestinatarios(message)" (click)="tooltip.toggle()">1</span>
+            <!-- <span *ngIf="message.data.toRecipients.length > 1" #tooltip="matTooltip"
+              [matTooltip]="resolverDestinatarios(message)" (click)="tooltip.toggle()">1</span> -->
             {{message.data.toRecipients.length > 1 ? '+' + (message.data.toRecipients.length - 1) : ''}}
           </p>
           <p>{{message.data._fecha}}</p>

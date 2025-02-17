@@ -1,16 +1,18 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonNav } from '@ionic/angular';
-import { VISTAS_ALUMNO, VISTAS_DOCENTE, VISTAS_EXALUMNO } from 'src/app/app.constants';
-import { AlumnoService } from 'src/app/core/services/alumno/alumno.service';
-import { DocenteService } from 'src/app/core/services/docente/docente.service';
+import { AlumnoService } from 'src/app/core/services/http/alumno.service';
+import { DocenteService } from 'src/app/core/services/http/docente.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
-import { ExalumnoService } from 'src/app/core/services/exalumno/exalumno.service';
-import { InacapMailService } from 'src/app/core/services/inacapmail.service';
+import { InacapMailService } from 'src/app/core/services/http/inacapmail.service';
 import { FolderContentPage } from './folder-content/folder-content.page';
 import { FolderErrorPage } from './folder-error/folder-error.page';
 import { EventsService } from 'src/app/core/services/events.service';
 import { Subscription } from 'rxjs';
+import { ExalumnoService } from 'src/app/core/services/http/exalumno.service';
+import { VISTAS_ALUMNO } from 'src/app/core/constants/alumno';
+import { VISTAS_DOCENTE } from 'src/app/core/constants/docente';
+import { VISTAS_EXALUMNO } from 'src/app/core/constants/exalumno';
 
 @Component({
   selector: 'app-inacapmail',
@@ -26,16 +28,18 @@ export class InacapmailPage implements OnInit, OnDestroy {
   returnPath: string;
   cargando = false;
   rootPage = FolderContentPage;
-  @ViewChild('nav') nav: IonNav;
+  @ViewChild('nav') nav!: IonNav;
   errorObs: Subscription;
 
-  constructor(private router: Router,
-    private events: EventsService,
-    private api: InacapMailService,
-    private error: ErrorHandlerService,
-    private alumnoApi: AlumnoService,
-    private docenteApi: DocenteService,
-    private exalumnoApi: ExalumnoService) {
+  private router = inject(Router);
+  private events = inject(EventsService);
+  private api = inject(InacapMailService);
+  private error = inject(ErrorHandlerService);
+  private alumnoApi = inject(AlumnoService);
+  private docenteApi = inject(DocenteService);
+  private exalumnoApi = inject(ExalumnoService);
+
+  constructor() {
 
     this.errorObs = this.events.app.subscribe(event => {
       if (event.action == 'mail:folder-error-reload') {
@@ -68,13 +72,13 @@ export class InacapmailPage implements OnInit, OnDestroy {
 
         if (result.success) {
           folders = result.folders;
-        } 
+        }
         else {
           throw Error(result.message);
         }
       }
-      catch (error) {
-        if (error.status == 401) {
+      catch (error: any) {
+        if (error && error.status == 401) {
           this.error.handle(error);
         }
       }
@@ -86,10 +90,10 @@ export class InacapmailPage implements OnInit, OnDestroy {
     }
 
     this.folders = folders;
-    this.folders.forEach(folder => folder.selected = false);
+    this.folders.forEach((folder: any) => folder.selected = false);
 
     if (!this.selectedFolder) {
-      this.selectedFolder = folders.find(folder => folder.isInbox);
+      this.selectedFolder = folders.find((folder: any) => folder.isInbox);
       this.selectedFolder.selected = true;
     }
 
@@ -103,7 +107,7 @@ export class InacapmailPage implements OnInit, OnDestroy {
   }
   async folderTap(folder: any) {
     this.selectedFolder = folder;
-    this.folders.forEach(folder => folder.selected = folder.id == this.selectedFolder.id);
+    this.folders.forEach((folder: any) => folder.selected = folder.id == this.selectedFolder.id);
     this.api.setStorage('folders', this.folders);
     this.nav.setRoot(FolderContentPage, { folder: folder });
   }
@@ -116,12 +120,12 @@ export class InacapmailPage implements OnInit, OnDestroy {
 
       if (result.success) {
         folders = result.folders;
-      } 
+      }
       else {
         throw Error();
       }
 
-      folders.forEach(folder => {
+      folders.forEach((folder: any) => {
         if (folder.id == this.selectedFolder.id) {
           folder.selected = true;
         }
@@ -130,8 +134,8 @@ export class InacapmailPage implements OnInit, OnDestroy {
       this.folders = folders;
       this.api.setStorage('folders', this.folders);
     }
-    catch (error) {
-      if (error.status == 401) {
+    catch (error: any) {
+      if (error && error.status == 401) {
         this.error.handle(error);
       }
     }
@@ -142,28 +146,33 @@ export class InacapmailPage implements OnInit, OnDestroy {
   async resolverCorreos() {
     let api;
     let cursos;
-    let correos = [];
+    let correos: any[] = [];
 
     if (this.esAlumno) api = this.alumnoApi;
     else if (this.esDocente) api = this.docenteApi;
     else if (this.esExalumno) api = this.exalumnoApi;
 
-    cursos = await api.getStorage('cursos');
+    if (api) {
+      cursos = await api.getStorage('cursos');
+    }
 
     if (!cursos) {
       try {
-        let result = await api.getAlumnos();
-
-        if (result.success) {
-          cursos = result.cursos;
+        let result: any;
+        
+        if (api && 'getAlumnos' in api) {
+          result = await api.getAlumnos();
+          if (result.success) {
+            cursos = result.cursos;
+          }
         }
       }
       catch { }
     }
 
     if (cursos) {
-      cursos.forEach(curso => {
-        curso.alumnos.forEach(alumno => {
+      cursos.forEach((curso: any) => {
+        curso.alumnos.forEach((alumno: any) => {
           let index = correos.findIndex(t => t.correo == alumno.persTemailInacap);
 
           if (index == -1) {
@@ -175,8 +184,10 @@ export class InacapmailPage implements OnInit, OnDestroy {
         })
       });
 
-      api.setStorage('cursos', cursos);
-      api.setStorage('users', correos);
+      if (api) {
+        api.setStorage('cursos', cursos);
+        api.setStorage('users', correos);
+      }
     }
   }
   get esAlumno() { return this.router.url.startsWith('/alumno'); }

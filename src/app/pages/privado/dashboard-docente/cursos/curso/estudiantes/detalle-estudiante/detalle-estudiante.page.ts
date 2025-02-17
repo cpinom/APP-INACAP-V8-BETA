@@ -1,9 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
-import { DocenteService } from 'src/app/core/services/docente/docente.service';
-import * as desconocido from 'src/scripts/foto.desconocido.js';
-import * as $ from 'jquery';
+import { DocenteService } from 'src/app/core/services/http/docente.service';
+import * as desconocido from 'src/scripts/foto.desconocido';
 import 'jquery-knob';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import * as moment from 'moment';
@@ -134,8 +133,8 @@ export class DetalleEstudiantePage implements OnInit {
         throw Error();
       }
     }
-    catch (error) {
-      if (error.status == 401) {
+    catch (error: any) {
+      if (error && error.status == 401) {
         this.error.handle(error)
       }
     }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Browser } from '@capacitor/browser';
-import { PublicService } from 'src/app/core/services/public.service';
+import { PublicService } from 'src/app/core/services/http/public.service';
 
 @Component({
   selector: 'app-servicios',
@@ -25,7 +25,7 @@ export class ServiciosPage implements OnInit {
       
       this.data = response;
     }
-    catch (error) {
+    catch (error: any) {
       console.error(error);
     }
     finally {

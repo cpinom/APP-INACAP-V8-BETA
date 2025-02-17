@@ -1,0 +1,74 @@
+// @import "src/theme/horario-section.scss";
+
+ion-card.primary-card {
+    ion-card-header {
+        // padding-bottom: 10px;
+        ion-select {
+            padding: 0;
+            padding-right: 5px;
+            font-size: var(--FS22);
+            font-weight: 600;
+            flex: 1;
+            max-width: 100%;
+            color: var(--bg-contrast-color) !important;
+            opacity: 1 !important;
+        }
+    }
+    ion-card-content {
+        padding-top: 0 !important;
+    }
+}
+
+.select-container {
+    display: flex;
+    
+    ion-select {
+        min-height: auto !important;
+    }
+}
+
+.eventos {
+    ion-card-content {
+        padding: 0;
+
+        ion-item {
+            [slot="start"] {
+                flex: 0 0 40px;
+                margin: 0 15px 0 0;
+                text-align: center;
+                color: var(--ion-color-medium);
+
+                ::ng-deep b {
+                    display: block;
+                    font-size: var(--FS26);
+                    font-weight: normal;
+                    line-height: 22px;
+                }
+            }
+
+            ion-label:not(.ion-text-center) {
+                // padding-top: 15px;
+                // padding-bottom: 15px;
+            }
+        }
+    }
+}
+
+.horario-container {
+    padding-left: 15px;
+
+    h3 {
+        font-size: var(--FS16);
+        font-weight: 400;
+    }
+
+    .scroll-item .content {
+        padding: 0 10px;
+        min-height: 40px;
+
+        p.classroom {
+            font-weight: bold;
+            color: #888;
+        }
+    }
+}

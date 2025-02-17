@@ -1,16 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonRouterOutlet, LoadingController, ModalController, NavController } from '@ionic/angular';
-import { VISTAS_ALUMNO } from 'src/app/app.constants';
-import { VISTAS_EXALUMNO } from 'src/app/app.constants';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
-import { SolicitudesService } from 'src/app/core/services/solicitudes.service';
 import { SolicitudDetallePage } from './solicitud-detalle/solicitud-detalle.page';
 import { ProfileService } from 'src/app/core/services/profile.service';
 import { EventsService } from 'src/app/core/services/events.service';
+import { SolicitudesService } from 'src/app/core/services/http/solicitudes.service';
+import { VISTAS_EXALUMNO } from 'src/app/core/constants/exalumno';
+import { VISTAS_ALUMNO } from 'src/app/core/constants/alumno';
+import { DialogService } from 'src/app/core/services/dialog.service';
 
 @Component({
   selector: 'app-solicitudes-academicas',
@@ -20,32 +21,32 @@ import { EventsService } from 'src/app/core/services/events.service';
 export class SolicitudesAcademicasPage implements OnInit {
 
   activeTab: number = 0;
-  carreras: any[];
+  carreras!: any[];
   carrera: any;
-  solicitudes: any[];
-  historial: any[];
+  solicitudes!: any[];
+  historial!: any[];
   mostrarData = false;
   recargando = false;
   carreraForm: FormGroup;
 
-  constructor(private auth: AuthService,
-    private api: SolicitudesService,
-    private error: ErrorHandlerService,
-    private router: Router,
-    private modalCtrl: ModalController,
-    private loading: LoadingController,
-    private routerOutlet: IonRouterOutlet,
-    private fb: FormBuilder,
-    private events: EventsService,
-    private nav: NavController,
-    private snackbar: SnackbarService,
-    private profile: ProfileService) {
+  private api = inject(SolicitudesService);
+  private error = inject(ErrorHandlerService);
+  private router = inject(Router);
+  private dialog = inject(DialogService);
+  private routerOutlet = inject(IonRouterOutlet);
+  private fb = inject(FormBuilder);
+  private events = inject(EventsService);
+  private nav = inject(NavController);
+  private snackbar = inject(SnackbarService);
+  private profile = inject(ProfileService);
+
+  constructor() {
 
     this.carreraForm = this.fb.group({
       planCcod: ['', Validators.required]
     });
 
-    this.planCcod.valueChanges.subscribe(() => {
+    this.planCcod?.valueChanges.subscribe(() => {
       this.cargarSolicitudes();
     });
 
@@ -69,7 +70,7 @@ export class SolicitudesAcademicasPage implements OnInit {
     // Diferenciar marca si es exalumno
     if (this.esExalumno) {
       this.api.marcarVista(VISTAS_EXALUMNO.SOLICITUDES);
-    } 
+    }
     else {
       this.api.marcarVista(VISTAS_ALUMNO.SOLICITUDES);
     }
@@ -97,7 +98,7 @@ export class SolicitudesAcademicasPage implements OnInit {
 
         if (result.success) {
           const { data } = result;
-          let carrera = data.carreras.find(t => t.planCcod == planCcod);
+          let carrera = data.carreras.find((t: any) => t.planCcod == planCcod);
 
           this.carreras = data.carreras;
           this.solicitudes = data.solicitudes;
@@ -107,7 +108,7 @@ export class SolicitudesAcademicasPage implements OnInit {
             carrera = result.carreras[0];
           }
 
-          this.planCcod.setValue(carrera.planCcod, { emitEvent: false });
+          this.planCcod?.setValue(carrera.planCcod, { emitEvent: false });
           this.api.setStorage('plan', carrera.planCcod);
         }
       }
@@ -120,11 +121,11 @@ export class SolicitudesAcademicasPage implements OnInit {
         this.solicitudes = result.solicitudes;
         this.historial = result.historial;
 
-        this.planCcod.setValue(carrera.planCcod, { emitEvent: false });
+        this.planCcod?.setValue(carrera.planCcod, { emitEvent: false });
         this.api.setStorage('plan', carrera.planCcod);
       }
     }
-    catch (error) {
+    catch (error: any) {
       this.error.handle(error, async () => {
         if (error.status != 401) {
           await this.nav.navigateBack(this.backUrl);
@@ -135,9 +136,9 @@ export class SolicitudesAcademicasPage implements OnInit {
       this.mostrarData = true;
     }
   }
-  recargar(e) {
+  recargar(e: any) {
     this.cargar().finally(() => {
-      e.target.complete();
+      e && e.target.complete();
     });
   }
   async anular(soliNcorr: string) {
@@ -152,12 +153,12 @@ export class SolicitudesAcademicasPage implements OnInit {
       if (result.success) {
         this.historial = result.historial;
         this.snackbar.showToast(result.message, 3000);
-      } 
+      }
       else {
         this.snackbar.showToast(result.message, 3000, 'danger');
       }
     }
-    catch (error) {
+    catch (error: any) {
       this.error.handle(error);
     }
     finally {
@@ -168,12 +169,12 @@ export class SolicitudesAcademicasPage implements OnInit {
     this.mostrarData = false;
 
     try {
-      let params = { planCcod: this.planCcod.value };
+      let params = { planCcod: this.planCcod?.value };
       let result = await this.api.getSolicitudes(params);
       this.solicitudes = result;
-      await this.api.setStorage('plan', this.planCcod.value);
+      await this.api.setStorage('plan', this.planCcod?.value);
     }
-    catch (error) {
+    catch (error: any) {
       this.error.handle(error, () => {
         if (error.status != 401) {
           this.router.navigate([this.backUrl], { replaceUrl: true });
@@ -184,15 +185,14 @@ export class SolicitudesAcademicasPage implements OnInit {
       this.mostrarData = true;
     }
   }
-  async detalleSolicitud(item) {
-    let params = { soliNcorr: item.soliNcorr, tisoCcod: item.tisoCcod };
-    let loading = await this.loading.create({ message: 'Cargando...' });
-
-    await loading.present();
+  async detalleSolicitud(item: any) {
+    const params = { soliNcorr: item.soliNcorr, tisoCcod: item.tisoCcod };
+    const loading = await this.dialog.showLoading({ message: 'Cargando...' });
 
     try {
-      let result = await this.api.getDetalleSolicitud(params);
-      let modal = await this.modalCtrl.create({
+      const result = await this.api.getDetalleSolicitud(params);
+      await loading.dismiss();
+      const modal = await this.dialog.showModal({
         component: SolicitudDetallePage,
         componentProps: {
           data: result
@@ -201,24 +201,21 @@ export class SolicitudesAcademicasPage implements OnInit {
         presentingElement: this.routerOutlet.nativeEl
       });
 
-      await loading.dismiss();
-      await modal.present();
-
-      let detalleResult = await modal.onWillDismiss();
+      const detalleResult = await modal.onWillDismiss();
 
       if (detalleResult.data && detalleResult.data.anular == true) {
         await this.anular(item.soliNcorr);
       }
     }
-    catch (error) {
+    catch (error: any) {
       this.error.handle(error);
     }
     finally {
-      loading.dismiss();
+      await loading.dismiss();
     }
   }
-  async resolverSolicitud(item) {
-    const data = Object.assign(item, { planCcod: this.planCcod.value });
+  async resolverSolicitud(item: any) {
+    const data = Object.assign(item, { planCcod: this.planCcod?.value });
 
     if (item.tisoCcod == 1 || item.tisoCcod == 4 || item.tisoCcod == 9 || item.tisoCcod == 14 || item.tisoCcod == 19 || item.tisoCcod == 29 || item.tisoCcod == 35 || item.tisoCcod == 50) {
       await this.nav.navigateForward(`${this.router.url}/solicitud-documentos`, { state: data });
@@ -230,12 +227,13 @@ export class SolicitudesAcademicasPage implements OnInit {
       await this.nav.navigateForward(`${this.router.url}/solicitud-simple`, { state: data });
     }
   }
-  resolverClsEstado(item) {
+  resolverClsEstado(item: any) {
     if (item.esolCcod == 3) return 'danger';
     if (item.esolCcod == 2) return 'success';
     if (item.esolCcod == 1) return 'warning';
     if (item.esolCcod == 6) return 'medium';
     if (item.esolCcod == 8 || item.esolCcod == 11) return 'danger';
+    return '';
   }
   get planCcod() { return this.carreraForm.get('planCcod'); }
   get backUrl() { return this.router.url.replace('/solicitudes-academicas', ''); }

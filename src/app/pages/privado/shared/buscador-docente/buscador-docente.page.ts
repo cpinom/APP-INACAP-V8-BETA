@@ -5,7 +5,7 @@ import { IonModal, NavController } from '@ionic/angular';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { ProfileService } from 'src/app/core/services/profile.service';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
-import { BuscadorDocentesService } from 'src/app/core/services/buscador-docentes.service';
+import { BuscadorDocentesService } from 'src/app/core/services/http/buscador-docentes.service';
 import { DialogService } from 'src/app/core/services/dialog.service';
 import { VISTAS_DOCENTE } from 'src/app/core/constants/docente';
 import { VISTAS_ALUMNO } from 'src/app/core/constants/alumno';

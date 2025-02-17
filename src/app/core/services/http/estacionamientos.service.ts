@@ -7,14 +7,12 @@ import { AppGlobal } from 'src/app/app.global';
 })
 export class EstacionamientosService extends PrivateService {
 
-  private appGlobal = inject(AppGlobal);
-  private storagePrefix: string = 'Estacionamientos-MOVIL';
+  public override storagePrefix: string = 'Estacionamientos-MOVIL';
   private apiPrefix = 'api/v2/estacionamientos';
-  private baseUrl: string = '';
 
   constructor() {
     super();
-    this.baseUrl = `${this.appGlobal.Api}/${this.apiPrefix}`;
+    this.baseUrl = `${this.global.Api}/${this.apiPrefix}`;
   }
   getPrincipalV6(sedeCcod: any, aepeNcorr: any) {
     return this.get(`${this.baseUrl}/principal?sedeCcod=${sedeCcod}&aepeNcorr=${aepeNcorr}`);

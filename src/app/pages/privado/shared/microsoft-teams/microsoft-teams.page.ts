@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { MicrosoftTeamsService } from 'src/app/core/services/mteams.service';
+import { Component, inject, OnInit } from '@angular/core';
 import { UtilsService } from 'src/app/core/services/utils.service';
 import { Router } from '@angular/router';
-import { VISTAS_ALUMNO, VISTAS_DOCENTE } from 'src/app/app.constants';
 import { AppLauncher } from '@capacitor/app-launcher';
 import { IonRouterOutlet, NavController } from '@ionic/angular';
 import { DetalleEventoPage } from './detalle-evento/detalle-evento.page';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import * as moment from 'moment';
 import { DialogService } from 'src/app/core/services/dialog.service';
+import { MicrosoftTeamsService } from 'src/app/core/services/http/mteams.service';
+import { VISTAS_ALUMNO } from 'src/app/core/constants/alumno';
+import { VISTAS_DOCENTE } from 'src/app/core/constants/docente';
 
 enum Tab {
   equipos = '1',
@@ -22,27 +23,29 @@ enum Tab {
 })
 export class MicrosoftTeamsPage implements OnInit {
 
-  eventos: any[];
-  equipos: any[];
+  eventos!: any[];
+  equipos!: any[];
   tabModel = Tab.eventos;
   mostrarData = false;
   hideLoadingSpinner = false;
 
-  constructor(private api: MicrosoftTeamsService,
-    private utils: UtilsService,
-    private router: Router,
-    private dialog: DialogService,
-    private routerOutlet: IonRouterOutlet,
-    private nav: NavController,
-    private error: ErrorHandlerService) { }
+  private api = inject(MicrosoftTeamsService);
+  private utils = inject(UtilsService);
+  private router = inject(Router);
+  private dialog = inject(DialogService);
+  private routerOutlet = inject(IonRouterOutlet);
+  private nav = inject(NavController);
+  private error = inject(ErrorHandlerService);
+
+  constructor() { }
 
   async ngOnInit() {
     await this.cargar();
     this.api.marcarVista(this.Vista);
   }
-  recargar(e) {
+  recargar(e: any) {
     this.cargar(true).finally(() => {
-      e.target.complete();
+      e && e.target.complete();
     });
   }
   async cargar(forzar?: boolean) {
@@ -51,14 +54,14 @@ export class MicrosoftTeamsPage implements OnInit {
 
       if (eventos && !forzar) {
         this.eventos = eventos;
-      } 
+      }
       else {
         this.eventos = await this.api.getEventos();
       }
 
       await this.api.setStorage('eventos', this.eventos);
     }
-    catch (error) {
+    catch (error: any) {
       this.nav.navigateBack(this.backUrl)
       this.error.handle(error);
       return;
@@ -85,7 +88,7 @@ export class MicrosoftTeamsPage implements OnInit {
 
     await modal.present();
   }
-  async unirseTap(evento) {
+  async unirseTap(evento: any) {
     const appUrl = evento.url;
     try {
       await AppLauncher.openUrl({ url: appUrl });
@@ -105,7 +108,7 @@ export class MicrosoftTeamsPage implements OnInit {
       this.utils.openLink(appUrl);
     }
   }
-  resolverFecha(fecha) {
+  resolverFecha(fecha: any) {
     return moment(fecha.inicio).format('DD/MM/YYYY') + ' ' + moment(fecha.inicio).format('HH:mm') + ' - ' + moment(fecha.fin).format('HH:mm');
   }
   get backUrl() { return this.router.url.replace('/microsoft-teams', ''); }

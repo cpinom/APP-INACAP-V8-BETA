@@ -67,16 +67,7 @@ export class CertificadosService extends PrivateService {
   descargarCredencialImagen(params: any) {
     return this.post(`${this.baseUrl}/v4/credenciales-digitales/descargar-imagen`, params);
   }
-  async setStorage(key: string, value: any) {
-    await Preferences.set({
-      key: `${this.storagePrefix}-${key}`,
-      value: JSON.stringify(value)
-    });
-  }
-  async removeStorage(key: string) {
-    await Preferences.remove({ key: `${this.storagePrefix}-${key}` });
-  }
-  async clearStorage() {
+  override async clearStorage() {
     await Preferences.remove({ key: `${this.storagePrefix}-periodo` });
     await Preferences.remove({ key: `${this.storagePrefix}-carrCcod` });
   }

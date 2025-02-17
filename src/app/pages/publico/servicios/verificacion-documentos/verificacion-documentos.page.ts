@@ -4,7 +4,7 @@ import { IonModal, Platform } from '@ionic/angular';
 import { DialogService } from 'src/app/core/services/dialog.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { MediaService } from 'src/app/core/services/media.service';
-import { PublicService } from 'src/app/core/services/public.service';
+import { PublicService } from 'src/app/core/services/http/public.service';
 import { UtilsService } from 'src/app/core/services/utils.service';
 
 enum TipoCertificado {
@@ -201,7 +201,7 @@ export class VerificacionDocumentosPage implements OnInit {
         }
       }
     }
-    catch (error) {
+    catch (error: any) {
       return Promise.reject(error);
     }
     finally {

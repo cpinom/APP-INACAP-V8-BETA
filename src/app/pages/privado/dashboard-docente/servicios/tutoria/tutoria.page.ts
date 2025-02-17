@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { AppGlobal } from 'src/app/app.global';
-import { DocenteService } from 'src/app/core/services/docente/docente.service';
+import { DocenteService } from 'src/app/core/services/http/docente.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 
 @Component({

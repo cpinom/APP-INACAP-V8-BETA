@@ -3,7 +3,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Directory, Filesystem } from '@capacitor/filesystem';
 import { AlertController, IonNav, LoadingController, Platform } from '@ionic/angular';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { DocenteService } from 'src/app/core/services/docente/docente.service';
+import { DocenteService } from 'src/app/core/services/http/docente.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { EventsService } from 'src/app/core/services/events.service';
 import { MediaService } from 'src/app/core/services/media.service';
@@ -73,7 +73,7 @@ export class FotoPerfilPage implements OnInit {
         }
       }
     }
-    catch (error) {
+    catch (error: any) {
       this.error.handle(error);
     }
     finally {
@@ -103,7 +103,7 @@ export class FotoPerfilPage implements OnInit {
         }
       }
     }
-    catch (error) {
+    catch (error: any) {
       this.error.handle(error);
     }
     finally {
@@ -120,7 +120,7 @@ export class FotoPerfilPage implements OnInit {
     try {
       result = await this.api.guardarFotoPerfil(params);
     }
-    catch (error) {
+    catch (error: any) {
       this.error.handle(error);
     }
     finally {

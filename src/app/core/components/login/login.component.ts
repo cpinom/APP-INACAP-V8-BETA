@@ -94,7 +94,7 @@ export class LoginComponent implements OnInit {
           }
         }
       }
-      catch (error) {
+      catch (error: any) {
         await this.presentError('Al parecer hay un problema de conectividad. Verifique la conexión Wifi o red de Datos del dispositivo.');
       }
       finally {

@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { DocenteService } from 'src/app/core/services/docente/docente.service';
+import { DocenteService } from 'src/app/core/services/http/docente.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
-import * as desconocido from 'src/scripts/foto.desconocido.js';
+import * as desconocido from 'src/scripts/foto.desconocido';
 import { MensajeService } from 'src/app/core/services/mensaje.service';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
 import { ProfileService } from 'src/app/core/services/profile.service';
@@ -46,7 +46,7 @@ export class DirAcademicoPage implements OnInit {
       }
     }
     catch (error: any) {
-      if (error.status == 401) {
+      if (error && error.status == 401) {
         this.error.handle(error);
       }
     }

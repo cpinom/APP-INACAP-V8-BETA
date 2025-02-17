@@ -1,15 +1,15 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { localeEs } from '@mobiscroll/angular';
 import * as moment from 'moment';
 import { Subscription } from 'rxjs';
-import { VISTAS_ALUMNO } from 'src/app/app.constants';
+import { VISTAS_ALUMNO } from 'src/app/core/constants/alumno';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { EventsService } from 'src/app/core/services/events.service';
+import { ReservasEspacioService } from 'src/app/core/services/http/reservas-espacio.service';
 import { ProfileService } from 'src/app/core/services/profile.service';
-import { ReservasEspacioService } from 'src/app/core/services/reservas-espacio.service';
 
 @Component({
   selector: 'app-reserva-espacios',
@@ -23,7 +23,7 @@ export class ReservaEspaciosPage implements OnInit, OnDestroy {
   mostrarData = false;
   tabsModel = 0;
   pickerLocale = localeEs;
-  firstStep: FormGroup;
+  firstStep!: FormGroup;
   hideLoadingSpinner = false;
   cliente: any;
   categorias: any;
@@ -32,12 +32,14 @@ export class ReservaEspaciosPage implements OnInit, OnDestroy {
   subscription: Subscription;
   sedeCcod: any;
 
-  constructor(private router: Router,
-    private api: ReservasEspacioService,
-    private profile: ProfileService,
-    private nav: NavController,
-    private events: EventsService,
-    private error: ErrorHandlerService) {
+  private router = inject(Router);
+  private api = inject(ReservasEspacioService);
+  private profile = inject(ProfileService);
+  private nav = inject(NavController);
+  private events = inject(EventsService);
+  private error = inject(ErrorHandlerService);
+
+  constructor() {
     this.subscription = this.events.app.subscribe((event: any) => {
       if (event.action == 'app:reserva-espacios-reload') {
         this.cargar();
@@ -48,7 +50,7 @@ export class ReservaEspaciosPage implements OnInit, OnDestroy {
     this.profile.getStorage('principal').then(principal => {
       if (principal) {
         if (this.esDocente) {
-          let sedes = principal.sedes.filter(t => t.sedeCcod != 33);
+          let sedes = principal.sedes.filter((t: any) => t.sedeCcod != 33);
           this.sedeCcod = sedes[0].sedeCcod;
           this.cargar();
         }
@@ -74,13 +76,13 @@ export class ReservaEspaciosPage implements OnInit, OnDestroy {
         this.categorias = result.categorias;
         this.reservas = result.reservas;
         this.permiteReservar = true;
-      } 
+      }
       else {
         this.permiteReservar = false;
       }
     }
     catch (error: any) {
-      if (error.status == 401) {
+      if (error && error.status == 401) {
         this.error.handle(error);
       }
     }

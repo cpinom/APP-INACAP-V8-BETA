@@ -5,7 +5,7 @@ import * as moment from 'moment';
 import { Subscription } from 'rxjs';
 import { AppGlobal } from 'src/app/app.global';
 import { VISTAS_DOCENTE } from 'src/app/core/constants/docente';
-import { DocenteService } from 'src/app/core/services/docente/docente.service';
+import { DocenteService } from 'src/app/core/services/http/docente.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { EventsService } from 'src/app/core/services/events.service';
 import { ProfileService } from 'src/app/core/services/profile.service';
@@ -71,7 +71,7 @@ export class NotificacionesPage implements OnInit, OnDestroy {
     catch (error: any) {
       this.mostrarEmpty = true;
 
-      if (error.status == 401) {
+      if (error && error.status == 401) {
         this.error.handle(error);
       }
     }
@@ -173,7 +173,7 @@ export class NotificacionesPage implements OnInit, OnDestroy {
         throw Error();
       }
     }
-    catch (error) {
+    catch (error: any) {
       this.error.handle(error);
     }
     finally {
@@ -202,7 +202,7 @@ export class NotificacionesPage implements OnInit, OnDestroy {
         throw Error();
       }
     }
-    catch (error) {
+    catch (error: any) {
       this.error.handle(error);
     }
     finally {

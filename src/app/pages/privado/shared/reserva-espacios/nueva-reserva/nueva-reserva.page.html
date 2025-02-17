@@ -38,7 +38,7 @@
                   </ion-select-option>
                 </ion-select>
               </ion-item>
-              <div class="error" *ngIf="categoria.hasError('required')">Campo obligatorio</div>
+              <div class="error" *ngIf="categoria?.hasError('required')">Campo obligatorio</div>
               <ng-container *ngIf="proveedores">
                 <ion-item>
                   <ion-select label="Espacio a Reservar" formControlName="proveedor" labelPlacement="stacked"
@@ -48,7 +48,7 @@
                     </ion-select-option>
                   </ion-select>
                 </ion-item>
-                <div class="error" *ngIf="proveedor.hasError('required')">Campo obligatorio</div>
+                <div class="error" *ngIf="proveedor?.hasError('required')">Campo obligatorio</div>
               </ng-container>
             </ion-list>
           </div>
@@ -117,7 +117,7 @@
 
     </mat-step>
 
-    <mat-step [stepControl]="aditionalsFieldStep">
+    <mat-step [stepControl]="aditionalsFieldStep"  *ngIf="aditionalsFieldStep">
       <ng-container *ngIf="aditionalsFieldStep">
         <form [formGroup]="aditionalsFieldStep">
           <section>
@@ -142,7 +142,7 @@
                           [label]="campo.field_name" labelPlacement="stacked"></ion-input>
                       </ng-container>
                     </ion-item>
-                    <div class="error" *ngIf="campo.is_visible && !aditionalsFieldStep.get(campo.name).valid">
+                    <div class="error" *ngIf="campo.is_visible && !aditionalsFieldStep.get(campo.name)?.valid">
                       Campo obligatorio
                     </div>
                   </ng-container>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { VISTAS_DOCENTE } from 'src/app/core/constants/docente';
-import { DocenteService } from 'src/app/core/services/docente/docente.service';
+import { DocenteService } from 'src/app/core/services/http/docente.service';
 
 @Component({
   selector: 'app-buzon-opinion',

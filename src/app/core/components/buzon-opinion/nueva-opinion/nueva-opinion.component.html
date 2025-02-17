@@ -1,0 +1,108 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Nueva Opinión</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrar()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+
+  <form [formGroup]="opinionForm" (ngSubmit)="enviar()">
+    <section>
+      <div class="section-content">
+        <ion-list>
+          <ion-item>
+            <!-- <ion-label position="stacked">Tipo de Opinión</ion-label> -->
+            <ion-select label="Tipo de Opinión" labelPlacement="stacked" name="clasificacion" interface="alert" placeholder="Seleccione" formControlName="clopCcod"
+              okText="Aceptar" cancelText="Cancelar">
+              <ion-select-option [value]="item.clopCcod" *ngFor="let item of clasificaciones">
+                {{item.clopTdesc}}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+          <div class="msje-error" *ngIf="(submitAttempt || clopCcod?.dirty || clopCcod?.touched) && clopCcod?.invalid">
+            <span *ngIf="clopCcod?.hasError('required')">Debe seleccionar el tipo de opinión que desea enviar</span>
+          </div>
+          <ion-item>
+            <!-- <ion-label position="stacked">Categoría</ion-label> -->
+            <ion-select label="Categoría" labelPlacement="stacked" name="topico" interface="alert" placeholder="Seleccione" formControlName="ticoCcod"
+              (ionChange)="getSubcategorias(ticoCcod?.value)" okText="Aceptar" cancelText="Cancelar">
+              <ion-select-option [value]="item.ticoCcod" *ngFor="let item of topicos">
+                {{item.ticoTdesc}}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+          <div class="msje-error" *ngIf="(submitAttempt || ticoCcod?.dirty || ticoCcod?.touched) && ticoCcod?.invalid">
+            <span *ngIf="ticoCcod?.hasError('required')">Debe seleccionar una categoría</span>
+          </div>
+          <ion-item>
+            <!-- <ion-label position="stacked">Subcategoría</ion-label> -->
+            <ion-select label="Subcategoría" labelPlacement="stacked" name="tema" interface="alert" placeholder="Seleccione" formControlName="coopCcod"
+              okText="Aceptar" cancelText="Cancelar">
+              <ion-select-option [value]="item.coopCcod" *ngFor="let item of temas">
+                {{item.coopTdesc}}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+          <div class="msje-error" *ngIf="(submitAttempt || coopCcod?.dirty || coopCcod?.touched) && coopCcod?.invalid">
+            <span *ngIf="coopCcod?.hasError('required')">Debe seleccionar una subcategoría</span>
+          </div>
+          <ion-item>
+            <ion-label position="stacked">Escribe aquí tu opinión</ion-label>
+            <ion-textarea name="mensaje" rows="5" formControlName="resoTsugerencia"></ion-textarea>
+          </ion-item>
+          <div class="msje-error" *ngIf="(submitAttempt || mensaje?.dirty || mensaje?.touched) && mensaje?.invalid">
+            <span *ngIf="mensaje?.hasError('required')">Debe escribir su opinión.</span>
+            <span *ngIf="mensaje?.hasError('pattern')">Sólo puede ingresar caracteres alfanuméricos.</span>
+            <span *ngIf="mensaje?.hasError('maxlength')">Máximo 2000 caracteres.</span>
+          </div>
+        </ion-list>
+      </div>
+    </section>
+    <section class="thumbnail-section">
+      <div class="section-header">Adjuntar Documentos</div>
+      <div class="section-content">
+        <ion-list *ngIf="solicitudId == 0">
+          <ion-item class="has-icon normal" (click)="adjuntarArchivo(archivoInput)">
+            <ion-icon slot="start" src="assets/icon/add_a_photo.svg" color="medium"></ion-icon>
+            <ion-label>Adjuntar foto o documento</ion-label>
+          </ion-item>
+        </ion-list>
+        <ion-list *ngIf="solicitudId > 0">
+          <ion-item class="has-icon normal">
+            <ion-label>{{nombreDocumento}}</ion-label>
+            <ion-button fill="outline" slot="end" size="small" color="danger" (click)="solicitudId = 0">Eliminar</ion-button>
+          </ion-item>
+        </ion-list>
+        <!-- <ion-list>
+          <ion-item (click)="adjuntar()" *ngIf="!archivo.value">
+            <ion-icon slot="start" src="assets/icon/add_a_photo.svg"></ion-icon>
+            <ion-label>
+              <span>Adjuntar foto o documento</span>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+        <ion-list *ngIf="archivo.value">
+          <ion-item>
+            <ion-thumbnail slot="start" *ngIf="imagenAdjunto()">
+              <img [src]="'data:image/png;base64,' + archivo.value.data">
+            </ion-thumbnail>
+            <ion-label>{{archivo.value.name}}</ion-label>
+            <ion-button fill="outline" slot="end" size="small" color="danger" (click)="eliminarFoto()">Eliminar</ion-button>
+          </ion-item>
+        </ion-list> -->
+        <!-- <ion-button class="eliminarFoto" expand="full" fill="clear" (click)="eliminarFoto()" *ngIf="image64">
+          Eliminar</ion-button> -->
+      </div>
+    </section>
+    <ion-button color="info" shape="round" expand="block" type="submit">Enviar</ion-button>
+  </form>
+
+  <input type="file" #archivoInput style="display: none;" (change)="adjuntarArchivoWeb($event)"
+        accept="application/pdf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,image/*" />
+
+  
+</ion-content>

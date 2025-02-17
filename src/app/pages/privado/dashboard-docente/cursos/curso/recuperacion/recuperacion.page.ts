@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonRouterOutlet } from '@ionic/angular';
 import { SolicitarRecuperacionPage } from './solicitar-recuperacion/solicitar-recuperacion.page';
-import { DocenteService } from 'src/app/core/services/docente/docente.service';
+import { DocenteService } from 'src/app/core/services/http/docente.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import * as moment from 'moment';
 import { DialogService } from 'src/app/core/services/dialog.service';
@@ -18,7 +18,7 @@ export class RecuperacionPage implements OnInit {
   seccion: any;
   data: any;
   mostrarData = false;
-  tabsModel = 0;
+  tabsModel = 0; 
 
   constructor(private api: DocenteService,
     private error: ErrorHandlerService,

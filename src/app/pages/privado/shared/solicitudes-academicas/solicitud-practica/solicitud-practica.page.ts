@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ActionSheetController, IonModal, IonRouterOutlet, NavController } from '@ionic/angular';
-import { VISTAS_ALUMNO } from 'src/app/app.constants';
+import { VISTAS_ALUMNO } from 'src/app/core/constants/alumno';
 import { DialogService } from 'src/app/core/services/dialog.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { EventsService } from 'src/app/core/services/events.service';
+import { SolicitudesService } from 'src/app/core/services/http/solicitudes.service';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
-import { SolicitudesService } from 'src/app/core/services/solicitudes.service';
 import { ValidateRut } from 'src/app/core/validators/rut.validators';
 
 export enum SOLICITUD {
@@ -23,14 +23,14 @@ export enum SOLICITUD {
 })
 export class SolicitudPracticaPage implements OnInit {
 
-  praticaForm: FormGroup;
+  praticaForm!: FormGroup;
   patternStr = '^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ!@#"\'\n\r\$%\^\&*\ \)\(+=.,_-]+$';
   patternNum = '^[0-9]*$';
   data: any;
   submitted = false;
   solicitud: any;
   detalleSolicitud: any;
-  showMore: boolean;
+  showMore!: boolean;
 
   constructor(private fb: FormBuilder,
     private router: Router,
@@ -42,7 +42,7 @@ export class SolicitudPracticaPage implements OnInit {
     public routerOutlet: IonRouterOutlet,
     private events: EventsService,
     private action: ActionSheetController) {
-    this.solicitud = this.router.getCurrentNavigation().extras.state;
+    this.solicitud = this.router.getCurrentNavigation()?.extras.state;
   }
   async ngOnInit() {
     if (!this.solicitud) {
@@ -109,63 +109,63 @@ export class SolicitudPracticaPage implements OnInit {
         preguntas: ['', Validators.required]
       });
 
-      this.tipos.valueChanges.subscribe((treqCcod) => {
-        this.horasPractica.clearValidators();
-        this.horasPracticaIngreso.clearValidators();
+      this.tipos?.valueChanges.subscribe((treqCcod) => {
+        this.horasPractica?.clearValidators();
+        this.horasPracticaIngreso?.clearValidators();
 
         if (treqCcod == 4) {
-          this.horasPractica.setValidators(Validators.required);
-          this.horasPractica.updateValueAndValidity();
+          this.horasPractica?.setValidators(Validators.required);
+          this.horasPractica?.updateValueAndValidity();
           this.cargarHoras();
         }
         else {
-          this.horasPracticaIngreso.setValidators([
+          this.horasPracticaIngreso?.setValidators([
             Validators.required,
             Validators.pattern(this.patternNum),
             Validators.min(1)
           ]);
         }
 
-        this.horasPractica.updateValueAndValidity();
-        this.horasPracticaIngreso.updateValueAndValidity();
+        this.horasPractica?.updateValueAndValidity();
+        this.horasPracticaIngreso?.updateValueAndValidity();
       });
 
-      this.pais.valueChanges.subscribe((paisCcod) => {
+      this.pais?.valueChanges.subscribe((paisCcod) => {
         if (paisCcod == 1) {
-          this.clearValidators(this.ciudadExtranjera);
-          this.region.setValidators(Validators.required);
-          this.region.updateValueAndValidity();
-          this.ciudad.setValidators(Validators.required);
-          this.ciudad.updateValueAndValidity();
-          this.comuna.setValidators(Validators.required);
-          this.comuna.updateValueAndValidity();
-        } 
+          this.ciudadExtranjera && this.clearValidators(this.ciudadExtranjera);
+          this.region?.setValidators(Validators.required);
+          this.region?.updateValueAndValidity();
+          this.ciudad?.setValidators(Validators.required);
+          this.ciudad?.updateValueAndValidity();
+          this.comuna?.setValidators(Validators.required);
+          this.comuna?.updateValueAndValidity();
+        }
         else {
-          this.clearValidators(this.region);
-          this.clearValidators(this.ciudad);
-          this.clearValidators(this.comuna);
-          this.ciudadExtranjera.setValidators(Validators.required);
-          this.ciudadExtranjera.updateValueAndValidity();
+          this.region && this.clearValidators(this.region);
+          this.ciudad && this.clearValidators(this.ciudad);
+          this.comuna && this.clearValidators(this.comuna);
+          this.ciudadExtranjera?.setValidators(Validators.required);
+          this.ciudadExtranjera?.updateValueAndValidity();
         }
       });
 
-      this.region.valueChanges.subscribe(() => {
+      this.region?.valueChanges.subscribe(() => {
         this.cargarCiudades()
       });
 
-      this.ciudad.valueChanges.subscribe(() => {
+      this.ciudad?.valueChanges.subscribe(() => {
         this.cargarComunas();
       });
 
       if (this.data.tipos.length) {
-        this.tipos.setValue(this.data.tipos[0].treqCcod, { emitEvent: false });
+        this.tipos?.setValue(this.data.tipos[0].treqCcod, { emitEvent: false });
       }
 
       if (this.data.horasPracticas.length) {
-        this.horasPractica.setValue(this.data.horasPracticas[0].horas, { emitEvent: false });
+        this.horasPractica?.setValue(this.data.horasPracticas[0].horas, { emitEvent: false });
       }
 
-      this.pais.setValue(1);
+      this.pais?.setValue(1);
 
     }
     else if (this.solicitud.tisoCcod == SOLICITUD.CONVALIDACION_PRACTICA) {
@@ -200,46 +200,46 @@ export class SolicitudPracticaPage implements OnInit {
         condicion: ['', Validators.required]
       });
 
-      this.tipos.valueChanges.subscribe(() => {
+      this.tipos?.valueChanges.subscribe(() => {
         this.cargarHoras();
       });
 
-      this.pais.valueChanges.subscribe((paisCcod) => {
+      this.pais?.valueChanges.subscribe((paisCcod) => {
         if (paisCcod == 1) {
-          this.clearValidators(this.ciudadExtranjera);
-          this.region.setValidators(Validators.required);
-          this.region.updateValueAndValidity();
-          this.ciudad.setValidators(Validators.required);
-          this.ciudad.updateValueAndValidity();
-          this.comuna.setValidators(Validators.required);
-          this.comuna.updateValueAndValidity();
-        } 
+          this.ciudadExtranjera && this.clearValidators(this.ciudadExtranjera);
+          this.region?.setValidators(Validators.required);
+          this.region?.updateValueAndValidity();
+          this.ciudad?.setValidators(Validators.required);
+          this.ciudad?.updateValueAndValidity();
+          this.comuna?.setValidators(Validators.required);
+          this.comuna?.updateValueAndValidity();
+        }
         else {
-          this.clearValidators(this.region);
-          this.clearValidators(this.ciudad);
-          this.clearValidators(this.comuna);
-          this.ciudadExtranjera.setValidators(Validators.required);
-          this.ciudadExtranjera.updateValueAndValidity();
+          this.region && this.clearValidators(this.region);
+          this.ciudad && this.clearValidators(this.ciudad);
+          this.comuna && this.clearValidators(this.comuna);
+          this.ciudadExtranjera?.setValidators(Validators.required);
+          this.ciudadExtranjera?.updateValueAndValidity();
         }
       });
 
-      this.region.valueChanges.subscribe(() => {
+      this.region?.valueChanges.subscribe(() => {
         this.cargarCiudades()
       });
 
-      this.ciudad.valueChanges.subscribe(() => {
+      this.ciudad?.valueChanges.subscribe(() => {
         this.cargarComunas();
       });
 
       if (this.data.tiposPracticas.length) {
-        this.tipos.setValue(this.data.tiposPracticas[0].treqCcod, { emitEvent: false });
+        this.tipos?.setValue(this.data.tiposPracticas[0].treqCcod, { emitEvent: false });
       }
 
       if (this.data.horasPracticas.length) {
-        this.horasPractica.setValue(this.data.horasPracticas[0].horas, { emitEvent: false });
+        this.horasPractica?.setValue(this.data.horasPracticas[0].horas, { emitEvent: false });
       }
 
-      this.pais.setValue(1);
+      this.pais?.setValue(1);
 
     }
     else if (this.solicitud.tisoCcod == SOLICITUD.HOMOLOGACION_PRACTICA) {
@@ -250,22 +250,22 @@ export class SolicitudPracticaPage implements OnInit {
         horasPractica: []
       });
 
-      this.motivo.valueChanges.subscribe((value) => {
+      this.motivo?.valueChanges.subscribe((value) => {
         if (value == 1) {
-          this.horasPractica.clearValidators();
+          this.horasPractica?.clearValidators();
         }
         else if (value == 2) {
-          this.horasPractica.setValidators([
+          this.horasPractica?.setValidators([
             Validators.required,
             Validators.pattern(this.patternNum),
             Validators.min(1)
           ])
         }
-        this.horasPractica.updateValueAndValidity();
+        this.horasPractica?.updateValueAndValidity();
       });
 
       if (this.data.tiposPracticas.length) {
-        this.tipos.setValue(this.data.tiposPracticas[0].treqCcod, { emitEvent: false });
+        this.tipos?.setValue(this.data.tiposPracticas[0].treqCcod, { emitEvent: false });
       }
 
     }
@@ -289,7 +289,7 @@ export class SolicitudPracticaPage implements OnInit {
         throw Error();
       }
     }
-    catch (error) {
+    catch (error: any) {
       this.error.handle(error, async () => {
         await this.nav.navigateBack(this.backUrl);
       });
@@ -302,33 +302,33 @@ export class SolicitudPracticaPage implements OnInit {
     this.submitted = true;
 
     if (this.praticaForm.valid) {
-      let params = { tisoCcod: this.solicitud.tisoCcod, planCcod: this.solicitud.planCcod };
+      let params: any = { tisoCcod: this.solicitud.tisoCcod, planCcod: this.solicitud.planCcod };
 
       if (this.solicitud.tisoCcod == SOLICITUD.INSCRIPCION_PRACTICA) {
         params = Object.assign(this.praticaForm.value, params, {
-          rut: format(this.rut.value).split('.').join(''),
-          rutContacto: format(this.rutContacto.value).split('.').join('')
+          rut: format(this.rut?.value).split('.').join(''),
+          rutContacto: format(this.rutContacto?.value).split('.').join('')
         });
       }
       else if (this.solicitud.tisoCcod == SOLICITUD.CONVALIDACION_PRACTICA) {
         params = Object.assign(params, {
-          treqCcod: this.tipos.value,
-          rutEmpresa: format(this.rut.value).split('.').join(''),
-          nombreEmpresa: this.nombre.value,
-          direccionEmpresa: this.direccion.value,
-          paisCcod: this.pais.value,
-          comuCcod: this.comuna.value,
-          ciudCcod: this.ciudad.value,
-          regiCcod: this.region.value,
-          ciudadExtranjera: this.ciudadExtranjera.value,
-          clacCcod: this.sector.value,
-          horasPractica: this.horasPractica.value,
-          ttraCcod: this.condicion.value
+          treqCcod: this.tipos?.value,
+          rutEmpresa: format(this.rut?.value).split('.').join(''),
+          nombreEmpresa: this.nombre?.value,
+          direccionEmpresa: this.direccion?.value,
+          paisCcod: this.pais?.value,
+          comuCcod: this.comuna?.value,
+          ciudCcod: this.ciudad?.value,
+          regiCcod: this.region?.value,
+          ciudadExtranjera: this.ciudadExtranjera?.value,
+          clacCcod: this.sector?.value,
+          horasPractica: this.horasPractica?.value,
+          ttraCcod: this.condicion?.value
         });
       }
       else if (this.solicitud.tisoCcod == SOLICITUD.HOMOLOGACION_PRACTICA) {
-        if (this.motivo.value == 2) {
-          var horasIngreso = parseInt(this.horasPractica.value);
+        if (this.motivo?.value == 2) {
+          var horasIngreso = parseInt(this.horasPractica?.value);
           let horasMaxIngreso = parseInt(this.data.horasPracticasNro);
 
           if (horasIngreso > horasMaxIngreso) {
@@ -336,15 +336,15 @@ export class SolicitudPracticaPage implements OnInit {
             return;
           }
 
-          params['horasPracticaIngreso'] = this.horasPractica.value;
+          params['horasPracticaIngreso'] = this.horasPractica?.value;
         }
         else {
           params['horasPracticaIngreso'] = '';
         }
 
-        params['treqCcod'] = this.tipos.value;
-        params['id'] = this.motivo.value;
-        params['name'] = this.motivo.value == 1 ? 'Otros Estudios' : 'Actividades de Vinculación con el Medio';
+        params['treqCcod'] = this.tipos?.value;
+        params['id'] = this.motivo?.value;
+        params['name'] = this.motivo?.value == 1 ? 'Otros Estudios' : 'Actividades de Vinculación con el Medio';
       }
 
       let confirm = await this.confirmarEnvio();
@@ -365,7 +365,7 @@ export class SolicitudPracticaPage implements OnInit {
           this.detalleSolicitud = result.message;
         }
       }
-      catch (error) {
+      catch (error: any) {
         this.error.handle(error);
       }
       finally {
@@ -409,20 +409,20 @@ export class SolicitudPracticaPage implements OnInit {
   async cargarCiudades() {
     let control = this.region;
 
-    if (control.valid && this.pais.value == 1) {
+    if (control?.valid && this.pais?.value == 1) {
       let loading = await this.snackbar.create('Cargando...', false, 'secondary');
 
       await loading.present();
 
       try {
-        let params = { regiCcod: control.value };
+        let params = { regiCcod: control?.value };
         let result = await this.api.getCiudades(params);
         this.data.ciudades = result;
         this.data.comunas = [];
-        this.ciudad.setValue('', { emitEvent: false });
-        this.comuna.setValue('', { emitEvent: false });
+        this.ciudad?.setValue('', { emitEvent: false });
+        this.comuna?.setValue('', { emitEvent: false });
       }
-      catch (error) {
+      catch (error: any) {
         this.error.handle(error);
       }
       finally {
@@ -433,24 +433,24 @@ export class SolicitudPracticaPage implements OnInit {
   async cargarComunas() {
     let control = this.ciudad;
 
-    if (control.valid && this.pais.value == 1) {
+    if (control?.valid && this.pais?.value == 1) {
       let loading = await this.snackbar.create('Cargando...', false, 'secondary');
 
       await loading.present();
 
       try {
-        let params = { ciudCcod: control.value, regiCcod: this.region.value };
+        let params = { ciudCcod: control?.value, regiCcod: this.region?.value };
         let result = await this.api.getComunas(params);
         this.data.comunas = result;
 
         if (this.data.comunas.length == 1) {
-          this.comuna.patchValue(this.data.comunas[0]['codigo']);
-        } 
+          this.comuna?.patchValue(this.data.comunas[0]['codigo']);
+        }
         else {
-          this.comuna.setValue('', { emitEvent: false });
+          this.comuna?.setValue('', { emitEvent: false });
         }
       }
-      catch (error) {
+      catch (error: any) {
         this.error.handle(error);
       }
       finally {
@@ -459,7 +459,7 @@ export class SolicitudPracticaPage implements OnInit {
     }
   }
   async cargarHoras() {
-    if (this.tipos.valid) {
+    if (this.tipos?.valid) {
       let params = { planCcod: this.solicitud.planCcod, treqCcod: this.tipos.value };
       let loading = await this.snackbar.create('Cargando...', false, 'secondary');
 
@@ -470,10 +470,10 @@ export class SolicitudPracticaPage implements OnInit {
 
         if (result.success) {
           this.data.horas = result.horas;
-        } 
+        }
         else { }
       }
-      catch (error) {
+      catch (error: any) {
         this.error.handle(error);
       }
       finally {
@@ -486,11 +486,11 @@ export class SolicitudPracticaPage implements OnInit {
     this.nav.navigateBack(this.backUrl);
   }
   clearValidators(control: AbstractControl) {
-    control.clearValidators();
-    control.setValue('');
-    control.updateValueAndValidity();
+    control?.clearValidators();
+    control?.setValue('');
+    control?.updateValueAndValidity();
   }
-  trimString(string, length) {
+  trimString(string: string, length: number) {
     return string.length > length
       ? string.substring(0, length) + "..."
       : string;
@@ -527,11 +527,11 @@ export class SolicitudPracticaPage implements OnInit {
 
 }
 
-function clean(rut) {
+function clean(rut: string) {
   return typeof rut === 'string' ? rut.replace(/^0+|[^0-9kK]+/g, '').toUpperCase() : '';
 }
 
-function format(rut) {
+function format(rut: string) {
   rut = clean(rut);
 
   let result = rut.slice(-4, -1) + '-' + rut.substr(rut.length - 1);

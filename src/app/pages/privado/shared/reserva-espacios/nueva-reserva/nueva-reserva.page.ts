@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
 import { Router } from '@angular/router';
@@ -8,9 +8,9 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { DialogService } from 'src/app/core/services/dialog.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { EventsService } from 'src/app/core/services/events.service';
-import { ReservasEspacioService } from 'src/app/core/services/reservas-espacio.service';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
 import * as moment from 'moment';
+import { ReservasEspacioService } from 'src/app/core/services/http/reservas-espacio.service';
 
 @Component({
   selector: 'app-nueva-reserva',
@@ -27,21 +27,24 @@ export class NuevaReservaPage implements OnInit {
   camposAdicionales: any;
   firstStep: FormGroup;
   secondStep: FormGroup;
-  aditionalsFieldStep: FormGroup;
+  aditionalsFieldStep: FormGroup | undefined;
   pickerLocale = localeEs;
   fechaConsulta: any;
   slots: any;
   user: any;
 
-  constructor(private router: Router,
-    private api: ReservasEspacioService,
-    private dialog: DialogService,
-    private fb: FormBuilder,
-    private nav: NavController,
-    private events: EventsService,
-    private snackbar: SnackbarService,
-    private error: ErrorHandlerService,
-    private auth: AuthService) {
+  private router = inject(Router);
+  private api = inject(ReservasEspacioService);
+  private dialog = inject(DialogService);
+  private fb = inject(FormBuilder);
+  private nav = inject(NavController);
+  private events = inject(EventsService);
+  private snackbar = inject(SnackbarService);
+  private error = inject(ErrorHandlerService);
+  private auth = inject(AuthService);
+
+
+  constructor() {
 
     this.firstStep = this.fb.group({
       categoria: ['', Validators.required],
@@ -53,29 +56,29 @@ export class NuevaReservaPage implements OnInit {
       hora: ['', Validators.required]
     });
 
-    this.categoria.valueChanges.subscribe(() => {
+    this.categoria?.valueChanges.subscribe(() => {
       this.categoriasChange();
     });
 
-    this.fecha.valueChanges.subscribe((value: any) => {
+    this.fecha?.valueChanges.subscribe((value: any) => {
       this.fechaConsulta = moment(value).format('YYYY-MM-DD');
 
-      if (this.proveedor.valid) {
+      if (this.proveedor?.valid) {
         this.cargarDisponibilidad();
       }
     });
 
   }
   async ngOnInit() {
-    const params = this.router.getCurrentNavigation().extras.state;
+    const params = this.router.getCurrentNavigation()?.extras.state;
 
     if (params) {
       this.cliente = params['cliente'];
       this.categorias = params['categorias'];
-      this.user = await this.auth.getUser();
+      this.user = (await this.auth.getAuth()).user;
 
       if (this.categorias.length == 1) {
-        this.categoria.setValue(this.categorias[0]);
+        this.categoria?.setValue(this.categorias[0]);
       }
     }
     else {
@@ -87,9 +90,9 @@ export class NuevaReservaPage implements OnInit {
   }
   async categoriasChange() {
     const loading = await this.dialog.showLoading({ message: 'Cargando...' });
-    const arcaCcodServicio = this.categoria.value.arcaCcodServicio;
+    const arcaCcodServicio = this.categoria?.value.arcaCcodServicio;
 
-    this.proveedor.setValue('');
+    this.proveedor?.setValue('');
 
     try {
       const result = await this.api.getProveedoresV2(arcaCcodServicio);
@@ -98,7 +101,7 @@ export class NuevaReservaPage implements OnInit {
         this.proveedores = result.proveedores;
 
         if (result.proveedores.length == 1) {
-          this.proveedor.setValue(this.proveedores[0], { emitEvent: true })
+          this.proveedor?.setValue(this.proveedores[0], { emitEvent: true })
         }
       }
       else {
@@ -111,8 +114,8 @@ export class NuevaReservaPage implements OnInit {
         return;
       }
 
-      this.categoria.setValue('', { emitEvent: false });
-      this.snackbar.showToast('Ha ocurrido un error mientras se procesaba su solicitud.');
+      this.categoria?.setValue('', { emitEvent: false });
+      await this.snackbar.showToast('Ha ocurrido un error mientras se procesaba su solicitud.');
     }
     finally {
       await loading.dismiss();
@@ -131,14 +134,14 @@ export class NuevaReservaPage implements OnInit {
     // Va en retroceso
     else {
       if (e.selectedIndex == 0) {
-        this.proveedor.setValue('');
+        this.proveedor?.setValue('');
         this.slots = [];
-        this.fecha.setValue('', { emitEvent: false });
-        this.hora.setValue('');
+        this.fecha?.setValue('', { emitEvent: false });
+        this.hora?.setValue('');
       }
       else if (e.selectedIndex == 1) {
         this.slots = [];
-        this.hora.setValue('');
+        this.hora?.setValue('');
         this.camposAdicionales = undefined;
         this.aditionalsFieldStep = undefined;
         await this.cargarDisponibilidad();
@@ -148,23 +151,25 @@ export class NuevaReservaPage implements OnInit {
     }
   }
   seleccionarEspacio(hora: string) {
-    this.hora.setValue(hora);
-    this.myStepper.next();
+    this.hora?.setValue(hora);
+    this.myStepper?.next();
   }
   prevStep() {
-    this.myStepper.selected.completed = false;
-    this.myStepper.previous();
+    if (this.myStepper?.selected) {
+      this.myStepper.selected.completed = false;
+    }
+    this.myStepper?.previous();
   }
   async onHorarioChange(args: any) {
-    this.fecha.setValue(moment(args.firstDay).toDate());
+    this.fecha?.setValue(moment(args.firstDay).toDate());
   }
   async cargarDisponibilidad() {
     const loading = await this.dialog.showLoading({ message: 'Cargando...' });
     const params = {
-      arcaCcod: this.categoria.value.arcaCcod,
-      idServicio: this.categoria.value.arcaCcodServicio,
-      idProveedor: this.proveedor.value.id,
-      contador: this.proveedor.value.cantidad,
+      arcaCcod: this.categoria?.value.arcaCcod,
+      idServicio: this.categoria?.value.arcaCcodServicio,
+      idProveedor: this.proveedor?.value.id,
+      contador: this.proveedor?.value.cantidad,
       fechaConsulta: this.fechaConsulta
     };
 
@@ -192,10 +197,10 @@ export class NuevaReservaPage implements OnInit {
   }
   async cargarCamposAdicionales() {
     const loading = await this.dialog.showLoading({ message: 'Cargando...' });
-    let arcaCcodServicio: string = this.categoria.value.arcaCcodServicio;
+    let arcaCcodServicio: string = this.categoria?.value.arcaCcodServicio;
 
     if (arcaCcodServicio.indexOf(',') > -1) {
-      arcaCcodServicio = this.proveedor.value.id.split('|')[1];
+      arcaCcodServicio = this.proveedor?.value.id.split('|')[1];
     }
 
     try {
@@ -204,9 +209,9 @@ export class NuevaReservaPage implements OnInit {
       if (result.success) {
         this.camposAdicionales = result.camposAdicionales;
 
-        let campos = {};
+        let campos: any = {};
 
-        this.camposAdicionales.forEach(field => {
+        this.camposAdicionales.forEach((field: any) => {
           let value = field.default_value ? field.default_value : '';
           let required = !field.optional ? Validators.required : false;
 
@@ -238,7 +243,7 @@ export class NuevaReservaPage implements OnInit {
     }
   }
   async crearReservaV2() {
-    if (!this.aditionalsFieldStep.valid) {
+    if (!this.aditionalsFieldStep?.valid) {
       return;
     }
 
@@ -254,12 +259,12 @@ export class NuevaReservaPage implements OnInit {
 
     const loading = await this.dialog.showLoading({ message: 'Procesando...' });
     const params = {
-      service_id: this.categoria.value.arcaCcodServicio,
-      provider_id: this.proveedor.value.id,
-      category_id: this.categoria.value.arcaCcod,
+      service_id: this.categoria?.value.arcaCcodServicio,
+      provider_id: this.proveedor?.value.id,
+      category_id: this.categoria?.value.arcaCcod,
       client_id: this.cliente.id,
       count: 1,
-      start_datetime: `${this.fechaConsulta} ${this.hora.value}`,
+      start_datetime: `${this.fechaConsulta} ${this.hora?.value}`,
       location_id: null,
       additional_fields: camposAdicionales
     };

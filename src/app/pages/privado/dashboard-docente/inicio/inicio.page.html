@@ -13,6 +13,7 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
+  <app-periodos></app-periodos>
   <ion-toolbar class="periodos" *ngIf="principal && principal.periodos.length > 1">
     <form [formGroup]="periodoForm">
       <ion-item>
@@ -198,9 +199,13 @@
         </ion-col>
         <ion-col size-xs="6" size-sm="4" class="ion-no-padding">
           <ion-button color="white" expand="block" routerLink="inacapmail">
-            <div [matBadge]="inacapMail && (inacapMail.unReadTotal < 99 ? inacapMail.unReadTotal : '99+')"
+            <!-- <div [matBadge]="inacapMail && (inacapMail.unReadTotal < 99 ? inacapMail.unReadTotal : '99+')"
               matBadgePosition="after" matBadgeColor="accent"
               [matBadgeHidden]="!(inacapMail && inacapMail.unReadTotal > 0)">
+              <ion-icon slot="start" src="assets/icon/mail_outline.svg" color="medium"></ion-icon>
+              <span>INACAPMail</span>
+            </div> -->
+            <div>
               <ion-icon slot="start" src="assets/icon/mail_outline.svg" color="medium"></ion-icon>
               <span>INACAPMail</span>
             </div>

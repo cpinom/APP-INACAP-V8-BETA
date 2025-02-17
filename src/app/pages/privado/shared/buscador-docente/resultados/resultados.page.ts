@@ -4,12 +4,12 @@ import { NavController, Platform } from '@ionic/angular';
 import { MbscCalendarEvent, MbscEventClickEvent, MbscEventcalendarView, MbscPageChangeEvent, localeEs } from '@mobiscroll/angular';
 import * as moment from 'moment';
 import { AppGlobal } from 'src/app/app.global';
-import { BuscadorDocentesService } from 'src/app/core/services/buscador-docentes.service';
+import { BuscadorDocentesService } from 'src/app/core/services/http/buscador-docentes.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { MensajeService } from 'src/app/core/services/mensaje.service';
 import { ProfileService } from 'src/app/core/services/profile.service';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
-import * as desconocido from 'src/scripts/foto.desconocido.js';
+import * as desconocido from 'src/scripts/foto.desconocido';
 
 enum Vistas {
   asignatura = '0',
@@ -127,7 +127,7 @@ export class ResultadosPage implements OnInit {
       }
     }
     catch (error: any) {
-      if (error.status == 401) {
+      if (error && error.status == 401) {
         this.error.handle(error);
       }
     }
@@ -206,7 +206,7 @@ export class ResultadosPage implements OnInit {
       this.cdRef.detectChanges();
     }
     catch (error:any) {
-      if (error.status == 401) {
+      if (error && error.status == 401) {
         this.error.handle(error);
       }
     }

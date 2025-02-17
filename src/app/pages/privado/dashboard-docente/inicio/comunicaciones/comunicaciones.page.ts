@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Platform } from '@ionic/angular';
 import { DialogService } from 'src/app/core/services/dialog.service';
-import { DocenteService } from 'src/app/core/services/docente/docente.service';
+import { DocenteService } from 'src/app/core/services/http/docente.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { MediaService } from 'src/app/core/services/media.service';
 import { ProfileService } from 'src/app/core/services/profile.service';
@@ -205,7 +205,7 @@ export class ComunicacionesPage implements OnInit {
 
       }
     }
-    catch (error) {
+    catch (error: any) {
       return Promise.reject(error);
     }
     finally {

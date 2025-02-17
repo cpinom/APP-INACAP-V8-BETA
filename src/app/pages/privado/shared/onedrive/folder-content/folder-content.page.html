@@ -34,7 +34,7 @@
         @if (isImage(item.name)) {
         <ion-thumbnail slot="start">
           <ion-spinner name="lines" color="info"></ion-spinner>
-          <img [src]="resolverMiniatura(item.id)" [appImage] [hideViewer]="true" />
+          <img [src]="resolverMiniatura(item.id)" appImage [hideViewer]="true" />
         </ion-thumbnail>
         }
         @else {

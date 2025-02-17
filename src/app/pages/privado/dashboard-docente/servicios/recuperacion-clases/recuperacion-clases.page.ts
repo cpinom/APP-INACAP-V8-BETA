@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { IonRouterOutlet } from '@ionic/angular';
-import { DocenteService } from 'src/app/core/services/docente/docente.service';
-import { SolicitarRecuperacionPage } from '../../cursos/curso/recuperacion/solicitar-recuperacion/solicitar-recuperacion.page';
+import { DocenteService } from 'src/app/core/services/http/docente.service';
+// import { SolicitarRecuperacionPage } from '../../cursos/curso/recuperacion/solicitar-recuperacion/solicitar-recuperacion.page';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import * as moment from 'moment';
 import { DialogService } from 'src/app/core/services/dialog.service';
@@ -44,7 +44,7 @@ export class RecuperacionClasesPage implements OnInit {
       }
     }
     catch (error: any) {
-      if (error.status == 401) {
+      if (error && error.status == 401) {
         this.error.handle(error);
       }
     }
@@ -68,11 +68,11 @@ export class RecuperacionClasesPage implements OnInit {
 
     clase['ssecNcorr'] = data.ssecNcorr;
 
-    await this.dialog.showModal({
-      component: SolicitarRecuperacionPage,
-      componentProps: { clase: clase, data: null },
-      presentingElement: this.routerOutlet.nativeEl
-    });
+    // await this.dialog.showModal({
+    //   component: SolicitarRecuperacionPage,
+    //   componentProps: { clase: clase, data: null },
+    //   presentingElement: this.routerOutlet.nativeEl
+    // });
   }
   formatFecha(fechaString: string) {
     const d = new Date(fechaString);

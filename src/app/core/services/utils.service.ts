@@ -62,5 +62,68 @@ export class UtilsService {
     var results = regex.exec(url);
     return results == null ? null : results[1];
   }
+  resolverIcono(path: string) {
+    const extension = this.getFileExtension(path);
+    // Mapeo de extensiones a tipos de íconos
+    const iconMap: { [key: string]: string } = {
+      // Documentos
+      'pdf': 'picture_as_pdf',
+      'doc': 'ms-word',
+      'docx': 'ms-word',
+      'xls': 'ms-excel',
+      'xlsx': 'ms-excel',
+      'ppt': 'ms-powerpoint',
+      'pptx': 'ms-powerpoint',
+      'txt': 'description',
+
+      // Imágenes
+
+      // Videos
+      'mp4': 'video_library',
+      'avi': 'video_library',
+      'mkv': 'video_library',
+      'mov': 'video_library',
+      'wmv': 'video_library',
+
+      // Audios
+      'mp3': 'audio_file',
+      'wav': 'audio_file',
+      'ogg': 'audio_file',
+
+      // Archivos comprimidos
+      'zip': 'folder_zip',
+      'rar': 'folder_zip',
+      '7z': 'folder_zip',
+      'tar': 'folder_zip',
+      'gz': 'folder_zip',
+
+      // Otros
+      'html': 'code',
+      'css': 'code',
+      'js': 'code',
+      'json': 'code',
+      'xml': 'code'
+    };
+
+    const icon = extension ? iconMap[extension] : 'description';
+
+    return `assets/icon/${icon}.svg`;
+  }
+  getFileExtension(filePath: string) {
+    const lastDotIndex = filePath.lastIndexOf('.');
+
+    if (lastDotIndex === -1 || lastDotIndex === filePath.length - 1) {
+      return null; // No tiene extensión o termina con un punto
+    }
+
+    return filePath.substring(lastDotIndex + 1).toLowerCase();
+  }
+  isImage(path: string): boolean {
+    const validExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp', '.svg', '.tiff', '.ico'];
+    const extension = this.getFileExtension(path);
+
+    // Validar si la extensión está en la lista
+    return extension ? validExtensions.includes(`.${extension}`) : false;
+  }
 
 }

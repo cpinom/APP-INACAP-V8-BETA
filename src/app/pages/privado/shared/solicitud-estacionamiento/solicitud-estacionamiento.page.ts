@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DialogService } from 'src/app/core/services/dialog.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
-import { EstacionamientosService } from 'src/app/core/services/estacionamientos.service';
+import { EstacionamientosService } from 'src/app/core/services/http/estacionamientos.service';
 import { ProfileService } from 'src/app/core/services/profile.service';
 import { ValidatePatenteAuto, ValidatePatenteMoto } from 'src/app/core/validators/patente.validators';
 
@@ -25,22 +25,24 @@ export class SolicitudEstacionamientoPage implements OnInit {
   tabsModel = 0;
   solicitudForm: FormGroup;
   vehiculos: any;
-  submitted: boolean;
+  submitted!: boolean;
   tituloSolicitud = 'Nueva Solicitud';
   sedeCcod: any;
-  permitePostular: boolean;
-  permiteEditar: boolean;
-  editarPostulacion: boolean;
-  poseePostulacion: boolean;
-  mostrarEstadoPostulacion: boolean;
-  nombreSede: string;
+  permitePostular!: boolean;
+  permiteEditar!: boolean;
+  editarPostulacion!: boolean;
+  poseePostulacion!: boolean;
+  mostrarEstadoPostulacion!: boolean;
+  nombreSede!: string;
 
-  constructor(private api: EstacionamientosService,
-    private router: Router,
-    private profile: ProfileService,
-    private fb: FormBuilder,
-    private dialog: DialogService,
-    private error: ErrorHandlerService) {
+  private api = inject(EstacionamientosService);
+  private router = inject(Router);
+  private profile = inject(ProfileService);
+  private dialog = inject(DialogService);
+  private error = inject(ErrorHandlerService);
+  private fb = inject(FormBuilder);
+
+  constructor() {
 
     this.solicitudForm = this.fb.group({
       aepoNcorr: [0],
@@ -51,16 +53,16 @@ export class SolicitudEstacionamientoPage implements OnInit {
       acuerdo: [, Validators.requiredTrue]
     });
 
-    this.tipoVehiculo.valueChanges.subscribe((value: any) => {
+    this.tipoVehiculo?.valueChanges.subscribe((value: any) => {
       if (value == 1) {
-        this.patente.clearValidators();
-        this.patente.setValidators([Validators.required, ValidatePatenteAuto]);
-        this.patente.updateValueAndValidity();
+        this.patente?.clearValidators();
+        this.patente?.setValidators([Validators.required, ValidatePatenteAuto]);
+        this.patente?.updateValueAndValidity();
       }
       else if (value == 2) {
-        this.patente.clearValidators();
-        this.patente.setValidators([Validators.required, ValidatePatenteMoto]);
-        this.patente.updateValueAndValidity();
+        this.patente?.clearValidators();
+        this.patente?.setValidators([Validators.required, ValidatePatenteMoto]);
+        this.patente?.updateValueAndValidity();
       }
     });
 
@@ -72,7 +74,7 @@ export class SolicitudEstacionamientoPage implements OnInit {
     const principal = await this.profile.getStorage('principal');
 
     if (this.esAlumno) {
-      this.tipoPerfil.setValue(USUARIO.alumno);
+      this.tipoPerfil?.setValue(USUARIO.alumno);
 
       try {
         const programa = principal.programas[principal.programaIndex];
@@ -82,7 +84,7 @@ export class SolicitudEstacionamientoPage implements OnInit {
 
         if (response.success) {
           this.sedeCcod = sedeCcod;
-          this.jornada.setValue(programa.jornCcod);
+          this.jornada?.setValue(programa.jornCcod);
           this.data = response.data;
           this.permiteEditar = true;
           this.data.info = this.data.info || {};
@@ -97,9 +99,9 @@ export class SolicitudEstacionamientoPage implements OnInit {
             this.mostrarEstadoPostulacion = this.permitePostular || this.data.postulacion.aepeCcod != 1;
             this.editarPostulacion = false;
             this.tituloSolicitud = 'Editar Postulación';
-            this.idPostulacion.setValue(this.data.postulacion.aepoNcorr);
-            this.tipoVehiculo.setValue(this.data.postulacion.aeveNcorr);
-            this.patente.setValue(this.data.postulacion.aepoTpatente);
+            this.idPostulacion?.setValue(this.data.postulacion.aepoNcorr);
+            this.tipoVehiculo?.setValue(this.data.postulacion.aeveNcorr);
+            this.patente?.setValue(this.data.postulacion.aepoTpatente);
 
             if (!this.permitePostular) {
               this.permiteEditar = false;
@@ -107,13 +109,13 @@ export class SolicitudEstacionamientoPage implements OnInit {
           }
           else {
             if (this.data.vehiculos.length == 1) {
-              this.tipoVehiculo.setValue(this.data.vehiculos[0].aeveNcorr);
+              this.tipoVehiculo?.setValue(this.data.vehiculos[0].aeveNcorr);
             }
           }
         }
       }
       catch (error: any) {
-        if (error.status == 401) {
+        if (error && error.status == 401) {
           this.error.handle(error);
           return;
         }
@@ -124,8 +126,8 @@ export class SolicitudEstacionamientoPage implements OnInit {
       }
     }
     else if (this.esDocente) {
-      this.tipoPerfil.setValue(USUARIO.docente);
-      this.jornada.setValue(-1);
+      this.tipoPerfil?.setValue(USUARIO.docente);
+      this.jornada?.setValue(-1);
 
       try {
         const sedeCcod = principal.sedeCcod;
@@ -134,7 +136,7 @@ export class SolicitudEstacionamientoPage implements OnInit {
 
         if (response.success) {
           this.sedeCcod = sedeCcod;
-          this.jornada.setValue(0);
+          this.jornada?.setValue(0);
           this.data = response.data;
           this.editarPostulacion = true;
           this.data.info = this.data.info || {};
@@ -145,9 +147,9 @@ export class SolicitudEstacionamientoPage implements OnInit {
             this.editarPostulacion = this.data.info.aeasNpermiteEdicion == 1 && this.data.postulacion.aepeCcod == 1;
             this.mostrarEstadoPostulacion = this.permitePostular || this.data.postulacion.aepeCcod != 1;
             this.tituloSolicitud = 'Editar Postulación';
-            this.idPostulacion.setValue(this.data.postulacion.aepoNcorr);
-            this.tipoVehiculo.setValue(this.data.postulacion.aeveNcorr);
-            this.patente.setValue(this.data.postulacion.aepoTpatente);
+            this.idPostulacion?.setValue(this.data.postulacion.aepoNcorr);
+            this.tipoVehiculo?.setValue(this.data.postulacion.aeveNcorr);
+            this.patente?.setValue(this.data.postulacion.aepoTpatente);
 
             if (!this.permitePostular) {
               this.editarPostulacion = false;
@@ -156,7 +158,7 @@ export class SolicitudEstacionamientoPage implements OnInit {
         }
       }
       catch (error: any) {
-        if (error.status == 401) {
+        if (error && error.status == 401) {
           this.error.handle(error);
           return;
         }
@@ -189,9 +191,9 @@ export class SolicitudEstacionamientoPage implements OnInit {
           this.permiteEditar = this.data.info.aeasNpermiteEdicion == 1 && this.data.postulacion.aepeCcod == 1;
           this.mostrarEstadoPostulacion = this.permitePostular || this.data.postulacion.aepeCcod != 1;
           this.tituloSolicitud = 'Editar Postulación';
-          this.idPostulacion.setValue(this.data.postulacion.aepoNcorr);
-          this.tipoVehiculo.setValue(this.data.postulacion.aeveNcorr);
-          this.patente.setValue(this.data.postulacion.aepoTpatente);
+          this.idPostulacion?.setValue(this.data.postulacion.aepoNcorr);
+          this.tipoVehiculo?.setValue(this.data.postulacion.aeveNcorr);
+          this.patente?.setValue(this.data.postulacion.aepoTpatente);
         }
         else {
           estadoPostulacion = false;
@@ -199,7 +201,7 @@ export class SolicitudEstacionamientoPage implements OnInit {
         }
       }
       catch (error: any) {
-        if (error.status == 401) {
+        if (error && error.status == 401) {
           this.error.handle(error);
           return;
         }

@@ -1,10 +1,11 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActionSheetController, AlertController, LoadingController } from '@ionic/angular';
 import * as moment from 'moment';
+import { DialogService } from 'src/app/core/services/dialog.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { EventsService } from 'src/app/core/services/events.service';
-import { ReservasEspacioService } from 'src/app/core/services/reservas-espacio.service';
+import { ReservasEspacioService } from 'src/app/core/services/http/reservas-espacio.service';
 
 declare const QRCode: any;
 
@@ -15,23 +16,25 @@ declare const QRCode: any;
 })
 export class DetalleReservaPage implements OnInit {
 
-  @ViewChild('qrcode') qrcode: ElementRef;
+  @ViewChild('qrcode') qrcode!: ElementRef;
   mostrarCargando = true;
   mostrarData = false;
   id: any;
   data: any;
   mostrarSuccess = false;
 
-  constructor(private api: ReservasEspacioService,
-    private router: Router,
-    private action: ActionSheetController,
-    private loading: LoadingController,
-    private alertCtrl: AlertController,
-    private events: EventsService,
-    private error: ErrorHandlerService) { }
+  private api = inject(ReservasEspacioService);
+  private router = inject(Router);
+  private action = inject(ActionSheetController);
+  private dialog = inject(DialogService);
+  private events = inject(EventsService);
+  private error = inject(ErrorHandlerService);
+
+
+  constructor() { }
 
   ngOnInit() {
-    const params = this.router.getCurrentNavigation().extras.state;
+    const params = this.router.getCurrentNavigation()?.extras.state;
 
     if (params) {
       this.id = params['id'];
@@ -72,7 +75,7 @@ export class DetalleReservaPage implements OnInit {
       }
     }
     catch (error: any) {
-      if (error.status == 401) {
+      if (error && error.status == 401) {
         this.error.handle(error);
       }
     }
@@ -85,9 +88,7 @@ export class DetalleReservaPage implements OnInit {
     const confirm = await this.confirmarEliminar();
 
     if (confirm) {
-      const loading = await this.loading.create({ message: 'Cargando...' });
-
-      await loading.present();
+      const loading = await this.dialog.showLoading({ message: 'Cargando...' });
 
       try {
         const result = await this.api.cancelarReserva({ id: this.id });
@@ -101,7 +102,7 @@ export class DetalleReservaPage implements OnInit {
         }
       }
       catch (error: any) {
-        if (error.status == 401) {
+        if (error && error.status == 401) {
           this.error.handle(error);
         }
       }
@@ -132,7 +133,8 @@ export class DetalleReservaPage implements OnInit {
   }
   async presentSuccess() {
     const mensaje = 'La reserva ha sido cancelada correctamente.'
-    const alert = await this.alertCtrl.create({
+
+    await this.dialog.showAlert({
       keyboardClose: false,
       backdropDismiss: false,
       header: 'Cancelar Reserva.',
@@ -147,8 +149,6 @@ export class DetalleReservaPage implements OnInit {
         }
       ]
     });
-
-    await alert.present();
   }
   resolverFecha(fecha: string) {
     return moment(fecha, 'YYYY-MM-DD HH:mm:ss').format('DD/MM/YYYY')// "2024-02-27 10:00:00"

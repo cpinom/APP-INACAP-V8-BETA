@@ -19,6 +19,15 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
+            "allowedCommonJsDependencies": [
+              "jquery",
+              "qrcode",
+              "jsbarcode",
+              "html2canvas",
+              "moment",
+              "dompurify",
+              "fast-deep-equal"
+            ],
             "assets": [
               {
                 "glob": "**/*",
@@ -32,9 +41,10 @@
               }
             ],
             "styles": [
-              "@angular/material/prebuilt-themes/azure-blue.css",
+              "@angular/material/prebuilt-themes/indigo-pink.css",
               "src/global.scss",
-              "src/theme/variables.scss"
+              "src/theme/variables.scss",
+              "./node_modules/@mobiscroll/angular/dist/css/mobiscroll.min.css"
             ],
             "scripts": []
           },

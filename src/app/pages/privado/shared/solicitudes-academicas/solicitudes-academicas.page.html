@@ -34,7 +34,7 @@
   <ng-container *ngIf="activeTab == 0 && mostrarData">
 
     <!-- <section [class.first]="carreras.length > 1" *ngIf="carreras.length > 1"> -->
-    <section class="first">
+    <section>
       <!-- <div class="section-header">Mis Carreras</div> -->
       <div class="section-content">
         <form [formGroup]="carreraForm">
@@ -75,7 +75,7 @@
   </ng-container>
 
   <ng-container *ngIf="activeTab == 1 && mostrarData">
-    <section class="first">
+    <section>
       <div class="section-content">
 
         <ion-list *ngIf="historial && historial.length > 0">
@@ -109,7 +109,7 @@
 
   <ng-container *ngIf="!mostrarData">
 
-    <section class="first">
+    <section>
       <div class="section-header">
         <ion-skeleton-text animated style="width: 30%;"></ion-skeleton-text>
       </div>

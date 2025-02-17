@@ -6,7 +6,7 @@ import { MessageContentPageRoutingModule } from './message-content-routing.modul
 import { MessageContentPage } from './message-content.page';
 import { PipesModule } from 'src/app/core/pipes/pipes.module';
 import { DirectivesModule } from 'src/app/core/directives/directives.module';
-import { MaterialModule } from 'src/app/app.material';
+import { MaterialModule } from 'src/app/app-material.module';
 
 @NgModule({
   imports: [

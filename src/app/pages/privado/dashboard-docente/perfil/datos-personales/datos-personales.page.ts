@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { IonNav } from '@ionic/angular';
-import { DocenteService } from 'src/app/core/services/docente/docente.service';
+import { DocenteService } from 'src/app/core/services/http/docente.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { ProfileService } from 'src/app/core/services/profile.service';
 import { EventsService } from 'src/app/core/services/events.service';
@@ -58,7 +58,7 @@ export class DatosPersonalesPage implements OnInit, OnDestroy {
         this.profile.setPrincipal(this.perfil);
       }
     }
-    catch (error) {
+    catch (error: any) {
       this.error.handle(error, undefined, true);
     }
     finally {

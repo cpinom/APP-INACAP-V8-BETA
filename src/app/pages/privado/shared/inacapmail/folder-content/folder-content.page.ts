@@ -1,8 +1,8 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonInfiniteScroll, IonItemSliding, IonNav } from '@ionic/angular';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
-import { InacapMailService } from 'src/app/core/services/inacapmail.service';
+import { InacapMailService } from 'src/app/core/services/http/inacapmail.service';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
 import { MessageContentPage } from '../message-content/message-content.page';
 import { MensajeService } from 'src/app/core/services/mensaje.service';
@@ -16,11 +16,11 @@ import { Subject, Subscription, debounceTime } from 'rxjs';
 })
 export class FolderContentPage implements OnInit, OnDestroy {
 
-  @ViewChild(IonItemSliding) slidingItem: IonItemSliding;
-  @ViewChild(IonInfiniteScroll) infiniteItem: IonInfiniteScroll;
-  messages = [];
-  folderId: string;
-  returnPath: string;
+  @ViewChild(IonItemSliding) slidingItem!: IonItemSliding;
+  @ViewChild(IonInfiniteScroll) infiniteItem!: IonInfiniteScroll;
+  messages: any[] = [];
+  folderId!: string;
+  returnPath!: string;
   hideLoadingSpinner = false;
   params = { pageSize: 30, skip: -1 };
   folderName = 'INACAPMail';
@@ -34,16 +34,18 @@ export class FolderContentPage implements OnInit, OnDestroy {
   deleteObs: Subscription;
   filtroSubscription: Subscription;
   filtroChanged: Subject<string> = new Subject<string>();
-  filtro: string;
-  mensajesFiltrados: any[];
+  filtro!: string;
+  mensajesFiltrados!: any[];
 
-  constructor(private api: InacapMailService,
-    private router: Router,
-    private mensaje: MensajeService,
-    private error: ErrorHandlerService,
-    private nav: IonNav,
-    private snackbar: SnackbarService,
-    private events: EventsService) {
+  private api = inject(InacapMailService);
+  private router = inject(Router);
+  private mensaje = inject(MensajeService);
+  private error = inject(ErrorHandlerService);
+  private nav = inject(IonNav);
+  private snackbar = inject(SnackbarService);
+  private events = inject(EventsService);
+
+  constructor() {
 
     this.filtroSubscription = this.filtroChanged
       .pipe(debounceTime(750))
@@ -59,8 +61,11 @@ export class FolderContentPage implements OnInit, OnDestroy {
 
     this.updateObs = this.events.app.subscribe(event => {
       if (event.action == 'mail:message-updated') {
-        let message = this.messages.find(t => t.id == event.value.id);
-        message.isRead = true;
+        let message: any = this.messages.find((t: any) => t.id == event.value.id);
+
+        if (message) {
+          message.isRead = true;
+        }
       }
     });
 
@@ -130,8 +135,8 @@ export class FolderContentPage implements OnInit, OnDestroy {
       this.params.skip = -1;
       await this.cargar(this.folderId, undefined, false);
     }
-    catch (error) {
-      if (error.status = 401) {
+    catch (error: any) {
+      if (error && error.status == 401) {
         this.error.handle(error);
       }
     }
@@ -155,7 +160,7 @@ export class FolderContentPage implements OnInit, OnDestroy {
       if (result.success) {
         if (this.messages.length && this.params.skip == 0) {
           this.messages = result.messages;
-        } 
+        }
         else {
           this.messages = this.messages.concat(result.messages);
         }
@@ -176,13 +181,13 @@ export class FolderContentPage implements OnInit, OnDestroy {
         }
       }
     }
-    catch (error) {
+    catch (error: any) {
       if (this.messages.length) {
         event && (event.target.disabled = true);
         this.snackbar.showToast('No fue posible cargar más mensajes.')
-      } 
+      }
       else {
-        if (error.status == 401) {
+        if (error && error.status == 401) {
           this.error.handle(error);
         }
       }
@@ -204,7 +209,7 @@ export class FolderContentPage implements OnInit, OnDestroy {
       this.deshabilitarNuevo = true;
       await this.mensaje.crear();
     }
-    catch (error) {
+    catch (error: any) {
       this.snackbar.showToast('Mensaje no disponible', 2000);
     }
     finally {
@@ -215,7 +220,7 @@ export class FolderContentPage implements OnInit, OnDestroy {
     const message = await this.snackbar.create('Eliminando...', false);
     const messagesBack = Object.assign([], this.messages);
 
-    this.messages = this.messages.filter(t => t.id !== data.id);
+    this.messages = this.messages.filter((t: any) => t.id !== data.id);
 
     await message.present();
 
@@ -223,7 +228,7 @@ export class FolderContentPage implements OnInit, OnDestroy {
       await this.api.deleteMessageV5(data.id);
       this.slidingItem && await this.slidingItem.closeOpened();
     }
-    catch (error) {
+    catch (error: any) {
       this.messages = messagesBack;
       this.error.handle(error);
     }

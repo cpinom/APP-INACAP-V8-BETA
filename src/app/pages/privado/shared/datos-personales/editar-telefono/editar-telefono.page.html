@@ -24,13 +24,13 @@
             <ion-item>
               <ion-input label="Teléfono" labelPlacement="stacked" formControlName="persTcelular" placeholder="+569XXXXXXXX" inputmode="tel" clearInput></ion-input>
             </ion-item>
-            <div class="invalid" *ngIf="submitted && celular.hasError('pattern')">Teléfono inválido (Ej: +56990009000)</div>
-            <div class="invalid" *ngIf="submitted && celular.hasError('required')">Campo obligatorio</div>
+            <div class="invalid" *ngIf="submitted && celular?.hasError('pattern')">Teléfono inválido (Ej: +56990009000)</div>
+            <div class="invalid" *ngIf="submitted && celular?.hasError('required')">Campo obligatorio</div>
             <ion-item>
               <ion-input label="Confirmar teléfono" labelPlacement="stacked" formControlName="persTcelularConfirma" placeholder="+569XXXXXXXX" inputmode="tel" clearInput></ion-input>
             </ion-item>
-            <div class="invalid" *ngIf="submitted && celularConfirma.hasError('pattern')">Teléfono inválido (Ej: +56990009000)</div>
-            <div class="invalid" *ngIf="submitted && celularConfirma.hasError('required')">Campo obligatorio</div>
+            <div class="invalid" *ngIf="submitted && celularConfirma?.hasError('pattern')">Teléfono inválido (Ej: +56990009000)</div>
+            <div class="invalid" *ngIf="submitted && celularConfirma?.hasError('required')">Campo obligatorio</div>
             <div class="invalid" *ngIf="submitted && !telefonosIguales">Los teléfonos deben ser iguales.</div>
           </ion-list>
         </div>

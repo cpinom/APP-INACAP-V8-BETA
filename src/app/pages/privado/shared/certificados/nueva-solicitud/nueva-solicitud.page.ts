@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActionSheetController, IonRouterOutlet, Platform } from '@ionic/angular';
 import { UtilsService } from 'src/app/core/services/utils.service';
 import { Router } from '@angular/router';
-import { CertificadosService } from 'src/app/core/services/certificados.service';
+import { CertificadosService } from 'src/app/core/services/http/certificados.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { Directory, Filesystem } from '@capacitor/filesystem';
 import { FileOpener } from '@capacitor-community/file-opener';
@@ -105,7 +105,7 @@ export class NuevaSolicitudPage implements OnInit {
           this.mostrarResolucion = true;
           this.events.app.next({ action: 'app:certificados-recargar' });
         }
-        catch (error) {
+        catch (error: any) {
           this.error.handle(error);
         }
         finally {
@@ -245,7 +245,7 @@ export class NuevaSolicitudPage implements OnInit {
     //       // this.opener.open(file.uri, 'application/pdf');
     //     }
     //   }
-    //   catch (error) {
+    //   catch (error: any) {
     //     this.error.handle(error);
     //   }
     //   finally {
@@ -262,7 +262,7 @@ export class NuevaSolicitudPage implements OnInit {
   //   try {
   //     result = await this.api.generaCarro({ resoNcorr: this.data.resoNcorr });
   //   }
-  //   catch (error) {
+  //   catch (error: any) {
   //     this.error.handle(error);
   //   }
   //   finally {
@@ -286,7 +286,7 @@ export class NuevaSolicitudPage implements OnInit {
   //         await this.mostrarDetallePago(detalleResult, pagoResult.success);
   //       }
   //     }
-  //     catch (error) {
+  //     catch (error: any) {
   //       if (error && error.code == 0) return;
   //       this.error.handle(error);
   //     }

@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppGlobal } from 'src/app/app.global';
-import { DocenteService } from 'src/app/core/services/docente/docente.service';
+import { DocenteService } from 'src/app/core/services/http/docente.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { MensajeService } from 'src/app/core/services/mensaje.service';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
@@ -44,7 +44,7 @@ export class EstudianteTutPage implements OnInit {
       }
     }
     catch (error: any) {
-      if (error.status == 401) {
+      if (error && error.status == 401) {
         this.error.handle(error);
       }
     }

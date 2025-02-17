@@ -1,14 +1,14 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { FileOpener } from '@capacitor-community/file-opener';
 import { Directory, Filesystem } from '@capacitor/filesystem';
 import { ActionSheetController, AlertButton, AlertController, LoadingController, NavController, Platform } from '@ionic/angular';
+import { AppGlobal } from 'src/app/app.global';
 import { DialogService } from 'src/app/core/services/dialog.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
+import { OneDriveService } from 'src/app/core/services/http/onedrive.service';
 import { MediaService } from 'src/app/core/services/media.service';
-import { OneDriveService } from 'src/app/core/services/onedrive.service';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
-import { Global } from './../../../../app.global';
 import { UtilsService } from 'src/app/core/services/utils.service';
 
 @Component({
@@ -24,19 +24,21 @@ export class OnedrivePage implements OnInit {
   items: any;
   driveId: string = '';
 
-  constructor(private router: Router,
-    private api: OneDriveService,
-    private error: ErrorHandlerService,
-    private nav: NavController,
-    private action: ActionSheetController,
-    private alert: AlertController,
-    private pt: Platform,
-    private media: MediaService,
-    private snackbar: SnackbarService,
-    private loading: LoadingController,
-    private dialog: DialogService,
-    private global: Global,
-  private utils: UtilsService) { }
+  private router = inject(Router);
+  private api = inject(OneDriveService);
+  private error = inject(ErrorHandlerService);
+  private nav = inject(NavController);
+  private action = inject(ActionSheetController);
+  private alert = inject(AlertController);
+  private pt = inject(Platform);
+  private media = inject(MediaService);
+  private snackbar = inject(SnackbarService);
+  private loading = inject(LoadingController);
+  private dialog = inject(DialogService);
+  private global = inject(AppGlobal);
+  private utils = inject(UtilsService);
+
+  constructor() { }
 
   async ngOnInit() {
     await this.cargar();
@@ -66,7 +68,7 @@ export class OnedrivePage implements OnInit {
       }
     }
     catch (error: any) {
-      if (error.status == 401) {
+      if (error && error.status == 401) {
         this.error.handle(error);
         return
       }
@@ -76,10 +78,10 @@ export class OnedrivePage implements OnInit {
       this.mostrarData = true;
     }
   }
-  recargar(e) {
+  recargar(e: any) {
     this.mostrarCargando = false;
     this.cargar(true).finally(() => {
-      e.target.complete();
+      e && e.target.complete();
     })
   }
   async itemTap(item: any) {
@@ -161,8 +163,8 @@ export class OnedrivePage implements OnInit {
           throw Error();
         }
       }
-      catch (error) {
-        if (error.status == 401) {
+      catch (error: any) {
+        if (error && error.status == 401) {
           this.error.handle(error);
           return;
         }
@@ -195,8 +197,8 @@ export class OnedrivePage implements OnInit {
           throw Error();
         }
       }
-      catch (error) {
-        if (error.status == 401) {
+      catch (error: any) {
+        if (error && error.status == 401) {
           this.error.handle(error);
           return;
         }
@@ -301,7 +303,7 @@ export class OnedrivePage implements OnInit {
 
       }
     }
-    catch (error) {
+    catch (error: any) {
       return Promise.reject(error);
     }
     finally {
@@ -341,8 +343,8 @@ export class OnedrivePage implements OnInit {
         throw Error();
       }
     }
-    catch (error) {
-      if (error.status == 401) {
+    catch (error: any) {
+      if (error && error.status == 401) {
         this.error.handle(error);
         return;
       }
@@ -366,8 +368,8 @@ export class OnedrivePage implements OnInit {
         throw Error();
       }
     }
-    catch (error) {
-      if (error.status == 401) {
+    catch (error: any) {
+      if (error && error.status == 401) {
         this.error.handle(error);
         return;
       }

@@ -3,7 +3,7 @@ import { IonContent } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { AppGlobal } from 'src/app/app.global';
 import { VISTAS_DOCENTE } from 'src/app/core/constants/docente';
-import { DocenteService } from 'src/app/core/services/docente/docente.service';
+import { DocenteService } from 'src/app/core/services/http/docente.service';
 import { EventsService } from 'src/app/core/services/events.service';
 
 @Component({

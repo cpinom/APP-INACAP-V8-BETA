@@ -24,14 +24,14 @@
               <!-- <ion-label position="stacked">Correo</ion-label> -->
               <ion-input label="Correo" labelPlacement="stacked" type="email" formControlName="persTemail" placeholder="Ingrese un correo" clearInput></ion-input>
             </ion-item>
-            <div class="invalid" *ngIf="submitted && correo.hasError('email')">Correo inválido</div>
-            <div class="invalid" *ngIf="submitted && correo.hasError('required')">Campo obligatorio</div>
+            <div class="invalid" *ngIf="submitted && correo?.hasError('email')">Correo inválido</div>
+            <div class="invalid" *ngIf="submitted && correo?.hasError('required')">Campo obligatorio</div>
             <ion-item>
               <!-- <ion-label position="stacked">Confirmar correo</ion-label> -->
               <ion-input label="Confirmar correo" labelPlacement="stacked" type="email" formControlName="persTemailConfirma" placeholder="Ingrese un correo de confirmación" clearInput></ion-input>
             </ion-item>
-            <div class="invalid" *ngIf="submitted && correoConfirma.hasError('email')">Correo inválido</div>
-            <div class="invalid" *ngIf="submitted && correoConfirma.hasError('required')">Campo obligatorio</div>
+            <div class="invalid" *ngIf="submitted && correoConfirma?.hasError('email')">Correo inválido</div>
+            <div class="invalid" *ngIf="submitted && correoConfirma?.hasError('required')">Campo obligatorio</div>
             <div class="invalid" *ngIf="submitted && !correosIguales">Los correos deben ser iguales.</div>
           </ion-list>
         </div>

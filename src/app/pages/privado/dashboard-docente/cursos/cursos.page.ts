@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
-import { DocenteService } from 'src/app/core/services/docente/docente.service';
+import { DocenteService } from 'src/app/core/services/http/docente.service';
 import { ProfileService } from 'src/app/core/services/profile.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { IonContent, NavController } from '@ionic/angular';
@@ -151,7 +151,7 @@ export class CursosPage implements OnInit {
       }
     }
     catch (error: any) {
-      if (error.status == 401) {
+      if (error && error.status == 401) {
         this.error.handle(error);
         return;
       }

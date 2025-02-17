@@ -1,14 +1,14 @@
 import { inject, Injectable } from '@angular/core';
 import { MensajeComponent } from '../components/mensaje/mensaje.component';
-import { InacapMailService } from './inacapmail.service';
+import { InacapMailService } from './http/inacapmail.service';
 import { SnackbarService } from './snackbar.service';
 import { Router } from '@angular/router';
-import { AlumnoService } from './alumno/alumno.service';
-import { DocenteService } from './docente/docente.service';
-import { ExalumnoService } from './exalumno/exalumno.service';
 import { ErrorHandlerService } from './error-handler.service';
 import { DialogService } from './dialog.service';
 import { AppGlobal } from 'src/app/app.global';
+import { AlumnoService } from './http/alumno.service';
+import { DocenteService } from './http/docente.service';
+import { ExalumnoService } from './http/exalumno.service';
 
 @Injectable({
   providedIn: 'root'

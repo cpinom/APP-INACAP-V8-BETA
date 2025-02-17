@@ -1,0 +1,18 @@
+ion-content {
+  .invalid {
+    font-size: var(--FS12);
+    color: var(--ion-color-danger);
+    margin: 5px 15px;
+  }
+
+  ion-card-subtitle {
+    span {
+      display: flex;
+      align-items: center;
+
+      ion-icon {
+        margin-right: 5px;
+      }
+    }
+  }
+}

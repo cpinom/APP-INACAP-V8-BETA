@@ -1,13 +1,78 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>servicios</ion-title>
+    <ion-title>Servicios</ion-title>
+    <ion-buttons slot="start">
+      <ion-button routerLink="configuraciones" role="button" aria-label="Ir a configuraciones">
+        <ion-icon src="assets/icon/settings.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="notificacionesTap()" role="button" aria-label="Ver notificaciones">
+        <ion-icon src="assets/icon/notifications.svg"></ion-icon>
+        <ion-badge *ngIf="mostrarNotificaciones">1</ion-badge>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">servicios</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+
+  <section class="first">
+    <div class="section-header">Información administrativa</div>
+    <div class="section-content">
+      <ion-list>
+        <ion-item routerLink="dir-carrera" detail="true">
+          <ion-label>Director(a) de Carrera</ion-label>
+        </ion-item>
+        <ion-item routerLink="dir-academico" detail="true">
+          <ion-label>Director(a) Académico</ion-label>
+        </ion-item>
+        <ion-item routerLink="tutoria" detail="true" *ngIf="mostrarTutorias">
+          <ion-label>Tutorías</ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-header">Otros Servicios</div>
+    <div class="section-content">
+      <ion-list>
+        <ion-item (click)="linkBibliotecas()" class="ion-activatable" detail="true">
+          <ion-label>Buscador de Biblioteca</ion-label>
+        </ion-item>
+        <ion-item routerLink="buscador-docente" detail="true">
+          <ion-label>Buscador de Docentes</ion-label>
+        </ion-item>
+        <ion-item routerLink="buzon-opinion" detail="true">
+          <ion-label>Buzón de Opiniones</ion-label>
+        </ion-item>
+        @if (mostrarClinicas) {
+        <ion-item routerLink="clinicas-academicas" detail="true">
+          <ion-label>Clínicas Académicas</ion-label>
+        </ion-item>
+        }
+        @if (mostrarBip) {
+        <ion-item routerLink="consulta-bip" detail="true">
+          <ion-label>Consulta Saldo Tarjeta bip!</ion-label>
+        </ion-item>
+        }
+        @if (mostrarReservaEspacios) {
+        <ion-item routerLink="reserva-espacios" detail="true">
+          <ion-label>Reserva de Espacios</ion-label>
+        </ion-item>
+        }
+        <ion-item routerLink="evaluacion-docente" detail="true">
+          <ion-label>Resultados Evaluación Docente</ion-label>
+        </ion-item>
+        <ion-item routerLink="recuperacion-clases" detail="true">
+          <ion-label>Solicitud de Recuperación de Clases</ion-label>
+        </ion-item>
+        <ion-item detail="true" routerLink="solicitud-estacionamiento">
+          <ion-label>Solicitud de Estacionamiento</ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+
 </ion-content>

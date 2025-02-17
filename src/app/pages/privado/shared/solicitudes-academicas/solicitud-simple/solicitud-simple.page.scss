@@ -1,0 +1,61 @@
+form {
+    ion-item:not(.normal) {
+        --padding-start: 0;
+    }
+}
+
+p.success {
+    color: var(--ion-color-success);
+}
+
+ion-card-content {
+    font-size: var(--FS14) !important;
+
+    .glosa {
+        border-top: var(--border);
+        padding: 15px 0 0;
+
+        ::ng-deep ol {
+            padding: 0 0 0 25px;
+        }
+
+        ::ng-deep ul {
+            padding: 0 0 0 25px;
+        }
+
+        ::ng-deep a.more {
+            display: block;
+            margin-top: 10px;
+            text-align: center;
+        }
+    }
+
+    ::ng-deep ion-item {
+        ion-label {
+            font-size: var(--FS14) !important;
+        }
+    }
+   
+}
+
+ion-popover {
+    ::ng-deep ion-datetime {
+        max-width: 370px;
+    }
+}
+
+.invalid {
+    font-size: var(--FS12);
+    color: var(--ion-color-danger);
+    margin: 5px 15px;
+}
+
+::ng-deep ion-alert.success-alert {
+    div.image {
+        text-align: center;
+        img {
+            width: 60px;
+            margin: 0 auto 10px;
+        }
+    }
+}

@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Volver"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-card class="primary-card" color="white">
+    <ion-card-header>
+      <ion-card-title>Estudiantes con tope de horario</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+</ion-header>
+
+<ion-content>
+
+  <section class="first">
+    <div class="section-content">
+      <ion-list>
+        @for (item of alumnos; track $index) {
+        <ion-item>
+          <ion-label>
+            <h2>{{item.nombre}}</h2>
+          </ion-label>
+        </ion-item>
+        }
+      </ion-list>
+    </div>
+  </section>
+
+</ion-content>

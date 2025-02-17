@@ -1,0 +1,32 @@
+ion-header {
+  .primary-card {
+      margin-bottom: 0 !important;
+  }
+}
+
+ion-content {
+
+  section {
+    ion-label {
+      font-size: var(--FS14) !important;
+    }
+  }
+
+  .btn-crear {
+    margin-top: 15px;
+  }
+
+  .tabs-wrapper {
+    margin-top: 15px;
+  }
+
+  mbsc-calendar {
+    ::ng-deep .mbsc-calendar-cell-text {
+      background-color: red;
+    }
+  }
+
+  .mbsc-ios.mbsc-selected .mbsc-calendar-cell-text {
+    background-color: red;
+  }
+}

@@ -1,0 +1,26 @@
+.invalid {
+    font-size: var(--FS12);
+    color: var(--ion-color-danger);
+    margin: 5px 15px;
+}
+
+.btn-enviar {
+    margin-bottom: 15px;
+}
+
+ion-popover {
+    ::ng-deep ion-datetime {
+        max-width: 370px;
+    }
+}
+
+::ng-deep body {
+    ion-alert {
+        &.alert-message {
+            img {
+                width: 48px;
+                height: 48px;
+            }
+        }
+    }
+}

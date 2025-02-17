@@ -1,0 +1,90 @@
+<ion-header>
+  <ion-toolbar *ngIf="!mostrarBuscador" class="ion-no-border">
+    <ion-buttons slot="start">
+      <ion-back-button text="Inicio" [defaultHref]="returnPath"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-menu-button>
+        <ion-icon src="assets/icon/all_inbox.svg"></ion-icon>
+      </ion-menu-button>
+    </ion-buttons>
+    <ion-title>{{folderName}}</ion-title>
+  </ion-toolbar>
+  <div class="searchbar-container">
+    <ion-searchbar color="white" placeholder="Buscar en correos" [(ngModel)]="filtro" (ionInput)="filtrarMensajes()" (ionClear)="resetMensajes()"></ion-searchbar>
+  </div>
+  <ion-progress-bar *ngIf="!hideLoadingSpinner" type="indeterminate"></ion-progress-bar>
+</ion-header>
+
+<ion-content>
+
+  <ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed" *ngIf="!mostrarBuscador">
+    <ion-fab-button color="info" (click)="mailTap()" [disabled]="deshabilitarNuevo">
+      <ion-icon src="assets/icon/create.svg"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ng-container *ngIf="mostrarBusqueda && hideLoadingSpinner">
+    <ion-list *ngIf="mensajesFiltrados && mensajesFiltrados.length">
+      <ion-item *ngFor="let item of mensajesFiltrados" (click)="messageTap(item)" class="ion-activatable">
+        <ion-label>
+          <h2>{{item.emailAddress.name}}</h2>
+          <div>
+            <div class="subject">{{item.subject}}</div>
+            <span class="date">{{item.sentDateTime}}</span>
+          </div>
+          <div class="body">{{item.bodyPreview}}</div>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    <div class="empty search" *ngIf="mensajesFiltrados && mensajesFiltrados.length == 0">
+      <ion-icon src="assets/icon/search.svg"></ion-icon>
+      <div>Sin resultados.</div>
+    </div>
+    <div class="empty search" *ngIf="!mensajesFiltrados">
+      <ion-icon src="assets/icon/search.svg"></ion-icon>
+      <div>Información no disponible.</div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="!mostrarBusqueda && mostrarData && messages.length">
+    
+    <ion-list>
+      <ion-item-sliding *ngFor="let m of messages">
+        <ion-item (click)="messageTap(m)" class="ion-activatable">
+          <p class="no-read" *ngIf="!m.isRead"></p>
+          <ion-label>
+            <span *ngIf="m.isDraft">[Borrador]</span>
+            <h2 *ngIf="m.emailAddress">{{m.emailAddress.name}}</h2>
+            <div>
+              <div class="subject">{{m.subject}}</div>
+              <span class="date">{{m.sentDateTime}}</span>
+            </div>
+            <div class="body">{{m.bodyPreview}}</div>
+          </ion-label>
+        </ion-item>
+        <ion-item-options side="end">
+          <ion-item-option (click)="deleteTap(m)" color="danger">
+            <ion-icon src="assets/icon/clear.svg"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+   
+    <ion-infinite-scroll #infinite threshold="100px" (ionInfinite)="loadData($event)">
+      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando mensajes...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+
+  </ng-container>  
+
+  <div class="empty" *ngIf="!mostrarBusqueda && mostrarData && messages.length == 0">
+    <ion-icon src="assets/icon/folder.svg"></ion-icon>
+    <div>Esta carpeta está vacía</div>
+  </div>
+
+</ion-content>

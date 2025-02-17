@@ -1,0 +1,146 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Detalle Solicitud</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrar()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="detalle-solicitud">
+
+  <ng-container *ngIf="data">
+
+    <ion-card color="white" class="primary-card">
+      <ion-card-header>
+        <ion-card-title>{{data.solicitud.tisoTdesc}}</ion-card-title>
+        <ion-card-subtitle>
+          <ion-icon color="success" *ngIf="data.solicitud.esolCcod == 2" src="assets/icon/check_circle.svg"></ion-icon>
+          <ion-icon color="danger" *ngIf="data.solicitud.esolCcod == 3" src="assets/icon/highlight_off.svg"></ion-icon>
+          <ion-icon color="medium"
+            *ngIf="data.solicitud.esolCcod == 6 || data.solicitud.esolCcod == 8 || data.solicitud.esolCcod == 11"
+            src="assets/icon/highlight_off.svg"></ion-icon>
+          <ion-icon color="medium" *ngIf="data.solicitud.esolCcod == 1" src="assets/icon/access_time.svg"></ion-icon>
+          <span>{{data.solicitud.esolTdesc}}</span>
+        </ion-card-subtitle>
+      </ion-card-header>
+    </ion-card>
+
+    <section>
+      <div class="section-content">
+        <ion-list class="ion-no-margin">
+          <ion-item>
+            <ion-label>
+              <p class="label">Folio solicitud</p>
+              <p class="detail">{{data.solicitud.soliNcorr}}</p>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <p class="label">Programa de estudio</p>
+              <p class="detail">{{data.solicitud.carrera}}</p>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <p class="label">Sede</p>
+              <p class="detail">{{data.solicitud.sedeTdesc}}</p>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <p class="label">Período académico</p>
+              <p class="detail">{{data.solicitud.periodo}}</p>
+            </ion-label>
+          </ion-item>
+          <ion-item *ngIf="data.solicitud.resoNcorr">
+            <ion-label>
+              <p class="label">Folio resolución</p>
+              <p class="detail">{{data.solicitud.resoNcorr}}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+    </section>
+
+    <section *ngIf="data.solicitud.esolCcod == 3">
+      <div class="section-content">
+        <ion-list class="ion-no-margin">
+          <ion-item>
+            <ion-label>
+              <p class="label">Motivo de rechazo</p>
+              <p class="detail">{{data.solicitud.soliTmotivoRechazo}}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+    </section>
+
+    <section *ngIf="data.solicitud.tisoCcod == '35' && data.causales.length > 0">
+      <div class="section-header">Causales de Anulación Contrato</div>
+      <div class="section-content">
+        <ion-list class="ion-no-margin">
+          <ion-item *ngFor="let item of data.causales">
+            <ion-label *ngIf="item.tacoCcod != 7">
+              <p class="detail">{{item.tacoTdesc}}</p>
+            </ion-label>
+            <ion-label *ngIf="item.tacoCcod == 7">
+              <p class="label">{{item.tacoTdesc}}</p>
+              <p class="detail">{{item.caacTdesc || 'Sin dato'}}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+    </section>
+
+    <section *ngIf="data.detalle.length">
+      <div class="section-header">Detalle</div>
+      <div class="section-content">
+        <ion-list class="ion-no-margin">
+          <ion-item *ngFor="let item of data.detalle">
+            <ion-label>
+              <p class="label">{{item.cams_tlabel}}</p>
+              <p class="detail">{{item.detalle || 'Sin dato'}}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+    </section>
+
+    <section *ngIf="data.documentos.length">
+      <div class="section-header">Documentos adjuntos</div>
+      <div class="section-content">
+        <ion-list class="ion-no-margin">
+          <ion-item *ngFor="let item of data.documentos">
+            <ion-label>
+              <!-- <p class="label">{{item.cams_tlabel}}</p> -->
+              <p class="detail">{{item.soarTnombre}}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+    </section>
+
+    <section *ngIf="data.enlaces.length">
+      <div class="section-header">Descargas</div>
+      <div class="section-content">
+        <ion-list class="ion-no-margin">
+          <ion-item *ngFor="let item of data.enlaces" (click)="descargar(item.url)" detail="true">
+            <ion-icon slot="start" src="assets/icon/insert_drive_file.svg"></ion-icon>
+            <ion-label style="white-space: normal">{{item.nombre}}</ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+    </section>
+
+    <section style="margin: 20px 0;" *ngIf="data.solicitud.tisoCcod != '35'">
+      <ion-button color="danger" shape="round" expand="block" (click)="anular()" [disabled]="data.solicitud.esolCcod != 1 && data.solicitud.esolCcod != 7">
+        Anular
+      </ion-button>
+    </section>
+
+  </ng-container>
+
+</ion-content>

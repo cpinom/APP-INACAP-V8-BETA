@@ -1,0 +1,12 @@
+ion-title.md {
+    text-align: left;
+}
+ion-menu {
+    ion-item {
+        &.selected {
+            ion-label {
+                font-weight: 500;
+            }
+        }
+    }
+}

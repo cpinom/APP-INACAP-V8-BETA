@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Perfil</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrar()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  @if (mostrarCargando) {
+  <ion-progress-bar type="indeterminate"></ion-progress-bar>
+  }
+</ion-header>
+
+<ion-content>
+
+  @if (mostrarData && perfil) {
+  <section class="first">
+    <div class="section-content">
+      <div class="perfil-container">
+        <div class="avatar-container">
+          <avatar-comp [buttonConfig]="avatarConfig" (buttonFn)="fotoPerfil(perfilInput)"></avatar-comp>
+        </div>
+        <div class="content">
+          <h2>{{nombreCompleto}}</h2>
+          <p class="correo">{{correo}}</p>
+        </div>
+      </div>
+      <div class="perfil-button-container">
+        <ion-button expand="full" fill="clear" routerLink="/publico/inicio" class="ion-no-margin volver-inicio"
+          color="info">
+          Volver al Ambiente Público
+        </ion-button>
+        <ion-button color="danger" expand="full" fill="clear" (click)="logout()" class="ion-no-margin cerrar-btn">
+          Cerrar Sesión
+        </ion-button>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="section-content">
+      <ion-list>
+        <ion-item detail="true" (click)="credencial()">
+          <ion-label>Credencial Virtual</ion-label>
+        </ion-item>
+        <ion-item detail="true" (click)="datosPersonales()">
+          <ion-label>Datos Personales</ion-label>
+        </ion-item>
+        <ion-item detail="true" (click)="sedes()">
+          <ion-label>Información de Sede</ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+  <input type="file" #perfilInput style="display: none;" (change)="adjuntarPerfil($event)" accept="image/*" />
+  }
+
+  @if (mostrarData && !perfil) {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Información no disponible en este momento.</p>
+      <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+    </div>
+  </section>
+  }
+
+</ion-content>

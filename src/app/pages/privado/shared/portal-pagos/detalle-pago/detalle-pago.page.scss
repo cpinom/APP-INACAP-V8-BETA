@@ -1,0 +1,21 @@
+.header {
+    display: flex;
+    align-items: center;
+
+    ion-icon {
+        font-size: 60px;
+        width: 60px;
+        height: 60px;
+    }
+    div {
+        padding-left: 10px;
+        h2 {
+            margin-top: 0px;
+            font-size: var(--FS20);
+            font-weight: 500;
+        }
+        p {
+            color: var(--ion-color-medium) !important;
+        }
+    }
+}

@@ -1,0 +1,700 @@
+//@import "../docente.page.scss";
+
+ion-card.titulo {
+    display: flex;
+}
+
+::ng-deep .mbsc-event-list-scroll {
+    // overflow: hidden;
+}
+
+::ng-deep .mbsc-ios.mbsc-calendar-button.mbsc-button {
+    color: var(--ion-color-info) !important;
+}
+
+::ng-deep .mbsc-ios.mbsc-schedule-header-day.mbsc-selected {
+    background: var(--ion-color-info) !important;
+}
+
+::ng-deep .mbsc-material.mbsc-colored-event.mbsc-list-item {
+    background: var(--ion-color-info) !important;
+
+    &.suspendida {
+        background: var(--ion-color-danger) !important;
+    }
+    &.progreso {
+        background: var(--ion-color-success) !important;
+    }
+    &.realizada {
+        background: var(--ion-color-medium) !important;
+    }
+}
+
+::ng-deep .mbsc-material.mbsc-schedule-event {
+    color: var(--ion-color-info) !important;
+
+    &.suspendida {
+        color: var(--ion-color-danger) !important;
+    }
+    &.progreso {
+        color: var(--ion-color-success) !important;
+    }
+    &.realizada {
+        color: var(--ion-color-medium) !important;
+    }
+}
+
+::ng-deep .mbsc-ios.mbsc-event.mbsc-list-item {
+    .mbsc-ios.mbsc-event-color {
+        background: var(--ion-color-info) !important;
+    }
+    &.suspendida {
+        .mbsc-ios.mbsc-event-color {
+            background: var(--ion-color-danger) !important;
+        }
+    }
+    &.progreso {
+        .mbsc-ios.mbsc-event-color {
+            background: var(--ion-color-success) !important;
+        }
+    }
+    &.realizada {
+        .mbsc-ios.mbsc-event-color {
+            background: var(--ion-color-medium) !important;
+        }
+        .mbsc-ios.mbsc-event-text {
+            color: var(--ion-color-medium);
+        }
+    }
+}
+
+::ng-deep .mbsc-ios.mbsc-schedule-event {
+    color: var(--ion-color-info) !important;
+
+    &.suspendida {
+        color: var(--ion-color-danger) !important;
+    }
+    &.progreso {
+        color: var(--ion-color-success) !important;
+    }
+    &.realizada {
+        color: var(--ion-color-medium) !important;
+    }
+}
+
+::ng-deep .mbsc-calendar-controls {
+    background: var(--ion-color-light) !important;
+}
+
+::ng-deep .mbsc-material.mbsc-calendar-title {
+    font-size: var(--FS14);
+}
+::ng-deep .mbsc-material.mbsc-button {
+    font-size: var(--FS14);
+}
+
+::ng-deep .mbsc-selected .mbsc-calendar-cell-text {
+    border-color: var(--ion-color-info) !important;
+    background: var(--ion-color-info) !important;
+    color: #fff !important;
+}
+
+::ng-deep .mbsc-ios.mbsc-selected .mbsc-calendar-cell-text {
+    border-color: var(--ion-color-info) !important;
+    background: var(--ion-color-info) !important;
+    color: #fff !important;
+}
+
+ion-card {
+    margin: 0 0 15px;
+    box-shadow: 0px 4px 8px 0px rgba(194, 201, 252, 0.15) !important;
+    border-radius: 0;
+}
+
+.select-container {
+    ion-select {
+        color: var(--ion-color-medium) !important;
+        padding-left: 0;
+        font-size: var(--FS12);
+        font-weight: 400;
+        padding-top: 0;
+        padding-bottom: 0;
+        margin-right: 4px;
+    }
+}
+
+.horario-cabecera {
+    background-color: white;
+    border-bottom: var(--border);
+}
+
+.horario-dias-nombres {
+    background-color: var(--ion-toolbar-background);
+    display: flex;
+    color: white;
+    font-size: 11px;
+    padding: 10px 0;
+    font-weight: bold;
+
+    > div {
+        flex: 1;
+        text-align: center;
+    }
+}
+.horario-dias-numeros {
+    display: flex;
+    padding: 5px 0;
+    width: 100%;
+
+    > div {
+        flex: 1;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+
+        span {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            font-size: 14px;
+            flex-direction: column;
+
+            &.text {
+                display: none;
+            }
+
+            ::ng-deep div {
+                font-size: 11px;
+                font-weight: bold;
+                margin-bottom: 3px;
+            }
+        }
+
+        &.active {
+            span.html {
+                display: none;
+            }
+            span.text {
+                display: flex;
+                background-color: var(--ion-color-primary);
+                color: white;
+            }
+        }
+    }
+}
+
+.clasesList {
+    ion-item {
+        ion-label {
+            display: flex;
+            margin-top: 4px;
+            margin-bottom: 4px;
+            padding-top: 10px;
+            padding-bottom: 5px;
+
+            .horario-hora {
+                flex: 0 0 35px;
+                font-size: var(--FS12);
+                text-align: right;
+                padding-right: 4px;
+                span {
+                    display: block;
+                }
+                .inicio {
+                    line-height: 20px;
+                }
+                .termino {
+                    color: var(--ion-color-medium);
+                }
+            }
+
+            .horario-ramo {
+                flex: 1;
+                white-space: normal;
+                margin-left: 9px;
+                padding-left: 10px;
+                border-left: var(--border);
+                position: relative;
+
+                h3 {
+                    font-size: var(--FS16);
+                    line-height: 20px;
+                }
+
+                p {
+                    font-size: var(--FS12);
+                    color: var(--ion-color-medium);
+                    margin-top: 0;
+                    margin-bottom: 2px;
+                }
+                p.estado {
+                    margin: 0;
+                    font-style: italic;
+                    font-size: var(--FS10);
+                    display: block;
+                    line-height: 10px;
+
+                    i {
+                        height: 6px;
+                        width: 6px;
+                        border-radius: 50%;
+                        display: inline-block;
+                        margin-right: 3px;
+                    }
+                }
+                &.red {
+                    border-color: var(--ion-color-danger);
+                    p.estado {
+                        color: var(--ion-color-danger);
+                        i {
+                            background-color: var(--ion-color-danger);
+                        }
+                    }
+                }
+                &.green {
+                    border-color: var(--ion-color-success);
+                    p.estado {
+                        color: var(--ion-color-success);
+                        i {
+                            background-color: var(--ion-color-success);
+                        }
+                    }
+                }
+                &.blue {
+                    border-color: var(--ion-color-info);
+                    p.estado {
+                        color: var(--ion-color-info);
+                        i {
+                            background-color: var(--ion-color-info);
+                        }
+                    }
+                }
+            }
+            &.ion-text-center {
+                display: block;
+            }
+        }
+
+        // &.suspendida {
+        //     // --background: #fbe4e2;
+        //     ion-label {
+        //         > div {padding-top:10px;}
+        //         .horario-ramo {border-color: var(--ion-color-danger);}
+        //     }
+        // }
+    }
+}
+
+ion-item {
+    .schedule-time {
+        width: 36px;
+        text-align: right;
+        font-size: var(--FS12);
+        padding-top: 5px;
+
+        span {
+            display: block;
+            padding-bottom: 4px;
+            &.hora.inicio {
+                line-height: var(--FS18);
+            }
+            &.termino {
+                color: var(--ion-color-medium);
+            }
+        }
+    }
+    .schedule-class {
+        width: 100%;
+        padding-left: 12px;
+        box-sizing: border-box;
+        position: relative;
+
+        h3 {
+            margin: 0;
+        }
+
+        p.sala,
+        p.seccion,
+        p.docente {
+            margin: 0;
+            margin-top: 3px;
+            font-size: var(--FS12);
+            color: var(--ion-color-medium);
+        }
+
+        p.docente {
+            margin: 0;
+            margin-top: 1px;
+            font-size: var(--FS12);
+            // font-style: italic;
+        }
+    }
+
+    &:last-child {
+        border: none;
+    }
+}
+
+::ng-deep body.dark {
+    .horario-cabecera swiper {
+        background-color: #000;
+    }
+}
+
+ion-content {
+    --offset-bottom: -74px !important;
+
+    ion-list-header {
+        // position: sticky;
+        // top: 0;
+        // z-index: 10;
+        --background: var(--ion-color-light);
+        min-height: auto;
+
+        ion-label {
+            margin: 10px 0px;
+            font-size: var(--FS12);
+            font-weight: 400;
+        }
+    }
+}
+
+ion-card.primary-card {
+    position: relative;
+    margin-bottom: 5px !important;
+
+    .arrows {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        min-width: 82px;
+
+        ion-button {
+            // height: 36px;
+            width: 48px;
+            height: 48px;
+            --padding-start: 10px;
+            --padding-end: 10px;
+            --padding-top: 5px;
+            --padding-bottom: 5px;
+            text-align: center;
+            box-sizing: border-box;
+
+            &.arrow-left {
+                margin-right: 10px;
+            }
+        }
+    }
+    @media screen and (max-width: 360px) {
+        ion-card-subtitle {
+            width: 70%;
+        }
+    }
+}
+
+.schedule {
+    &.landscape {
+        display: none;
+    }
+    &.portrait {
+        .section-content {
+            border: 0;
+            // padding-left: 10px;
+            article {
+                .schedule-header {
+                    background-color: var(--ion-color-light);
+                    padding: 13px 15px;
+
+                    h2 {
+                        text-transform: capitalize;
+                        font-size: var(--FS14);
+                        font-weight: bold;
+                        margin: 0;
+                        color: var(--ion-color-dark);
+                    }
+                }
+                .schedule-item-list {
+                    .schedule-item {
+                        display: flex;
+                        border-bottom: var(--border);
+                        min-height: 62px;
+                        padding: 8px;
+                        padding-top: 10px;
+
+                        .schedule-time {
+                            flex: 0 0 45px;
+                            text-align: center;
+                            font-size: var(--FS12);
+                            padding-top: 5px;
+                            display: flex;
+                            flex-direction: column;
+                            font-weight: 500;
+                            justify-content: center;
+
+                            span {
+                                display: block;
+                                padding-bottom: 4px;
+                                &.hora.inicio {
+                                    line-height: var(--FS18);
+                                }
+                                &.termino {
+                                    color: var(--ion-color-medium);
+                                }
+                            }
+                        }
+                        .schedule-class {
+                            width: 100%;
+                            padding-inline: 10px;
+                            margin-left: 5px;
+                            box-sizing: border-box;
+                            position: relative;
+                            border-left: var(--border);
+
+                            &.green {
+                                border-left-width: 3px;
+                                border-left-color: var(--ion-color-success) !important;
+                            }
+
+                            &.red {
+                                border-left-width: 3px;
+                                border-left-color: var(--ion-color-danger) !important;
+                            }
+
+                            p.sala,
+                            p.cambio-sala,
+                            p.seccion,
+                            p.docente {
+                                margin: 0;
+                                margin-top: 3px;
+                                font-size: var(--FS12);
+                                color: var(--ion-color-medium);
+                                font-weight: 500;
+                            }
+
+                            p.docente {
+                                margin: 0;
+                                margin-top: 1px;
+                                font-size: var(--FS12);
+                                // font-style: italic;
+                            }
+
+                            p.cambio-sala {
+                                display: flex;
+                                align-items: center;
+                                font-weight: 500;
+
+                                ion-icon {
+                                    color: var(--ion-color-warning);
+                                    font-size: 18px;
+                                    margin-right: 5px;
+                                }
+                            }
+                        }
+
+                        &:last-child {
+                            border: none;
+                        }
+                        &.sin-clases {
+                            color: var(--ion-color-medium);
+                            min-height: auto;
+                            padding-inline: 15px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    &.virtuales {
+        .schedule-item {
+            display: block !important;
+            padding: 5px 15px !important;
+            min-height: auto !important;
+
+            b {
+                display: block;
+            }
+        }
+    }
+}
+
+.schedule-item {
+    font-size: var(--FS14);
+
+    h3 {
+        margin-top: 0;
+        margin-bottom: 0;
+        font-size: var(--FS14);
+        font-weight: 500;
+        line-height: 20px;
+    }
+    span.estado {
+        margin-bottom: 4px;
+        font-size: 80%;
+        line-height: 10px;
+        font-style: italic;
+
+        &.danger {
+            color: var(--ion-color-primary) !important;
+
+            i {
+                background-color: var(--ion-color-primary);
+            }
+        }
+
+        &.success {
+            color: var(--ion-color-success) !important;
+
+            i {
+                background-color: var(--ion-color-success);
+            }
+        }
+
+        i {
+            height: 6px;
+            width: 6px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 3px;
+        }
+    }
+}
+
+@media (orientation: landscape) {
+    ion-content {
+        --background: white;
+    }
+    ion-card.primary-card {
+        ion-card-header {
+            padding-right: 140px;
+            display: flex;
+            align-items: center;
+            ion-card-title {
+                flex: 1;
+            }
+            ion-card-subtitle {
+                flex: 2;
+                text-align: right;
+            }
+        }
+        .arrows {
+            bottom: 2px;
+        }
+    }
+    .schedule {
+        &.portrait {
+            display: none;
+        }
+        &.landscape {
+            display: block;
+
+            .select-container {
+                width: 100%;
+                overflow: hidden;
+                padding-right: 15px;
+                .select {
+                    max-width: 300px;
+                    float: right;
+                    ion-select {
+                        color: var(--bg-contrast-color) !important;
+                        opacity: 1 !important;
+                    }
+                }
+            }
+
+            .schedule-content {
+                width: 100%;
+                padding: 10px;
+                display: flex;
+                font-size: var(--FS10);
+                margin-bottom: 3px;
+
+                .schedule-column {
+                    flex: 1;
+                    &.time {
+                        flex: 0 0 7%;
+                    }
+                    .schedule-row {
+                        padding: 2px 3px;
+                        width: 100%;
+
+                        .schedule-hora,
+                        .schedule-item {
+                            height: 65px;
+                            padding-top: 8px;
+                            border-radius: 4px;
+                        }
+
+                        .schedule-hora {
+                            span {
+                                display: block;
+                                &.end {
+                                    color: var(--ion-color-medium);
+                                }
+                            }
+                        }
+
+                        .schedule-item {
+                            //background-color: var(--ion-color-light);
+                            background-color: rgba(250, 250, 250, 0.6);
+                            padding: 8px;
+                            //height: 65px;
+                            overflow: hidden;
+                            font-size: var(--FS12);
+                            box-sizing: border-box;
+                            h3 {
+                                font-size: 0.9em;
+                                margin: 0;
+                                margin-bottom: 2px;
+                                line-height: 1.2em;
+                                max-height: 3.4em;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                color: var(--ion-color-dark);
+                            }
+                            span.estado {
+                                font-size: 0.8em;
+                                display: block;
+                            }
+                            p {
+                                font-size: 0.8em;
+                                margin: 0;
+                            }
+
+                            &.suspendida {
+                                background-color: #fbe4e2;
+                            }
+                        }
+
+                        .schedule-item :root .sala {
+                            display: block;
+                            margin-top: 6px;
+                            font-weight: 400;
+                            color: var(--ion-color-medium);
+                        }
+
+                        &:first-child {
+                            text-align: center;
+                            height: 34px;
+
+                            .schedule-item {
+                                height: 28px;
+                                background-color: var(--ion-color-dark);
+                                color: #fff;
+                                font-weight: bold;
+                                text-transform: capitalize;
+                                font-size: var(--FS12);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.no-padding {
+    padding: 0 !important;
+}

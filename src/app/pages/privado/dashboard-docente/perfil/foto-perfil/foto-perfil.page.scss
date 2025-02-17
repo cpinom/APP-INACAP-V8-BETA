@@ -1,0 +1,14 @@
+.primary-card {
+    margin-bottom: 0 !important;
+}
+.foto-perfil-previa {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background: #33333380;
+
+    ion-avatar {
+        height: 350px;
+        width: 350px;
+    }
+}

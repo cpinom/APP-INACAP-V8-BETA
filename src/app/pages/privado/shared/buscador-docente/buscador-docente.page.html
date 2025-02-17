@@ -1,0 +1,133 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Servicios" [defaultHref]="backUrl"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card class="primary-card" color="white">
+    <ion-card-header>
+      <ion-card-title>Buscador de Docentes</ion-card-title>
+      @if (sedes) {
+      @if (sedes.length == 1) {
+      <ion-card-subtitle>{{sede.sedeTdesc}}</ion-card-subtitle>
+      }
+      @else {
+      <div class="select-container">
+        <ion-select label="" labelPlacement="stacked" interface="action-sheet" [(ngModel)]="sede"
+          (ionChange)="cambiarSede()">
+          @for (item of sedes; track $index) {
+          <ion-select-option [value]="item">INACAP {{item.sedeTdesc}}</ion-select-option>
+          }
+        </ion-select>
+      </div>
+      }
+      }
+    </ion-card-header>
+    @if (mostrarCargando) {
+    <ion-progress-bar type="indeterminate"></ion-progress-bar>
+    }
+  </ion-card>
+
+  @if (mostrarData && areas) {
+  <section class="first">
+    <div class="section-content">
+
+      <div class="tabs">
+        <ion-segment [(ngModel)]="tabModel" mode="md" [swipeGesture]="false">
+          <ion-segment-button value="0">
+            <ion-label>Buscar por<br />Asignatura</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="1">
+            <ion-label>Buscar por<br />Docente</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="2">
+            <ion-label>Buscar por<br />Sala</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </div>
+      @if (tabModel == '0') {
+      <form [formGroup]="formAsignatura">
+        <ion-list>
+          <ion-item>
+            <ion-select label="Área Académica" labelPlacement="stacked" interface="action-sheet"
+              placeholder="Seleccionar" formControlName="areaCcod" okText="Aceptar" cancelText="Cancelar">
+              @for (item of areas; track $index) {
+              <ion-select-option [value]="item.areaCcod">{{item.areaTdesc}}</ion-select-option>
+              }
+            </ion-select>
+            <div class="invalid" *ngIf="submitted && area?.invalid">Campo Obligatorio</div>
+          </ion-item>
+          <ion-item>
+            <ion-select label="Carrera" labelPlacement="stacked" interface="action-sheet" placeholder="Seleccionar"
+              formControlName="carrCcod" okText="Aceptar" cancelText="Cancelar">
+              @for (item of carreras; track $index) {
+              <ion-select-option [value]="item.carrCcod">{{item.carrTdesc}}</ion-select-option>
+              }
+            </ion-select>
+            <div class="invalid" *ngIf="submitted && carrera?.invalid">Campo Obligatorio</div>
+          </ion-item>
+          <ion-item>
+            <ion-select label="Asignatura" labelPlacement="stacked" interface="action-sheet" placeholder="Seleccionar"
+              formControlName="asigCcod" okText="Aceptar" cancelText="Cancelar">
+              @for (item of asignaturas; track $index) {
+              <ion-select-option [value]="item.asigCcod">{{item.asigTdesc}}</ion-select-option>
+              }
+            </ion-select>
+            <div class="invalid" *ngIf="submitted && asignatura?.invalid">Campo Obligatorio</div>
+          </ion-item>
+        </ion-list>
+      </form>
+      }
+      @if (tabModel == '1') {
+      <form [formGroup]="formDocente">
+        <ion-list>
+          <ion-item>
+            <ion-input label="Docente" labelPlacement="stacked" type="text" formControlName="docente"
+              placeholder="Nombre Docente" clearInput (keyup.enter)="buscar()"></ion-input>
+          </ion-item>
+          <div class="invalid" *ngIf="submitted && docente?.invalid">Escriba un nombre válido.</div>
+        </ion-list>
+      </form>
+      }
+      @if (tabModel == '2') {
+      <form [formGroup]="formSala">
+        <ion-list>
+          <ion-item [button]="true" [detail]="false" id="select-salas">
+            <ion-input formControlName="salaTdesc" readonly labelPlacement="stacked" label="Sala"
+              placeholder="Selecciona una sala..."></ion-input>
+          </ion-item>
+          <div class="invalid" *ngIf="submitted && sala?.invalid">Seleccione una sala.</div>
+          <ion-item (click)="escanearSala()" [disabled]="disabledQR" detail="false" class="has-icon codigo-qr">
+            <ion-icon slot="start" src="assets/icon/camera_alt.svg" color="medium"></ion-icon>
+            <ion-label>Buscar con código QR</ion-label>
+          </ion-item>
+        </ion-list>
+      </form>
+      <ion-modal trigger="select-salas" #modal [presentingElement]="routerOutlet">
+        <ng-template>
+          <app-typeahead class="ion-page" title="Seleccionar..." (selectionCancel)="modal.dismiss()"
+            (selectionChange)="salasSelectionChanged($event, modal)" [items]="salas"
+            [selectedItem]="sala?.value"></app-typeahead>
+        </ng-template>
+      </ion-modal>
+      }
+    </div>
+  </section>
+  <ion-button color="info" class="btn-buscar" expand="block" shape="round" (click)="buscar()"
+    [disabled]="!sedeCache">Buscar</ion-button>
+  }
+  @if (mostrarData && !areas) {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Información no disponible en este momento.</p>
+      <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+    </div>
+  </section>
+  }
+
+</ion-content>

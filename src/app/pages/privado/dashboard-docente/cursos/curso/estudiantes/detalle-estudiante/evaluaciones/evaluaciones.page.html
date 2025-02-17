@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Estudiante" [defaultHref]="backUrl"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card color="white" class="primary-card">
+    <ion-card-header>
+      <ion-card-title>Evaluaciones</ion-card-title>
+      @if (data) {
+      <ion-card-subtitle>{{data.asigTdesc}}</ion-card-subtitle>
+      }
+    </ion-card-header>
+  </ion-card>
+
+  @if (evaluaciones && evaluaciones.length) {
+  <section>
+    <div class="section-content">
+      <ion-list>
+        @for (item of evaluaciones; track $index) {
+        <ion-item>
+          <div slot="start" [innerHTML]="resolverFechaEvaluacion(item)"></div>
+          <ion-label>
+            <h2>{{data.asigTdesc}}</h2>
+            <p>Evaluación: {{item.caliNevaluacion}} : {{item.caliNponderacion}}%</p>
+          </ion-label>
+          <div slot="end" class="ponderacion {{resolverNota(item.calaNnota)}}">{{item.calaNnota || '-.-'}}</div>
+        </ion-item>
+        }
+      </ion-list>
+    </div>
+  </section>
+  }
+  @if (evaluaciones && evaluaciones.length == 0) {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/group.svg"></ion-icon>
+      <p>Sin registros</p>
+    </div>
+  </section>
+  }
+
+</ion-content>

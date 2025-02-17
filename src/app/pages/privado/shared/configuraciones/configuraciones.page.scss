@@ -1,0 +1,98 @@
+ion-header {
+    ion-title.md {
+        text-align: left;
+    }
+}
+
+section {
+    ion-item {
+        ion-thumbnail {
+            --border-radius: 12px;
+            margin-top: 8px;
+            margin-bottom: 8px;
+        }
+        ion-toggle {
+            h2 {
+                margin: 0;
+                font-size: var(--FS16);
+            }
+            p {
+                margin: 0;
+                font-size: var(--FS16);
+            }
+        }
+    }
+}
+
+ion-radio-group.colores {
+    display: flex;
+    width: 100%;
+
+    ion-radio {
+        height: 40px;
+        width: 40px;
+        margin-right: 10px;
+
+        &::part(container) {
+            height: 40px;
+            width: 40px;
+        }
+
+        &.system {
+            &::part(container) {
+                background-color: #828599;
+                border-color: #828599;
+            }
+            &::part(mark) {
+                background-color: white;
+            }
+        }
+        &.blue {
+            &::part(container) {
+                background-color: #1565c0;
+                border-color: #1565c0;
+            }
+            &::part(mark) {
+                background-color: white;
+            }
+        }
+        &.green {
+            &::part(container) {
+                background-color: #1fa774;
+                border-color: #1fa774;
+            }
+            &::part(mark) {
+                background-color: white;
+            }
+        }
+        &.purple {
+            &::part(container) {
+                background-color: #9900fa;
+                border-color: #9900fa;
+            }
+            &::part(mark) {
+                background-color: white;
+            }
+        }
+        &.violet {
+            //#fe46a5
+            &::part(container) {
+                background-color: #fe46a5;
+                border-color: #fe46a5;
+            }
+            &::part(mark) {
+                background-color: white;
+            }
+        }
+        &.orange {
+            //#f8481c
+            &::part(container) {
+                background-color: #f8481c;
+                border-color: #f8481c;
+            }
+            &::part(mark) {
+                background-color: white;
+            }
+        }
+    }
+}

@@ -1,0 +1,104 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ isReply ? 'Responder' : 'Nuevo' }} Mensaje</ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="cerrar()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="adjuntarArchivos(adjuntosInput)" [disabled]="deshabilitarEnviar()">
+        <ion-icon src="assets/icon/attachment.svg"></ion-icon>
+      </ion-button>
+      <input type="file" #adjuntosInput style="display: none;" (change)="adjuntar($event)"
+        accept="application/pdf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,image/*" />
+      <ion-button (click)="enviar()" [disabled]="deshabilitarEnviar()">
+        <ion-icon src="assets/icon/send.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar>
+</ion-header>
+
+<ion-content>
+
+  <form [formGroup]="mensajeForm" (ngSubmit)="enviar()">
+    <ion-list lines="full">
+
+      <ion-item [class.email-initial]="emailInitial">
+        <mat-form-field appearance="fill">
+          <mat-label>Para</mat-label>
+          <mat-chip-grid #chipList aria-label="Destinatarios">
+            <mat-chip *ngFor="let correo of correos" (removed)="remove(correo)">
+              {{ correo }}
+              <button matChipRemove *ngIf="!emailInitial">
+                <ion-icon name="close"></ion-icon>
+              </button>
+            </mat-chip>
+            <input placeholder="Destinatario..." #correoInput [formControl]="correoCtrl" [matAutocomplete]="auto"
+              [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              (matChipInputTokenEnd)="add($event)" *ngIf="!emailInitial" inputmode="email" autocapitalize="off"
+              autocomplete="off">
+          </mat-chip-grid>
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+            <mat-option *ngFor="let item of correosFiltrados | async" [value]="item">
+              <ion-label>
+                <h2>{{ item.nombre }}</h2>
+                <p>{{ item.correo }}</p>
+              </ion-label>
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </ion-item>
+      <ion-item *ngIf="mostrarAsunto">
+        <ion-input #asunto type="text" formControlName="asunto" placeholder="Asunto"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-textarea #cuerpo formControlName="cuerpo" rows="10" placeholder="Redactar un correo"></ion-textarea>
+      </ion-item>
+    </ion-list>
+  </form>
+
+  <section *ngIf="adjuntos.length" class="first">
+    <div class="section-header">Adjuntos</div>
+    <div class="section-content">
+      <ion-list>
+        <ion-item *ngFor="let item of adjuntos; let i = index;" (click)="eliminarAlert(item, i)">
+          <ng-container *ngIf="!item.name">
+            <ion-avatar slot="start">
+              <ion-skeleton-text animated style="width: 100%; border-radius: 0"></ion-skeleton-text>
+            </ion-avatar>
+            <ion-label>
+              <h2><ion-skeleton-text animated style="width: 90%;"></ion-skeleton-text></h2>
+              <p><ion-skeleton-text animated style="width: 40%;"></ion-skeleton-text></p>
+            </ion-label>
+          </ng-container>
+          <ng-container *ngIf="item.name">
+            <ion-avatar slot="start" *ngIf="mostrarMiniatura(item.type)">
+              <img [src]="resolverMiniatura(item)" />
+            </ion-avatar>
+            <ion-icon slot="start" color="nedium" *ngIf="mostrarPdf(item.type)" src="assets/icon/picture_as_pdf.svg"></ion-icon>
+            <ion-icon slot="start" color="nedium" *ngIf="mostrarExcel(item.type)" src="assets/icon/microsoft-excel.svg"></ion-icon>
+            <ion-icon slot="start" color="nedium" *ngIf="mostrarDefecto(item.type)" src="assets/icon/description.svg"></ion-icon>
+            <ion-label>
+              <h2>{{item.name}}</h2>
+              <p>{{item.size | formatBytes}}</p>
+            </ion-label>
+          </ng-container>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+
+  <section #contenido *ngIf="isReply" style="margin: 10px 0;">
+    <div class="section-content" style="padding: 15px;">
+      <div>De: <b>{{message.from.emailAddress.name}}</b>
+        <{{ message.from.emailAddress.address }}>
+      </div>
+      <div>Asunto: <b>{{message.subject}}</b></div>
+      <div>Enviado: <b>{{formatearFecha(message.sentDateTime)}}</b></div>
+      <div [innerHTML]="message._body | safeHtml"></div>
+    </div>
+  </section>
+
+</ion-content>

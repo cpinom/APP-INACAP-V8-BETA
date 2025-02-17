@@ -1,0 +1,159 @@
+ion-header.credencial {
+    --ion-toolbar-background: #00cacc;
+
+    ion-toolbar {
+        --border-width: 0;
+        --border-color: #00cacc;
+
+        ::ng-deep .toolbar-background {
+            transform: none !important;
+        }
+    }
+    &.header-md {
+        box-shadow: none !important;
+    }
+    &.header-md::after {
+        display: none;
+    }
+}
+ion-content.credencial {
+    &::part(background) {
+        background-image: url("../../../../../../assets/images/credencial-docente.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    .titulo {
+        margin-top: 15px;
+        text-align: center;
+
+        img {
+            height: 38px;
+        }
+        h2 {
+            margin: 0;
+            font-size: var(--FS20);
+            color: white;
+        }
+    }
+    .avatar-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin-top: 30px;
+
+        avatar-comp {
+            width: 160px;
+            height: 160px;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+            border-radius: 50%;
+        }
+    }
+    .perfil {
+        padding: 20px 0 0;
+        // border-bottom: var(--border);
+        text-align: center;
+
+        .nombre {
+            font-size: var(--FS20);
+            margin: 16px 0 0;
+            font-weight: 600;
+            color: #333;
+        }
+
+        p {
+            font-size: var(--FS16);
+            color: var(--ion-color-dark);
+            margin: 4px 0;
+            color: #999 !important;
+            font-weight: 500;
+
+            &.rut {
+                margin-top: 10px;
+            }
+
+            &.carrera,
+            &.jornada {
+                display: none;
+            }
+
+            // &.carrera {
+            //     color: var(--ion-color-dark) !important;
+            //     margin-top: 15px;
+            //     font-weight: 500;
+            // }
+
+            &.sede,
+            &.jornada {
+                text-transform: uppercase;
+                font-size: var(--FS13);
+                font-weight: 600;
+                color: var(--ion-color-medium);
+            }
+        }
+    }
+    .extra-info {
+        display: flex;
+
+        .qr-code {
+            flex: 0 0 140px;
+            margin: 20px auto;
+        }
+    }
+    .privilegios {
+        display: flex;
+        justify-content: center;
+        font-size: var(--FS14);
+        flex: 1;
+        // padding: 0 0 0 15px;
+        flex-direction: column;
+
+        .estacionamiento,
+        .utensilios,
+        .accesibilidad,
+        .delegado {
+            display: flex;
+            align-items: center;
+            padding-bottom: 5px;
+            justify-content: center;
+
+            p {
+                margin: 0;
+            }
+
+            ion-icon {
+                display: inline-block;
+                margin-right: 4px;
+                font-size: 24px;
+                flex: 0 0 24px;
+            }
+        }
+
+        .estacionamiento {
+            flex-direction: column;
+
+            .patente {
+                display: flex;
+                align-items: center;
+
+                span {
+                    color: #444;
+                    font-weight: bold;
+                }
+            }
+
+            ion-icon[color="danger"] {
+                font-size: 48px;
+                flex: 0 0 48px;
+            }
+        }
+    }
+}
+
+::ng-deep body.dark {
+    .privilegios {
+        p {
+            color: #666 !important;
+        }
+    }
+}

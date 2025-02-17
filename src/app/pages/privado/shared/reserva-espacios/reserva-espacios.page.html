@@ -1,0 +1,80 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [text]="backText" [defaultHref]="backUrl"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-card class="primary-card" color="white">
+    <ion-card-header>
+      <ion-card-title>Reserva de Espacios</ion-card-title>
+    </ion-card-header>
+    <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar>
+  </ion-card>
+</ion-header>
+
+<ion-content>
+
+  <div class="loaderInacap" *ngIf="!hideLoadingSpinner">
+    <ion-spinner name="lines" color="info"></ion-spinner>
+  </div>
+
+  <ng-container *ngIf="mostrarData && cliente">
+
+    <ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
+    <section class="first">
+      <div class="section-header">Instrucciones</div>
+      <div class="section-content">
+        <ion-list>
+          <ion-item>
+            <ion-label>La siguiente sección es para seleccionar y reservar espacios en tu sede, como Salas de Biblioteca o cupos en el FabLab y Cowork. Ten en cuenta que no todos los servicios están disponibles para todas las sedes.</ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>Para comenzar con la reserva haz click en el botón "Nueva Reserva" y seleccionar todas las opciones correspondientes.</ion-label>
+          </ion-item>
+          <!-- <ion-item>
+            <ion-label>3-. Las imagenes serán enviadas a las personas del DAE de su sede para autorizar o no su
+              foto de perfil.</ion-label>
+          </ion-item> -->
+        </ion-list>
+      </div>
+    </section>
+
+    <section class="btn-crear">
+      <ion-button color="info" shape="round" expand="block" (click)="crearReserva()" [disabled]="!permiteReservar">
+        Nueva Reserva
+      </ion-button>
+    </section>    
+
+    <section class="solicitudes-historicas first" *ngIf="reservas">
+      <div class="section-header">Mis Reservas</div>
+      <div class="section-content">
+        <ion-list>
+          <ion-item *ngFor="let item of reservas" detail="true" (click)="detalleReserva(item)" class="ion-activatable">
+            <ion-icon slot="start" src="assets/icon/event_available.svg" color="success"></ion-icon>
+            <ion-label>
+              <h2><b>{{item.provider.name}}</b></h2>
+              <p>{{item.category.name}}</p>
+              <p>{{resolverFecha(item.start_datetime)}}</p>
+            </ion-label>
+          </ion-item>
+          <ion-item *ngIf="reservas.length == 0">
+            <ion-label><em>No hay reservas.</em></ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+    </section>
+
+  </ng-container>
+
+  <section *ngIf="mostrarData && !cliente" class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Información no disponible en este momento.</p>
+      <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+    </div>
+  </section>
+
+</ion-content>

@@ -1,0 +1,111 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Curso" [defaultHref]="backUrl"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card color="white" class="primary-card">
+    <ion-card-header>
+      <ion-card-title>Recuperación de Clases</ion-card-title>
+      @if (seccion) {
+      <ion-card-subtitle>
+        <span [innerHTML]="seccion.asigTdesc+'<br/>Sección '+seccion.seccCompleta"></span></ion-card-subtitle>
+      }
+    </ion-card-header>
+  </ion-card>
+
+  <section>
+
+    <div class="section-content">
+
+      <div class="tabs">
+        <ion-segment [(ngModel)]="tabsModel" mode="md" [swipeGesture]="false">
+          <ion-segment-button [value]="0">
+            <ion-label>
+              Clases Pendientes
+              @if (mostrarData && data && data.recuperaciones && data.recuperaciones.length > 0) {
+              <ion-badge color="danger">{{data.recuperaciones.length}}</ion-badge>
+              }
+            </ion-label>
+          </ion-segment-button>
+          <ion-segment-button [value]="1">
+            <ion-label>Solicitudes</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </div>
+
+      @if (tabsModel == 0) {
+      @if (!mostrarData) {
+      <ion-list>
+        <ion-item>
+          <ion-label>
+            <ion-skeleton-text animated style="width: 90%;"></ion-skeleton-text>
+            <ion-skeleton-text animated style="width: 40%;"></ion-skeleton-text>
+            <ion-skeleton-text animated style="width: 30%;"></ion-skeleton-text>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+      }
+      @if (mostrarData && data && data.recuperaciones) {
+      <ion-list>
+        @for (clase of data.recuperaciones; track $index) {
+        <ion-item detail="true" (click)="solicitarRecuperacion(clase)" class="ion-activatable">
+          <ion-label>
+            <h2>{{clase.lclaFclase}}</h2>
+            <p class="grey">Libro: {{clase.lclaNcorr}}</p>
+            <p class="grey">Bloques: {{clase.bloques}}</p>
+          </ion-label>
+        </ion-item>
+        }
+      </ion-list>
+      }
+      }
+      @if (tabsModel == 1) {
+      @if (mostrarData && data && data.solicitudes) {
+      <ion-list>
+        @if (data.solicitudes.length == 0) {
+        <div class="empty-state">
+          <div>
+            <ion-icon src="assets/icon/description.svg"></ion-icon>
+            <p>Sin solicitudes en este momento</p>
+          </div>
+        </div>
+        }
+        @for (solicitud of data.solicitudes; track $index) {
+        <ion-item class="ion-activatable" detail="true" (click)="detalleSolicitud(solicitud)">
+          @if (solicitud.erecNcorr == 1) {
+            <ion-icon slot="start" color="success" src="assets/icon/check_circle_outline.svg"></ion-icon>
+          }
+          @else if (solicitud.erecNcorr == 2) {
+            <ion-icon slot="start" color="danger" src="assets/icon/highlight_off.svg"></ion-icon>
+          }
+          @else {
+            <ion-icon slot="start" color="warning" src="assets/icon/schedule.svg"></ion-icon>
+          }
+          <ion-label>
+            <h2>Solicitud #{{solicitud.reclNcorr}}</h2>
+            <p>Fecha solicitud: {{formatearFecha(solicitud.reclFsolicitud)}}</p>
+            <p>Libro {{solicitud.lclaNcorr}}</p>
+          </ion-label>
+        </ion-item>
+        }
+      </ion-list>
+      }
+      }
+      @if (mostrarData && !data) {
+      <ion-list>
+        <ion-item>
+          <ion-label>Información no disponible.</ion-label>
+        </ion-item>
+      </ion-list>
+      }
+
+    </div>
+
+  </section>
+
+</ion-content>

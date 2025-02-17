@@ -1,0 +1,379 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [text]="backText" [defaultHref]="backUrl"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ng-container *ngIf="data">
+
+    <ion-card color="white" class="primary-card">
+      <ion-card-header>
+        <ion-card-title>{{data.titulo}}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div #glosa class="glosa" delegate>
+          <span *ngIf="!showMore" [innerHTML]="trimString(data.glosa, 200)"></span>
+          <span *ngIf="showMore" [innerHTML]="data.glosa"></span>
+          <a class="more" (click)="showMore = !showMore">Mostrar <span [innerHtml]="showMore ? 'menos' : 'más'"></span></a>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <ng-container *ngIf="solicitud.tisoCcod == 1">
+
+      <form [formGroup]="solicitudForm">          
+        <section>
+          <div class="section-header">Listado de Evaluaciones</div>
+          <div class="section-content">
+            <ion-list>
+              <ng-container formArrayName="evaluaciones">
+                <ion-item class="normal" *ngFor="let item of data.evaluaciones; let i = index">
+                  <ion-checkbox labelPlacement="end" [formControlName]="i" color="info">
+                    <span class="ion-text-wrap">{{item.caliTdesc}}</span>
+                  </ion-checkbox>
+                </ion-item>
+              </ng-container>
+              <ion-item *ngIf="data.evaluaciones.length == 0">
+                <ion-label class="ion-text-center">No existen evaluaciones.</ion-label>
+              </ion-item>             
+              <div class="invalid" *ngIf="submitted && !validarEvaluaciones">Campo obligatorio</div>
+            </ion-list>
+          </div>
+        </section>        
+        <section>
+          <div class="section-content">
+            <ion-list>
+              <ion-item class="normal">
+                <!-- <ion-label position="stacked" style="white-space: normal">Motivo</ion-label> -->
+                <ion-textarea label="Motivo" labelPlacement="stacked" rows="4" formControlName="motivo" placeholder="Ingrese motivo"></ion-textarea>
+              </ion-item>
+              <div class="invalid" *ngIf="submitted && motivo.hasError('required')">Campo obligatorio.</div>
+              <div class="invalid" *ngIf="submitted && motivo.hasError('maxlength')">El motivo no debe superar los 1000 caracteres.</div>
+            </ion-list>
+          </div>
+        </section>        
+      </form>
+
+    </ng-container>
+
+    <ng-container *ngIf="solicitud.tisoCcod == 4"></ng-container>
+
+    <ng-container *ngIf="solicitud.tisoCcod == 9">
+
+      <section>
+        <div class="section-header">Seleccione Causal</div>
+        <div class="section-content">
+          <ion-list>
+            <ion-item detail="true" (click)="mostrarCausales(causalesModal)">
+              <ion-label position="fixed">Causales</ion-label>
+              <ion-label class="ion-text-right">{{causalInterrupcion.value ? causalInterrupcion.value.tcieTdesc : 'Seleccione...'}}</ion-label>
+            </ion-item>
+            <div class="invalid" *ngIf="submitted && causalInterrupcion.hasError('required')">Campo obligatorio.</div>
+          </ion-list>
+        </div>
+      </section>      
+
+      <ion-modal #causalesModal [canDismiss]="true" [presentingElement]="presentingElement" (didDismiss)="onCausalesDismiss($event)">
+        <ng-template>
+          <ion-header>
+            <ion-toolbar>
+              <ion-title>Causales</ion-title>
+              <ion-buttons slot="start">
+                <ion-button (click)="causalesModal.dismiss()">
+                  <ion-icon name="close"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+              <ion-buttons slot="end">
+                <ion-button [disabled]="!causalSel" (click)="guardarCausal(causalesModal)">
+                  <ion-label>Continuar</ion-label>
+                </ion-button>
+              </ion-buttons>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content>
+            <ion-list inset="true">
+              <ion-radio-group [(ngModel)]="causalSel" [allowEmptySelection]="true">
+                <ion-item *ngFor="let item of data.causales">
+                  <!-- <ion-label>{{item.tcieTdesc}}</ion-label> -->
+                  <ion-radio [value]="item">
+                    <span class="ion-text-wrap">{{item.tcieTdesc}}</span>
+                  </ion-radio>
+                </ion-item>
+              </ion-radio-group>
+            </ion-list>
+          </ion-content>
+        </ng-template>
+      </ion-modal>
+
+    </ng-container>
+
+    <ng-container *ngIf="solicitud.tisoCcod == 14">
+
+      <section>
+        <div class="section-header">Seleccione Vía de Convalidación</div>
+        <div class="section-content">
+          <form [formGroup]="solicitudForm">
+            <ion-list>
+              
+              <ion-item detail="true" (click)="mostrarVias(viasModal)">
+                <ion-label style="max-width: 30%">Convalidación</ion-label>
+                <ion-label class="ion-text-right">{{viaConvalidacion.value ? viaConvalidacion.value.viasTdesc : 'Seleccione...'}}</ion-label>
+              </ion-item>
+              <div class="invalid" *ngIf="submitted && viaConvalidacion.hasError('required')">Campo obligatorio.</div>
+              
+              <ng-container *ngIf="viaConvalidacion.value && viaConvalidacion.value.tieneOrganizacion == 'SI'">
+                
+                <ion-item>
+                  <!-- <ion-label position="stacked">Institución donde lo obtuvo</ion-label> -->
+                  <ion-select label="Institución donde lo obtuvo" labelPlacement="stacked" style="max-width: 100%" placeholder="Seleccione..." formControlName="organismoAutorizado" okText="Aceptar" cancelText="Cancelar">
+                    <ion-select-option [value]="item.orgaCcod" *ngFor="let item of viaConvalidacion.value.organizasmosAutorizados">
+                      {{item.orgaTdesc}}
+                    </ion-select-option>
+                  </ion-select>
+                </ion-item>
+                <div class="invalid" *ngIf="submitted && organismoAutorizado.hasError('required')">Campo obligatorio.</div>
+                
+                <ion-item *ngIf="organismoAutorizado.value == 0">
+                  <!-- <ion-label position="stacked">Indique Institución</ion-label> -->
+                  <ion-input label="Indique Institución" labelPlacement="stacked" placeholder="Ingrese..." formControlName="otroOrganismo" clearInput></ion-input>
+                </ion-item>
+                <div class="invalid" *ngIf="submitted && otroOrganismo.hasError('required')">Campo obligatorio.</div>
+                <div class="invalid" *ngIf="submitted && otroOrganismo.hasError('pattern')">No se permiten caracteres especiales.</div>
+                <div class="invalid" *ngIf="submitted && otroOrganismo.hasError('maxlength')">El nombre no debe exceder los 100 caracteres.</div>
+
+              </ng-container>            
+            </ion-list>
+          </form>
+        </div>
+      </section>
+
+      <ion-modal #viasModal [canDismiss]="true" [presentingElement]="presentingElement" (didDismiss)="onViasDismiss($event)">
+        <ng-template>
+          <ion-header>
+            <ion-toolbar>
+              <ion-title>Vías de Convalidación</ion-title>
+              <ion-buttons slot="start">
+                <ion-button (click)="viasModal.dismiss()">
+                  <ion-icon name="close"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+              <ion-buttons slot="end">
+                <ion-button [disabled]="!viaConvalidacionSel" (click)="guardarVia(viasModal)">
+                  <ion-label>Continuar</ion-label>
+                </ion-button>
+              </ion-buttons>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content>
+            <ion-list inset="true">
+              <ion-radio-group [(ngModel)]="viaConvalidacionSel" [allowEmptySelection]="true">
+                <ion-item *ngFor="let item of data.viasConvalidacion">
+                  <ion-radio [value]="item">
+                    <span class="ion-text-wrap">{{item.viasTdesc}}</span>
+                  </ion-radio>
+                </ion-item>
+              </ion-radio-group>
+            </ion-list>
+          </ion-content>
+        </ng-template>
+      </ion-modal>
+      
+    </ng-container>
+
+    <ng-container *ngIf="solicitud.tisoCcod == 19">
+
+      <section>
+        <div class="section-header">Seleccione tipo de trabajador</div>
+        <div class="section-content">
+          <form [formGroup]="solicitudForm">
+            <ion-list>
+              <ion-item>
+                <ion-select label="Tipo" labelPlacement="stacked" placeholder="Seleccione..." formControlName="tipoTrabajador" okText="Aceptar" cancelText="Cancelar">
+                  <ion-select-option [value]="item.ttraCcod" *ngFor="let item of data.tipos">
+                    {{item.ttraTdesc}}
+                  </ion-select-option>
+                </ion-select>
+              </ion-item>
+              <div class="invalid" *ngIf="submitted && tipoTrabajador.hasError('required')">Campo obligatorio.</div>
+            </ion-list>
+          </form>
+        </div>
+      </section>
+      
+    </ng-container>
+
+    <ng-container *ngIf="solicitud.tisoCcod == 29">
+      <section>
+        <div class="section-content">
+          <form [formGroup]="solicitudForm">
+            <ion-list>
+              <ion-item class="normal">
+                <ion-input label="Fecha de nacimiento" labelPlacement="stacked" formControlName="nacimiento" id="date" placeholder="Seleccione fecha de nacimiento..." inputmode="none" clearInput="true"></ion-input>
+                <ion-popover #datePicker trigger="date" size="cover">
+                  <ng-template>
+                    <ion-datetime presentation="date" formControlName="nacimientoPicker" locale="es-CL" [max]="fechaMaxima" [firstDayOfWeek]="1" [showDefaultButtons]="true" doneText="Acpetar" cancelText="Cancelar"></ion-datetime>
+                  </ng-template>
+                </ion-popover>
+              </ion-item>
+              <div class="invalid" *ngIf="submitted && nacimiento.hasError('required')">Campo obligatorio.</div>
+              <div class="invalid" *ngIf="submitted && nacimiento.hasError('pattern')">Formato incorrecto Ej: DD/MM/AAAA.</div>
+            </ion-list>
+          </form>
+        </div>
+      </section>
+    </ng-container>
+
+    <ng-container *ngIf="solicitud.tisoCcod == 35">
+      <section>
+        <div class="section-header">Listado de causas</div>
+        <div class="section-content">
+          <ion-list>
+            <ion-item *ngFor="let item of data.causales">
+              <ion-checkbox color="info" [(ngModel)]="item.checked" (ionChange)="causalChange(item)">
+                <span class="ion-text-wrap">{{item.tacoTdesc}}</span>
+              </ion-checkbox>
+            </ion-item>
+          </ion-list>
+        </div>
+      </section>
+      <section>
+        <div class="section-content">
+          <form [formGroup]="solicitudForm" *ngIf="justificacionCausales">
+            <ion-item class="normal">
+              <!-- <ion-label position="stacked" style="white-space: normal">Motivo</ion-label> -->
+              <ion-textarea label="Motivo" labelPlacement="stacked" rows="6" formControlName="motivo" placeholder="Ingrese un motivo"></ion-textarea>
+            </ion-item>
+            <div class="invalid" *ngIf="submitted && motivo.invalid">Campo obligatorio.</div>
+          </form>
+        </div>
+      </section>
+      <section *ngIf="documentosCausales.length">
+        <div class="section-content">
+          <p>Para esto debe adjuntar la siguiente documentación adicional, que quedará en la carpeta del estudiante:</p>
+          <div *ngFor="let causal of documentosCausales">{{causal}}</div>
+        </div>
+      </section>
+    </ng-container>
+    
+    <ng-container *ngIf="solicitud.tisoCcod == 50">
+      
+      <section>
+        <div class="section-header">Seleccione Establecimiento</div>
+        <div class="section-content">
+          <form [formGroup]="solicitudForm">
+            
+            <ion-item lines="none">
+              <!-- <ion-label position="stacked">Establecimiento</ion-label> -->
+              <ion-select label="Establecimiento" labelPlacement="stacked" style="max-width: 100%" placeholder="Seleccione..." formControlName="colegio" okText="Aceptar"
+                cancelText="Cancelar">
+                <ion-select-option [value]="item.coleCcod" *ngFor="let item of data.colegios">
+                  {{item.coleTdesc}}
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+            <div class="invalid" *ngIf="submitted && colegio.hasError('required')">Campo obligatorio.</div>
+          </form>
+        </div>
+      </section>
+
+    </ng-container>
+
+    <section *ngIf="tiposDocumentos && tiposDocumentos.length">
+      <div class="section-header">Adjuntar Documentos</div>
+        <ion-accordion-group expand="inset">
+          <ion-accordion [value]="item.stiaNcorr" *ngFor="let item of tiposDocumentos">
+            <ion-item slot="header">
+              <ion-label>{{item.tipoDoctoMarca}}</ion-label>
+              <ion-badge slot="end" color="medium" *ngIf="item.archivos.length" style="margin-right: 5px;">
+                {{item.archivos.length}}
+              </ion-badge>
+            </ion-item>
+            <div class="ion-padding" slot="content">              
+              <ion-list>
+                <ion-item class="has-icon normal" *ngFor="let doc of item.archivos">
+                  <ion-icon slot="start" src="assets/icon/insert_drive_file.svg"></ion-icon>
+                  <ion-label>{{doc.soarTnombre}}</ion-label>
+                  <ion-button fill="outline" slot="end" size="small" color="danger" (click)="eliminarArchivo(item, doc.soarNcorr)">Eliminar</ion-button>
+                </ion-item>
+                <ion-item class="has-icon normal" (click)="adjuntarArchivo(archivoInput, item)" *ngIf="resolverMostrarAdjuntar(item.archivos)">
+                  <ion-icon slot="start" src="assets/icon/add_a_photo.svg"></ion-icon>
+                  <ion-label>Adjuntar foto o documento</ion-label>
+                </ion-item>
+              </ion-list>
+            </div>
+          </ion-accordion>
+        </ion-accordion-group>
+      <p style="margin-inline: 30px; font-size: 14px;">(*) Documento Obligatorio</p>
+    </section>
+
+    <section *ngIf="totalArchivos > 0">
+      <div class="section-content">
+        <ion-list>
+          <ion-item class="normal">
+            <ion-checkbox slot="start" [(ngModel)]="terminos" color="danger" labelPlacement="end">
+              <span class="ion-text-wrap">Declaro que los documentos adjuntos son fidedignos.</span>
+            </ion-checkbox>
+          </ion-item>
+          <div class="invalid" *ngIf="submitted && !terminos">Debe aceptar declaración.</div>
+        </ion-list>
+      </div>
+    </section>
+
+    <ion-button color="info" shape="round" expand="block" (click)="procesar(detalle)" style="margin: 20px 15px" [disabled]="deshabilitaEnviar">
+      Enviar Solicitud
+    </ion-button>
+
+  </ng-container>
+
+  <ion-modal #detalle [presentingElement]="presentingElement" [canDismiss]="true" (didDismiss)="onDetalleDismiss($event)">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Detalle Solicitud</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="detalle.dismiss()">
+              <ion-icon name="close"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+        <ion-card color="white" class="primary-card" style="margin-bottom: 0 !important">
+          <ion-card-header>
+            <ion-card-title>{{data.titulo}}</ion-card-title>
+          </ion-card-header>
+        </ion-card>
+      </ion-header>
+      <ion-content>
+        <section class="first">
+          <div class="section-content">
+            <div class="detalle-solicitud" style="padding-inline: 20px">
+              <div class="image">
+                <img src="assets/images/icon_check_circle.svg">
+              </div>
+              <div [innerHTML]="detalleSolicitud"></div>
+            </div>
+          </div>
+        </section>
+        <!-- <div class="detalle-solicitud" style="padding-inline: 20px">
+          <div class="image">
+            <img src="assets/images/icon_check_circle.svg">
+          </div>
+          <div [innerHTML]="detalleSolicitud"></div>
+        </div> -->
+        <section>
+          <ion-button color="info" shape="round" expand="block" (click)="detalle.dismiss()">
+            Finalizar
+          </ion-button>
+        </section>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <input type="file" #archivoInput style="display: none;" (change)="adjuntarArchivoWeb($event)"
+        accept="application/pdf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,image/*" />
+
+
+</ion-content>

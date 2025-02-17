@@ -1,0 +1,187 @@
+@import "src/theme/perfil.scss";
+
+.perfil-container {
+    ion-avatar, app-cached-image {
+        height: 60px !important;
+        width: 60px !important; 
+        display: block;
+    }
+
+    h2 {
+        margin-top: 0;
+    }
+
+    p.correo {
+        color: var(--ion-color-info) !important;
+        font-size: var(--FS14);
+        margin-bottom: 0;
+    }
+}
+
+
+ion-card-content {
+    &.has-chart {
+        ul {
+            li {
+                display: flex;
+                align-items: center;
+                margin-bottom: 4px;
+                span.circle {
+                    width: 5px;
+                    height: 5px;
+                    border-radius: 3px;
+                    display: inline-block;
+                    background-color: var(--ion-color-secondary);
+                    margin-right: 5px;
+
+                    &.blue {
+                        background-color: var(--ion-color-info);
+                    }
+                    &.green {
+                        background-color: var(--ion-color-success);
+                    }
+                    &.yellow {
+                        background-color: var(--ion-color-warning);
+                    }
+                }
+            }
+        }
+        ion-col:last-child {
+            text-align: center;
+        }
+    }
+}
+
+#notas {
+    ion-card-content {
+        padding-right: 0;
+        padding-bottom: 0;
+
+        ul {
+            display: flex;
+            margin-left: -10px;
+            width: 400px;
+            margin-top: 0;
+
+            li {
+                width: 60px;
+                text-align: center;
+                margin: 0 10px;
+
+                div.nota {
+                    background-color: var(--ion-color-light);
+                    color: var(--ion-color-dark);
+                    border-radius: 4px;
+                    margin-bottom: 2px;
+                    font-size: var(--FS16);
+                    padding: 2px 0;
+                    &.rojo {
+                        color: var(--ion-color-danger) !important;
+                    }
+                }
+
+                div.nombre-eval {
+                    font-size: var(--FS11);
+                }
+                div.porcent-eval {
+                    font-size: var(--FS12);
+                    color: var(--ion-color-medium);
+                    margin-top: -2px;
+                }
+            }
+        }
+        .notas-finales {
+            display: flex;
+            justify-content: flex-end;
+            padding-bottom: 15px;
+
+            div.item {
+                width: 100px;
+                text-align: center;
+
+                div {
+                    width: 80px;
+                    margin: 0 auto;
+                    border: 3px solid var(--ion-color-light);
+                    height: 45px;
+                    border-radius: 4px;
+                    font-size: var(--FS20);
+                    font-weight: bold;
+                    line-height: 40px;
+                }
+                span {
+                    margin: 5px -5px 0 -5px;
+                    white-space: normal;
+                    font-size: var(--FS11);
+                    line-height: 1.2em;
+                    display: block;
+                }
+            }
+        }
+    }
+}
+
+ion-card#notas {
+    ion-card-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+}
+
+ion-card#notas {
+    ion-card-content {
+        padding: 0;
+    }
+}
+
+ion-item.evaluacion {
+    --padding-start: 15px;
+
+    [slot="start"] {
+        flex: 0 0 40px;
+        margin: 0 15px 0 0;
+        text-align: center;
+        color: var(--ion-color-medium);
+
+        ::ng-deep b {
+            display: block;
+            font-size: var(--FS26);
+            font-weight: normal;
+            line-height: 26px;
+        }
+    }
+
+    ion-label {
+        h2 {
+            white-space: normal;
+            font-weight: 500;
+        }
+    }
+
+    .ponderacion {
+        height: 30px;
+        width: 30px;
+        border: 1px solid;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 30px;
+        font-size: var(--FS14);
+        font-weight: 600;
+        color: var(--ion-color-success);
+
+        &.rojo {
+            color: var(--ion-color-primary) !important;
+        }
+        &.gris {
+            color: var(--ion-color-medium) !important;
+        }
+    }
+}
+
+.secondary-card {
+    margin: 12px 15px !important;
+    box-shadow: none !important;
+    border-radius: 8px !important;
+    overflow: hidden;
+}

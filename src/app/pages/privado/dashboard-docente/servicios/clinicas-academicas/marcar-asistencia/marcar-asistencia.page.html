@@ -1,0 +1,101 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Marcar asistencia</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrar()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-card color="white" class="primary-card">
+    <ion-card-header>
+      <ion-card-title>Clínicas Académicas</ion-card-title>
+      <ion-card-subtitle>
+        <ion-icon color="success" src="assets/icon/check_circle.svg"></ion-icon>
+        <span>Agendada</span>
+      </ion-card-subtitle>
+    </ion-card-header>
+  </ion-card>
+</ion-header>
+
+<ion-content>
+
+  @if (!mostrarParticipantes) {
+  <ion-row class="ion-padding">
+    <ion-col>
+      <ion-button color="medium" shape="round" expand="full" (click)="marcarInasistencia()">No realizada</ion-button>
+    </ion-col>
+    <ion-col>
+      <ion-button color="info" shape="round" expand="full" (click)="mostrarParticipantes = true">Realizada</ion-button>
+    </ion-col>
+  </ion-row>
+  <section>
+    <div class="section-header">Datos de Hora Clínica</div>
+    <div class="section-content">
+      <ion-list>
+        @for (item of participantes; track $index) {
+        <ion-item>
+          <ion-label>
+            <p class="label">Nombre Asistente {{$index+1}}</p>
+            <p class="detail">{{item.persTnombre}}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <p class="label">RUT</p>
+            <p class="detail">{{item.persNrut}}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <p class="label">Correo</p>
+            <p class="detail">{{item.persTemailInacap}}</p>
+          </ion-label>
+        </ion-item>
+        }
+        <ion-item>
+          <ion-label>
+            <p class="label">Nombre Clínica</p>
+            <p class="detail">{{data.acacTnombre}}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <p class="label">Fecha</p>
+            <p class="detail">{{data.acofFmodulo}}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <p class="label">Hora</p>
+            <p class="detail">{{data.horaHinicio}} - {{data.horaHtermino}}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+  }
+  @if (mostrarParticipantes) {
+  <section class="first">
+    <div class="section-header">Seleccione asistentes Clínica</div>
+    <div class="section-content">
+      <ion-list>
+        @for (item of participantes; track $index) {
+        <ion-item>
+          <ion-checkbox [(ngModel)]="item.checked">{{item.persTnombre}}</ion-checkbox>
+        </ion-item>
+        }
+      </ion-list>
+    </div>
+  </section>
+  <ion-row class="ion-padding">
+    <ion-col>
+      <ion-button color="medium" shape="round" expand="full" (click)="mostrarParticipantes = false">Volver</ion-button>
+    </ion-col>
+    <ion-col>
+      <ion-button color="info" shape="round" expand="full" (click)="marcarAsistencia()">Realizada</ion-button>
+    </ion-col>
+  </ion-row>
+  }
+
+</ion-content>

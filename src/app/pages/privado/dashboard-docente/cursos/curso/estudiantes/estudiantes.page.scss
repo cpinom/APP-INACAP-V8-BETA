@@ -1,0 +1,24 @@
+section {
+    .section-header {
+        text-align: right;
+        padding-right: 15px;
+    }
+
+    ion-list {
+        ion-item {
+            // ion-avatar {
+            //     height: 40px;
+            //     width: 40px;
+            //     margin-top: 4px;
+            //     margin-bottom: 4px;
+            // }
+            ion-label {
+                white-space: normal;
+            }
+        }
+    }
+}
+
+.rojo {
+    color: var(--ion-color-danger);
+}

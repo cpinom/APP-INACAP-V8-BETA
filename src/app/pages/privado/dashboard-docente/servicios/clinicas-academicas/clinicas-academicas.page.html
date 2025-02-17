@@ -1,0 +1,138 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Servicios" defaultHref="/docente/servicios"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-card color="white" class="primary-card">
+    <ion-card-header>
+      <ion-card-title>Clínicas Académicas</ion-card-title>
+    </ion-card-header>
+    @if (mostrarCargando) {
+    <ion-progress-bar type="indeterminate"></ion-progress-bar>
+    }
+  </ion-card>
+</ion-header>
+
+<ion-content>
+
+  @if (mostrarData && data) {
+  <section class="first">
+    <div class="section-content">
+      <div class="tabs">
+        <ion-segment [(ngModel)]="tabModel" mode="md" [swipeGesture]="false">
+          <ion-segment-button [value]="0">
+            <ion-label>Horas<br />reservadas</ion-label>
+          </ion-segment-button>
+          <ion-segment-button [value]="1">
+            <ion-label>Horas<br />disponibles</ion-label>
+          </ion-segment-button>
+          <ion-segment-button [value]="2">
+            <ion-label>Historial de<br />reservas</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </div>
+      @if (tabModel == 0) {
+      @if (data.reservadas.length) {
+      <ion-list>
+        @for (item of data.reservadas; track $index) {
+        <ion-item [detail]="!habilitarAsistencia(item)" class="ion-activatable" (click)="detalleAgenda(item)">
+          <ion-icon slot="start" src="assets/icon/check_circle_outline.svg" color="success"></ion-icon>
+          <ion-label>
+            <h2>{{item.acacTnombre}}</h2>
+            <p>Estado: {{item.acesTdesc}}</p>
+            <p>Número de asistentes: {{item.acagNparticipantes}}</p>
+            <p>Fecha: {{item.acofFmodulo}}</p>
+            <p>Hora: {{item.horaHinicio}} - {{item.horaHtermino}}</p>
+          </ion-label>
+          @if (habilitarAsistencia(item)) {
+          <ion-button slot="end" color="info" shape="round" size="small" fill="outline"
+            (click)="marcarAsistencia($event, item)">Marcar asistencia</ion-button>
+          }
+        </ion-item>
+        }
+      </ion-list>
+      }
+      @else {
+      <div class="empty-state">
+        <div>
+          <ion-icon src="assets/icon/search.svg"></ion-icon>
+          <p>Sin reservas en este momento.</p>
+        </div>
+      </div>
+      }
+      }
+      @else if (tabModel == 1) {
+      @if (data.disponibles.length) {
+      <ion-list>
+        @for (item of data.disponibles; track $index) {
+        <ion-item detail="true" class="ion-activatable" (click)="detalleAgenda(item)">
+          <ion-icon slot="start" src="assets/icon/schedule.svg" color="warning"></ion-icon>
+          <ion-label>
+            <h2>{{item.acacTnombre}}</h2>
+            <p>Estado: {{item.acesTdesc}}</p>
+            <p>Número máximo de asistentes: {{item.acacNcupo}}</p>
+            <p>Fecha: {{item.acofFmodulo}}</p>
+            <p>Hora: {{item.horaHinicio}} - {{item.horaHtermino}}</p>
+          </ion-label>
+        </ion-item>
+        }
+      </ion-list>
+      }
+      @else {
+      <div class="empty-state">
+        <div>
+          <ion-icon src="assets/icon/search.svg"></ion-icon>
+          <p>Sin horas disponibles en este momento.</p>
+        </div>
+      </div>
+      }
+      }
+      @else if (tabModel == 2) {
+      @if (data.historial.length) {
+      <ion-list>
+        @for (item of data.historial; track $index) {
+        <ion-item detail="true" class="ion-activatable" (click)="detalleAgenda(item)">
+          @if (item.acesCcod == 5) {
+          <ion-icon slot="start" src="assets/icon/edit_document.svg" color="danger"></ion-icon>
+          }
+          @if (item.acesCcod == 4) {
+          <ion-icon slot="start" src="assets/icon/edit_document.svg" color="success"></ion-icon>
+          }
+          @if (item.acesCcod == 3) {
+          <ion-icon slot="start" src="assets/icon/highlight_off.svg" color="danger"></ion-icon>
+          }
+          <ion-label>
+            <h2>{{item.acacTnombre}}</h2>
+            <p>Estado: {{item.acesTdesc}}</p>
+            <p>Número de asistentes: {{item.acagNparticipantes}}</p>
+            <p>Fecha: {{item.acofFmodulo}}</p>
+            <p>Hora: {{item.horaHinicio}} - {{item.horaHtermino}}</p>
+          </ion-label>
+        </ion-item>
+        }
+      </ion-list>
+      }
+      @else {
+      <div class="empty-state">
+        <div>
+          <ion-icon src="assets/icon/search.svg"></ion-icon>
+          <p>Sin resevas historicas en este momento.</p>
+        </div>
+      </div>
+      }
+      }
+    </div>
+  </section>
+  }
+  @if (mostrarData && !data) {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Información no disponible en este momento.</p>
+      <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+    </div>
+  </section>
+  }
+
+</ion-content>

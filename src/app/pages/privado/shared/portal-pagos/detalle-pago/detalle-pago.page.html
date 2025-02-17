@@ -1,0 +1,126 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Detalle Pago</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrar(true)">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+
+  <ng-container *ngIf="pagoExito && data">
+    <section>
+      <ion-card color="white">
+        <ion-card-content class="header">
+          <ion-icon color="success" src="assets/icon/check_circle.svg"></ion-icon>
+          <div>
+            <h2>Operación exitosa</h2>
+            <p>El comprobante ha sido enviado a su INACAP Mail.</p>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </section>
+
+    <section>
+      <div class="section-header">Resumen de Pago</div>
+      <div class="section-content">
+        <ion-list>
+          <ion-item>
+            <ion-label>
+              <p class="label">Nº de operación</p>
+              <h2>{{data.codigo}}</h2>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <p class="label">Tipo de pago</p>
+              <h2>{{data.pago}}</h2>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <p class="label">TOTAL</p>
+              <h2>CLP ${{data.total}}</h2>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-content">
+        <ion-list>
+          <ion-item detail="false" (click)="descargarPDF()">
+            <ion-icon src="assets/icon/picture_as_pdf.svg" slot="start"></ion-icon>
+            <ion-label>
+              <h2>Revisar comprobante de pago</h2>
+              <p class="small">*No válido como documento tributario</p>
+            </ion-label>
+          </ion-item>
+          <ion-item detail="false" (click)="enviarCorreo()">
+            <ion-icon src="assets/icon/mail.svg"></ion-icon>
+            <ion-label>Enviar comprobante por correo</ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+    </section>
+
+  </ng-container>
+
+  <ng-container *ngIf="!pagoExito && data">
+
+    <section>
+      <ion-card color="white">
+        <ion-card-content class="header">
+          <ion-icon color="danger" src="assets/icon/error.svg"></ion-icon>
+          <div>
+            <h2>{{data.titulo}}</h2>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </section>
+
+    <section>
+      <div class="section-header">Resumen de Pago</div>
+      <div class="section-content">
+        <ion-list>
+          <ion-item>
+            <ion-label>
+              <p class="label">Nº de operación</p>
+              <h2>{{data.codigo}}</h2>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <p class="label">Tipo de pago</p>
+              <h2>{{data.pago}}</h2>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-content">
+        <ion-list>
+          <ion-item detail="false" (click)="descargarPDF()">
+            <ion-icon src="assets/icon/picture_as_pdf.svg" slot="start"></ion-icon>
+            <ion-label>
+              <h2>Revisar comprobante de pago</h2>
+              <!-- <p class="small">*No válido como documento tributario</p> -->
+            </ion-label>
+          </ion-item>
+          <!-- <ion-item detail="false">
+              <ion-label>Enviar comprobante por correo</ion-label>
+            </ion-item> -->
+        </ion-list>
+      </div>
+    </section>
+
+  </ng-container>
+
+  <ion-button color="info" shape="round" expand="block" (click)="cerrar(true)">Finalizar Pago</ion-button>
+
+</ion-content>

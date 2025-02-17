@@ -1,0 +1,275 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Volver" [defaultHref]="backUrl"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="recargar($event)">
+        <ion-icon src="assets/icon/calendar_today.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Certificados</ion-title>
+  </ion-toolbar>
+  <div class="tabs">
+    <ion-segment [(ngModel)]="activeTab" mode="md" [swipeGesture]="false">
+      <ion-segment-button [value]="0">
+        <ion-label>Certificados</ion-label>
+      </ion-segment-button>
+      <ion-segment-button [value]="1">
+        <ion-label>Solicitados</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+</ion-header>
+
+<ion-content>
+
+  @if (mostrarCargando) {
+  <div class="loaderInacap">
+    <ion-spinner name="lines" color="info"></ion-spinner>
+  </div>
+  }
+
+  @if (mostrarData) {
+  <!-- Pestaña Disponbiles -->
+  @if (activeTab == 0) {
+  <section class="carreras first">
+    <div class="section-content">
+      <form [formGroup]="carreraForm">
+        <ion-list>
+          <ion-item>
+            <ion-select label="Mis Carreras" labelPlacement="stacked" placeholder="Seleccione..."
+              [interfaceOptions]="{ header: 'Mis Carreras' }" interface="action-sheet" formControlName="carrera"
+              cancelText="Cancelar">
+              @for (item of carreras; track $index) {
+              <ion-select-option [value]="item" style="white-space: normal">
+                {{item.espeTdesc}}
+              </ion-select-option>
+              }
+            </ion-select>
+          </ion-item>
+        </ion-list>
+      </form>
+    </div>
+  </section>
+  @if (directos && directos.length) {
+  <section class="directos classic">
+    <div class="section-header">Accesos Directos</div>
+    <div class="section-content directos">
+      @for (item of directos; track $index) {
+      <ion-card color="white" (click)="solicitar(item)" role="button">
+        <ion-card-content>
+          <ion-icon src="assets/icon/description.svg"></ion-icon>
+          <span>{{item.tdetTdesc | titleCase}}</span>
+        </ion-card-content>
+      </ion-card>
+      }
+    </div>
+  </section>
+  }
+  <section class="disponibles">
+    <div class="section-header">Disponibles</div>
+    <ion-accordion-group expand="inset">
+      @for (item of disponibles; track $index) {
+      <ion-accordion [value]="'disponible_' + $index">
+        <ion-item slot="header">
+          <ion-label>{{item.title}}</ion-label>
+          <ion-badge slot="end" color="light">{{item.children.length}}</ion-badge>
+        </ion-item>
+        <div class="ion-padding" slot="content">
+          <ion-list [inset]="true">
+            @for (o of item.children; track $index) {
+            <ion-item routerLink="nueva-solicitud" (click)="solicitar(o)" detail="true" class="ion-activatable">
+              <ion-label>
+                <h2 text-wrap>{{o.tdetTdesc | titleCase}}</h2>
+              </ion-label>
+            </ion-item>
+            }
+          </ion-list>
+        </div>
+      </ion-accordion>
+      }
+    </ion-accordion-group>
+  </section>
+  }
+  <!--Pestaña Historicos -->
+  @if (activeTab == 1) {
+  @if (historial.length > 0) {
+  <ion-list [inset]="true">
+    <ion-item *ngFor="let item of historial" (click)="detalleCertificado(item)" detail="true">
+      <ion-label>
+        <h2 text-wrap>{{item.tdetTdesc}}</h2>
+        <p>{{item.carrTdesc}}</p>
+        <p>Nro. Solicitud - {{item.resoNcorr}}</p>
+        <p>Fecha - {{item.resoFsolicitud}}</p>
+        <p>Estado - {{item.esolTdesc}}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+  }
+  @else {
+  <div class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/search.svg"></ion-icon>
+      <p>Sin certificados historicos en este momento.</p>
+    </div>
+  </div>
+  }
+  }
+  }
+
+  @if (mostrarError) {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Información no disponible en este momento.</p>
+      <ion-button color="info" shape="round" (click)="recargarError()">Recargar</ion-button>
+    </div>
+  </section>
+  }
+
+  <!-- <ng-container *ngIf="mostrarData && carreras">
+
+    <ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
+    <ng-container *ngIf="activeTab == 0">
+
+      <ng-container *ngIf="mostrarData">
+
+        <section class="carreras first" *ngIf="mostrarCarreras">
+          <div class="section-content">
+            <form [formGroup]="carreraForm">
+              <ion-list>
+                <ion-item>
+                  <ion-select label="Mis Carreras" labelPlacement="stacked" placeholder="Seleccione..." [interfaceOptions]="{ header: 'Mis Carreras' }"  interface="action-sheet" formControlName="carrera" cancelText="Cancelar">
+                    <ion-select-option [value]="item" *ngFor="let item of carreras" style="white-space: normal">
+                      {{item.espeTdesc}}
+                    </ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </ion-list>
+            </form>
+          </div>
+        </section>
+
+        <section class="directos classic" [class.first]="!mostrarCarreras" *ngIf="directos && directos.length > 0">
+          <div class="section-header">Accesos Directos</div>
+          <div class="section-content directos">
+            <ion-card color="white" *ngFor="let item of directos" (click)="solicitar(item)" role="button">
+              <ion-card-content>
+                <ion-icon src="assets/icon/description.svg"></ion-icon>
+                <span>{{item.tdetTdesc | titleCase}}</span>
+              </ion-card-content>
+            </ion-card>
+          </div>
+        </section>
+
+        <section class="disponibles" [class.first]="!mostrarCarreras && directos && directos.length == 0">
+          <div class="section-header">Disponibles</div>
+          <ion-accordion-group expand="inset">
+            <ion-accordion [value]="'disponible_' + i" *ngFor="let item of disponibles; let i = index;">
+              <ion-item slot="header">
+                <ion-label>{{item.title}}</ion-label>
+                <ion-badge slot="end" color="light">{{item.children.length}}</ion-badge>
+              </ion-item>
+              <div class="ion-padding" slot="content">
+                <ion-list [inset]="true">
+                  <ion-item *ngFor="let o of item.children" routerLink="nueva-solicitud" (click)="solicitar(o)" detail="true">
+                    <ion-label>
+                      <h2 text-wrap>{{o.tdetTdesc | titleCase}}</h2>
+                      <p *ngIf="o.tdetMonto != '0'">CLP {{o.tdetMvalorUnitario}}</p>
+                    </ion-label>
+                  </ion-item>
+                </ion-list>
+              </div>
+            </ion-accordion>
+          </ion-accordion-group>
+        </section>
+
+      </ng-container>
+
+    </ng-container>
+
+    <ng-container *ngIf="activeTab == 1">
+
+      <ion-list [inset]="true" *ngIf="historial.length > 0">
+        <ion-item *ngFor="let item of historial" (click)="detalleCertificado(item)" detail="true">
+          <ion-label>
+            <h2 text-wrap>{{item.tdetTdesc}}</h2>
+            <p>{{item.carrTdesc}}</p>
+            <p>Nro. Solicitud - {{item.resoNcorr}}</p>
+            <p>Fecha - {{item.resoFsolicitud}}</p>
+            <p>Estado - {{item.esolTdesc}}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+
+      <div class="empty-state" *ngIf="historial.length == 0">
+        <div>
+          <ion-icon src="assets/icon/search.svg"></ion-icon>
+          <p>Sin certificados historicos en este momento.</p>
+        </div>
+      </div>
+    
+
+    </ng-container>
+
+  </ng-container>
+
+  <ng-container *ngIf="!mostrarData && !mostrarError">
+  
+    <section class="first">
+      <div class="section-header">
+        <ion-skeleton-text animated style="width: 30%;"></ion-skeleton-text>
+      </div>
+      <div class="section-content">
+        <ion-list>
+          <ion-item>
+            <ion-label>
+              <ion-skeleton-text animated style="width: 70%;"></ion-skeleton-text>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+    </section>
+  
+    <section>
+      <div class="section-content">
+        <ion-list>
+          <ion-item>
+            <ion-label>
+              <ion-skeleton-text animated style="width: 70%;"></ion-skeleton-text>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <ion-skeleton-text animated style="width: 80%;"></ion-skeleton-text>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <ion-skeleton-text animated style="width: 40%;"></ion-skeleton-text>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <ion-skeleton-text animated style="width: 60%;"></ion-skeleton-text>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+    </section>  
+  
+  </ng-container>
+
+  <section *ngIf="mostrarError" class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Información no disponible en este momento.</p>
+      <ion-button color="info" shape="round" (click)="recargarError()">Recargar</ion-button>
+    </div>
+  </section> -->
+
+</ion-content>

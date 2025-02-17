@@ -1,0 +1,186 @@
+ion-header {
+    ion-title.md {
+        text-align: left;
+        padding-left: 0;
+    }
+}
+
+ion-toolbar.tabs {
+    --background: #fff;
+    --min-height: 70px !important;
+    --padding-top: 0;
+    --padding-bottom: 0;
+    --padding-start: 0;
+    --padding-end: 0;
+
+    nav {
+        border-bottom: 0 !important;
+
+        .mat-tab-link {
+            height: 70px;
+            display: inline-flex;
+        }
+    }
+
+    ion-searchbar {
+        padding: 10px;
+    }
+}
+
+.certificados ::ng-deep mat-tab-header {
+    .mat-tab-label {
+        height: 70px !important;
+        flex: 1;
+    }
+}
+
+.certificados {
+    ion-label {
+        white-space: normal;
+    }
+}
+
+.carreras {
+    ion-select::part(text) {
+        font-size: var(--FS16);
+        white-space: normal;
+        margin-top: 8px;
+        margin-bottom: 8px;
+    }
+}
+
+.directos {
+    .section-header {
+        padding-top: 0;
+    }
+    .section-content {
+        background: transparent !important;
+        overflow-x: scroll;
+        padding: 5px 10px 10px 15px;
+        white-space: nowrap;
+        border: none !important;
+        margin-bottom: 0;
+
+        ion-card {
+            background-color: var(--bg-color-card2);
+            display: inline-block;
+            margin: 0 10px 0 0;
+            width: 158px;
+            height: 86px;
+            white-space: normal;
+            border-left: 4px solid var(--indicator-color);
+
+            ion-card-header {
+                --background: var(--ion-color-info);
+                padding: 8px 10px;
+
+                ion-card-title {
+                    font-size: var(--FS12);
+                    font-weight: 400;
+                    color: var(--ion-color-white);
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                }
+            }
+
+            ion-card-content {
+                padding: 6px 10px;
+                font-size: var(--FS14);
+                font-weight: 700;
+                display: flex;
+                align-items: center;
+                height: 86px;
+
+                ion-icon {
+                    flex: 0 0 24px;
+                    color: var(--ion-color-medium);
+                    margin-right: 6px;
+                    font-size: 24px;
+                }
+
+                span {
+                    line-height: 1.2;
+                }
+
+                ion-list {
+                    ion-item {
+                        --min-height: 22px;
+                        background-color: var(--bg-color-card2);
+                        color: var(--bg-contrast-color);
+                        ion-label {
+                            white-space: normal;
+                            margin: 0;
+                            font-size: var(--FS12);
+
+                            .nota-number,
+                            .asistencia-number {
+                                font-weight: 600;
+                            }
+                            .text {
+                                padding-right: 8px;
+                            }
+                            .rojo {
+                                color: var(--ion-color-danger) !important;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .card:first-child {
+            margin-left: 0;
+        }
+    }
+}
+
+section.disponibles {
+    ion-accordion-group {
+        margin-top: 0;
+
+        ion-item[slot="header"] {
+            //--ion-item-background: #666;
+            // --color: white;
+            --padding-start: 15px;
+
+            // ::ng-deep ion-icon {
+            //     color: white;
+            // }
+        }
+    }
+}
+
+.historicos {
+    margin-top: 15px;
+}
+
+ion-modal {
+    .header {
+        display: flex;
+        align-items: center;
+
+        ion-icon {
+            font-size: 60px;
+            width: 60px;
+            height: 60px;
+        }
+        div {
+            padding-left: 10px;
+            h2 {
+                margin-top: 0px;
+                font-size: var(--FS20);
+                font-weight: 500;
+            }
+            p {
+                color: var(--ion-color-medium) !important;
+            }
+        }
+    }
+}
+
+ion-modal.periodos {
+    --width: 290px;
+    --height: 382px;
+    --border-radius: 8px;
+}

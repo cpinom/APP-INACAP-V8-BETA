@@ -7,6 +7,8 @@ import { HeaderComponent } from './header/header.component';
 import { CachedImageComponent } from './cached-image/cached-image.component';
 import { AvatarComponent } from './avatar/avatar.component';
 import { ImageModalComponent } from './image-modal/image-modal.component';
+import { HorarioComponent } from './horario/horario.component';
+import { TypeaheadComponent } from './typeahead/typeahead.component';
 
 @NgModule({
   schemas: [],
@@ -15,19 +17,23 @@ import { ImageModalComponent } from './image-modal/image-modal.component';
     IonicModule,
     RouterModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   declarations: [
     HeaderComponent,
     CachedImageComponent,
     AvatarComponent,
-    ImageModalComponent
+    ImageModalComponent,
+    HorarioComponent,
+    TypeaheadComponent
   ],
   exports: [
     HeaderComponent,
     CachedImageComponent,
     AvatarComponent,
-    ImageModalComponent
+    ImageModalComponent,
+    HorarioComponent,
+    TypeaheadComponent
   ]
 })
 export class ComponentsModule { }

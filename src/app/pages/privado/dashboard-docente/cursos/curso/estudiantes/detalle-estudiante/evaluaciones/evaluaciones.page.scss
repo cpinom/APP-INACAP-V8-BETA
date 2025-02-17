@@ -1,0 +1,42 @@
+ion-content {
+    [slot="start"] {
+        flex: 0 0 40px;
+        margin: 0 15px 0 0;
+        text-align: center;
+        color: var(--ion-color-medium);
+
+        ::ng-deep b {
+            display: block;
+            font-size: var(--FS26);
+            font-weight: normal;
+            line-height: 26px;
+        }
+    }
+    ion-label {
+        padding-top: 18px;
+        padding-bottom: 18px;
+
+        h2 {
+            white-space: normal;
+            font-weight: 500;
+        }
+    }
+    .ponderacion {
+        height: 30px;
+        width: 30px;
+        border: 1px solid;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 30px;
+        font-size: var(--FS14);
+        font-weight: 600;
+        color: var(--ion-color-success);
+
+        &.rojo {
+            color: var(--ion-color-primary) !important;
+        }
+        &.gris {
+            color: var(--ion-color-medium) !important;
+        }
+    }
+}

@@ -1,0 +1,71 @@
+.indicaciones {
+    margin-inline: 15px !important;
+    border-radius: 8px !important;
+
+    ul {
+        margin: 0;
+        padding-left: 25px;
+    }
+}
+
+.invalid {
+    margin: 5px 15px;
+    font-size: var(--FS12);
+    color: var(--ion-color-danger);
+}
+
+ion-card-subtitle {
+    align-items: center;
+    display: flex;
+
+    ion-icon {
+        margin-right: 5px;
+    }
+}
+
+ion-item {
+    --padding-start: 15px;
+}
+
+.resolucion {
+    padding: 15px;
+
+    p {
+        margin: 0 0 10px;
+        font-size: var(--FS14);
+    }
+}
+
+ion-modal {
+    .header {
+        display: flex;
+        align-items: center;
+
+        ion-icon {
+            font-size: 60px;
+            width: 60px;
+            height: 60px;
+        }
+        div {
+            padding-left: 10px;
+            h2 {
+                margin-top: 0px;
+                font-size: var(--FS20);
+                font-weight: 500;
+            }
+            p {
+                color: var(--ion-color-medium) !important;
+            }
+        }
+    }
+}
+
+::ng-deep ion-action-sheet.certificado-cls {
+    .action-sheet-title {
+        font-size: 16px;
+
+        .action-sheet-sub-title {
+            font-size: 14px;
+        }
+    }
+}

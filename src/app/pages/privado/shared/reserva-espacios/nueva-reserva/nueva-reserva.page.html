@@ -1,0 +1,176 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Reserva de Espacios" [defaultHref]="backUrl"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card color="white" class="primary-card">
+    <ion-card-header>
+      <ion-card-title>Nueva Reserva</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+
+  <mat-stepper linear #stepper labelPosition="bottom" *ngIf="mostrarData" (selectionChange)="onSelectionChange($event)">
+
+    <ng-template matStepperIcon="done">
+      <ion-icon src="assets/icon/done.svg"></ion-icon>
+    </ng-template>
+
+    <ng-template matStepperIcon="edit">
+      <ion-icon src="assets/icon/done.svg"></ion-icon>
+    </ng-template>
+
+    <mat-step [stepControl]="firstStep">
+      <form [formGroup]="firstStep">
+        <section>
+          <div class="section-header" style="padding-left: 0;">Qué quieres reservar</div>
+          <div class="section-content" style="margin: 0;">
+            <ion-list>
+              <ion-item>
+                <ion-select label="Tipo de Espacio" formControlName="categoria" labelPlacement="stacked"
+                  placeholder="Seleccione tipo de espacio" okText="Aceptar" cancelText="Cancelar">
+                  <ion-select-option [value]="item" *ngFor="let item of categorias">
+                    {{item.arcaTnombre}}
+                  </ion-select-option>
+                </ion-select>
+              </ion-item>
+              <div class="error" *ngIf="categoria.hasError('required')">Campo obligatorio</div>
+              <ng-container *ngIf="proveedores">
+                <ion-item>
+                  <ion-select label="Espacio a Reservar" formControlName="proveedor" labelPlacement="stacked"
+                    placeholder="Seleccione tipo de reserva" okText="Aceptar" cancelText="Cancelar">
+                    <ion-select-option [value]="item" *ngFor="let item of proveedores">
+                      {{item.nombre}}
+                    </ion-select-option>
+                  </ion-select>
+                </ion-item>
+                <div class="error" *ngIf="proveedor.hasError('required')">Campo obligatorio</div>
+              </ng-container>
+            </ion-list>
+          </div>
+        </section>
+        <section style="margin-top: 10px;">
+          <ion-grid style="padding: 0;">
+            <ion-row>
+              <ion-col>
+                <ion-button color="secondary" shape="round" expand="full" [routerLink]="backUrl" routerDirection="back">
+                  Cancelar
+                </ion-button>
+              </ion-col>
+              <ion-col>
+                <!-- <ion-button color="info" shape="round" expand="full" (click)="nextStep(1, undefined, firstStep)">
+                  Ver Disponibilidad
+                </ion-button> -->
+                <ion-button color="info" shape="round" expand="full" (click)="stepper.next()">
+                  Ver Disponibilidad
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </section>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="secondStep">
+
+      <form [formGroup]="secondStep">
+        <mbsc-datepicker formControlName="fecha" theme="ios" [locale]="pickerLocale" [controls]="['calendar']"
+          display="inline" calendarType="week" [calendarSize]="1" (onPageChange)="onHorarioChange($event)"></mbsc-datepicker>
+    
+        <ion-list>
+          <!-- <ion-item *ngFor="let slot of slots" detail="true" (click)="nextStep(2, slot.time)" class="ion-activatable">
+            <ion-icon name="ellipse" style="font-size: x-small;" slot="start" color="success"></ion-icon>
+            <ion-label>
+              <h2>Disponible</h2>
+              <p>{{slot.time}}</p>
+            </ion-label>
+          </ion-item> -->
+          <ion-item *ngFor="let slot of slots" detail="true" (click)="seleccionarEspacio(slot.time)" class="ion-activatable">
+            <ion-icon name="ellipse" style="font-size: x-small;" slot="start" color="success"></ion-icon>
+            <ion-label>
+              <h2>Disponible</h2>
+              <p>{{slot.time}}</p>
+            </ion-label>
+          </ion-item>
+          <ion-item *ngIf="slots && slots.length == 0">
+            <ion-label>Sin espacios disponibles</ion-label>
+          </ion-item>
+        </ion-list>
+
+        <section style="margin-top: 10px;">
+          <ion-grid style="padding: 0;">
+            <ion-row>
+              <ion-col>
+                <ion-button color="secondary" shape="round" expand="full" (click)="prevStep()">
+                  Anterior
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </section>
+
+      </form>
+
+    </mat-step>
+
+    <mat-step [stepControl]="aditionalsFieldStep">
+      <ng-container *ngIf="aditionalsFieldStep">
+        <form [formGroup]="aditionalsFieldStep">
+          <section>
+            <div class="section-header" style="padding-left: 0; padding-bottom: 10px;">Información de reserva</div>
+            <div class="section-content" style="margin: 0;">
+              <ion-list>
+
+                <ng-container *ngIf="camposAdicionales">
+                  <ng-container *ngFor="let campo of camposAdicionales">
+                    <ion-item *ngIf="campo.is_visible">
+                      <ng-container [ngSwitch]="campo.field_type">
+                        <ion-select *ngSwitchCase="'select'" [formControlName]="campo.name" [label]="campo.field_name"
+                          labelPlacement="stacked" placeholder="Seleccionar" okText="Aceptar" cancelText="Cancelar">
+                          <ion-select-option *ngFor="let valor of campo.field_options">{{valor}}</ion-select-option>
+                        </ion-select>
+                        <ion-textarea *ngSwitchCase="'textarea'" [formControlName]="campo.name"
+                          [label]="campo.field_name" labelPlacement="stacked" [counter]="true" maxlength="100"
+                          rows="5"></ion-textarea>
+                        <ion-input *ngSwitchCase="'digits'" [formControlName]="campo.name" type="number"
+                          inputmode="numeric" [label]="campo.field_name" labelPlacement="stacked"></ion-input>
+                        <ion-input *ngSwitchCase="'text'" [formControlName]="campo.name" type="text"
+                          [label]="campo.field_name" labelPlacement="stacked"></ion-input>
+                      </ng-container>
+                    </ion-item>
+                    <div class="error" *ngIf="campo.is_visible && !aditionalsFieldStep.get(campo.name).valid">
+                      Campo obligatorio
+                    </div>
+                  </ng-container>
+                </ng-container>
+
+              </ion-list>
+            </div>
+          </section>
+        </form>
+        <section style="margin-top: 10px;">
+          <ion-grid style="padding: 0;">
+            <ion-row>
+              <ion-col>
+                <ion-button color="secondary" shape="round" expand="full" (click)="prevStep()">
+                  Anterior
+                </ion-button>
+              </ion-col>
+              <ion-col>
+                <ion-button color="info" shape="round" expand="full" (click)="crearReservaV2()">
+                  Reservar
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </section>
+      </ng-container>
+    </mat-step>
+
+  </mat-stepper>
+
+</ion-content>

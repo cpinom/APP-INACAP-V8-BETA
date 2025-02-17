@@ -1,0 +1,13 @@
+ion-content {
+    p.label {
+        font-size: var(--FS14);
+        margin-bottom: 6px;
+        white-space: normal;
+    }
+
+    p.detail {
+        font-size: var(--FS16);
+        color: var(--color);
+        white-space: normal;
+    }
+}

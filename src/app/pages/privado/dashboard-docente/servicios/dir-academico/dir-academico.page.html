@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Servicios" defaultHref="/docente/servicios"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card color="white primary-card">
+    <ion-card-header>
+      <ion-card-title>
+        <span>Director(a) Académico(a)</span>
+      </ion-card-title>
+    </ion-card-header>
+    @if (mostrarCargando) {
+    <ion-progress-bar type="indeterminate"></ion-progress-bar>
+    }
+  </ion-card>
+
+  @if (mostrarData && personas) {
+  @if (personas.length > 0) {
+  <section>
+    <div class="section-content">
+      <ion-list>
+        @for (item of personas; track $index) {
+        <ion-item>
+          <app-cached-image slot="start" [src]="resolverFoto(item.persNcorr)"></app-cached-image>
+          <ion-label>
+            <h2>{{item.nombre}}</h2>
+            <p>INACAP {{item.sedeTdesc}}</p>
+            <p><a (click)="correo(item.persTemailInacap)">{{item.persTemailInacap}}</a></p>
+          </ion-label>
+        </ion-item>
+        }
+      </ion-list>
+    </div>
+  </section>
+  }
+  @if (personas.length === 0) {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/group.svg"></ion-icon>
+      <p>Sin registros en este momento</p>
+    </div>
+  </section>
+  }
+  }
+  @if (mostrarData && !personas) {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Información no disponible en este momento.</p>
+      <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+    </div>
+  </section>
+  }
+
+</ion-content>

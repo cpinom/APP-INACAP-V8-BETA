@@ -1,0 +1,110 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title></ion-title>
+    <ion-buttons slot="start">
+      <ion-nav-link router-direction="back">
+        <ion-button>
+          <ion-icon slot="start" class="back-md" name="arrow-back-outline"></ion-icon>
+          <ion-icon slot="start" class="back-ios" name="chevron-back"></ion-icon>
+          Volver
+        </ion-button>
+      </ion-nav-link>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <!-- <ion-button (click)="responder()">
+        <ion-icon name="arrow-redo-outline"></ion-icon>
+      </ion-button> -->
+      <ion-button (click)="borrar()">
+        <ion-icon name="trash-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="message-content">
+
+  <ng-container *ngIf="!message.isLoaded">
+    <ion-list>
+      <ion-item>
+        <ion-avatar>
+          <ion-skeleton-text animated style="width: 100%; margin: 0"></ion-skeleton-text>
+        </ion-avatar>
+        <ion-label>
+          <h2><ion-skeleton-text animated style="width: 100%; height: 13px;"></ion-skeleton-text></h2>
+          <p><ion-skeleton-text animated style="width: 80%;"></ion-skeleton-text></p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label style="font-weight: 600">
+          <ion-skeleton-text animated style="width: 100%; margin: 0"></ion-skeleton-text>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </ng-container>
+
+  <ng-container *ngIf="message.isLoaded">
+    <ion-list>
+      <ion-item>
+        <ion-avatar>
+          <div>{{message.data._inicial}}</div>
+        </ion-avatar>
+        <ion-label>
+          <h2 *ngIf="message.data.from">{{message.data.from.emailAddress.name}}</h2>
+          <p *ngIf="message.data.toRecipients.length">
+            Para: {{message.data.toRecipients[0].emailAddress.address}}
+            <span *ngIf="message.data.toRecipients.length > 1" #tooltip="matTooltip"
+              [matTooltip]="resolverDestinatarios(message)" (click)="tooltip.toggle()">1</span>
+            {{message.data.toRecipients.length > 1 ? '+' + (message.data.toRecipients.length - 1) : ''}}
+          </p>
+          <p>{{message.data._fecha}}</p>
+        </ion-label>
+      </ion-item>
+      <ion-item *ngIf="message.data.subject">
+        <ion-label style="font-weight: 600">{{message.data.subject}}</ion-label>
+      </ion-item>
+      <section *ngIf="message.data.hasAttachments" class="attachment-wrap swiper-no-swiping">
+        <div *ngFor="let item of message.data.attachments" class="attachment" [class.thumbnail]="!!item.thumbnail"
+          (click)="descargarAdjunto(item)">
+
+          <ng-container *ngIf="item.thumbnail">
+            <img [src]="item.thumbnail" />
+            <div class="text">
+              <h2>{{item.name}}</h2>
+              <p>{{bytesToSize(item.size)}}</p>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="!item.thumbnail">
+            <ion-icon src="assets/icon/{{resolverIcono(item.contentType)}}.svg"></ion-icon>
+            <div class="text">
+              <h2>{{item.name}}</h2>
+              <p>{{bytesToSize(item.size)}}</p>
+            </div>
+          </ng-container>
+
+        </div>
+      </section>
+    </ion-list>
+    <section class="classic swiper-no-swiping">
+      <div class="section-content" delegate>
+        <div id="message_" class="mail-body" [innerHTML]="message.data.body.content | safeHtml"></div>
+      </div>
+    </section>
+  </ng-container>
+
+</ion-content>
+
+<ion-footer *ngIf="message.isLoaded">
+  <ion-item lines="full">
+    <ion-icon *ngIf="responderTodos" slot="start" src="assets/icon/reply_all.svg" color="medium"></ion-icon>
+    <ion-icon *ngIf="responderEnviador" slot="start" src="assets/icon/reply.svg" color="medium"></ion-icon>
+    <ion-label>
+      <span *ngIf="responderTodos">Para {{message.data.from.emailAddress.name}} +{{message.data.toRecipients.length-1}}</span>
+      <span *ngIf="responderEnviador">Para {{message.data.from.emailAddress.name}}</span>
+    </ion-label>
+    <ion-icon *ngIf="comentario" slot="end" src="assets/icon/send.svg" color="medium" (click)="responder()"></ion-icon>
+  </ion-item>
+  <ion-item lines="none">
+    <ion-textarea [rows]="countRowsInText(comentario)" placeholder="Responder..." [(ngModel)]="comentario"></ion-textarea>
+  </ion-item>
+</ion-footer>

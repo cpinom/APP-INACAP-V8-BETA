@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="cancelChanges()">Cancelar</ion-button>
+    </ion-buttons>
+    <ion-title>{{title}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="confirmChanges()">Listo</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <div class="searchbar-container">
+    <ion-searchbar (ionInput)="searchbarInput($event)" placeholder="Buscar..."></ion-searchbar>
+  </div>
+</ion-header>
+
+<ion-content #content>
+
+  <ion-list id="modal-list" [inset]="true">
+    <ion-radio-group [(ngModel)]="selectedValue">
+      @for (item of filteredItems; track $index) {
+      <ion-item [id]="'item-' + $index">
+        <ion-radio [value]="item">
+          <span [innerHTML]="item.html"></span>
+        </ion-radio>
+      </ion-item>
+      }
+    </ion-radio-group>
+  </ion-list>
+
+</ion-content>

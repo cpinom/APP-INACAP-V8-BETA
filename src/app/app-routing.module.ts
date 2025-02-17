@@ -4,7 +4,6 @@ import { authGuard } from './core/guards/auth.guard';
 import { homeGuard } from './core/guards/home.guard';
 import { accessGuard } from './core/guards/access.guard';
 import { Rol } from './core/interfaces/auth.interfaces';
-import { publicGuard } from './core/guards/public.guard';
 
 const routes: Routes = [
   {

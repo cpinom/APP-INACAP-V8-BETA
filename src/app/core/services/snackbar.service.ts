@@ -10,18 +10,28 @@ export class SnackbarService {
 
   constructor(private toast: ToastController) { }
 
-  showToast(message: string, duration?: number, color?: string) {
-    this.toast.getTop().then(currentToast => {
-      currentToast && currentToast.dismiss();
-    });
+  async showToast(message: string, duration?: number, color?: string, callback?: Function) {
+    const currentToast = await this.toast.getTop();
 
-    this.toast.create({
+    currentToast?.dismiss();
+
+    const toast = await this.toast.create({
       message: message,
       duration: duration || this.duration,
       color: color ? color : 'dark',
       keyboardClose: true,
-      buttons: [{ text: 'Cerrar', side: 'end' }]
-    }).then(toast => toast.present());
+      buttons: [{
+        text: 'Cerrar',
+        side: 'end',
+        handler() {
+          callback && callback();
+        },
+      }]
+    });
+
+    await toast.present();
+
+    return toast;
   }
 
   hide() {

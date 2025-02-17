@@ -1,0 +1,64 @@
+@import "src/theme/perfil.scss";
+@import "../../docente.page.scss";
+
+ion-title.md {
+    text-align: left !important;
+}
+
+ion-select {
+    flex: 1;
+    max-width: 100%;
+    text-align: right;
+}
+ion-item.periodos {
+    ion-select {
+        padding: 0;
+        padding-right: 5px;
+        padding-top: 2px;
+        flex: 1;
+        max-width: 100%;
+        color: var(--bg-contrast-color) !important;
+        opacity: 1 !important;
+        text-align: left;
+    }
+}
+ion-card.falta-foto {
+    ion-card-content {
+        display: flex;
+        align-items: center;
+        padding: 12px !important;
+        font-size: var(--FS14);
+
+        span {
+            padding-left: 10px;
+        }
+    }
+}
+button.action-sheet-button {
+    span.action-sheet-button-inner {
+        font-size: var(--FS14);
+    }
+}
+
+.avatar-container {
+    // width: 60px !important;
+    // min-width: 60px !important;
+    margin-right: 15px;
+
+    // avatar-comp {
+    //     color: #333;
+    //     height: 70px;
+    //     width: 70px;
+    //     border-radius: 50%;
+    //     background: #d8d8d8;
+    //     text-align: center;
+    //     line-height: 60px;
+    //     font-size: 24px;
+    //     display: block;
+    //     overflow: hidden;
+    // }
+}
+
+::ng-deep ion-loading ion-spinner {
+    color: var(--ion-color-info) !important;
+}

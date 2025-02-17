@@ -1,0 +1,137 @@
+ion-accordion-group {
+    box-shadow: 0px 2px 4px #00000012;
+    margin: 10px;
+
+    ion-item[slot="header"] {
+        --ion-item-background: var(--ion-color-dark);
+        --color: white;
+        --padding-start: 15px;
+    }
+
+    ion-accordion div[slot="content"] {
+        background-color: transparent;
+    }
+
+    ion-list {
+        &.list-md {
+            padding: 0;
+        }
+
+        ion-item {
+            font-size: 13px;
+            --padding-start: 15px;
+
+            ::ng-deep p,
+            span {
+                font-size: 13px;
+            }
+
+            .text-title {
+                font-size: 14px;
+                font-weight: bold;
+                color: #4a4a4a;
+            }
+
+            .text-right {
+                text-align: right;
+            }
+
+            .text-normal {
+                white-space: normal;
+                color: #4a4a4a;
+
+                span {
+                    display: inline-block;
+                }
+            }
+        }
+    }
+
+    section.tabla {
+        //margin: 15px;
+        overflow: auto;
+        font-size: 14px;
+
+        p {
+            margin: 15px;
+        }
+
+        ::ng-deep p {
+            margin: 0 0 8px;
+        }
+
+        ::ng-deep .wrapper {
+            margin-left: -15px;
+            padding-left: 15px;
+            overflow: auto;
+            margin-right: -15px;
+            padding-right: 15px;
+            margin-top: 15px;
+            margin-bottom: 15px;
+
+            &.no-margin {
+                margin-left: 0;
+                margin-right: 0;
+            }
+
+            &.no-margin-bottom {
+                margin-bottom: 0;
+            }
+        }
+
+        ::ng-deep table {
+            width: 100%;
+            text-align: center;
+
+            th,
+            td {
+                border: 1px solid #dee2e6;
+                padding: 8px 4px;
+                font-size: 14px;
+                color: #4a4a4a;
+                vertical-align: top;
+                // word-break: break-word;
+            }
+
+            tbody tr:nth-of-type(odd) {
+                background-color: rgba(0, 0, 0, 0.05);
+            }
+        }
+
+        &.tabla-left ::ng-deep table {
+            text-align: left;
+        }
+
+        &.tabla-break ::ng-deep table tbody td {
+            word-break: break-word;
+        }
+    }
+
+    section.tabla + section.tabla {
+        margin-top: 0;
+    }
+
+    section.tabla {
+        table + table {
+            margin-top: 15px;
+        }
+    }
+}
+
+::ng-deep body.dark {
+    ion-accordion-group {
+        ion-accordion div[slot="content"] {
+            background-color: var(--ion-color-dark-shade) !important;
+        }
+
+        section.tabla {
+            ::ng-deep table {
+                th,
+                td {
+                    color: white !important;
+                    border-color: var(--ion-color-dark-tint) !important;
+                }
+            }
+        }
+    }
+}

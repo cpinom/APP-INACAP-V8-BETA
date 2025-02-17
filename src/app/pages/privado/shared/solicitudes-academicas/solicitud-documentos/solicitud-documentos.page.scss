@@ -1,0 +1,89 @@
+ion-card-content {
+    font-size: var(--FS14) !important;
+
+    .glosa {
+        border-top: var(--border);
+        padding-top: 15px;
+        // text-align: justify;
+
+        ::ng-deep ol {
+            padding: 0 0 0 25px;
+        }
+
+        ::ng-deep ul {
+            padding: 0 0 0 25px;
+        }
+
+        ::ng-deep a.more {
+            display: block;
+            margin-top: 10px;
+            text-align: center;
+        }
+    }
+
+    ion-radio:part(label) {
+        
+    }
+}
+
+ion-content {
+    ion-item {
+        ion-label + ion-select {
+            max-width: 70%;
+        }
+    }
+    .invalid {
+        font-size: var(--FS12);
+        color: var(--ion-color-danger);
+        margin: 5px 15px;
+    }
+}
+
+ion-modal {
+    .detalle-solicitud {
+        padding: 20px;
+        ::ng-deep > div {
+            table {
+                width: 100%;
+                font-size: 14px;
+                // text-align: justify;
+
+                p {
+                    margin: 0 0 10px 0;
+                }
+
+                // br + br {
+                //     display: none;
+                // }
+            }
+        }
+
+        div.image {
+            text-align: center;
+
+            img {
+                width: 80px;
+                margin: 0 auto 10px;
+            }
+        }
+    }
+}
+
+::ng-deep ion-action-sheet.solicitud-alert {
+    .action-sheet-title {
+        font-size: 16px;
+
+        .action-sheet-sub-title {
+            font-size: 14px;
+        }
+    }
+}
+
+
+::ng-deep body.dark {
+    ion-accordion {
+        ion-badge {
+            --ion-color-base: #666 !important;
+        }
+    }
+}

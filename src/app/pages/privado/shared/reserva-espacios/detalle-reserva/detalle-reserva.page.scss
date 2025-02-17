@@ -1,0 +1,33 @@
+ion-header {
+  .primary-card {
+    margin-bottom: 0 !important;
+  }
+}
+ion-content {
+  .qr-code {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0;
+
+    ::ng-deep img {
+      border: 10px solid #fff;
+    }
+
+    &.hide {
+      display: none;
+    }
+  }
+  ion-item {
+    p.label {
+      font-size: var(--FS14);
+      margin-bottom: 6px;
+      white-space: normal;
+    }
+
+    p.detail {
+      font-size: var(--FS16);
+      color: var(--color);
+      white-space: normal;
+    }
+  }
+}

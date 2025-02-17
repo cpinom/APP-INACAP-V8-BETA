@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Volver"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-card class="primary-card" color="white">
+    <ion-card-header>
+      <ion-card-title>Disponibilidad de salas y horarios</ion-card-title>
+      <ng-container *ngIf="data">
+        <ion-card-subtitle *ngIf="data.seccion">
+          {{data.seccion.asigTdesc}} - Sección {{data.seccion.seccCompleta}}
+        </ion-card-subtitle>
+        <ion-card-subtitle>Libro Nº {{data.lclaNcorr}}</ion-card-subtitle>
+      </ng-container>
+    </ion-card-header>
+  </ion-card>
+</ion-header>
+
+<ion-content>
+
+  <section class="first">
+    <div class="section-header">Disponibilidad</div>
+    <div class="section-content">
+      <ion-list>
+        @for (item of bloques; track $index) {
+        <ion-item>
+          <ion-label>
+            <h2>Fecha - {{data.fechaSolicitud}}</h2>
+            <p>{{item.salaTdesc}}</p>
+            <p>{{item.horario}}</p>
+          </ion-label>
+          <ion-button fill="outline" slot="end" size="small" color="info" (click)="solicitar(item)">Enviar Solicitud</ion-button>
+        </ion-item>
+        }
+      </ion-list>
+    </div>
+  </section>
+
+</ion-content>

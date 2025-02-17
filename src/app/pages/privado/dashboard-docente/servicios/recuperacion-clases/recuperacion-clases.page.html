@@ -1,0 +1,92 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Servicios" defaultHref="/docente/servicios"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-card color="white" class="primary-card">
+    <ion-card-header>
+      <ion-card-title>Recuperación de Clases</ion-card-title>
+    </ion-card-header>
+    <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar>
+  </ion-card>
+</ion-header>
+
+<ion-content>
+
+  <section *ngIf="mostrarData && data" class="first">
+
+    <div class="section-content">
+      <div class="tabs">
+        <ion-segment (ionChange)="tabsChanged($event)" value="0" mode="md" [swipeGesture]="false">
+          <ion-segment-button value="0">
+            <ion-label>
+              Clases Pendientes
+              <ion-badge color="danger" *ngIf="mostrarContador">{{data.recuperaciones.length}}</ion-badge>
+            </ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="1">
+            <ion-label>Solicitudes</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </div>
+      <ng-container *ngIf="activeTab == 0">
+        <ion-list *ngIf="mostrarData && data && data.recuperaciones">
+          <div *ngIf="data.recuperaciones.length == 0" class="empty-state">
+            <div>
+              <ion-icon src="assets/icon/class.svg"></ion-icon>
+              <p>Sin clases por recuperar en este momento</p>
+            </div>
+          </div>
+          <ion-item *ngFor="let clase of data.recuperaciones" detail="true" (click)="solicitarRecuperacion(clase)">
+            <ion-label>
+              <h2>{{clase.asigTdesc}} - {{clase.seccCompleta}}</h2>
+              <p>{{formatFecha(clase.recuperacion.lclaFclase)}}</p>
+              <p class="grey">Libro: {{clase.recuperacion.lclaNcorr}}</p>
+              <p class="grey">Bloques: {{clase.recuperacion.bloques}}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ng-container>
+
+      <ng-container *ngIf="activeTab == 1">
+        <ion-list *ngIf="mostrarData && data && data.solicitudes">
+          <div *ngIf="data.solicitudes.length == 0" class="empty-state">
+            <div>
+              <ion-icon src="assets/icon/description.svg"></ion-icon>
+              <p>Sin solicitudes en este momento</p>
+            </div>
+          </div>
+          <ion-item *ngFor="let solicitud of data.solicitudes" routerLink="detalle-solicitud/{{solicitud.solicitud.reclNcorr}}" detail="true">
+            <ng-container slot="start" [ngSwitch]="solicitud.solicitud.erecNcorr">
+              <ion-icon slot="start" color="success" alt="Solicitud Aprobada" *ngSwitchCase="1"
+                src="assets/icon/check_circle_outline.svg"></ion-icon>
+              <ion-icon slot="start" color="danger" alt="Solicitud Rechazada" *ngSwitchCase="2"
+                src="assets/icon/highlight_off.svg"></ion-icon>
+              <ion-icon slot="start" color="warning" alt="Solicitud Pendiente" *ngSwitchDefault
+                src="assets/icon/schedule.svg"></ion-icon>
+            </ng-container>
+            <ion-label>
+              <h2>{{solicitud.asigTdesc}} - {{solicitud.seccCompleta}}</h2>
+              <p>Solicitud #{{solicitud.solicitud.reclNcorr}}</p>
+              <p>Fecha solicitud: {{formatFecha(solicitud.solicitud.reclFsolicitud)}}</p>
+              <p>Libro {{solicitud.solicitud.lclaNcorr}}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ng-container>
+
+    </div>
+
+  </section>
+
+  <section *ngIf="mostrarData && !data" class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Información no disponible en este momento.</p>
+      <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+    </div>
+  </section>
+
+
+</ion-content>

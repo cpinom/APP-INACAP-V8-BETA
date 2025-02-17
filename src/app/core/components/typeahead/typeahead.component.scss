@@ -1,0 +1,16 @@
+ion-list#modal-list {
+  ion-radio {
+    ::ng-deep span {
+      h2 {
+        font-size: var(--FS16);
+        margin: 0;
+        display: block;
+      }
+      p {
+        margin: 0;
+        font-size: var(--FS14);
+        color: var(--ion-color-medium);
+      }
+    }
+  }
+}

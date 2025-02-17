@@ -1,0 +1,170 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Servicios" defaultHref="/docente/servicios"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-card color="white" class="primary-card">
+    <ion-card-header>
+      <ion-card-title>Resultados Evaluación Docente</ion-card-title>
+    </ion-card-header>
+    @if (mostrarCargando) {
+    <ion-progress-bar type="indeterminate"></ion-progress-bar>
+    }
+  </ion-card>
+</ion-header>
+
+<ion-content>
+
+  @if (mostrarData && periodos) {
+  @if (periodos.length) {
+  <section class="first">
+    <div class="section-content">
+      <ion-list>
+        <ion-item>
+          <ion-select label="Período" labelPlacement="stacked" name="periodo" interface="alert"
+            placeholder="Seleccione período" [(ngModel)]="periodo" (ngModelChange)="cargarResultados($event)"
+            okText="Aceptar" cancelText="Cancelar">
+            @for (item of periodos; track $index) {
+            <ion-select-option [value]="item.periCcod">{{item.periTdesc}}</ion-select-option>
+            }
+          </ion-select>
+        </ion-item>
+        @if (sedes.length > 1) {
+        <ion-item>
+          <ion-select label="Sede" labelPlacement="stacked" name="sede" interface="alert" placeholder="Seleccione sede"
+            [(ngModel)]="sede" (ngModelChange)="cargarResultados($event)" okText="Aceptar" cancelText="Cancelar">
+            @for (item of sedes; track $index) {
+            <ion-select-option [value]="item.sedeCcod">{{item.sedeTdesc}}</ion-select-option>
+            }
+          </ion-select>
+        </ion-item>
+        }
+      </ion-list>
+    </div>
+  </section>
+  @if (data) {
+  <ion-row>
+    <ion-col>
+      <ion-card class="indicador lf b1">
+        <h2>Cobertura<br />Evaluación Docente</h2>
+        <h1>{{data.global.cobertura}}%</h1>
+      </ion-card>
+    </ion-col>
+    <ion-col>
+      <ion-card class="indicador rt b2">
+        <h2>Global<br />Docente</h2>
+        <h1>{{data.global.globalDocente}}%</h1>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-card class="indicador lf b3">
+        <h2>Cobertura<br />Sede</h2>
+        @if (data.sede) {
+        <h1>{{data.sede.cobertura}}%</h1>
+        }
+        @else {
+        <h1>--</h1>
+        }
+      </ion-card>
+    </ion-col>
+    <ion-col>
+      <ion-card class="indicador rt b3">
+        <h2>Global Docente<br />Sede</h2>
+        @if (data.sede) {
+        <h1>{{data.sede.globalDocente}}%</h1>
+        }
+        @else {
+        <h1>--</h1>
+        }
+      </ion-card>
+    </ion-col>
+  </ion-row>
+  <section class="dimensiones">
+    <div class="section-content">
+      <ion-list>
+        <ion-item>
+          <ion-label>Dimensiones Detalle Evaluación Docente</ion-label>
+        </ion-item>
+      </ion-list>
+      <div class="indicadores">
+        <div class="indicador">
+          <span class="valor rojo">{{data.global.tda}}%</span>
+          <span class="texto">TDA</span>
+        </div>
+        <div class="indicador">
+          <span class="valor verde">{{data.global.da}}%</span>
+          <span class="texto">DA</span>
+        </div>
+        <div class="indicador">
+          <span class="valor amarillo">{{data.global.nad}}%</span>
+          <span class="texto">NAD</span>
+        </div>
+        <div class="indicador">
+          <span class="valor rojo">{{data.global.ed}}%</span>
+          <span class="texto">ED</span>
+        </div>
+        <div class="indicador">
+          <span class="valor verde">{{data.global.ted}}%</span>
+          <span class="texto">TED</span>
+        </div>
+      </div>
+    </div>
+  </section>
+  @if (data.asignaturas.length) {
+  <section class="asignaturas">
+    <div class="section-content">
+      <ion-list>
+        <ion-item>
+          <ion-label>Asignaturas</ion-label>
+        </ion-item>
+      </ion-list>
+      @for (item of data.asignaturas; track $index) {
+      <div class="asignatura">
+        <div class="titulo">
+          <h3>{{item.asignatura}}</h3>
+          <p>{{item.asigCcod}}</p>
+        </div>
+        <div class="indicadores">
+          <div class="indicador">
+            <span class="valor">{{item.secciones}}</span>
+            <span>Cantidad de<br />Secciones</span>
+          </div>
+          <div class="indicador">
+            <span class="valor">{{item.cobertura}}%</span>
+            <span>%<br />Cobertura</span>
+          </div>
+          <div class="indicador">
+            <span class="valor">{{item.globalDocente}}%</span>
+            <span>% Global<br />Docente</span>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+  </section>
+  }
+  }
+  }
+  @else {
+  <div class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/warning.svg"></ion-icon>
+      <p>Sin información en este momento</p>
+    </div>
+  </div>
+  }
+  }
+  @else if(!mostrarCargando) {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Información no disponible en este momento.</p>
+      <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+    </div>
+  </section>
+  }
+
+</ion-content>

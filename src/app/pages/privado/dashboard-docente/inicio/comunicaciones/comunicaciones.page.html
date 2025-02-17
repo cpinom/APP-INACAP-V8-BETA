@@ -1,0 +1,110 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Inicio" defaultHref="/docente"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-card class="primary-card" color="white">
+    <ion-card-header>
+      <ion-card-title>Enviar Mensaje</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+</ion-header>
+
+<ion-content>
+
+  @if (mostrarCargando) {
+  <div class="loaderInacap">
+    <ion-spinner name="lines" color="info"></ion-spinner>
+  </div>
+  }
+
+  @if (mostrarData && messageId) {
+  <form [formGroup]="form" (ngSubmit)="enviar()">
+    <ion-list inset="true">
+      <ion-item lines="none">
+        <ion-input formControlName="asunto" labelPlacement="stacked" label="Asunto" placeholder="Escriba un asunto"
+          counter="true" maxlength="50" [errorText]="asuntoError"></ion-input>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-textarea formControlName="mensaje" labelPlacement="stacked" label="Mensaje" rows="4"
+          placeholder="Escriba un mensaje" counter="true" maxlength="1000" [errorText]="mensajeError"></ion-textarea>
+      </ion-item>
+      <ion-item>
+        <ion-checkbox formControlName="marcaDC" labelPlacement="end">
+          <span class="ion-text-wrap">Enviar copia a Director de Carrera</span>
+        </ion-checkbox>
+      </ion-item>
+    </ion-list>
+
+    <ion-accordion-group expand="inset">
+      <ion-accordion [value]="1">
+        <ion-item slot="header">
+          <ion-icon slot="start" src="assets/icon/group.svg" color="medium"></ion-icon>
+          <ion-label>Cursos Destinatarios</ion-label>
+          @if (secciones.value.length) {
+          <ion-badge slot="end" color="light" style="margin-right: 5px;">{{secciones.value.length}}</ion-badge>
+          }
+        </ion-item>
+        <div slot="content" class="ion-padding">
+          <ion-list inset="true">
+            @for (item of cursos; track $index) {
+            <ion-item>
+              <ion-checkbox [value]="item" (ionChange)="resolverCorreos($event)">
+                <ion-label>
+                  <h2>{{item.asigTdesc}}</h2>
+                  <p>{{item.seccCompleta}}</p>
+                </ion-label>
+              </ion-checkbox>
+            </ion-item>
+            }
+          </ion-list>
+        </div>
+      </ion-accordion>
+      <ion-accordion [value]="2">
+        <ion-item slot="header">
+          <ion-icon slot="start" src="assets/icon/attach_file.svg" color="medium"></ion-icon>
+          <ion-label>Archivos Adjuntos</ion-label>
+          @if (archivos.length) {
+          <ion-badge slot="end" color="light" style="margin-right: 5px;">{{archivos.length}}</ion-badge>
+          }
+        </ion-item>
+        <div slot="content" class="ion-padding">
+          <ion-list inset="true">
+            @for (item of archivos; track $index) {
+            <ion-item>
+              <ion-label>{{item.name}}</ion-label>
+            </ion-item>
+            }
+            <ion-item class="ion-activatable" (click)="adjuntar(adjuntarInput)">
+              <ion-icon slot="start" src="assets/icon/add.svg" color="medium"></ion-icon>
+              <ion-label>Agregar archivo</ion-label>
+            </ion-item>
+            <!-- <ion-item>
+              {{progreso}}%
+            </ion-item> -->
+          </ion-list>
+        </div>
+      </ion-accordion>
+    </ion-accordion-group>
+    <section>
+      <ion-button type="submit" color="info" shape="round" expand="block" [disabled]="!habilitarEnviar">Enviar
+        Correo</ion-button>
+    </section>
+  </form>
+  }
+  @if (mostrarData && !messageId) {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Información no disponible en este momento.</p>
+      <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+    </div>
+  </section>
+  }
+
+  <input type="file" #adjuntarInput style="display: none;" (change)="adjuntarWeb($event)"
+    accept="application/pdf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,image/*" />
+
+
+</ion-content>

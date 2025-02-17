@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Microsoft Teams</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button text="" [defaultHref]="backUrl"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="appTap()">
+        <ion-icon name="open-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-card color="white" class="primary-card">
+    <ion-card-header>
+      <ion-card-title>Mis Eventos</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+</ion-header>
+
+<ion-content>
+
+  <ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <!-- <section style="margin-top: 15px" *ngIf="mostrarData">
+    <ion-button color="info" shape="round" expand="block" (click)="nuevoEvento()">
+      Nuevo Evento
+    </ion-button>
+  </section> -->
+
+  <div class="loaderInacap" *ngIf="!hideLoadingSpinner">
+    <ion-spinner name="lines" color="info"></ion-spinner>
+  </div>
+
+  <section class="first">
+    <div class="section-content">
+      <ion-list *ngIf="mostrarData">
+        <ion-item *ngFor="let item of eventos">
+          <ion-label (click)="detalleEvento(item)">
+            <h2>{{item.titulo}}</h2>
+            <p>{{resolverFecha(item.fecha)}}</p>
+          </ion-label>
+          <ion-button fill="outline" color="info" size="small" slot="end" (click)="unirseTap(item)">Unirse</ion-button>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+
+  <section class="empty-state" *ngIf="mostrarData && eventos && eventos.length == 0">
+    <div>
+      <ion-icon src="assets/icon/search.svg"></ion-icon>
+      <p>No tienes eventos en este momento.</p>
+    </div>
+  </section>
+
+</ion-content>

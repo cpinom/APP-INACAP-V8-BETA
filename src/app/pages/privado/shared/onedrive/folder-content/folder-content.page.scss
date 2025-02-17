@@ -1,0 +1,19 @@
+ion-header {
+  .primary-card {
+    margin-bottom: 0 !important;
+  }
+}
+
+ion-content {
+  ion-list {
+    ion-item {
+      ion-thumbnail {
+        --size: 48px;
+      }
+      ion-icon {
+        width: 48px;
+        font-size: 32px;
+      }
+    }
+  }
+}

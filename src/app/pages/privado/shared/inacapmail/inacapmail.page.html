@@ -1,0 +1,72 @@
+<ion-menu menuId="folderMenu" contentId="main-content" side="end">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>INACAPMail</ion-title>
+      <ion-buttons slot="end">
+        <ion-button icon-only (click)="recargar()">
+          <ion-icon src="assets/icon/refresh.svg"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <section class="classic">
+      <div class="section-content" style="border: 0">
+        <ion-list>
+          <ion-menu-toggle auto-hide="false" menuToggle="right">
+            <ng-container *ngIf="!cargando">
+              <ion-item (click)="folderTap(item)" *ngFor="let item of folders" detail="false" [class.selected]="item.selected">
+                <ion-label>{{item.displayName}}</ion-label>
+                <ion-note *ngIf="item.unreadItemCount > 0" slot="end">{{item.unreadItemCount}}</ion-note>
+              </ion-item>
+            </ng-container>
+            <ng-container *ngIf="cargando">
+              <ion-item>
+                <ion-label>
+                  <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+                </ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label>
+                  <ion-skeleton-text animated style="width: 40%"></ion-skeleton-text>
+                </ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label>
+                  <ion-skeleton-text animated style="width: 40%"></ion-skeleton-text>
+                </ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label>
+                  <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+                </ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label>
+                  <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+                </ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label>
+                  <ion-skeleton-text animated style="width: 75%"></ion-skeleton-text>
+                </ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label>
+                  <ion-skeleton-text animated style="width: 20%"></ion-skeleton-text>
+                </ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label>
+                  <ion-skeleton-text animated style="width: 90%"></ion-skeleton-text>
+                </ion-label>
+              </ion-item>
+            </ng-container>
+          </ion-menu-toggle>
+        </ion-list>
+      </div>
+    </section>
+  </ion-content>
+</ion-menu>
+
+<ion-nav #nav id="main-content" [root]="rootPage"></ion-nav>

@@ -1,0 +1,137 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Servicios" [defaultHref]="backUrl"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end" *ngIf="permiteEditar && !editarPostulacion">
+      <ion-button (click)="editarTap()">
+        <ion-label>Editar Datos</ion-label>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card class="primary-card" color="white">
+    <ion-card-header>
+      <ion-card-title>Solicitud de Estacionamiento</ion-card-title>
+      <ion-card-subtitle *ngIf="mostrarEstadoPostulacion">
+        <span *ngIf="data.postulacion.aepeCcod == 1">
+          <ion-icon color="medium" src="assets/icon/access_time.svg"></ion-icon>
+          <span>{{data.postulacion.aepeTnombre}}</span>
+        </span>
+        <span *ngIf="data.postulacion.aepeCcod == 2">
+          <ion-icon color="success" src="assets/icon/check_circle.svg"></ion-icon>
+          <span>{{data.postulacion.aepeTnombre}} - {{data.postulacion.aepoFresolucion}}</span>
+        </span>
+        <span *ngIf="data.postulacion.aepeCcod == 3">
+          <ion-icon color="danger" src="assets/icon/highlight_off.svg"></ion-icon>
+          <span>{{data.postulacion.aepeTnombre}} - {{data.postulacion.aepoFresolucion}}</span>
+        </span>
+      </ion-card-subtitle>
+    </ion-card-header>
+    <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar>
+  </ion-card>
+
+  <ng-container *ngIf="mostrarData && data">
+
+    <div *ngIf="permitePostular && editarPostulacion">
+
+      <form [formGroup]="solicitudForm" (ngSubmit)="guardar()">
+        <section>
+          <div class="section-header">{{tituloSolicitud}}</div>
+          <div class="section-content">
+            <ion-list>
+              <ion-item>
+                <ion-select label="Tipo Vehículo" labelPlacement="stacked" placeholder="Seleccionar Tipo..." formControlName="aeveNcorr" interface="alert"
+                  okText="Aceptar" cancelText="Cancelar">
+                  <ion-select-option [value]="item.aeveNcorr" *ngFor="let item of data.vehiculos">{{item.aeveTnombre}}</ion-select-option>
+                </ion-select>
+              </ion-item>
+              <div class="invalid" *ngIf="submitted && tipoVehiculo.hasError('required')">Campo obligatorio.</div>
+              <ng-container *ngIf="tipoVehiculo.valid">
+                <ion-item>
+                  <ion-input label="Patente Vehículo" labelPlacement="stacked" formControlName="aepoTpatente" placeholder="Ingresar Patente..." clearInput></ion-input>
+                </ion-item>
+                <div class="invalid" *ngIf="submitted && patente.hasError('required')">Campo obligatorio.</div>
+                <div class="invalid" *ngIf="submitted && patente.hasError('patente')">Patente inválida.</div>
+              </ng-container>
+              <ion-item>
+                <ion-checkbox formControlName="acuerdo" color="danger" labelPlacement="end">
+                  <span class="ion-text-wrap">Tomo conocimiento de las condiciones para la Postulación de Estacionamiento.</span>
+                </ion-checkbox>
+              </ion-item>
+              <div class="invalid" *ngIf="submitted && acuerdo.hasError('required')">Campo obligatorio.</div>
+              <ion-item>
+                <ion-icon slot="start" src="assets/icon/info.svg"></ion-icon>
+                <ion-label style="font-size: 14px !important; text-align: left;">
+                  <span>Solicito acceso al estacionamiento de INACAP de la sede {{nombreSede}}. Para estos efectos entrego voluntariamente y acepto el uso del número de la placa patente del vehículo, por parte de INACAP, sólo para efectos de administrar correctamente la asignación del estacionamiento, el ingreso y la salida del vehículo hacia/desde el estacionamiento.
+                    Este proceso no garantiza la disponibilidad de un estacionamiento.</span>
+                  <!-- <h2>Ésta autorización es un requisito para el Proceso de Postulación.</h2>
+                  <span>Al proporcionar su número de patente, usted acepta y autoriza el uso de estos datos por parte de INACAP para fines administrativos.
+                    Los datos son confidenciales y no se compartirán con terceros sin su consentimiento previo. </span> -->
+                </ion-label>
+              </ion-item>
+            </ion-list>
+          </div>
+        </section>
+        <ion-button type="submit" color="info" shape="round" expand="block">Guardar</ion-button>
+        <ion-button color="secondary" shape="round" expand="block" *ngIf="permiteEditar && editarPostulacion && data.postulacion" (click)="editarPostulacion = false" style="margin-top: 15px;">
+          Cancelar
+        </ion-button>
+      </form>
+
+    </div>
+
+    <ng-container *ngIf="poseePostulacion && !editarPostulacion">
+      <section>
+        <div class="section-header">Detalle Postulación</div>
+        <div class="section-content">
+          <ion-list>
+            <ion-item>
+              <ion-label class="label" style="flex: 0 0 180px;">Tipo Vehículo</ion-label>
+              <ion-label class="right">{{data.postulacion.aeveTnombre}}</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label class="label" position="fixed" style="flex: 0 0 180px;">Patente Vehículo</ion-label>
+              <ion-label class="right">{{data.postulacion.aepoTpatente}}</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label class="label" position="fixed" style="flex: 0 0 180px;">Fecha Postulación</ion-label>
+              <ion-label class="right">{{data.postulacion.aepoFsolicitud}}</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label class="label" position="fixed" style="flex: 0 0 180px;">Estado</ion-label>
+              <ion-label class="right">{{data.postulacion.aepeTnombre}}</ion-label>
+            </ion-item>
+            <ion-item *ngIf="data.postulacion.aepoTobservacion">
+              <ion-label class="label" position="fixed" style="flex: 0 0 180px;">Observaciones</ion-label>
+              <ion-label class="right">{{data.postulacion.aepoTobservacion}}</ion-label>
+            </ion-item>
+          </ion-list>
+        </div>
+      </section>
+
+    </ng-container>
+
+    <ng-container *ngIf="!permitePostular && !poseePostulacion">
+      <section class="empty-state">
+        <div>
+          <ion-icon src="assets/icon/payment.svg"></ion-icon>
+          <p>La solicitud de estacionamientos se encuentra deshabilitada.</p>
+        </div>
+      </section>
+    </ng-container>
+
+  </ng-container>
+
+  <section *ngIf="mostrarData && !data" class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Información no disponible en este momento.</p>
+      <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+    </div>
+  </section>
+
+</ion-content>

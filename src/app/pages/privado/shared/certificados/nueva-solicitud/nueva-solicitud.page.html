@@ -1,0 +1,152 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Certificados" [defaultHref]="backUrl"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ng-container *ngIf="!mostrarResolucion && data">
+
+    <ion-card color="white" class="primary-card">
+      <ion-card-header>
+        <ion-card-title>Solicitud de Certificado</ion-card-title>
+      </ion-card-header>
+    </ion-card>
+
+    <ion-card color="white" class="primary-card indicaciones">
+      <ion-card-header>
+        <ion-card-subtitle>Indicaciones para obtener su Certificado</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content style="font-size: var(--FS14);">
+        <ul class="">
+          <!-- <li>En el momento de la aprobación de su certificado se le cargará el arancel, si lo hubiere, en su cuenta corriente.</li> -->
+          <li>Si el certificado que necesita no se encuentra en la lista, diríjase a la Oficina Curricular de su sede.
+          </li>
+        </ul>
+      </ion-card-content>
+    </ion-card>
+
+    <form [formGroup]="certificadoForm" (ngSubmit)="solicitar()">
+      <section>
+        <div class="section-header">Elija el pie de página del Certificado</div>
+        <div class="section-content">
+          <ion-list>
+            <ion-radio-group formControlName="ceppCcod">
+              <ion-item *ngFor="let item of motivos">
+                <ion-radio [value]="item.id">
+                  <span class="ion-text-wrap">{{item.label}}</span>
+                </ion-radio>
+              </ion-item>
+            </ion-radio-group>
+            <ng-container *ngIf="tipo?.value == 2">
+              <ion-item>
+                <ion-input label="Nombre Institución" labelPlacement="stacked" formControlName="resoTdetalle" placeholder="Ingrese el nombre..." clearInput></ion-input>
+              </ion-item>
+              <div class="invalid" *ngIf="submitted && detalle?.hasError('required')">Campo obligatorio.</div>
+              <div class="invalid" *ngIf="submitted && detalle?.hasError('maxlength')">El texto no debe sobrepasar los 50 caracteres.</div>
+              <div class="invalid" *ngIf="submitted && detalle?.hasError('pattern')">Existen caracteres no permitidos.
+              </div>
+            </ng-container>
+          </ion-list>
+        </div>
+      </section>
+      <ion-button type="submit" expand="block" shape="round" color="info">Solicitar</ion-button>
+    </form>
+
+  </ng-container>
+
+  <ng-container *ngIf="mostrarResolucion">
+
+    <ion-card color="white" class="primary-card">
+      <ion-card-header>
+        <ion-card-title>{{data.tdetTdesc}}</ion-card-title>
+        <ion-card-subtitle>
+          <ion-icon color="danger" *ngIf="data.cemeTtipo == 0" src="assets/icon/highlight_off.svg"></ion-icon>
+          <ion-icon color="success" *ngIf="data.cemeTtipo == 1" src="assets/icon/check_circle.svg"></ion-icon>
+          <ion-icon color="medium" *ngIf="data.cemeTtipo == 2" src="assets/icon/access_time.svg"></ion-icon>
+          <ion-icon color="medium" *ngIf="data.cemeTtipo == 3 || data.cemeTtipo == 4" src="assets/icon/access_time.svg">
+          </ion-icon>
+          <span *ngIf="data.cemeTtipo == 0">Error</span>
+          <span *ngIf="data.cemeTtipo == 1">Aprobado</span>
+          <span *ngIf="data.cemeTtipo == 2">Pendiente</span>
+          <span *ngIf="data.cemeTtipo == 3 || data.cemeTtipo == 4">Requiere Aprobación</span>
+        </ion-card-subtitle>
+      </ion-card-header>
+    </ion-card>
+
+    <ng-container *ngIf="data.cemeTtipo == 0">
+      <section>
+        <div class="section-content resolucion">
+          <p>Estimado Estudiante, ha ocurrido un error al tratar de enviar su solicitud.</p>
+          <p>Es posible que estés tratando de solicitar un certificado para un período en el cual no estuviste
+            matriculado.</p>
+          <p>Si el problema persiste debes contactar a la Mesa de Ayuda INACAP al correo ayuda&#64;inacap.cl o al
+            teléfono
+            +562-24305700.</p>
+        </div>
+      </section>
+    </ng-container>
+
+    <ng-container *ngIf="data.cemeTtipo == 1">
+      <section>
+        <div class="section-content resolucion">
+          <p>Estimado Estudiante, su certificado no tiene costo.</p>
+          <p>El certificado quedará disponible para su impresión o descarga en el listado de "Certificados >
+            Solicitados".</p>
+          <p>Si tiene problemas para imprimir o descargar su certificado, puede dirigirse a la Oficina Curricular de
+            cualquier sede de INACAP.</p>
+        </div>
+      </section>
+      <ion-button *ngIf="data.url" expand="block" shape="round" color="info" (click)="descargar()"
+        style="margin-bottom: 10px;">Descargar</ion-button>
+    </ng-container>
+
+    <!-- <ng-container *ngIf="data.cemeTtipo == 2">
+      <section>
+        <div class="section-content resolucion">
+          <p>Estimado Estudiante, su certificado tiene un costo de {{data.tdetMvalorUnitario}}, el cual debe ser
+            pagado en el Portal de Pagos de INACAP o en la caja de cualquier sede.</p>
+          <p>Una vez pagado recibirá un correo de confirmación en su casilla de correo electrónico de INACAP.</p>
+          <p>El certificado quedará disponible para su impresión o descarga en el listado de "Certificados >
+            Solicitados".</p>
+          <p>Si tiene problemas para imprimir o descargar su certificado, puede dirigirse a la Oficina Curricular de
+            cualquier sede de INACAP.</p>
+        </div>
+      </section>
+      <ion-button expand="block" shape="round" color="info" (click)="pagar()"
+        style="margin-bottom: 10px;">Pagar</ion-button>
+    </ng-container> -->
+
+    <ng-container *ngIf="data.cemeTtipo == 3">
+      <section>
+        <div class="section-content resolucion">
+          <p>Estimado Estudiante, tu certificado requiere aprobación del Jefe Curricular de tu sede.</p>
+          <p>Una vez aprobado recibirás un correo electrónico de confirmación en tu casilla de INACAP.</p>
+          <p>El certificado quedará disponible en el listado de "Certificados > Solicitados".</p>
+          <p>Si tienes problemas para imprimir o descargar tu certificado, puedes dirigirte a la Oficina Curricular de
+            cualquier sede de INACAP.</p>
+        </div>
+      </section>
+    </ng-container>
+
+    <ng-container *ngIf="data.cemeTtipo == 4">
+      <section>
+        <div class="section-content resolucion">
+          <p>Estimado Estudiante, tu certificado requiere aprobación del Jefe Curricular de tu sede.</p>
+          <p>Una vez aprobado te informaremos a tu correo electrónico de INACAP y se generará un cargo a tu cuenta
+            corriente, el cual debe ser pagado en el Portal de Pagos Electrónico de INACAP o en la caja de cualquier
+            sede.</p>
+          <p>Una vez pagado recibirás un correo electrónico de confirmación en tu casilla de INACAP.</p>
+          <p>Además, el certificado quedará disponible en el listado de "Certificados > Solicitados".</p>
+          <p>Si tienes problemas para imprimir o descargar tu certificado, puedes dirigirte a la Oficina Curricular de
+            cualquier sede de INACAP.</p>
+        </div>
+      </section>
+    </ng-container>
+
+  </ng-container>
+
+</ion-content>

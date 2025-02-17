@@ -1,0 +1,123 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Estudiantes" [defaultHref]="backPath"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  @if (data) {
+  <ion-card color="white" class="primary-card">
+    <ion-card-content style="padding: 0;">
+      <div class="perfil-container">
+        <div class="avatar-container">
+          <app-cached-image slot="start" [src]="resolverFoto(data.persNcorr)"></app-cached-image>
+        </div>
+        <div class="content">
+          <h2>{{data.nombre}}</h2>
+          @if (alumno) {
+          <p class="correo">
+            <a (click)="correo(alumno.correo)">{{alumno.correo}}</a>
+          </p>
+          }
+        </div>
+      </div>
+    </ion-card-content>
+    @if (mostrarCargando) {
+    <ion-progress-bar type="indeterminate"></ion-progress-bar>
+    }
+  </ion-card>
+  }
+
+  @if (mostrarData && alumno) {
+  <section class="first">
+    <div class="riesgos">
+      <ion-row>
+        <ion-col>
+          <div>
+            <span class="circle {{alumno.rac == 1 ? 'red': ''}}"></span>
+            <p>Riesgo <span>académico</span></p>
+          </div>
+        </ion-col>
+        <ion-col>
+          <div>
+            <span class="circle {{alumno.ra == 1 ? 'red': ''}}"></span>
+            <p>Riesgo <span>asistencia</span></p>
+          </div>
+        </ion-col>
+        <ion-col>
+          <div>
+            <span class="circle {{alumno.rf == 1 ? 'red': ''}}"></span>
+            <p>Riesgo <span>financiero</span></p>
+          </div>
+        </ion-col>
+      </ion-row>
+    </div>
+  </section>
+  <section class="first">
+    <div class="section-header">Información Académica</div>
+    <div class="section-content">
+      <ion-list>
+        <ion-item>
+          <ion-label>
+            <p class="label">Carrera</p>
+            <h2>{{alumno.carrera}}</h2>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <p class="label">Tipo Estudiante</p>
+            <h2>{{alumno.tipoEstudiante}}</h2>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+  <section class="first">
+    <div class="section-header">Información Personal</div>
+    <div class="section-content">
+      <ion-list>
+        <ion-item>
+          <ion-label>
+            <p class="label">Fecha nacimiento</p>
+            <h2>{{alumno.fechaNacimiento}}</h2>
+          </ion-label>
+        </ion-item>
+        @if (alumno.celular) {
+        <ion-item>
+          <ion-label>
+            <p class="label">Teléfono móvil</p>
+            <h2><a href="tel:{{alumno.celular}}">{{alumno.celular}}</a></h2>
+          </ion-label>
+        </ion-item>
+        }
+        <ion-item>
+          <ion-label>
+            <p class="label">Ocupación</p>
+            <h2>{{alumno.ocupacion}}</h2>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <p class="label">Estado Civil</p>
+            <h2>{{alumno.estadoCivil}}</h2>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+  }
+
+  @if (mostrarData && !alumno) {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Información no disponible en este momento.</p>
+      <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+    </div>
+  </section>
+  }
+
+</ion-content>

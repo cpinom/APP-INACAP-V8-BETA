@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Detalle Evento</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrar()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card color="white" class="primary-card">
+    <ion-card-header>
+      <ion-card-title>{{data.titulo}}</ion-card-title>
+      <ion-card-subtitle>
+        <span>{{fechaEvento}}</span><br/>
+        <span>{{horaEvento}}</span>
+        <div style="margin-top: 10px">
+          <ion-button fill="outline" color="info" size="small" slot="end" (click)="unirseTap()">Unirse</ion-button>
+          <!-- <ion-button fill="clear" color="info" size="small" slot="end" (click)="compartirTap()">
+            <ion-icon slot="start" name="share-outline"></ion-icon>Compartir invitación
+          </ion-button> -->
+        </div>
+      </ion-card-subtitle>
+    </ion-card-header>
+  </ion-card>
+
+  <section *ngIf="data.cuerpo">
+    <div class="section-content">
+      <ion-list class="ion-no-margin">
+        <ion-item>
+          <ion-label [innerHTML]="data.cuerpo">
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+
+  <section *ngIf="data.asistentes.length">
+    <div class="section-header">Participantes ({{data.asistentes.length}})</div>
+    <div class="section-content">
+      <ion-list>
+        <ion-item *ngFor="let item of data.asistentes">
+          <ion-label>
+            <h2>{{item.nombre}}</h2>
+          </ion-label>
+          <!-- <ion-label slot="start"> -->
+            <ion-icon slot="start" color="success" *ngIf="item.estado == 'Accepted'" src="assets/icon/check_circle_outline.svg"></ion-icon>
+            <ion-icon slot="start" color="danger" *ngIf="item.estado == 'Declined'" src="assets/icon/highlight_off.svg"></ion-icon>
+            <ion-icon slot="start" color="medium" *ngIf="item.estado == 'None'" src="assets/icon/access_time.svg"></ion-icon>
+          <!-- </ion-label> -->
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+
+  <section style="margin-bottom: 15px;">
+    <ion-button color="primary" shape="round" expand="block" (click)="eliminar()" [disabled]="eliminandoEvento">
+      Eliminar Evento
+    </ion-button>
+  </section>
+
+</ion-content>

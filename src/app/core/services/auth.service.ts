@@ -5,8 +5,9 @@ import { DialogService } from './dialog.service';
 import { LoginComponent } from '../components/login/login.component';
 import { CapacitorHttp, HttpOptions } from '@capacitor/core';
 import { AppGlobal } from 'src/app/app.global';
-import { NavController } from '@ionic/angular';
+import { ActionSheetController, NavController } from '@ionic/angular';
 import { Auth } from '../interfaces/auth.interfaces';
+import { EventsService } from './events.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,8 @@ export class AuthService {
   private dialog = inject(DialogService);
   private baseUrl: string = inject(AppGlobal).Api;
   private nav = inject(NavController);
+  private events = inject(EventsService);
+  private action = inject(ActionSheetController);
 
   constructor() { }
 
@@ -116,6 +119,14 @@ export class AuthService {
       await this.setAuth(auth);
     }
   }
+  async clearProfile() {
+    let auth = await this.getAuth();
+
+    if (auth && auth.user.perfil) {
+      delete auth.user.perfil;
+      await this.setAuth(auth);
+    }
+  }
   async getProfile() {
     let auth = await this.getAuth();
 
@@ -149,6 +160,50 @@ export class AuthService {
   }
   async getAuth() {
     return this.getStorage(this.storageAuth);
+  }
+  public async tryLogout() {
+    const auth = await this.getAuth();
+    const user = auth.user;
+    let buttons = [];
+    let perfiles = 0;
+
+    if (user.esAlumno) perfiles++;
+    if (user.esDocente) perfiles++;
+    if (user.esExalumno) perfiles++;
+
+    buttons.push({
+      text: 'Salir',
+      role: 'destructive',
+      handler: async () => {
+        await this.clearAuth(true);
+        await this.nav.navigateRoot('publico');
+      }
+    });
+
+    if (perfiles > 1) {
+      buttons.push({
+        text: 'Cambiar de Cuenta',
+        role: '',
+        handler: async () => {
+          let auth = await this.getAuth();
+          this.events.app.next({ action: 'app:auth-change-account', value: auth['perfil'] });
+          await this.clearProfile();
+          await this.nav.navigateRoot('privado');
+        }
+      });
+    }
+
+    buttons.push({
+      text: 'Cancelar',
+      role: 'cancel'
+    });
+
+    const actionSheet = await this.action.create({
+      header: '¿Segur@ que quieres cerrar la sesión?',
+      buttons: buttons
+    });
+
+    await actionSheet.present();
   }
   async getStorage(key: string) {
     return Preferences.get({ key: key }).then(result => {

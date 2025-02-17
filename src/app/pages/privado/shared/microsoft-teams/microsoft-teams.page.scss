@@ -1,0 +1,16 @@
+ion-header {
+    .primary-card {
+        margin-bottom: 0 !important;
+    }
+}
+ion-title.md {
+    text-align: left;
+}
+ion-button {
+    // min-height: 30px;
+    --border-width: 2px;
+
+    ion-icon[name="add"] {
+        font-size: 32px;
+    }
+}

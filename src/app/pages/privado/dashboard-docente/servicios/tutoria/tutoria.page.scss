@@ -1,0 +1,15 @@
+section {
+    ion-list {
+        ion-item {
+            ion-avatar {
+                height: 36px;
+                width: 36px;
+                margin-top: 6px;
+                margin-bottom: 6px;
+            }
+            ion-label {
+                white-space: normal;
+            }
+        }
+    }
+}

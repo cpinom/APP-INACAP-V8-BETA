@@ -1,0 +1,71 @@
+<ion-header class="credencial">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Perfil"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      @if (mostrarCerrar) {
+      <ion-button (click)="cerrar()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+      }
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="credencial">
+  <div class="titulo">
+    <img src="assets/images/logo-blanco.png" />
+    <h2>Docente</h2>
+  </div>
+  <div class="avatar-container">
+    <avatar-comp></avatar-comp>
+  </div>
+  <ng-container *ngIf="mostrarData">
+    <div class="perfil" *ngIf="perfil">
+      <h2 class="nombre">{{nombreCompleto | titleCase}}</h2>
+      <p class="rut">{{rut}}</p>
+      @if (sede) {
+      <p class="sede">INACAP {{sede}}</p>
+      }
+    </div>
+    <div class="extra-info">
+      <div class="qr-code" *ngIf="persNcorr">
+        <div #qrcode></div>
+      </div>
+    </div>
+    <div class="privilegios">
+      <div class="estacionamiento" *ngIf="mostrarEstacionamiento == true">
+        <p>Con acceso a estacionamiento</p>
+        <div class="patente" *ngIf="perfil.estacionamiento">
+          <ion-icon color="success" src="assets/icon/directions_car.svg"></ion-icon>
+          <span>{{perfil.estacionamiento.patente}}</span>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="!mostrarData">
+    <div class="perfil">
+      <h2 class="nombre" style="display: flex; justify-content: center;">
+        <ion-skeleton-text animated style="width: 80%;"></ion-skeleton-text>
+      </h2>
+      <p class="rut" style="display: flex; justify-content: center;">
+        <ion-skeleton-text animated style="width: 30%;"></ion-skeleton-text>
+      </p>
+    </div>
+    <div class="extra-info">
+      <div class="qr-code">
+        <ion-skeleton-text animated style="width: 200px; height: 200px; margin: 0 auto;"></ion-skeleton-text>
+      </div>
+    </div>
+  </ng-container>
+
+  <section *ngIf="mostrarData && !perfil" class="empty-state" style="padding-top: 30px;">
+    <div>
+      <!-- <ion-icon src="assets/icon/info.svg"></ion-icon> -->
+      <p>Información no disponible en este momento.</p>
+      <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+    </div>
+  </section>
+
+</ion-content>

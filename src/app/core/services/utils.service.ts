@@ -39,8 +39,28 @@ export class UtilsService {
       reader.readAsDataURL(file);
     });
   }
+  createImageFromFile(file: any): Promise<any> {
+    return new Promise((resolve) => {
+      let reader = new FileReader();
+
+      reader.onload = () => {
+        resolve(reader.result);
+      };
+
+      if (file) {
+        reader.readAsDataURL(file);
+      }
+    })
+  }
   async openLink(url: string) {
     return await Browser.open({ url: url });
+  }
+  getUrlParams(name: string, url: string) {
+    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+    var regexS = "[\\?&]" + name + "=([^&#]*)";
+    var regex = new RegExp(regexS);
+    var results = regex.exec(url);
+    return results == null ? null : results[1];
   }
 
 }

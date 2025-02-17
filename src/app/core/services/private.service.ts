@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 import { CapacitorHttp, HttpOptions } from '@capacitor/core';
 import { AppGlobal } from 'src/app/app.global';
+import { Preferences } from '@capacitor/preferences';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,9 @@ import { AppGlobal } from 'src/app/app.global';
 export class PrivateService {
 
   private auth = inject(AuthService);
-  private global = inject(AppGlobal);
+  global = inject(AppGlobal);
+  storagePrefix: string = 'Private-MOVIL';
+  baseUrl = inject(AppGlobal).Api;
 
   constructor() { }
 
@@ -114,7 +117,17 @@ export class PrivateService {
 
     return Promise.reject(response);
   }
-
+  async getStorage(key: string) {
+    return Preferences.get({ key: `${this.storagePrefix}-${key}` }).then(result => {
+      return result.value ? JSON.parse(result.value) : null;
+    });
+  }
+  getPreferencias(): Promise<any> {
+    return this.get(`${this.baseUrl}/api/v3/persona/preferencias`);
+  }
+  guardarPreferencias(params: any): Promise<any> {
+    return this.post(`${this.baseUrl}/api/v3/persona/preferencias`, params);
+  }
   marcarVista(apesTevento: string, apesTdescripcion?: string, apesTvalor?: string) {
     if (!this.global.Integration) {
       try {

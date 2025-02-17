@@ -1,0 +1,75 @@
+@import "../docente.page.scss";
+
+// ion-toolbar.periodos {
+//     // border-top: 1px solid #666; //var(--border-color);
+//     --min-height: 0;
+//     border-radius: 0 0 5px 5px;
+
+//     ion-item {
+//         --background: var(--ion-toolbar-background);
+//         --inner-border-width: 0;
+//         --min-height: 0;
+//         --padding-start: 0;
+//         --inner-padding-end: 0;
+//         --color: #fff !important; //var(--ion-text-color);
+
+//         ion-label {
+//             display: none;
+//         }
+
+//         ion-select {
+//             flex: 1;
+//             max-width: 100%;
+//             --padding-bottom: 0;
+//             --padding-top: 0;
+//             font-size: var(--FS12);
+//             --padding-start: 0;
+//             --padding-end: 0;
+//             justify-content: center;
+//         }
+
+//         ion-select::part(text) {
+//             flex: none;
+//         }
+
+//         ion-select.md::part(text) {
+//             margin-left: 10px;
+//         }
+
+//         ion-select::part(icon) {
+//             color: #fff;
+//         }
+//     }
+// }
+
+ion-label {
+    white-space: normal !important;
+    padding-top: 12px !important;
+    padding-bottom: 8px !important;
+
+    h2 {
+        font-weight: 500;
+        font-size: var(--FS16);
+        margin-top: 0;
+        margin-bottom: 2px;
+    }
+    p {
+        margin: 2px 0 0 0;
+        color: var(--ion-color-medium);
+
+        &.jornada,
+        &.sede {
+            display: flex;
+            align-items: center;
+
+            ion-icon {
+                font-size: var(--FS18);
+                // height: var(--FS12);
+                // width: var(--FS12);
+                display: inline-block;
+                margin-right: 4px;
+                color: var(--ion-color-medium);
+            }
+        }
+    }
+}

@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-toolbar>
+    <!-- <ion-title>Datos Personales</ion-title> -->
+    <ion-buttons slot="start">
+      <ion-back-button text="Perfil"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card class="primary-card" color="white">
+    <ion-card-header>
+      <ion-card-title>Datos Personales</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+
+  <section *ngIf="perfil">
+    <div class="section-content">
+      <ion-list>
+        <ion-item>
+          <ion-label>
+            <p *ngIf="principal.sedes.length == 1">Sede</p>
+            <p *ngIf="principal.sedes.length > 1">Sedes</p>
+            <h2 class="detail" *ngFor="let item of principal.sedes">{{item.sedeTdesc}}</h2>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <p class="label">Correo</p>
+            <h2 class="detail">{{perfil.persTemailInacap}}</h2>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <p class="label">Correo Secundario</p>
+            <h2 class="detail">{{perfil.persTemail || 'Sin correo secundario'}}</h2>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <p class="label">Teléfono</p>
+            <h2 class="detail">{{perfil.persTcelular || 'Sin teléfono'}}</h2>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+
+  <section *ngIf="permitirEditar">
+    <div class="section-content">
+      <ion-list>
+        <ion-item detail="true" (click)="editarCorreo()">
+          <ion-icon slot="start" src="assets/icon/mail.svg"></ion-icon>
+          <ion-label>Actualizar Correo Electrónico</ion-label>
+        </ion-item>
+        <ion-item detail="true" (click)="editarTelefono()">
+          <ion-icon slot="start" src="assets/icon/phone.svg"></ion-icon>
+          <ion-label>Actualizar Teléfono</ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+
+</ion-content>

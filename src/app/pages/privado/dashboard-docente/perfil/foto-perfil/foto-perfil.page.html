@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Perfil"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card class="primary-card" color="white">
+    <ion-card-header>
+      <ion-card-title>Foto Perfil</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+
+  <ng-container *ngIf="fotoPerfil">
+    <div class="foto-perfil-previa">
+      <ion-avatar>
+        <img [src]="resolverFoto()">
+      </ion-avatar>
+    </div>
+    <section>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-nav-link router-direction="back">
+              <ion-button ion-nav-link color="secondary" shape="round" expand="full">
+                Cancelar
+              </ion-button>
+            </ion-nav-link>
+          </ion-col>
+          <ion-col>
+            <ion-button color="info" shape="round" expand="full" (click)="guardar()" [disabled]="!permitirGuardar">
+              Usar Foto
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </section>
+  </ng-container>
+
+</ion-content>

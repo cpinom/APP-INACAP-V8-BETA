@@ -1,0 +1,87 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Reserva de Espacios" [defaultHref]="backUrl"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-card class="primary-card" color="white">
+    <ion-card-header>
+      <ion-card-title>Detalle Reserva</ion-card-title>
+      <ion-card-subtitle style="display: flex; align-items: center;" *ngIf="mostrarSuccess">
+        <ion-icon name="checkmark-circle-outline" color="success" style="margin-right: 5px;"></ion-icon>
+        <ion-label>Agendado</ion-label>
+      </ion-card-subtitle>
+    </ion-card-header>
+    <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar>
+  </ion-card>
+</ion-header>
+
+<ion-content>
+
+  <div class="qr-code" [class.hide]="data && !data.ticket_code">
+    <div #qrcode></div>
+  </div>
+
+  <ng-container *ngIf="mostrarData && data">
+
+    <section class="first">
+      <div class="section-header">Información de reserva</div>
+      <div class="section-content">
+        <ion-list>
+          <ion-item>
+            <ion-label>
+              <p class="label">Tipo de espacio</p>
+              <p class="detail">{{data?.category?.name||'N/A'}}</p>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <p class="label">Tipo de reserva</p>
+              <p class="detail">{{data?.service?.name||'N/A'}}</p>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <p class="label">Espacio</p>
+              <p class="detail">{{data?.provider?.name||'N/A'}}</p>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <p class="label">Fecha</p>
+              <p class="detail">{{resolverFecha(data?.start_datetime)}}</p>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <p class="label">Hora</p>
+              <p class="detail">{{resolverHora(data?.start_datetime)}}</p>
+            </ion-label>
+          </ion-item>
+          <ion-item *ngFor="let item of data?.additional_fields">
+            <ion-label>
+              <p class="label">{{item?.field_name}}</p>
+              <p class="detail">{{item?.value||'N/A'}}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+    </section>
+
+    <div class="ion-text-center" style="margin-bottom: 20px;">
+      <ion-button (click)="cancelar()" color="info" expand="block" shape="round" style="margin-top: 10px;">
+        Cancelar Reserva
+      </ion-button>
+    </div>
+
+  </ng-container>
+
+  <section *ngIf="mostrarData && !data" class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Información no disponible en este momento.</p>
+      <ion-button color="info" shape="round" (click)="cargar()">Recargar</ion-button>
+    </div>
+  </section>
+
+</ion-content>

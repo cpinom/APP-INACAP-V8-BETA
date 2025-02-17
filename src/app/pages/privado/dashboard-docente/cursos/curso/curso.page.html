@@ -1,0 +1,226 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [text]="backText" [defaultHref]="backUrl"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <ion-card class="primary-card" color="white">
+    <ion-card-header>
+      @if (seccion) {
+      <ion-card-title>{{seccion.asigTdesc}}</ion-card-title>
+      <ion-card-subtitle>Sección {{seccion.seccCompleta}}</ion-card-subtitle>
+      }
+    </ion-card-header>
+    @if (mostrarCargando) {
+    <ion-progress-bar type="indeterminate"></ion-progress-bar>
+    }
+  </ion-card>
+</ion-header>
+
+<ion-content>
+
+  @if (mostrarData && data) {
+
+  <ion-card color="white" class="secondary-card">
+    <ion-card-header>
+      <ion-card-title>Avance Clases</ion-card-title>
+    </ion-card-header>
+    <ion-card-content class="has-chart">
+      <ion-row>
+        <ion-col size="7" class="ion-no-padding">
+          <ul class="ion-no-margin">
+            <li><span class="circle blue"></span>{{seccion.avances.clasesRealizadas}} horas realizadas</li>
+            <li><span class="circle yellow"></span>{{seccion.avances.clasesPorRecuperar}} horas por recuperar</li>
+            <li><span class="circle grey"></span>{{seccion.avances.clasesPlanificadas}} horas planificadas</li>
+          </ul>
+        </ion-col>
+        <ion-col size="5" class="ion-no-padding" style="text-align: right">
+          <input type="text" [number]="seccion.avances.porcentajeRealizadas" class="dial" appKnob [bgColor]="colorGris"
+            [fgColor]="colorAzul">
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+    @if (seccion.avances.clasesPorRecuperar > 0) {
+    <ion-list>
+      <ion-item detail="true" class="ion-activatable" (click)="recuperacionTap()">
+        <ion-icon slot="start" src="assets/icon/alarm.svg"></ion-icon>
+        <ion-label>Solicitar recuperación de clases</ion-label>
+      </ion-item>
+    </ion-list>
+    }
+  </ion-card>
+
+  @if (data.notas) {
+  <ion-card color="white" class="secondary-card" id="notas">
+    <ion-card-header>
+      <ion-card-title>Notas Promedio por Evaluación</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      @if (data.notas.length == 0) {
+      <div *ngIf="promedios.length == 0" id="sinRegistros">
+        <p>Sin registros</p>
+      </div>
+      }
+      @else {
+      <div scrollX="true" class="fixed">
+        <ul>
+          <li *ngFor="let item of data.notas">
+            <div class="nota" [ngClass]="resolverNotaRojo(item.promedioCurso)" [innerHTML]="item.promedioCurso"></div>
+            <div class="nombre-eval">{{item.nombreEvaluacion}}</div>
+            <div class="porcent-eval">{{item.ponderacion}}</div>
+          </li>
+        </ul>
+      </div>
+      }
+    </ion-card-content>
+  </ion-card>
+  }
+  <!-- <ion-card color="white" class="secondary-card" id="horario">
+    <ion-card-header>
+      <ion-card-title>
+        <span>Horario</span>
+        <span class="normal">{{semanaHorario}}</span>
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content *ngIf="data.horarioSeccion">
+      <div *ngIf="data.horarioSeccion.length == 0" id="sinRegistros">
+        <p>Sin registros</p>
+      </div>
+      <div scrollX="true" class="fixed horario" *ngIf="data.horarioSeccion.length > 0">
+        <ul>
+          <ng-container *ngFor="let item of data.horarioSeccion">
+            <li class="{{objectKeys(item.bloques).length == 0 ? 'empty' : ''}}">
+              <div class="scroll-item" style="height: 100%">
+                <div class="title">{{item.diasTdesc}}</div>
+                <div class="content small" *ngFor="let key of objectKeys(item.bloques)">
+                  <p class="full-time" *ngFor="let hora of item.bloques[key]">{{hora.horaInicio}} -
+                    {{hora.horaTermino}}</p>
+                  <p class="classroom">Sala {{key}}</p>
+                </div>
+              </div>
+            </li>
+          </ng-container>
+        </ul>
+      </div>
+    </ion-card-content>
+  </ion-card>-->
+
+  @if (data.asistencia) {
+  <ion-card color="white" class="secondary-card" id="asistencia">
+    <ion-card-header>
+      <ion-card-title>Asistencia Última Clase</ion-card-title>
+    </ion-card-header>
+    <ion-card-content class="has-chart">
+      @if (data.asistencia.fechaClase) {
+      <p class="fecha">{{resolverFechaAsistencia(data.asistencia.fechaClase)}}</p>
+      }
+      <ion-row>
+        <ion-col size="7" class="ion-no-padding" style="display: flex; align-items: center;">
+          <ul class="ion-no-margin">
+            <li><span class="circle blue"></span>{{data.asistencia.presentes}} presentes</li>
+            <li><span class="circle yellow"></span>{{data.asistencia.ausentes}} ausentes</li>
+          </ul>
+        </ion-col>
+        <ion-col size="5" class="ion-no-padding" style="display: flex; justify-content: end;">
+          <div style="height: 90px; width: 90px; margin-right: -7px;">
+            <canvas #asistenciaChart></canvas>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+  }
+  @if (tiposAlumnos) {
+  <ion-card color="white" class="secondary-card" id="tiposAlumnos">
+    <ion-card-header>
+      <ion-card-title>Tipos Estudiantes</ion-card-title>
+    </ion-card-header>
+    <ion-card-content class="has-chart">
+      <ion-row>
+        <ion-col size="7" class="ion-no-padding" style="display: flex; align-items: center;">
+          <ul class="ion-no-margin">
+            <li><span class="circle blue"></span>{{tiposAlumnos.trabajadores}} trabajadores</li>
+            <li><span class="circle yellow"></span>{{tiposAlumnos.noTrabajadores}} no trabajadores</li>
+          </ul>
+        </ion-col>
+        <ion-col size="5" class="ion-no-padding" style="display: flex; justify-content: end;">
+          <div style="height: 90px; width: 90px; margin-right: -7px;">
+            <canvas #tiposAlumnosChart></canvas>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+  }
+
+  <!--<ion-card color="white" class="secondary-card" id="oportunidades" *ngIf="oportunidades">
+    <ion-card-header>
+      <ion-card-title>Oportunidades</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div *ngIf="oportunidades.length == 0" id="sinRegistros">
+        <p>Sin registros</p>
+      </div>
+      <div scrollX="true" class="fixed horario" *ngIf="oportunidades.length > 0">
+        <ul [ngClass]="oportunidades.length > 3 ? 'small' : '' ">
+          <li class="op-card" *ngFor="let op of oportunidades">
+            <div class="scroll-item">
+              <div class="title">{{op.label}}</div>
+              <div class="content">
+                <p class="num-alumnos">{{op.value}}</p>
+                <p>Estudiantes</p>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card color="white" class="secondary-card" id="evalDocente" *ngIf="evalDocente && evalDocente.estado">
+    <ion-card-header>
+      <ion-card-title>Avance Evaluación Docente</ion-card-title>
+    </ion-card-header>
+    <ion-card-content *ngIf="evalDocente.porcentaje">
+      <div class="info-container">
+        <div class="avance-container">
+          <div class="avance-content" [style.width]="evalDocente.porcentaje"></div>
+        </div>
+        <div class="porcentaje">{{evalDocente.porcentaje}}</div>
+      </div>
+    </ion-card-content>
+  </ion-card> -->
+
+  <section>
+    <div class="section-content">
+      <ion-list>
+        <ion-item detail="true" class="ion-activatable" (click)="descriptorTap()">
+          <ion-icon color="medium" slot="start" src="assets/icon/list_alt.svg"></ion-icon>
+          <ion-label>Descriptor</ion-label>
+        </ion-item>
+        <ion-item detail="true" class="ion-activatable" (click)="alumnosTap()">
+          <ion-icon slot="start" src="assets/icon/groups.svg"></ion-icon>
+          <ion-label>Estudiantes</ion-label>
+        </ion-item>
+        <ion-item detail="true" class="ion-activatable" (click)="evaluacionesTap()">
+          <ion-icon slot="start" src="assets/icon/access_time.svg"></ion-icon>
+          <ion-label button="true">Evaluaciones</ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+
+  }
+
+  @if (mostrarData && !data) {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Información no disponible en este momento.</p>
+      <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+    </div>
+  </section>
+  }
+
+</ion-content>

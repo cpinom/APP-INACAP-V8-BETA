@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Datos Personales</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card class="primary-card" color="white">
+    <ion-card-header>
+      <ion-card-title>¡Actualiza tus datos de contacto y mantente siempre informado!</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+
+  <section>
+    <div class="section-content">
+      <ion-list>
+        <ion-item>
+          <ion-label style="font-size: var(--FS14) !important;">Queremos asegurarnos de que recibas toda la información
+            importante sin interrupciones. Para ello, te invitamos a verificar y actualizar tu correo secundario y
+            número de celular en nuestra aplicación.</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label style="font-size: var(--FS14) !important;">
+            <strong style="display: block;">¿Por qué es importante?</strong>
+            <ul>
+              <li>Estar al día con tus comunicaciones oficiales.</li>
+              <li>Recibir notificaciones importantes sobre tu curso y actividades.</li>
+            </ul>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col *ngIf="permitirOmitir">
+        <ion-button color="secondary" shape="round" expand="full" (click)="omitir()">
+          Omitir
+        </ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button color="info" shape="round" expand="full" (click)="continuar()">
+          Continuar
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

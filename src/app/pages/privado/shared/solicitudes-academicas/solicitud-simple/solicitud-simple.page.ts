@@ -1,0 +1,447 @@
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ActionSheetController, AlertController, IonPopover, LoadingController, NavController } from '@ionic/angular';
+import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
+import { SnackbarService } from 'src/app/core/services/snackbar.service';
+import { SolicitudesService } from 'src/app/core/services/solicitudes.service';
+// import { format } from 'date-fns';
+import { VISTAS_ALUMNO } from 'src/app/app.constants';
+
+
+import * as $ from 'jquery';
+import { EventsService } from 'src/app/core/services/events.service';
+
+@Component({
+  selector: 'app-solicitud',
+  templateUrl: './solicitud-simple.page.html',
+  styleUrls: ['./solicitud-simple.page.scss'],
+})
+export class SolicitudPage implements OnInit {
+
+  @ViewChild('datePicker') datePicker!: IonPopover;
+  data: any;
+  showMore: boolean;
+  solicitud: any;
+  tipoSolicitud: number;
+  solicitudForm: FormGroup;
+  justificacionCausales = false;
+  submitted = false;
+  fechaMaxima: string = ''; //format(new Date(), 'yyyy-MM-dd');
+
+  // 25, 34, 40, 
+
+  constructor(private router: Router,
+    private api: SolicitudesService,
+    private loading: LoadingController,
+    private formBuilder: FormBuilder,
+    private error: ErrorHandlerService,
+    private snackbar: SnackbarService,
+    private alert: AlertController,
+    private events: EventsService,
+    private nav: NavController,
+    private action: ActionSheetController) {
+    this.solicitud = this.router.getCurrentNavigation().extras.state;
+  }
+
+  async ngOnInit() {
+    if (!this.solicitud) {
+      await this.nav.navigateBack(this.backUrl);
+      return;
+    }
+
+    await this.cargar();
+  }
+
+  async cargar() {
+    let loading = await this.loading.create({ message: 'Cargando...' });
+    let params = { planCcod: this.solicitud.planCcod, tisoCcod: this.solicitud.tisoCcod };
+
+    await loading.present();
+
+    try {
+      let result = await this.api.getDatosSolicitud(params);
+
+      this.data = result.data;
+      this.data.glosa = result.glosa;
+      this.data.titulo = this.solicitud.tisoTdesc;
+      this.tipoSolicitud = this.solicitud.tisoCcod;
+      this.setupForm();
+    }
+    catch (error) {
+      this.error.handle(error, async () => {
+        await this.nav.navigateBack(this.backUrl);
+      });
+    }
+    finally {
+      await loading.dismiss();
+    }
+  }
+
+  setupForm() {
+    if (this.tipoSolicitud == 7) { // RED. CARGA ACADEMICA
+      this.solicitudForm = this.formBuilder.group({
+        motivo: ['', Validators.required]
+      })
+    }
+    else if (this.tipoSolicitud == 12) { // TRASLADO SEDE
+      this.solicitudForm = this.formBuilder.group({
+        sede: ['', Validators.required],
+        motivo: ['', Validators.required]
+      })
+    }
+    else if (this.tipoSolicitud == 22) { // CAMBIO PROG. ESTUDIO
+      this.solicitudForm = this.formBuilder.group({
+        programa: ['', Validators.required]
+      })
+    }
+    else if (this.tipoSolicitud == 34) {
+      this.solicitudForm = this.formBuilder.group({
+        evaluaciones: new FormArray([]),
+        motivo: ['', Validators.compose([
+          Validators.required,
+          Validators.maxLength(1000)
+        ])]
+      });
+
+      this.data.evaluaciones.forEach(item => {
+        this.evaluaciones.push(new FormControl(false))
+      });
+
+    }
+    else if (this.tipoSolicitud == 45) { // ASIGNATURAS INTERSEMESTRALES
+      this.solicitudForm = this.formBuilder.group({
+        sede: ['', Validators.required]
+      })
+    }
+    else {
+      this.solicitudForm = this.formBuilder.group({
+        motivo: []
+      })
+    }
+
+  }
+
+  async procesar() {
+    this.submitted = true;
+
+    if (this.solicitudForm.valid) {
+      let enviarSolicitud = true;
+      let errorSolicitud = '';
+      let data = this.solicitud; // await this.api.getStorage('solicitud');
+      let planCcod = data.planCcod;
+      let params = {
+        tisoCcod: this.tipoSolicitud,
+        planCcod: planCcod
+      };
+
+      switch (this.tipoSolicitud) {
+        case 5:
+        case 7: {
+          let asignaturas = [];
+
+          this.data.asignaturas.forEach(item => {
+            if (item.checked) {
+              asignaturas.push(this.tipoSolicitud == 7 ? item.seccCcod : item.asigCcod);
+            }
+          });
+
+          if (asignaturas.length == 0) {
+            enviarSolicitud = false;
+            errorSolicitud = 'Debe seleccionar al menos una asignatura.';
+          } 
+          else {
+            params['asignaturas'] = asignaturas;
+
+            if (this.tipoSolicitud == 7) {
+              params['motivo'] = this.motivo.value
+            }
+          }
+
+          break;
+        }
+        case 12: {
+          params['sedeCcod'] = this.sede.value;
+          params['motivo'] = this.motivo.value;
+          break;
+        }
+        case 15: {
+          let secciones = [];
+
+          this.data.secciones.forEach(seccion => {
+            if (seccion.ssecSelected) {
+              secciones.push({
+                ssecElimina: seccion.ssecNcorr,
+                ssecAgrega: seccion.ssecSelected
+              });
+            }
+          });
+
+          if (secciones.length == 0) {
+            enviarSolicitud = false;
+            errorSolicitud = 'Debe cambiar al menos una sección.';
+          } 
+          else {
+            params['secciones'] = secciones;
+          }
+
+          break;
+        }
+        case 21: {
+          params['jornCcod'] = this.data.jornada.value;
+          break;
+        }
+        case 22: {
+          params['oferNcorr'] = this.programa.value;
+          break;
+        }
+        // case 34: {
+        //   if (this.solicitud.tisoCcod == 1) {
+        //     if (!this.solicitudForm.valid) {
+        //       return;
+        //     }
+
+        //     let evaluaciones = [];
+
+        //     this.evaluaciones.value.forEach((evaluacion, i) => {
+        //       if (evaluacion == true) {
+        //         evaluaciones.push(this.data.evaluaciones[i].seccCcod);
+        //       }
+        //     });
+
+        //     if (evaluaciones.length == 0) {
+        //       return;
+        //     }
+
+        //     params['evaluaciones'] = evaluaciones;
+        //     params['motivo'] = this.motivo.value;
+        //     params['entregaJustificacion'] = '0';
+        //   }
+        // }
+        case 35: {
+          let causales = [];
+          let documentos = [];
+          params['causales_otros'] = '';
+
+          this.data.causales.forEach(item => {
+            if (item.checked) {
+              causales.push(item.tacoCcod);
+
+              if (item.tacoCcod == 7) {
+                params['causales_otros'] = this.motivo.value;
+              }
+
+              let dependencia = this.data.dependencias.filter(dep => {
+                if (item.tacoCcod == dep.tacoCcod)
+                  return dep.camsTid;
+              });
+
+              if (dependencia.length) {
+                documentos.push(dependencia[0].camsTid);
+              }
+            }
+          });
+
+          if (causales.length == 0) {
+            enviarSolicitud = false;
+            errorSolicitud = 'Debe seleccionar al menos una causa.';
+          } 
+          else {
+            params['causales'] = causales.join(',');
+            params['documentos'] = documentos;
+          }
+
+          break;
+        }
+        case 45: {
+          let asignaturas = [];
+
+          this.data.asignaturas.forEach(item => {
+            if (item.checked) {
+              asignaturas.push(item.asigCcod);
+            }
+          });
+
+          if (asignaturas.length == 0) {
+            enviarSolicitud = false;
+            errorSolicitud = 'Debe seleccionar al menos una asignatura.';
+          } 
+          else if (asignaturas.length > 2) {
+            enviarSolicitud = false;
+            errorSolicitud = 'Sólo puede seleccionar un máximo de 2 asignaturas.';
+          } 
+          else {
+            params['asignaturas'] = asignaturas;
+            params['sedeCcod'] = this.sede.value;
+          }
+
+          break;
+        }
+      }
+
+      if (enviarSolicitud) {
+        let confirm = await this.confirmarEnvio();
+
+        if (!confirm) {
+          return;
+        }
+
+        let loading = await this.loading.create({ message: 'Procesando...' });
+        let message = '';
+        let mostrarExito = false;
+
+        await loading.present();
+
+        try {
+          let result = await this.api.procesarSolicitud(params);
+
+          if (result.success) {
+            mostrarExito = true;
+            message = result.html || '<span>La solicitud ha sido ingresada correctamente.</span>';
+          } 
+          else {
+            message = result.message
+          }
+        } catch (error) {
+          this.error.handle(error);
+          return
+        } finally {
+          await loading.dismiss();
+
+          if (this.tipoSolicitud == 1) {
+            this.api.marcarVista(VISTAS_ALUMNO.SOLICITUDES_INASISTENCIA);
+          }
+        }
+
+        if (mostrarExito) {
+          await this.presentSuccess(message);
+          await this.router.navigate([this.backUrl], { replaceUrl: true });
+          // this.events.notifyDataChanged('app:soli citudes-academicas-inicio', {});
+        } 
+        else {
+          this.error.handle(message);
+        }
+      } 
+      else {
+        this.snackbar.showToast(errorSolicitud);
+      }
+    }
+  }
+
+  async sedesChange() {
+    let sedeCcod = this.sede.value;
+    let params = { sedeCcod: sedeCcod };
+    let result = await this.api.getAsignaturasPendientes(params);
+    this.data.asignaturas = result;
+  }
+
+  causalChange(data: any) {
+    if (data.tacoCcod == 7) {
+      let control = this.motivo;
+      if (data.checked) {
+        control.setValidators(Validators.required);
+        control.updateValueAndValidity();
+      } 
+      else {
+        control.clearValidators();
+        control.setValue('');
+        control.updateValueAndValidity();
+      }
+
+      this.justificacionCausales = data.checked;
+    }
+  }
+
+  mostrarCambiosCarga(seccion: any) {
+    return seccion.ssecSelected == 0 ? 'Sin cambio...' : seccion.disponibles.find(t => t.ssecNcorr == seccion.ssecSelected).ssecTdesc;
+  }
+
+  async confirmarEnvio(): Promise<boolean> {
+    return new Promise(async (resolve) => {
+      const actionSheet = await this.action.create({
+        header: '¿Segur@ que quiere enviar la Solicitud?',
+        buttons: [
+          {
+            text: 'Continuar',            
+            role: 'destructive',
+            handler: () => {
+              resolve(true)
+            }
+          },
+          {
+            text: 'Cancelar',
+            role: 'cancel',
+            handler: () => {
+              resolve(false)
+            }
+          }
+        ]
+      });
+
+      await actionSheet.present();
+    })
+  }
+
+  async presentSuccess(message: string) {
+    let alert = await this.alert.create({
+      header: 'Detalle Solicitud',
+      backdropDismiss: false,
+      keyboardClose: false,
+      cssClass: 'success-alert',
+      message: '<div class="image"><img src = "./assets/images/icon_check_circle.svg" width="35px" height="35px"></div>' + $(message).text(),
+      buttons: [
+        {
+          text: 'Aceptar'
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  trimString(string, length) {
+    return string.length > length
+      ? string.substring(0, length) + "..."
+      : string;
+  }
+
+  get glosaCompleta() {
+    if (this.tipoSolicitud == 3 || this.tipoSolicitud == 6 || this.tipoSolicitud == 10 || this.tipoSolicitud == 15 || this.tipoSolicitud == 17 || this.tipoSolicitud == 21 || this.tipoSolicitud == 22 || this.tipoSolicitud == 34 || this.tipoSolicitud == 40)
+      return true;
+    return false;
+  }
+
+  get sede() { return this.solicitudForm.get('sede'); }
+  get evaluaciones() { return this.solicitudForm.get('evaluaciones') as FormArray; }
+  get terminos() { return this.solicitudForm.get('terminos'); }
+  get motivo() { return this.solicitudForm.get('motivo'); }
+  get programa() { return this.solicitudForm.get('programa'); }
+  get nacimiento() { return this.solicitudForm.get('nacimiento'); }
+  get tipos() { return this.solicitudForm.get('tipos'); }
+
+  get validarEvaluaciones() {
+    if (this.tipoSolicitud != 1) {
+      return true;
+    }
+
+    let isValid = false;
+
+    this.evaluaciones.value.forEach((evaluacion, i) => {
+      if (evaluacion === true) {
+        isValid = true;
+      }
+    });
+
+    return isValid;
+  }
+
+  get backUrl() {
+    let parts = this.router.url.split('/');
+    let index = parts.indexOf('solicitud-simple');
+
+    if (index > -1) {
+      return parts.slice(1, index).join('/');
+    }
+    return '';
+  }
+}

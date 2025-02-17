@@ -1,0 +1,243 @@
+@import "src/theme/horario-section.scss";
+
+ion-header {
+    .primary-card {
+        margin-bottom: 0 !important;
+    }
+}
+
+ion-card-content {
+    &.has-chart {
+        ul {
+            li {
+                display: flex;
+                align-items: center;
+                margin-bottom: 4px;
+                span.circle {
+                    width: 5px;
+                    height: 5px;
+                    border-radius: 3px;
+                    display: inline-block;
+                    background-color: var(--ion-color-secondary);
+                    margin-right: 5px;
+
+                    &.blue {
+                        background-color: var(--ion-color-info);
+                    }
+                    &.green {
+                        background-color: var(--ion-color-success);
+                    }
+                    &.yellow {
+                        background-color: var(--ion-color-warning);
+                    }
+                }
+            }
+        }
+        ion-col:last-child {
+            text-align: center;
+        }
+    }
+}
+
+.secondary-card {
+    margin: 12px 15px !important;
+    box-shadow: none !important;
+    border-radius: 8px !important;
+    overflow: hidden;
+}
+
+ion-card > ion-list {
+    border-top: var(--border);
+}
+
+#asistencia {
+    ion-card-content {
+        .fecha {
+            margin-bottom: 15px;
+            &::first-letter {
+                text-transform: uppercase;
+            }
+        }
+    }
+}
+
+#horario {
+    ion-card-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        span.normal {
+            font-size: 14px;
+            font-weight: 500;
+        }
+    }
+    ion-card-content {
+        padding-inline: 0;
+
+        .horario {
+            padding-left: 15px;
+        }
+    }
+    .scroll-item {
+        min-height: 100px;
+    }
+}
+
+#notas {
+    ion-card-content {
+        padding-left: 0;
+        padding-right: 0;
+        padding-bottom: 0;
+
+        > div {
+            padding-left: 15px;
+            margin-right: 15px;
+        }
+
+        #sinRegistros {
+            padding-bottom: 10px;
+        }
+
+        ul {
+            display: flex;
+            margin-left: -10px;
+            width: 400px;
+            margin-top: 0;
+
+            li {
+                width: 60px;
+                text-align: center;
+                margin: 0 10px;
+
+                div.nota {
+                    background-color: var(--ion-color-light);
+                    color: var(--ion-color-dark);
+                    border-radius: 4px;
+                    margin-bottom: 2px;
+                    font-size: var(--FS16);
+                    padding: 2px 0;
+                    min-height: 26px;
+                    &.rojo {
+                        color: var(--ion-color-danger) !important;
+                    }
+                }
+
+                div.nombre-eval {
+                    font-size: var(--FS11);
+                }
+                div.porcent-eval {
+                    font-size: var(--FS12);
+                    color: var(--ion-color-medium);
+                    margin-top: -2px;
+                }
+            }
+        }
+        .notas-finales {
+            display: flex;
+            justify-content: flex-end;
+            padding-bottom: 15px;
+
+            div.item {
+                width: 100px;
+                text-align: center;
+
+                div {
+                    width: 80px;
+                    margin: 0 auto;
+                    border: 3px solid var(--ion-color-light);
+                    height: 45px;
+                    border-radius: 4px;
+                    font-size: var(--FS20);
+                    font-weight: bold;
+                    line-height: 40px;
+                }
+                span {
+                    margin: 5px -5px 0 -5px;
+                    white-space: normal;
+                    font-size: var(--FS11);
+                    line-height: 14px;
+                    display: block;
+                }
+            }
+        }
+    }
+}
+
+#horario {
+    div.horario {
+        margin-right: 15px;
+    }
+
+    ul {
+        font-weight: 600;
+
+        ::ng-deep li.empty {
+            min-width: 60px !important;
+
+            .title {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                /* text-align: center; */
+                padding-inline: 8px !important;
+            }
+        }
+    }
+}
+
+#oportunidades {
+    ion-card-content .horario ul {
+        li {
+            min-width: 30% !important;
+            p {
+                &.num-alumnos {
+                    font-size: 1.2em;
+                    font-weight: 600;
+                }
+            }
+        }
+        &.small {
+            li {
+                min-width: 90px !important;
+            }
+        }
+    }
+}
+
+#evalDocente {
+    .info-container {
+        display: flex;
+        align-items: center;
+
+        .avance-container {
+            flex: 1;
+            height: var(--FS16);
+            background-color: var(--ion-color-secondary);
+            position: relative;
+
+            .avance-content {
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 16px;
+                width: 0;
+                background-color: var(--ion-color-info);
+            }
+        }
+        .porcentaje {
+            padding-left: 10px;
+        }
+    }
+}
+
+#recupClases {
+    p.recuperar {
+        color: var(--ion-color-medium);
+    }
+    p.grey {
+        font-size: var(--FS13);
+        color: var(--ion-color-medium) !important;
+        line-height: 1.1em;
+    }
+}

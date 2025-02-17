@@ -1,0 +1,94 @@
+<ion-header>
+  <ion-toolbar>
+    <!-- <ion-title>editar-correo</ion-title> -->
+    <ion-buttons slot="start">
+      <ion-back-button text="Datos Personales"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card class="primary-card" color="white">
+    <ion-card-header>
+      <ion-card-title>Confirmar número de teléfono</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+
+  <ng-container *ngIf="perfil && !mostrarCodigo">
+    <form [formGroup]="form">
+      <section>
+        <div class="section-header">Datos Personales</div>
+        <div class="section-content">
+          <ion-list>
+            <ion-item>
+              <ion-input label="Teléfono" labelPlacement="stacked" formControlName="persTcelular" placeholder="+569XXXXXXXX" inputmode="tel" clearInput></ion-input>
+            </ion-item>
+            <div class="invalid" *ngIf="submitted && celular.hasError('pattern')">Teléfono inválido (Ej: +56990009000)</div>
+            <div class="invalid" *ngIf="submitted && celular.hasError('required')">Campo obligatorio</div>
+            <ion-item>
+              <ion-input label="Confirmar teléfono" labelPlacement="stacked" formControlName="persTcelularConfirma" placeholder="+569XXXXXXXX" inputmode="tel" clearInput></ion-input>
+            </ion-item>
+            <div class="invalid" *ngIf="submitted && celularConfirma.hasError('pattern')">Teléfono inválido (Ej: +56990009000)</div>
+            <div class="invalid" *ngIf="submitted && celularConfirma.hasError('required')">Campo obligatorio</div>
+            <div class="invalid" *ngIf="submitted && !telefonosIguales">Los teléfonos deben ser iguales.</div>
+          </ion-list>
+        </div>
+      </section>
+      <section>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-nav-link router-direction="back">
+                <ion-button ion-nav-link color="secondary" shape="round" expand="full">
+                  {{textoBtnCancelar}}
+                </ion-button>
+              </ion-nav-link>
+            </ion-col>
+            <ion-col>
+              <ion-button color="info" shape="round" expand="full" (click)="validar()">
+                Siguiente
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </section>
+    </form>
+  </ng-container>
+
+  <ng-container *ngIf="mostrarCodigo">
+    <section>
+      <div class="section-header">CÓDIGO DE CONFIRMACIÓN</div>
+      <div class="section-content">
+        <ion-list>
+          <ion-item>
+            <ion-icon color="success" src="assets/icon/check_circle.svg" slot="start"></ion-icon>
+            <ion-label>Se enviará un SMS con el código de confirmación al número de teléfono ingresado. Si éste no llega en los próximos minutos, reenviar el código aquí.</ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+    </section>
+
+    <div class="pin-contenedor">
+      <code-input #codeInput [isCodeHidden]="false" [codeLength]="6" (codeChanged)="onPinChanged($event)" (codeCompleted)="onPinCompleted($event)"></code-input>
+    </div>
+
+    <section>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-button (click)="cancelar()" color="secondary" shape="round" expand="full">
+              Cancelar
+            </ion-button>
+          </ion-col>
+          <ion-col>
+            <ion-button color="info" shape="round" expand="full" (click)="confirmar()" [disabled]="!codigoValido">
+              Enviar
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </section>
+  </ng-container>
+
+</ion-content>

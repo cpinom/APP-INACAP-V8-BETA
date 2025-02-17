@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Curso" [defaultHref]="backUrl"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card color="white" class="primary-card">
+    <ion-card-header>
+      <ion-card-title>Estudiantes</ion-card-title>
+      @if (data) {
+      <ion-card-subtitle>
+        <span [innerHTML]="data.asigTdesc+'<br/>Sección '+data.seccCompleta"></span>
+      </ion-card-subtitle>
+      }
+    </ion-card-header>
+    @if (mostrarCargando) {
+    <ion-progress-bar type="indeterminate"></ion-progress-bar>
+    }
+  </ion-card>
+
+  @if (mostrarData && alumnos) {
+  @if (alumnos.length > 0) {
+  <section class="listado">
+    <div class="section-content">
+      <ion-list>
+        @for (item of alumnos; track $index) {
+        <ion-item detail="true" class="ion-activatable" (click)="alumnoTap(item)">
+          <app-cached-image slot="start" [src]="resolverFoto(item.persNcorr)"></app-cached-image>
+          <ion-label>{{item.persTnombre}} {{item.persTapePaterno}} {{item.persTapeMaterno}}</ion-label>
+        </ion-item>
+        }
+      </ion-list>
+    </div>
+  </section>
+  }
+  @if (alumnos.length == 0) {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/group.svg"></ion-icon>
+      <p>Sin registros</p>
+    </div>
+  </section>
+  }
+  }
+
+  @if (mostrarData && !alumnos) {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Información no disponible en este momento.</p>
+      <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+    </div>
+  </section>
+  }
+
+</ion-content>

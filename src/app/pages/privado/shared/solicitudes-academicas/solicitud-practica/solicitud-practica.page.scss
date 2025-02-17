@@ -1,0 +1,110 @@
+// form {
+//     ion-item {
+//         --padding-start: 0
+//     }
+// }
+
+ion-card-content {
+    font-size: var(--FS14) !important;
+
+    .glosa {
+        border-top: var(--border);
+        padding-top: 15px;
+
+        ::ng-deep ol {
+            padding: 0 0 0 25px;
+        }
+
+        ::ng-deep ul {
+            padding: 0 0 0 25px;
+        }
+
+        ::ng-deep a.more {
+            display: block;
+            margin-top: 10px;
+            text-align: center;
+        }
+    }
+}
+
+.invalid {
+    font-size: var(--FS12);
+    color: var(--ion-color-danger);
+    margin: 5px 15px;
+}
+
+
+ion-modal {
+    .detalle-solicitud {
+        padding: 20px;
+        ::ng-deep > div {
+            table {
+                width: 100%;
+                font-size: 14px;
+                
+                p {
+                    margin: 0 0 10px 0;
+                }
+
+                // br + br {
+                //     display: none;
+                // }
+            }
+        }
+        
+        div.image {
+            text-align: center;
+
+            img {
+                width: 80px;
+                margin: 0 auto 10px;
+            }
+        }
+    }
+}
+
+form {
+    ion-item {
+        ion-label.md {
+            padding: 0;            
+            min-height: auto;
+
+            &.fono {
+                margin-bottom: 8px;
+            }
+        }
+    }
+}
+
+ngx-intl-tel-input {
+    width: 100%;
+    padding-bottom: 8px;
+
+    ::ng-deep .iti {
+        width: 100%;
+
+        input {
+            border: 0;
+            padding-left: 75px !important;
+            width: 100%;
+        }
+
+        .dropdown-toggle {
+            padding-left: 0;
+            width: 70px !important;
+            background-color: transparent !important;
+        }
+
+        .country-dropdown {
+            display: none !important;
+        }
+    }
+}
+
+::ng-deep body.dark {
+    .iti {
+        input {
+            background-color: transparent;
+        }
+    }
+}

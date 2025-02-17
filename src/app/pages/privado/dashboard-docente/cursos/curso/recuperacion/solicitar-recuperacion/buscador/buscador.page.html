@@ -1,0 +1,115 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Nueva Solicitud</ion-title>
+    <ion-buttons slot="end">
+      <ion-button icon-only role="button" (click)="cerrar()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ng-container *ngIf="mostrarData">
+
+    <ion-card color="white" class="primary-card">
+      <ion-card-header>
+        <ion-card-title>Recuperación de Clases</ion-card-title>
+        <ng-container *ngIf="data">
+          <ion-card-subtitle *ngIf="data.seccion">
+            {{data.seccion.asigTdesc}} - Sección {{data.seccion.seccCompleta}}
+          </ion-card-subtitle>
+          <ion-card-subtitle>Libro Nº {{clase.lclaNcorr}}</ion-card-subtitle>
+          <ion-card-subtitle>Nº de bloques: {{clase.bloques}}</ion-card-subtitle>
+        </ng-container>
+      </ion-card-header>
+    </ion-card>
+
+    <form [formGroup]="form">
+
+      <section *ngIf="data">
+        <div class="section-content">
+          <ion-list>
+            <ion-item>
+              <ion-select label="Tipo de sala a solicitar" labelPlacement="stacked" formControlName="sala"
+                placeholder="Seleccione..." okText="Aceptar" cancelText="Cancelar">
+                <ion-select-option *ngFor="let sala of data.tiposSalas" [value]="sala.tsalCcod">
+                  {{sala.tsalTdesc}}
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+            <div class="invalid" *ngIf="submitted && sala?.hasError('required')">Campo obligatorio.</div>
+            <ion-item>
+              <ion-input label="Fecha a solicitar" labelPlacement="stacked" formControlName="fecha" id="date"
+                placeholder="Seleccione una fecha..."></ion-input>
+              <ion-popover #datePicker trigger="date" size="cover">
+                <ng-template>
+                  <ion-datetime presentation="date" formControlName="fechaPicker" [min]="fechaMinimaSolicitud"
+                    locale="es-CL" [firstDayOfWeek]="1" [isDateEnabled]="validaDiaDomingo"></ion-datetime>
+                </ng-template>
+              </ion-popover>
+            </ion-item>
+            <div class="invalid" *ngIf="submitted && fecha?.hasError('required')">Campo obligatorio.</div>
+            <div class="invalid" *ngIf="submitted && fecha?.hasError('pattern')">Formato incorrecto Ej: DD/MM/AAAA.
+            </div>
+            <ion-item>
+              <ion-select label="Horario desde" labelPlacement="stacked" placeholder="Seleccione..."
+                formControlName="horaInicio" okText="Aceptar" cancelText="Cancelar">
+                <ion-select-option *ngFor="let hora of data.horario" [value]="hora.horaCcod">
+                  {{hora.horaTdesc}}
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+            <div class="invalid" *ngIf="submitted && horaInicio?.hasError('required')">Campo obligatorio.</div>
+            <ion-item *ngIf="horaInicio?.valid">
+              <ion-toggle labelPlacement="start" formControlName="bloqueUnico" color="primary">
+                <span class="ion-text-wrap">Seleccionar sólo el bloque horario elegido.</span>
+              </ion-toggle>
+            </ion-item>
+          </ion-list>
+        </div>
+      </section>
+
+      @if (data.implementos) {
+      <section>
+        <div class="section-content">
+          <ion-list>
+            <ion-item>
+              <ion-toggle labelPlacement="start" formControlName="equipamiento" color="success">
+                <span class="ion-text-wrap">¿Necesita equipamiento?</span>
+              </ion-toggle>
+            </ion-item>
+          </ion-list>
+        </div>
+      </section>
+      }
+
+      @if (equipamiento?.value) {
+      <section>
+        <div class="section-header">Equipamiento a solicitar</div>
+        <div class="section-content">
+          <ion-list>
+            @for (equipo of data.implementos; track $index) {
+            <ion-item>
+              <ion-checkbox color="info" (ionChange)="getEquipamiento($event, equipo)">
+                <span class="ion-text-wrap">{{equipo}}</span>
+              </ion-checkbox>
+            </ion-item>
+            }
+          </ion-list>
+        </div>
+      </section>
+      }
+
+      <section>
+        <ion-button color="info" shape="round" expand="block" (click)="buscar()">
+          Buscar Horarios disponibles
+        </ion-button>
+      </section>
+
+    </form>
+
+  </ng-container>
+
+</ion-content>

@@ -1,0 +1,37 @@
+<mbsc-eventcalendar [theme]="theme" [themeVariant]="themeVariant" [(selectedDate)]="fecha" [data]="eventos"
+  [view]="myView" [locale]="pickerLocale" (onPageChange)="onSelectedDateChange($event)"
+  (onEventClick)="onEventClick($event)" [agendaEmptyTemplate]="horarioEmptyTpl">
+  <ng-template #horarioEmptyTpl>
+    <div class="mbsc-align-center mbsc-padding">
+      <div class="loaderInacap" *ngIf="cargando">
+        <ion-spinner name="lines" color="info"></ion-spinner>
+      </div>
+      <span *ngIf="cargando == false && eventos">Sin Clases</span>
+      <span *ngIf="cargando == false && !eventos">
+        <section class="empty-state">
+          <div>
+            <ion-icon src="assets/icon/info.svg"></ion-icon>
+            <p>Información no disponible en este momento.</p>
+            <ion-button color="info" shape="round" (click)="cargar()">Recargar</ion-button>
+          </div>
+        </section>
+      </span>
+    </div>
+  </ng-template>
+</mbsc-eventcalendar>
+
+<section class="classic schedule portrait virtuales"
+  *ngIf="asignaturasVirtuales && asignaturasVirtuales.length && planificacion">
+  <div class="section-content">
+    <article>
+      <div class="schedule-header">
+        <h2>Asignaturas Virtuales</h2>
+      </div>
+      <div class="schedule-item-list">
+        <div class="schedule-item" *ngFor="let item of asignaturasVirtuales">
+          <b>{{item.asigTdesc}}</b> {{item.asigHoras}}
+        </div>
+      </div>
+    </article>
+  </div>
+</section>

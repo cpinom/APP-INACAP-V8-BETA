@@ -1,0 +1,121 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Configuraciones</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button text="" [defaultHref]="backUrl"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <section class="first">
+    <div class="section-header">Accesibilidad</div>
+    <div class="section-content">
+      <ion-list>
+        <ion-item>
+          <ion-toggle [(ngModel)]="fontSizeMode" (ngModelChange)="toggleFontSizeSize()" color="success">
+            Tamaño Letra
+          </ion-toggle>
+        </ion-item>
+        <ion-item *ngIf="fontSizeMode">
+          <ion-icon slot="start" src="assets/icon/text_decrease.svg"></ion-icon>
+          <ion-range [(ngModel)]="fontSizeRange" (ngModelChange)="toggleFontSizeRange()" color="medium" [ticks]="true"
+            [snaps]="true" [min]="0" [max]="4"></ion-range>
+          <ion-icon slot="end" src="assets/icon/text_increase.svg"></ion-icon>
+        </ion-item>
+        <ion-item [disabled]="darkMode">
+          <ion-toggle [(ngModel)]="contrastMode" (ngModelChange)="toggleContrastMode()" color="success">
+            Aumentar Contraste
+          </ion-toggle>
+        </ion-item>
+        <ion-item *ngIf="mostrarFaceID">
+          <ion-toggle [(ngModel)]="privacyMode" (ngModelChange)="togglePrivacy()" color="success">
+            <h2>Face ID</h2>
+            <p>Requerir Face ID para desbloquear</p>
+          </ion-toggle>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-header">Apariencia</div>
+    <div class="section-content">
+      <ion-list>
+        <ion-item *ngIf="!darkModeAutomatic">
+          <ion-toggle [(ngModel)]="darkMode" (ngModelChange)="toggleDarkMode()" color="success">Modo oscuro</ion-toggle>
+        </ion-item>
+        <ion-item class="modo-oscuro" *ngIf="darkModeAutomatic" detail="true" (click)="changeDarkMode()">
+          <ion-label>Aspecto</ion-label>
+          <ion-note slot="end">{{darkModeText}}</ion-note>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+
+  <section *ngIf="mostrarIcono">
+    <div class="section-header">Icono de la Aplicación</div>
+    <div class="section-content">
+      <ion-list>
+        <ion-item (click)="cambiarIcono('claro')" class="ion-activatable">
+          <ion-thumbnail slot="start">
+            <img src="assets/images/app-light.png" />
+          </ion-thumbnail>
+          <ion-label>Claro</ion-label>
+          <ion-icon slot="end" name="checkmark-outline" *ngIf="icono == 'claro'"></ion-icon>
+        </ion-item>
+        <ion-item (click)="cambiarIcono('oscuro')" class="ion-activatable">
+          <ion-thumbnail slot="start">
+            <img src="assets/images/app-dark.png" />
+          </ion-thumbnail>
+          <ion-label>Oscuro</ion-label>
+          <ion-icon slot="end" name="checkmark-outline" *ngIf="icono == 'oscuro'"></ion-icon>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-header">Colores</div>
+    <div class="section-content" style="padding: 15px;">
+      <ion-radio-group class="colores" [(ngModel)]="color" mode="md" (ionChange)="colorChanged($event)">
+        <ion-radio [class]="color" [value]="color" *ngFor="let color of colores"></ion-radio>
+      </ion-radio-group>
+    </div>
+  </section>
+
+  <section *ngIf="mostrarNotificaciones && programa">
+    <div class="section-header">Notificaciones</div>
+    <div class="section-content">
+      <ion-list>
+        <ion-item>
+          <ion-toggle [(ngModel)]="notificacionCorreo" (ngModelChange)="toggleNotificaciones(0)" color="success">
+            INACAPMail
+          </ion-toggle>
+        </ion-item>
+        <ion-item>
+          <ion-toggle [(ngModel)]="notificacionSede" (ngModelChange)="toggleNotificaciones(1)" color="success">
+            Sede - {{programa.sedeTdesc}}
+          </ion-toggle>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+
+  <section *ngIf="mostrarCalendario">
+    <div class="section-header">Calendario</div>
+    <div class="section-content">
+      <ion-list>
+        <ion-item>
+          <ion-label>
+            <h2>Sincronizar Calendario</h2>
+            <p>Sincronizar calendario con el celular</p>
+          </ion-label>
+          <ion-toggle slot="end" color="success"></ion-toggle>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+
+</ion-content>

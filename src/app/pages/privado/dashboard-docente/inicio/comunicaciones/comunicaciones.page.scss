@@ -1,0 +1,13 @@
+ion-header {
+  .primary-card {
+      margin-bottom: 0 !important;
+  }
+}
+
+ion-content {
+  ion-checkbox {
+    &::part(label) {
+      width: 100%;
+    }
+  }
+}

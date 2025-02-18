@@ -8,23 +8,13 @@
     </ion-buttons>
     <ion-buttons slot="end">
       <ion-button (click)="notificacionesTap()" role="button" aria-label="Ver notificaciones">
-        <ion-badge *ngIf="mostrarNotificaciones">1</ion-badge>
+        @if (mostrarNotificaciones) {
+        <ion-badge>1</ion-badge>
+        }
         <ion-icon src="assets/icon/notifications.svg"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <!-- <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar> -->
   </ion-toolbar>
-  <!-- <ion-toolbar class="periodos" *ngIf="principal && principal.periodos.length > 1">
-    <form [formGroup]="periodoForm">
-      <ion-item>
-        <ion-select label="Período" formControlName="periodo" okText="Actualizar" cancelText="Cerrar">
-          <ion-select-option *ngFor="let item of principal.periodos" [value]="item.periCcod">
-            {{item.periTdesc}}
-          </ion-select-option>
-        </ion-select>
-      </ion-item>
-    </form>
-  </ion-toolbar> -->
   @if (principal && principal.periodos.length > 1) {
   <app-periodos [periodos]="principal.periodos" [selected]="periodo?.value"
     (onPeriodoSelected)="periodoSeleccionado($event)"></app-periodos>
@@ -35,75 +25,92 @@
 
   @if (mostrarCargando) {
   <div class="loaderInacap">
-    <ion-spinner name="lines" color="info"></ion-spinner>
+    <ion-spinner name="lines" color="primary"></ion-spinner>
   </div>
   }
 
-  <ng-container *ngIf="mostrarData && cursos">
+  @if (mostrarData && cursos) {
 
-    <ion-card class="primary-card" color="white">
-      <ion-card-header>
-        <ion-card-title>{{periodoText}}</ion-card-title>
-      </ion-card-header>
-    </ion-card>
+  <ion-list inset="true" class="card-list">
 
-    <section *ngFor="let sede of sedes">
-      @if (multiplesSedes) {
-      <div class="section-header" *ngIf="multiplesSedes">Sede {{sede.sedeTdesc}}</div>
-      }
-      <div class="section-content">
-        <ion-list>
-          @for (seccion of cursos; track $index) {
-          @if (seccion.sedeCcod == sede.sedeCcod) {
-          <ion-item detail="true" class="ion-activatable" (click)="seccionTap(seccion)">
-            <ion-label>
-              <h2>{{seccion.asigTdesc}}</h2>
-              <p>{{seccion.asigCcod}}</p>
-              <p>Sección {{seccion.seccTdesc}}
-                @if (seccion.ssecTdesc && seccion.seccTdesc != seccion.ssecTdesc) {
-                <span> - {{seccion.ssecTdesc}}</span>
-                }
-              </p>
-              @if (resolverRegimen(seccion, 1)) {
-              <p class="jornada">
-                <ion-icon src="assets/images/sol.svg" color="medium"></ion-icon>
-                <span>Jornada Diurna</span>
-              </p>
+    <ion-item detail="false">
+      <ion-icon slot="start" src="assets/icon/book.svg" class="rounded"></ion-icon>
+      <ion-label>
+        <h2>Cursos - {{periodoText}}</h2>
+        <!-- <p>Aquí podrá validar los Certificados y Diplomas de Título emitidos por INACAP.</p> -->
+      </ion-label>
+    </ion-item>
+
+  </ion-list>
+
+  @if (cursos.length) {
+  @for (sede of sedes; track $index) {
+  <section class="cursos">
+    @if (multiplesSedes) {
+    <div class="section-header">Sede {{sede.sedeTdesc}}</div>
+    }
+    @else {
+    <div class="section-header">Cursos del Semestre</div>
+    }
+    <div class="section-content">
+      <ion-list>
+        @for (seccion of cursos; track $index) {
+        @if (seccion.sedeCcod == sede.sedeCcod) {
+        <ion-item detail="false" class="ion-activatable" (click)="seccionTap(seccion)">
+          <ion-label>
+            <h2>{{seccion.asigTdesc}}</h2>
+            <p>{{seccion.asigCcod}}</p>
+            <p>Sección {{seccion.seccTdesc}}
+              @if (seccion.ssecTdesc && seccion.seccTdesc != seccion.ssecTdesc) {
+              <span> - {{seccion.ssecTdesc}}</span>
               }
-              @if (resolverRegimen(seccion, 2)) {
-              <p class="jornada">
-                <ion-icon src="assets/images/luna.svg" color="medium"></ion-icon>
-                <span>Jornada Vespertina</span>
-              </p>
-              }
-              @if (resolverRegimen(seccion, 3)) {
-              <p class="jornada">
-                <span>Jornada Semipresencial</span>
-              </p>
-              }
-            </ion-label>
-          </ion-item>
-          }
-          }
-        </ion-list>
-      </div>
-    </section>
+            </p>
+            @if (resolverRegimen(seccion, 1)) {
+            <p class="jornada">
+              <ion-icon src="assets/icon/wb_sunny.svg" color="medium"></ion-icon>
+              <span>Jornada Diurna</span>
+            </p>
+            }
+            @if (resolverRegimen(seccion, 2)) {
+            <p class="jornada">
+              <ion-icon src="assets/icon/nightlight.svg" color="medium"></ion-icon>
+              <span>Jornada Vespertina</span>
+            </p>
+            }
+            @if (resolverRegimen(seccion, 3)) {
+            <p class="jornada">
+              <span>Jornada Semipresencial</span>
+            </p>
+            }
+          </ion-label>
+          <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
+        </ion-item>
+        }
+        }
+      </ion-list>
+    </div>
+  </section>
+  }
+  }
+  @else {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/book.svg"></ion-icon>
+      <p>Sin cursos en este momento.</p>
+    </div>
+  </section>
+  }
 
-    <section *ngIf="cursos.length === 0" class="empty-state">
-      <div>
-        <ion-icon src="assets/icon/book.svg"></ion-icon>
-        <p>Sin cursos en este momento.</p>
-      </div>
-    </section>
+  }
 
-  </ng-container>
-
-  <section *ngIf="mostrarData && !cursos" class="empty-state">
+  @if (mostrarData && !cursos) {
+  <section class="empty-state">
     <div>
       <ion-icon src="assets/icon/info.svg"></ion-icon>
       <p>Información no disponible en este momento.</p>
       <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
     </div>
   </section>
+  }
 
 </ion-content>

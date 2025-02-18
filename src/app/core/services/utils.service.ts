@@ -1,10 +1,14 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Browser } from '@capacitor/browser';
+import { DialogService } from './dialog.service';
+import { IOSSettings, NativeSettings } from 'capacitor-native-settings';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UtilsService {
+
+  private dialog = inject(DialogService);
 
   constructor() { }
 
@@ -118,12 +122,64 @@ export class UtilsService {
 
     return filePath.substring(lastDotIndex + 1).toLowerCase();
   }
+  getMimeType(extension: string) {
+    // Mapa de extensiones a MIME types
+    const mimeTypes: { [key: string]: string } = {
+      "jpg": "image/jpeg",
+      "jpeg": "image/jpeg",
+      "png": "image/png",
+      "gif": "image/gif",
+      "webp": "image/webp",
+      "svg": "image/svg+xml",
+      "pdf": "application/pdf",
+      "txt": "text/plain",
+      "html": "text/html",
+      "css": "text/css",
+      "js": "application/javascript",
+      "json": "application/json",
+      "xml": "application/xml",
+      "mp4": "video/mp4",
+      "mp3": "audio/mpeg",
+      "zip": "application/zip",
+      "rar": "application/vnd.rar",
+      "7z": "application/x-7z-compressed",
+      "doc": "application/msword",
+      "docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "xls": "application/vnd.ms-excel",
+      "xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    };
+
+    return mimeTypes[extension.toLowerCase()] || "application/octet-stream";
+  }
   isImage(path: string): boolean {
     const validExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp', '.svg', '.tiff', '.ico'];
     const extension = this.getFileExtension(path);
 
     // Validar si la extensión está en la lista
     return extension ? validExtensions.includes(`.${extension}`) : false;
+  }
+  async showAlertCamera(header: string = 'Escanear Código QR') {
+    const alert = await this.dialog.showAlert({
+      header: header,
+      message: 'Permitir que INACAP acceda a la cámara del dispositivo.',
+      buttons: [
+        {
+          text: '"Abrir" Configuración',
+          role: 'destructive',
+          handler: async () => {
+            await NativeSettings.openIOS({
+              option: IOSSettings.App,
+            });
+          }
+        },
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        }
+      ]
+    });
+
+    return alert;
   }
 
 }

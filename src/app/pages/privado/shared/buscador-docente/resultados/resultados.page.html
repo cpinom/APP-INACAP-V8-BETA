@@ -4,20 +4,35 @@
       <ion-back-button text="Buscador de Docentes" [defaultHref]="backUrl"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
-  <ion-card class="primary-card" color="white" style="margin-bottom: 0 !important">
+  <!-- <ion-card class="primary-card" color="white" style="margin-bottom: 0 !important">
     <ion-card-header>
       <ion-card-title>Resultados de la Búsqueda</ion-card-title>
       @if (mostrarSala) {
       <ion-card-subtitle>Sala de Clases : {{nombreSala}}</ion-card-subtitle>
       }
     </ion-card-header>
-    @if (mostrarCargando) {
-    <ion-progress-bar type="indeterminate"></ion-progress-bar>
-    }
-  </ion-card>
+  </ion-card> -->
 </ion-header>
 
 <ion-content>
+
+  <ion-list inset="true" class="card-list">
+    <ion-item detail="false">
+      <ion-icon slot="start" src="assets/icon/person_search.svg" class="rounded variant-1"></ion-icon>
+      <ion-label>
+        <h2>Resultados de la Búsqueda</h2>
+        @if (mostrarSala) {
+        <p>Sala de Clases : {{nombreSala}}</p>
+        }
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  @if (mostrarCargando) {
+  <div class="loaderInacap">
+    <ion-spinner name="lines" color="primary"></ion-spinner>
+  </div>
+  }
 
   @if (mostrarDocente) {
   @if (docentes.length > 0) {
@@ -26,11 +41,12 @@
     <ion-accordion [value]="item.persNcorr">
       <ion-item slot="header">
         <app-cached-image slot="start" [src]="resolverFoto(item.persNcorr)"></app-cached-image>
-        <ion-label>{{item.persTnombre}}</ion-label>
-        @if (item.persTemailInacap) {
-        <ion-icon style="margin-right: 8px;" slot="end" (click)="correo($event, item.persTemailInacap)"
-          src="assets/icon/email.svg"></ion-icon>
-        }
+        <ion-label>
+          <h2>{{item.persTnombre}}</h2>
+          @if (item.persTemailInacap) {
+          <a (click)="correo($event, item.persTemailInacap)">{{item.persTemailInacap}}</a>
+          }
+        </ion-label>
       </ion-item>
       <div slot="content">
         <mbsc-eventcalendar [theme]="theme" [themeVariant]="themeVariant" [(selectedDate)]="item.fecha"
@@ -62,16 +78,19 @@
   }
   }
   @if (mostrarSala) {
-  <mbsc-eventcalendar [theme]="theme" [themeVariant]="themeVariant" [data]="salaEventos" [(selectedDate)]="salaFecha"
-    [locale]="pickerLocale" [view]="myView" (onPageChange)="onSelectedDateChange2($event)" [agendaEmptyTemplate]="horarioEmptyTpl">
-    <ng-template #horarioEmptyTpl>
-      <div class="mbsc-align-center mbsc-padding">
-        <ion-spinner name="lines" color="info" *ngIf="cargandoSala"></ion-spinner>
-        <span *ngIf="!cargandoSala && salaEventos">Sin Clases</span>
-        <span *ngIf="!cargandoSala && !salaEventos">Información no disponible</span>
-      </div>
-    </ng-template>
-  </mbsc-eventcalendar>
+  <section class="section-sala">
+    <mbsc-eventcalendar [theme]="theme" [themeVariant]="themeVariant" [data]="salaEventos" [(selectedDate)]="salaFecha"
+      [locale]="pickerLocale" [view]="myView" (onPageChange)="onSelectedDateChange2($event)"
+      [agendaEmptyTemplate]="horarioEmptyTpl">
+      <ng-template #horarioEmptyTpl>
+        <div class="mbsc-align-center mbsc-padding">
+          <ion-spinner name="lines" color="info" *ngIf="cargandoSala"></ion-spinner>
+          <span *ngIf="!cargandoSala && salaEventos">Sin Clases</span>
+          <span *ngIf="!cargandoSala && !salaEventos">Información no disponible</span>
+        </div>
+      </ng-template>
+    </mbsc-eventcalendar>
+  </section>
   }
 
 </ion-content>

@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IonModal, NavController } from '@ionic/angular';
+import { IonModal, NavController, Platform } from '@ionic/angular';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { ProfileService } from 'src/app/core/services/profile.service';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
@@ -9,6 +9,10 @@ import { BuscadorDocentesService } from 'src/app/core/services/http/buscador-doc
 import { DialogService } from 'src/app/core/services/dialog.service';
 import { VISTAS_DOCENTE } from 'src/app/core/constants/docente';
 import { VISTAS_ALUMNO } from 'src/app/core/constants/alumno';
+import { BarcodeScanningModalComponent } from 'src/app/core/components/barcode-scanning-modal/barcode-scanning-modal.component';
+import { Barcode, BarcodeFormat, LensFacing } from '@capacitor-mlkit/barcode-scanning';
+import { Camera } from '@capacitor/camera';
+import { UtilsService } from 'src/app/core/services/utils.service';
 
 enum Vistas {
   asignatura = '0',
@@ -48,6 +52,8 @@ export class BuscadorDocentePage implements OnInit {
   private error = inject(ErrorHandlerService);
   private dialog = inject(DialogService);
   private snackbar = inject(SnackbarService);
+  private pt = inject(Platform);
+  private utils = inject(UtilsService);
 
   constructor() {
 
@@ -57,7 +63,10 @@ export class BuscadorDocentePage implements OnInit {
       asigCcod: new FormControl('', Validators.required)
     });
 
-    this.formDocente = new FormGroup({ docente: new FormControl('', Validators.required) });
+    this.formDocente = new FormGroup({
+      docente: new FormControl('', Validators.required)
+    });
+
     this.formSala = new FormGroup({
       salaCcod: new FormControl('', Validators.required),
       salaTdesc: new FormControl('')
@@ -74,7 +83,7 @@ export class BuscadorDocentePage implements OnInit {
       return;
 
     if (this.esDocente) {
-      const sedes = principal.sedes.filter((t:any) => t.sedeCcod != 33);
+      const sedes = principal.sedes.filter((t: any) => t.sedeCcod != 33);
 
       if (sedes.length) {
         const sede = sedes.find((t: any) => t.sedeCcod = principal.sedeCcod);
@@ -134,8 +143,8 @@ export class BuscadorDocentePage implements OnInit {
       }
     }
     else {
-      this.snackbar.showToast('Módulo no disponible.', 2000, 'danger')
-      this.nav.navigateBack(this.backUrl);
+      await this.snackbar.showToast('Módulo no disponible.', 2000, 'danger')
+      await this.nav.navigateBack(this.backUrl);
     }
   }
   async recargar() {
@@ -216,7 +225,54 @@ export class BuscadorDocentePage implements OnInit {
     }
   }
   async escanearSala() {
-    debugger
+    let mostrarEscaneo = true;
+
+    if (this.pt.is('capacitor')) {
+      let permission = await Camera.checkPermissions();
+
+      if (permission.camera == 'denied' || permission.camera == 'prompt') {
+        if (this.pt.is('capacitor')) {
+          permission = await Camera.requestPermissions();
+        }
+      }
+      if (permission.camera == 'granted') {
+        mostrarEscaneo = true;
+      }
+      else {
+        mostrarEscaneo = false;
+        await this.utils.showAlertCamera();
+      }
+    }
+    if (mostrarEscaneo) {
+      const barcode = await this.escanearQR();
+      debugger
+    }
+
+    await this.utils.showAlertCamera();
+  }
+  async escanearQR() {
+    return new Promise<Barcode | undefined>(async resolve => {
+      const element = await this.dialog.showModal({
+        component: BarcodeScanningModalComponent,
+        cssClass: 'barcode-scanning-modal',
+        showBackdrop: false,
+        componentProps: {
+          formats: [BarcodeFormat.QrCode],
+          lensFacing: LensFacing.Back,
+        },
+        animated: false
+      });
+
+      element.onDidDismiss().then((result) => {
+        const barcode: Barcode | undefined = result.data?.barcode;
+        if (barcode) {
+          resolve(barcode)
+        }
+        else {
+          resolve(undefined)
+        }
+      })
+    });
   }
   procesarSalas(data: any[]) {
     return data.map(t => {

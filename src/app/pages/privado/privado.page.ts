@@ -28,17 +28,17 @@ export class PrivadoPage implements OnInit {
     });
   }
   async redirectToProfile(rol: string) {
-    // debugger
+    debugger
     
     await this.authService.setProfile(rol);
 
-    if (rol === '/dashboard-alumno') {
+    if (rol === '/alumno') {
       await this.nav.navigateForward('dashboard-alumno');
     }
-    else if (rol === '/dashboard-docente') {
+    else if (rol === '/docente') {
       await this.nav.navigateForward('dashboard-docente');
     }
-    else if (rol === '/dashboard-exalumno') {
+    else if (rol === '/exalumno') {
       await this.nav.navigateForward('dashboard-exalumno');
     }
   }

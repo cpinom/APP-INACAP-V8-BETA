@@ -9,7 +9,8 @@ import { BuzonOpinionService } from '../../services/http/buzonopinion.service';
 
 @Component({
   selector: 'buzon-opinion-comp',
-  templateUrl: './buzon-opinion.component.html'
+  templateUrl: './buzon-opinion.component.html',
+  styleUrls: ['./buzon-opinion.component.scss']
 })
 export class BuzonOpinionComponent implements OnInit {
 

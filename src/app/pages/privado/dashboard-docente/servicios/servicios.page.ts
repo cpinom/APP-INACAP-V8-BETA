@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
-import { IonContent } from '@ionic/angular';
+import { IonContent, Platform } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { AppGlobal } from 'src/app/app.global';
 import { VISTAS_DOCENTE } from 'src/app/core/constants/docente';
@@ -31,6 +31,7 @@ export class ServiciosPage implements OnInit {
   private utils = inject(UtilsService);
   private events = inject(EventsService);
   private global = inject(AppGlobal);
+  private pt = inject(Platform);
 
   constructor() {
     this.subscription = this.events.app.subscribe((event: any) => {
@@ -65,18 +66,24 @@ export class ServiciosPage implements OnInit {
     this.events.app.next({ action: 'app:docente-notificaciones' })
   }
   get mostrarReservaEspacios() {
+    if (this.pt.is('mobileweb')) return true;
+    
     if (this.status) {
       return this.status.reservaEspacios == true;
     }
     return false;
   }
   get mostrarTutorias() {
+    if (this.pt.is('mobileweb')) return true;
+    
     if (this.status) {
       return this.status.tutor === true;
     }
     return false;
   }
   get mostrarClinicas() {
+    if (this.pt.is('mobileweb')) return true;
+
     if (this.status) {
       return this.status.clinicasAcademicas == true;
     }

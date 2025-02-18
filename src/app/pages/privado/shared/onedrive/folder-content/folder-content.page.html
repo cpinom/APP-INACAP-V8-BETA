@@ -17,7 +17,7 @@
 
   @if (mostrarCargando) {
   <div class="loaderInacap">
-    <ion-spinner name="lines" color="info"></ion-spinner>
+    <ion-spinner name="lines" color="primary"></ion-spinner>
   </div>
   }
 
@@ -33,7 +33,7 @@
       <ion-item *ngFor="let item of items" [detail]="item.folder" (click)="itemTap(item)" class="ion-activatable">
         @if (isImage(item.name)) {
         <ion-thumbnail slot="start">
-          <ion-spinner name="lines" color="info"></ion-spinner>
+          <ion-spinner name="lines" color="primary"></ion-spinner>
           <img [src]="resolverMiniatura(item.id)" appImage [hideViewer]="true" />
         </ion-thumbnail>
         }

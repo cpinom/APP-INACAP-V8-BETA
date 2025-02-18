@@ -18,6 +18,7 @@ import { NuevaOpinionComponent } from './buzon-opinion/nueva-opinion/nueva-opini
 import { MbscModule } from '@mobiscroll/angular';
 import { MensajeModule } from './mensaje/mensaje.module';
 import { PeriodosComponent } from './periodos/periodos.component';
+import { BarcodeScanningModalComponent } from './barcode-scanning-modal/barcode-scanning-modal.component';
 
 @NgModule({
   schemas: [],
@@ -43,7 +44,8 @@ import { PeriodosComponent } from './periodos/periodos.component';
     DetalleOpinionComponent,
     NuevaOpinionComponent,
     SedeComponent,
-    PeriodosComponent
+    PeriodosComponent,
+    BarcodeScanningModalComponent
   ],
   exports: [
     HeaderComponent,
@@ -56,7 +58,8 @@ import { PeriodosComponent } from './periodos/periodos.component';
     DetalleOpinionComponent,
     NuevaOpinionComponent,
     SedeComponent,
-    PeriodosComponent
+    PeriodosComponent,
+    BarcodeScanningModalComponent
   ]
 })
 export class ComponentsModule { }

@@ -9,7 +9,9 @@
     <ion-buttons slot="end">
       <ion-button (click)="notificacionesTap()" role="button" aria-label="Ver notificaciones">
         <ion-icon src="assets/icon/notifications.svg"></ion-icon>
-        <ion-badge *ngIf="mostrarNotificaciones">1</ion-badge>
+        @if (mostrarNotificaciones) {
+        <ion-badge>1</ion-badge>
+        }
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -17,19 +19,34 @@
 
 <ion-content>
 
+  <ion-list inset="true" class="card-list">
+    <ion-item detail="false">
+      <ion-icon slot="start" src="assets/icon/list_alt.svg" class="rounded"></ion-icon>
+      <ion-label>
+        <h2>Servicios</h2>
+        <p>Descubre y explora otros servicios que tenemos disponibles para ti.</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
   <section>
     <div class="section-header">Información administrativa</div>
     <div class="section-content">
       <ion-list>
-        <ion-item routerLink="dir-carrera" detail="true">
+        <ion-item routerLink="dir-carrera" detail="false">
           <ion-label>Director(a) de Carrera</ion-label>
+          <ion-icon slot="end" src="assets/icon/contacts.svg"></ion-icon>
         </ion-item>
-        <ion-item routerLink="dir-academico" detail="true">
+        <ion-item routerLink="dir-academico" detail="false">
           <ion-label>Director(a) Académico</ion-label>
+          <ion-icon slot="end" src="assets/icon/contacts.svg"></ion-icon>
         </ion-item>
-        <ion-item routerLink="tutoria" detail="true" *ngIf="mostrarTutorias">
+        @if (mostrarTutorias) {
+        <ion-item routerLink="tutoria" detail="false">
           <ion-label>Tutorías</ion-label>
+          <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
         </ion-item>
+        }
       </ion-list>
     </div>
   </section>
@@ -37,39 +54,57 @@
   <section>
     <div class="section-header">Otros Servicios</div>
     <div class="section-content">
-      <ion-list>
-        <ion-item (click)="linkBibliotecas()" class="ion-activatable" detail="true">
+      <ion-list lines="full">
+        <ion-item (click)="linkBibliotecas()" class="ion-activatable" detail="false">
+          <ion-icon slot="start" src="assets/icon/person_search.svg"></ion-icon>
           <ion-label>Buscador de Biblioteca</ion-label>
+          <ion-icon slot="end" src="assets/icon/launch.svg"></ion-icon>
         </ion-item>
-        <ion-item routerLink="buscador-docente" detail="true">
+        <ion-item routerLink="buscador-docente" detail="false">
+          <ion-icon slot="start" src="assets/icon/person_search.svg"></ion-icon>
           <ion-label>Buscador de Docentes</ion-label>
+          <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
         </ion-item>
-        <ion-item routerLink="buzon-opinion" detail="true">
+        <ion-item routerLink="buzon-opinion" detail="false">
+          <ion-icon slot="start" src="assets/icon/add_comment.svg"></ion-icon>
           <ion-label>Buzón de Opiniones</ion-label>
+          <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
         </ion-item>
         @if (mostrarClinicas) {
-        <ion-item routerLink="clinicas-academicas" detail="true">
+        <ion-item routerLink="clinicas-academicas" detail="false">
+          <ion-icon slot="start" src="assets/icon/person_search.svg"></ion-icon>
           <ion-label>Clínicas Académicas</ion-label>
+          <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
         </ion-item>
         }
         @if (mostrarBip) {
-        <ion-item routerLink="consulta-bip" detail="true">
+        <ion-item routerLink="consulta-bip" detail="false">
+          <ion-icon slot="start" src="assets/icon/person_search.svg"></ion-icon>
           <ion-label>Consulta Saldo Tarjeta bip!</ion-label>
+          <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
         </ion-item>
         }
         @if (mostrarReservaEspacios) {
-        <ion-item routerLink="reserva-espacios" detail="true">
+        <ion-item routerLink="reserva-espacios" detail="false">
+          <ion-icon slot="start" src="assets/icon/person_search.svg"></ion-icon>
           <ion-label>Reserva de Espacios</ion-label>
+          <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
         </ion-item>
         }
-        <ion-item routerLink="evaluacion-docente" detail="true">
+        <ion-item routerLink="evaluacion-docente" detail="false">
+          <ion-icon slot="start" src="assets/icon/person_search.svg"></ion-icon>
           <ion-label>Resultados Evaluación Docente</ion-label>
+          <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
         </ion-item>
-        <ion-item routerLink="recuperacion-clases" detail="true">
+        <ion-item routerLink="recuperacion-clases" detail="false">
+          <ion-icon slot="start" src="assets/icon/person_search.svg"></ion-icon>
           <ion-label>Solicitud de Recuperación de Clases</ion-label>
+          <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
         </ion-item>
-        <ion-item detail="true" routerLink="solicitud-estacionamiento">
+        <ion-item detail="false" routerLink="solicitud-estacionamiento">
+          <ion-icon slot="start" src="assets/icon/drive_eta.svg"></ion-icon>
           <ion-label>Solicitud de Estacionamiento</ion-label>
+          <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
         </ion-item>
       </ion-list>
     </div>

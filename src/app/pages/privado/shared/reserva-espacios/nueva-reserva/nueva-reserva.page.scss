@@ -4,12 +4,12 @@
 }
 
 ::ng-deep .mbsc-ios.mbsc-calendar-button.mbsc-button {
-  color: var(--ion-color-info) !important;
+  color: var(--ion-color-primary) !important;
 }
 
 ::ng-deep .mbsc-ios.mbsc-selected .mbsc-calendar-cell-text {
-  background-color: var(--ion-color-info) !important;
-  border-color: var(--ion-color-info) !important;
+  background-color: var(--ion-color-primary) !important;
+  border-color: var(--ion-color-primary) !important;
 }
 
 :host ::ng-deep .mat-step-header .mat-step-icon-state-edit,
@@ -19,7 +19,7 @@
 }
 
 :host ::ng-deep .mat-step-header .mat-step-icon-selected {
-    background-color: var(--ion-color-info) !important;
+    background-color: var(--ion-color-primary) !important;
     color: #fff;
 }
 

@@ -4,7 +4,7 @@
   <ng-template #horarioEmptyTpl>
     <div class="mbsc-align-center mbsc-padding">
       <div class="loaderInacap" *ngIf="cargando">
-        <ion-spinner name="lines" color="info"></ion-spinner>
+        <ion-spinner name="lines" color="primary"></ion-spinner>
       </div>
       <span *ngIf="cargando == false && eventos">Sin Clases</span>
       <span *ngIf="cargando == false && !eventos">

@@ -1,0 +1,14 @@
+.card-list {
+  ion-icon.variant-2 {
+    transform: rotateY(180deg);
+  }
+}
+.section-nueva-opinion {
+  margin: 20px 15px;
+}
+.empty-state {
+  ion-icon {
+    width: 300px;
+    height: 250px;
+  }
+}

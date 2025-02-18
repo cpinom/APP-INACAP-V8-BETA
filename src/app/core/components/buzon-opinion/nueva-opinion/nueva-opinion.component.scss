@@ -11,21 +11,22 @@ section {
 
         .section-content {
             margin-bottom: 0;
-            ion-list {
-                // border-bottom: 1px solid #ccc;
-
-                ion-thumbnail.ios {
-                    // margin-bottom: 15px;
-                }
-                ion-label.ios {
-                    // padding-top: 0;
-                }
-            }
             ion-button.eliminarFoto {
                 border-top: 1px solid #ccc;
                 --box-shadow: none !important;
             }
+
+            ion-thumbnail {
+                --size: 48px;
+                --border-radius: 6px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
         }
+    }
+    &.section-enviar {
+        margin: 15px;
     }
 }
 

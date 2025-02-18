@@ -22,7 +22,7 @@ ion-card-content {
                     margin-right: 5px;
 
                     &.blue {
-                        background-color: var(--ion-color-info);
+                        background-color: var(--ion-color-primary);
                     }
                     &.green {
                         background-color: var(--ion-color-success);
@@ -222,7 +222,7 @@ ion-card > ion-list {
                 left: 0;
                 height: 16px;
                 width: 0;
-                background-color: var(--ion-color-info);
+                background-color: var(--ion-color-primary);
             }
         }
         .porcentaje {

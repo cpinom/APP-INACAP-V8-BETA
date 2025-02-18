@@ -9,15 +9,15 @@ ion-card.titulo {
 }
 
 ::ng-deep .mbsc-ios.mbsc-calendar-button.mbsc-button {
-    color: var(--ion-color-info) !important;
+    color: var(--ion-color-primary) !important;
 }
 
 ::ng-deep .mbsc-ios.mbsc-schedule-header-day.mbsc-selected {
-    background: var(--ion-color-info) !important;
+    background: var(--ion-color-primary) !important;
 }
 
 ::ng-deep .mbsc-material.mbsc-colored-event.mbsc-list-item {
-    background: var(--ion-color-info) !important;
+    background: var(--ion-color-primary) !important;
 
     &.suspendida {
         background: var(--ion-color-danger) !important;
@@ -31,7 +31,7 @@ ion-card.titulo {
 }
 
 ::ng-deep .mbsc-material.mbsc-schedule-event {
-    color: var(--ion-color-info) !important;
+    color: var(--ion-color-primary) !important;
 
     &.suspendida {
         color: var(--ion-color-danger) !important;
@@ -46,7 +46,7 @@ ion-card.titulo {
 
 ::ng-deep .mbsc-ios.mbsc-event.mbsc-list-item {
     .mbsc-ios.mbsc-event-color {
-        background: var(--ion-color-info) !important;
+        background: var(--ion-color-primary) !important;
     }
     &.suspendida {
         .mbsc-ios.mbsc-event-color {
@@ -69,7 +69,7 @@ ion-card.titulo {
 }
 
 ::ng-deep .mbsc-ios.mbsc-schedule-event {
-    color: var(--ion-color-info) !important;
+    color: var(--ion-color-primary) !important;
 
     &.suspendida {
         color: var(--ion-color-danger) !important;
@@ -94,14 +94,14 @@ ion-card.titulo {
 }
 
 ::ng-deep .mbsc-selected .mbsc-calendar-cell-text {
-    border-color: var(--ion-color-info) !important;
-    background: var(--ion-color-info) !important;
+    border-color: var(--ion-color-primary) !important;
+    background: var(--ion-color-primary) !important;
     color: #fff !important;
 }
 
 ::ng-deep .mbsc-ios.mbsc-selected .mbsc-calendar-cell-text {
-    border-color: var(--ion-color-info) !important;
-    background: var(--ion-color-info) !important;
+    border-color: var(--ion-color-primary) !important;
+    background: var(--ion-color-primary) !important;
     color: #fff !important;
 }
 
@@ -264,11 +264,11 @@ ion-card {
                     }
                 }
                 &.blue {
-                    border-color: var(--ion-color-info);
+                    border-color: var(--ion-color-primary);
                     p.estado {
-                        color: var(--ion-color-info);
+                        color: var(--ion-color-primary);
                         i {
-                            background-color: var(--ion-color-info);
+                            background-color: var(--ion-color-primary);
                         }
                     }
                 }

@@ -1,38 +1,21 @@
-::ng-deep mat-tab-header {
-    .mat-tab-label {
-        height: 64px !important;
-        font-size: var(--FS14) !important;
-        flex: 1;
-        .mat-tab-label-content {
-            white-space: normal;
-        }
-    }
-}
-.alert-tappable.sc-ion-alert-ios {
-    font-size: var(--FS14) !important;
-    min-height: 44px !important;
-    height: 50px !important;
-}
+// ::ng-deep mat-tab-header {
+//     .mat-tab-label {
+//         height: 64px !important;
+//         font-size: var(--FS14) !important;
+//         flex: 1;
+//         .mat-tab-label-content {
+//             white-space: normal;
+//         }
+//     }
+// }
+// .alert-tappable.sc-ion-alert-ios {
+//     font-size: var(--FS14) !important;
+//     min-height: 44px !important;
+//     height: 50px !important;
+// }
 
-ion-list {
-    ion-item {
-        font-size: var(--FS16) !important;
-
-        ion-label {
-            color: var(--ion-color-medium) !important;
-        }
-    }
-}
-
-.invalid {
-    font-size: var(--FS12);
-    color: var(--ion-color-danger);
-    margin: 5px 15px;
-}
-
-
-.btn-buscar {
-    margin-bottom: 20px;
+section.buscar {
+    margin: 30px 15px 15px;
 }
 
 .select-container {

@@ -384,7 +384,7 @@ export class SolicitudPage implements OnInit {
       backdropDismiss: false,
       keyboardClose: false,
       cssClass: 'success-alert',
-      message: '<div class="image"><img src = "./assets/images/icon_check_circle.svg" width="35px" height="35px"></div>' + $(message).text(),
+      message: `<div class="image"><ion-icon src = "./assets/icon/check_circle.svg"></ion-icon></div>${$(message).text()}`,
       buttons: [
         {
           text: 'Aceptar'

@@ -27,7 +27,7 @@
     <mat-step [stepControl]="firstStep">
       <form [formGroup]="firstStep">
         <section>
-          <div class="section-header" style="padding-left: 0;">Qué quieres reservar</div>
+          <div class="section-header" style="padding-left: 15px;">Qué quieres reservar</div>
           <div class="section-content" style="margin: 0;">
             <ion-list>
               <ion-item>
@@ -57,7 +57,7 @@
           <ion-grid style="padding: 0;">
             <ion-row>
               <ion-col>
-                <ion-button color="secondary" shape="round" expand="full" [routerLink]="backUrl" routerDirection="back">
+                <ion-button fill="outline" color="primary" shape="round" expand="full" [routerLink]="backUrl" routerDirection="back">
                   Cancelar
                 </ion-button>
               </ion-col>
@@ -65,7 +65,7 @@
                 <!-- <ion-button color="info" shape="round" expand="full" (click)="nextStep(1, undefined, firstStep)">
                   Ver Disponibilidad
                 </ion-button> -->
-                <ion-button color="info" shape="round" expand="full" (click)="stepper.next()">
+                <ion-button color="primary" shape="round" expand="full" (click)="stepper.next()">
                   Ver Disponibilidad
                 </ion-button>
               </ion-col>

@@ -221,13 +221,13 @@ export class SolicitudEstacionamientoPage implements OnInit {
       }
     }
   }
-  async presentSuccess(text: string) {
+  async presentSuccess(mensaje: string) {
     await this.dialog.showAlert({
       keyboardClose: false,
       backdropDismiss: false,
       header: 'Solicitud Estacionamiento',
       cssClass: 'success-alert',
-      message: `<div class="image"><img src = "./assets/images/icon_check_circle.svg" width="35px" height="35px"></div>${text}`,
+      message: `<div class="image"><ion-icon src = "./assets/icon/check_circle.svg"></ion-icon></div>${mensaje}`,
       buttons: ['Aceptar']
     });
   }

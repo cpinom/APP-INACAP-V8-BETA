@@ -1,6 +1,10 @@
 .mat-stepper-vertical,
 .mat-stepper-horizontal {
   --mat-stepper-container-color: transparent;
+
+  ::ng-deep .mat-horizontal-content-container {
+    padding: 0 15px 15px 15px;
+  }
 }
 
 ::ng-deep .mbsc-ios.mbsc-calendar-button.mbsc-button {
@@ -33,4 +37,6 @@ ion-content {
     margin: 5px 15px;
     color: var(--ion-color-danger);
   }
+
+  
 }

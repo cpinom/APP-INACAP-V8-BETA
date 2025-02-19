@@ -116,6 +116,7 @@ export class BuzonOpinionComponent implements OnInit {
         data = request.data;
         data.resoTsugerencia = data.resoTsugerencia.replace(/(?:\r\n|\r|\n)/g, '<br>');
         data.resoTrespuesta = data.resoTrespuesta ? data.resoTrespuesta.replace(/(?:\r\n|\r|\n)/g, '<br>') : '';
+        data.tipoUsuario = this.tipoUsuario;
       }
     }
     catch (error: any) {
@@ -139,6 +140,16 @@ export class BuzonOpinionComponent implements OnInit {
   formatFecha(fechaString: string) {
     const fecha = moment(fechaString, 'DD/MM/YYYY');
     return fecha.format('D [de] MMMM, YYYY');
+  }
+  resolverEstado(esreCcod: any) {
+    if (esreCcod == 1)
+      return 'info';
+    else if (esreCcod == 2)
+      return 'success';
+    else if (esreCcod == 4)
+      return 'danger';
+    else
+      return '';
   }
   get tipoUsuario() {
     return this.rol == 'alumno' ? '1' : '2';

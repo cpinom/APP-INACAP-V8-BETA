@@ -139,7 +139,7 @@ export class DetalleReservaPage implements OnInit {
       backdropDismiss: false,
       header: 'Cancelar Reserva.',
       cssClass: 'success-alert',
-      message: '<div class="image"><img src = "./assets/images/icon_check_circle.svg" width="35px" height="35px"></div>' + mensaje,
+      message: `<div class="image"><ion-icon src = "./assets/icon/check_circle.svg"></ion-icon></div>${mensaje}`,
       buttons: [
         {
           text: 'Aceptar',

@@ -14,6 +14,7 @@ export class ErrorHandlerService {
     /*private auth: AuthService*/) { }
 
   handle(error?: any, cb?: Function, keepModal?: boolean) {
+    debugger
     /*this.alertCtrl.getTop().then(current => {
       if (current != null) {
         current.dismiss();

@@ -19,12 +19,11 @@ import { ProfileService } from 'src/app/core/services/profile.service';
 export class ReservaEspaciosPage implements OnInit, OnDestroy {
 
   permiteReservar = false;
-  mostrarCargando = false;
+  mostrarCargando = true;
   mostrarData = false;
   tabsModel = 0;
   pickerLocale = localeEs;
   firstStep!: FormGroup;
-  hideLoadingSpinner = false;
   cliente: any;
   categorias: any;
   reservas: any;
@@ -87,13 +86,13 @@ export class ReservaEspaciosPage implements OnInit, OnDestroy {
       }
     }
     finally {
-      this.hideLoadingSpinner = true;
+      this.mostrarCargando = false;
       this.mostrarData = true;
     }
   }
   recargar(e?: any) {
     if (!e) {
-      this.hideLoadingSpinner = false;
+      this.mostrarCargando = false;
       this.mostrarData = false;
     }
     this.cargar().finally(() => {

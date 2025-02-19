@@ -191,6 +191,12 @@ body {
     }
   }
 
+  ion-button {
+    &[fill="outline"] {
+      --border-width: 2px;
+    }
+  }
+
   .loaderInacap {
     width: 100%;
     display: block;
@@ -292,8 +298,8 @@ body {
 
     ion-item {
       ion-label {
-        margin-top: 20px;
-        margin-bottom: 20px;
+        margin-top: 15px;
+        margin-bottom: 15px;
         font-size: var(--FS14);
 
         h2 {
@@ -333,7 +339,7 @@ body {
       }
 
       &.variant-2 {
-        background: #FEEB80;
+        background: #feeb80;
       }
     }
     &[slot="end"] {
@@ -346,6 +352,33 @@ body {
       img {
         width: 48px;
         height: 48px;
+      }
+    }
+    &.success-alert {
+      div.image {
+        text-align: center;
+        margin: 5px 0;
+
+        ion-icon {
+          font-size: 48px;
+          color: var(--ion-color-success);
+        }
+
+        img {
+          width: 60px;
+          margin: 0 auto 10px;
+        }
+      }
+    }
+    &.fail-alert {
+      div.image {
+        text-align: center;
+        ion-icon {
+          width: 60px;
+          margin: 0 auto 10px;
+          font-size: 60px;
+          color: var(--ion-color-medium);
+        }
       }
     }
   }
@@ -434,12 +467,45 @@ body {
           font-size: var(--FS16) !important;
           font-weight: 400 !important;
           color: var(--ion-color-step-100);
+          display: block !important;
         }
         p {
           font-size: var(--FS14) !important;
           color: var(--ion-color-step-700) !important;
         }
       }
+    }
+  }
+
+  p.estado-actividad {
+    display: inline-block;
+    padding: 8px 11px;
+    border: 1px solid;
+    margin-top: 5px;
+    border-radius: 5px;
+    min-width: 70px;
+    text-align: center;
+    font-size: 12px !important;
+    font-weight: 400;
+
+    &.success {
+      color: var(--ion-color-success) !important;
+      border-color: var(--ion-color-success);
+    }
+
+    &.warning {
+      color: var(--ion-color-warning) !important;
+      border-color: var(--ion-color-warning);
+    }
+
+    &.danger {
+      color: var(--ion-color-danger) !important;
+      border-color: var(--ion-color-danger);
+    }
+
+    &.info {
+      color: var(--ion-color-primary) !important;
+      border-color: var(--ion-color-primary);
     }
   }
 

@@ -27,18 +27,18 @@
   @if (mostrarData && sugerencias) {
   @if (sugerencias.length > 0) {
   <section>
-    <div class="section-header">Opiniones</div>
+    <div class="section-header">Sugerencias</div>
     <div class="section-content">
       <ion-list>
         @for (item of sugerencias; track $index) {
-        <ion-item (click)="detalleOpinion(item.resoNcorr)" detail="false">
+        <ion-item (click)="detalleOpinion(item.resoNcorr)" detail="false" class="ion-activatable">
           <ion-label>
             <h2>Solicitud {{item.resoNcorr}}</h2>
-            <p>Estado: {{item.esreTdesc}}</p>
             <p>Fecha: {{formatFecha(item.resoFsolicitud)}}</p>
+            <p class="estado-actividad {{resolverEstado(item.esreCcod)}}">{{item.esreTdesc}}</p>
           </ion-label>
           @if (item.resoNombreArchivo) {
-          <ion-icon slot="end" src="assets/icon/attach_file.svg"></ion-icon>
+          <ion-icon slot="end" src="assets/icon/attach_file.svg" color="medium"></ion-icon>
           }
           <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
         </ion-item>
@@ -50,7 +50,7 @@
   @if (sugerencias.length == 0) {
   <section class="empty-state">
     <div>
-      <ion-icon src="assets/images/folder.svg"></ion-icon>
+      <ion-icon class="folder" src="assets/images/folder.svg"></ion-icon>
       <p>No hay opiniones históricas en este momento.</p>
     </div>
   </section>

@@ -1,0 +1,19 @@
+ion-header ion-card {
+    margin-bottom: 0 !important;
+}
+ion-content {
+    ion-label {
+        h2 {
+            white-space: nowrap;
+        }
+    }
+    ion-note {
+        font-size: 14px;
+        font-weight: bold;
+    }
+}
+.invalid {
+    font-size: var(--FS12);
+    color: var(--ion-color-danger);
+    margin: 5px 15px;
+}

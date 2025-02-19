@@ -1,0 +1,50 @@
+.carreras {
+    ion-select::part(text) {
+        font-size: var(--FS16);
+        white-space: normal;
+    }
+}
+.select-container {
+    ion-select {
+        color: var(--ion-color-medium) !important;
+        padding-left: 0;
+        font-size: var(--FS12);
+        font-weight: 400;
+        padding-top: 0;
+        padding-bottom: 0;
+        margin-right: 4px;
+    }
+}
+
+::ng-deep .modal-credencial {
+    ion-item {
+        h2 {
+            white-space: normal;
+            font-weight: 500;
+        }
+        p {
+            // color: #666;
+
+            &.cursos {
+                // color: #222;
+                margin-top: 10px;
+            }
+        }
+        ul {
+            // color: #444;
+            margin: 10px 0;
+            font-size: 12px;
+            padding: 0 0 0 20px;
+        }
+    }
+}
+
+// ::ng-deep body.dark {
+//     .modal-credencial {
+//         ion-item {
+//             ul {
+//                 color: var(--ion-color-light-shade) !important;
+//             }
+//         }
+//     }
+// }

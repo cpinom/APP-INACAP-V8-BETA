@@ -1,0 +1,431 @@
+<ion-header class="periodos">
+  <ion-toolbar>
+    <ion-title routerLink="/publico/inicio">APP INACAP</ion-title>
+    <ion-buttons slot="start">
+      <ion-button icon-only routerLink="configuraciones" role="button" aria-label="Ir a configuraciones">
+        <ion-icon src="assets/icon/settings.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="notificacionesTap()" role="button" aria-label="Ver notificaciones">
+        <ion-icon src="assets/icon/notifications.svg"></ion-icon>
+        <ion-badge *ngIf="mostrarNotificaciones">1</ion-badge>
+      </ion-button>
+    </ion-buttons>
+    <ion-progress-bar type="indeterminate" *ngIf="mostrarStatus"></ion-progress-bar>
+  </ion-toolbar>
+  <!-- <ion-toolbar *ngIf="principal && principal.periodos.length > 1">
+    <form [formGroup]="periodoForm">
+      <ion-item>
+        <ion-label>Período</ion-label>
+        <ion-select [interfaceOptions]="alertPeriodo" formControlName="periodo" okText="Actualizar" cancelText="Cerrar">
+          <ion-select-option *ngFor="let item of principal.periodos" [value]="item.periCcod">
+            {{item.periTdesc | titleCase}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+    </form>
+  </ion-toolbar> -->
+</ion-header>
+
+<ion-content>
+
+  <ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <p class="last-update" *ngIf="errorStatus && ultimaCarga">{{ultimaCarga}}</p>
+
+  <ion-card color="white" class="destacado-list" *ngIf="mostrarDestacados">
+    <ion-card-content>
+      <ion-list>
+        <ion-item lines="none" style="--inner-padding-end: 14px">
+          <ion-icon slot="start" color="danger" *ngIf="destacado.tipo == 4" src="assets/icon/dangerous.svg"></ion-icon>
+          <ion-icon slot="start" color="success" *ngIf="destacado.tipo == 3" src="assets/icon/check_circle.svg"></ion-icon>
+          <ion-icon slot="start" color="info" *ngIf="destacado.tipo == 2" src="assets/icon/info.svg"></ion-icon>
+          <ion-icon slot="start" color="warning" *ngIf="destacado.tipo == 1" src="assets/icon/warning.svg"></ion-icon>
+          <ion-label>
+            <p delegate [innerHTML]="resolverDestacado"></p>
+          </ion-label>
+          <ion-icon slot="end" name="close" (click)="ocultarDescatado(0, $event)"></ion-icon>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Banner Estacionamientos -->
+  <ion-card color="white" class="destacado-list" (click)="mostrarDetalleEstacionamiento($event, usuarioModal)" *ngIf="mostrarEstacionamientos">
+    <ion-card-content>
+      <ion-list>
+        <ion-item lines="none" style="--inner-padding-end: 14px" class="ion-activatable">
+          <ion-icon slot="start" src="assets/icon/{{estacionamiento.icon}}.svg" [color]="estacionamiento.cls"></ion-icon>
+          <ion-label>
+            <h2>{{estacionamiento.text}}</h2>
+          </ion-label>
+          <ion-icon slot="end" name="close" (click)="ocultarDescatado(1, $event)"></ion-icon>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-modal class="estacionamiento-modal" #usuarioModal [breakpoints]="[0, 0.35]" [initialBreakpoint]="0.35">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Estados en línea</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="usuarioModal.dismiss()">
+              <ion-icon name="close"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-row style="margin-bottom: 10px;">
+          <ion-col size="12" class="titulo">
+            <div>
+              <ion-icon src="assets/icon/{{estacionamiento.icon}}.svg" [color]="estacionamiento.cls"></ion-icon>
+              <span>Estacionamientos <b>{{status.estacionamientos.estados.aeveTnombre}}</b></span>
+            </div>
+          </ion-col>
+          <ion-col size="4" class="grafico">
+            <input type="text" [number]="status.estacionamientos.estados.porcentaje" class="dial" appKnob [bgColor]="'#DCDFFC'" [fgColor]="'#3A3A92'" [height]="80" [width]="80" />
+          </ion-col>
+          <ion-col size="8" class="indicadores">
+            <span><p class="circulo selected"></p>Ocupados: {{status.estacionamientos.estados.ocupados}}</span>
+            <span><p class="circulo"></p>Espacios libres: {{status.estacionamientos.estados.disponibles}}</span>
+          </ion-col>
+        </ion-row>
+        <ion-button color="info" shape="round" expand="block" (click)="recargarEstacionamientos()"
+          [disabled]="cargandoEstados">Recargar</ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+  <!-- Banner Estacionamientos -->
+
+  <ion-card color="white" class="destacado-list" routerLink="postulaciones" *ngIf="mostrarPostulaciones">
+    <ion-card-content>
+      <ion-list>
+        <ion-item detail="true" lines="none" class="ion-activatable">
+          <ion-icon slot="start" src="assets/icon/star.svg"></ion-icon>
+          <ion-label>
+            <h2>{{status.delegados.postulaciones.banner}}</h2>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card color="white" class="destacado-list" routerLink="votaciones" *ngIf="mostrarVotaciones">
+    <ion-card-content>
+      <ion-list>
+        <ion-item detail="true" lines="none" class="ion-activatable">
+          <ion-icon slot="start" src="assets/icon/star.svg"></ion-icon>
+          <ion-label>
+            <h2>{{status.delegados.votaciones.banner}}</h2>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card color="white" class="destacado-list" (click)="justificacionInasistenciaTap()" *ngIf="mostrarJustificaEvaluacion">
+    <ion-card-content>
+      <ion-list>
+        <ion-item detail="true" lines="none" class="ion-activatable">
+          <ion-icon slot="start" src="assets/icon/info.svg"></ion-icon>
+          <ion-label>
+            <h2>Tienes una evaluación pendiente.</h2>
+            <p>Si la entrega fue a través de una plataforma de INACAP, puedes ignorar este aviso.</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <section class="ramos" *ngIf="!mostrarData">
+    <ion-card color="white">
+      <ion-skeleton-text animated style="width: 100%; height: 100%; margin: 0"></ion-skeleton-text>
+    </ion-card>
+    <ion-card color="white">
+      <ion-skeleton-text animated style="width: 100%; height: 100%; margin: 0"></ion-skeleton-text>
+    </ion-card>
+    <ion-card color="white">
+      <ion-skeleton-text animated style="width: 100%; height: 100%; margin: 0"></ion-skeleton-text>
+    </ion-card>
+  </section>
+
+  <section #ramos class="ramos" *ngIf="mostrarData && cursos && cursos.length">
+    <ion-card color="white" *ngFor="let item of cursos" (click)="seccionTap(item)">
+      <ion-card-header [ngClass]="resolverEstado(item.estadoClase)">
+        <ion-card-title>{{item.asigTdesc}}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list class="ion-no-margin ion-no-padding">
+          <ion-item lines="none" class="ion-no-padding">
+            <ion-label>
+              <span class="text">Última nota:</span>
+              <span class="nota-number new " [ngClass]="resolverNotaRojo(item.ultimaNota)">
+                {{item.ultimaNota || '-'}}</span>
+            </ion-label>
+          </ion-item>
+          <ion-item lines="none" class="ion-no-padding">
+            <ion-label>
+              <span class="text">Asistencia:</span>
+              <span class="asistencia-number" [ngClass]="resolverAsistenciaRojo(item.asistencia)">{{resolverAsistencia(item.asistencia)}}</span>
+              <span class="sm" [ngClass]="resolverAsistenciaRojo(item.asistencia)">%</span>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+  </section>
+
+  <section *ngIf="mostrarData && !cursos" class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Información no disponible en este momento.</p>
+      <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+    </div>
+  </section>
+
+  <section class="horario" *ngIf="mostrarData && programa">
+    <div class="section-content">
+      <div class="tabs">
+        <ion-segment [(ngModel)]="tabsModel" mode="md" value="0" [swipeGesture]="false">
+          <ion-segment-button value="0">
+            <ion-icon src="assets/icon/access_time.svg"></ion-icon>
+            <ion-label>Horario</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="1">
+            <ion-icon src="assets/icon/star.svg"></ion-icon>
+            <ion-label>Evaluaciones</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </div>
+      <ng-container *ngIf="tabsModel == '0'">
+        <mbsc-eventcalendar [theme]="theme" [themeVariant]="themeVariant" [view]="myView" [data]="eventosHorario"
+          [locale]="pickerLocale" [(selectedDate)]="fechaHorario" (onPageChange)="onHorarioChange($event)" templa
+          [agendaEmptyTemplate]="horarioEmptyTpl" (onEventClick)="onSeccionClick($event)">
+          <ng-template #horarioEmptyTpl>
+            <div class="mbsc-align-center mbsc-padding">
+              <ion-spinner name="lines" color="info" *ngIf="cargandoClases"></ion-spinner>
+              <span *ngIf="!cargandoClases && eventosHorario">Sin Clases</span>
+              <span *ngIf="!cargandoClases && !eventosHorario">Información no disponible</span>
+            </div>
+          </ng-template>
+        </mbsc-eventcalendar>
+      </ng-container>
+      <ng-container *ngIf="tabsModel == '1' && proximasEvaluaciones()">
+        <ion-list class="evaluacionesList" role="list">
+          <ion-item *ngIf="proximasEvaluaciones().length == 0">
+            <ion-label color="medium" class="ion-text-center">Sin evaluaciones</ion-label>
+          </ion-item>
+          <ion-item *ngFor="let item of proximasEvaluaciones() | slice : 0 : numeroEvalMostrando">
+            <div slot="start" [innerHTML]="resolverFechaEvaluacion(item)"></div>
+            <ion-label>
+              <h2>{{item.asigTdesc}}</h2>
+              <p>{{item.tevaTdesc}}</p>
+            </ion-label>
+            <div class="ponderacion" slot="end">{{item.caliNponderacion}}%</div>
+          </ion-item>
+          <div class="more" (click)="mostrarEvaluaciones()" *ngIf="proximasEvaluaciones().length > 0">Ver Todas</div>
+        </ion-list>
+      </ng-container>
+    </div>
+  </section>
+
+  <ion-modal #evaluacionesMdl [initialBreakpoint]="0.98" [breakpoints]="[0.98]" [handle]="false">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Mis Evaluaciones</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="evaluacionesMdl.dismiss()">
+              <ion-icon name="close"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <section class="horario">
+          <ion-list [inset]="true" class="evaluacionesList" style="margin: 16px;">
+            <ion-item *ngFor="let item of evaluaciones">
+              <div slot="start" [innerHTML]="resolverFechaEvaluacion(item)"></div>
+              <ion-label>
+                <h2>{{item.asigTdesc}}</h2>
+                <p>{{item.tevaTdesc}}</p>
+              </ion-label>
+              <div class="ponderacion" slot="end">{{item.caliNponderacion}}%</div>
+            </ion-item>
+          </ion-list>
+        </section>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <ion-grid class="botones">
+    <ion-row class="directos">
+      <ion-col>Accesos Directos</ion-col>
+      <ion-col>
+        <!-- <ion-icon name="options-outline" (click)="mostrarAccesosDirectos()"></ion-icon> -->
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="6" class="ion-no-padding">
+        <ion-button color="white" expand="block" (click)="moodleTap()">
+          <div>
+            <ion-icon slot="start" src="assets/icon/cast.svg" color="medium"></ion-icon>
+            <span>Ambiente de Aprendizaje</span>
+          </div>
+        </ion-button>
+      </ion-col>
+      <ion-col size="6" class="ion-no-padding">
+        <ion-button color="white" expand="block" routerLink="inacapmail">
+          <div>
+            <ion-icon slot="start" src="assets/icon/outlook.svg" color="medium"></ion-icon>
+            <span>INACAPMail</span>
+          </div>
+          <!-- <div [matBadge]="'-'" matBadgePosition="after" matBadgeColor="accent"
+            [matBadgeHidden]="!(inacapMail && inacapMail.unReadTotal > 0)">
+            <ion-icon slot="start" src="assets/icon/outlook.svg" color="medium"></ion-icon>
+            <span>INACAPMail</span>
+          </div> -->
+        </ion-button>
+      </ion-col>
+      <ion-col size="6" class="ion-no-padding" *ngIf="mostrarOnline">
+        <ion-button color="white" expand="block" (click)="moodleOnlineTap()" style="--padding-end: 0;">
+          <div>
+            <ion-icon slot="start" src="assets/icon/devices.svg" color="medium"></ion-icon>
+            <span>Ambiente de Aprendizaje Online</span>
+          </div>
+        </ion-button>
+      </ion-col>
+      <ion-col size="6" class="ion-no-padding">
+        <ion-button color="white" expand="block" routerLink="horario">
+          <div>
+            <ion-icon slot="start" src="assets/icon/access_time.svg" color="medium"></ion-icon>
+            <span>Horario</span>
+          </div>
+        </ion-button>
+      </ion-col>
+      <ion-col size="6" class="ion-no-padding">
+        <ion-button color="white" expand="block" (click)="credencialVirtualTap()">
+          <div>
+            <ion-icon slot="start" src="assets/icon/account_circle.svg" color="medium"></ion-icon>
+            <span>Credencial Virtual</span>
+          </div>
+        </ion-button>
+      </ion-col>
+      <ion-col size="6" class="ion-no-padding">
+        <ion-button color="white" expand="block" routerLink="certificados">
+          <div>
+            <ion-icon slot="start" src="assets/icon/file_copy.svg" color="medium"></ion-icon>
+            <span>Certificados</span>
+          </div>
+        </ion-button>
+      </ion-col>
+      <ion-col size="6" class="ion-no-padding">
+        <ion-button color="white" expand="block" routerLink="malla-curricular">
+          <div>
+            <ion-icon slot="start" src="assets/icon/class.svg" color="medium"></ion-icon>
+            <span>Malla Curricular</span>
+          </div>
+        </ion-button>
+      </ion-col>
+      <ion-col size="6" class="ion-no-padding">
+        <ion-button color="white" expand="block" routerLink="progresion">
+          <div>
+            <ion-icon slot="start" src="assets/icon/trending_up.svg" color="medium"></ion-icon>
+            <span>Mi Progresión</span>
+            <ion-badge color="danger" style="position: absolute; right: 0;"
+              *ngIf="status && status.acuerdoTutorial == 0">1</ion-badge>
+          </div>
+        </ion-button>
+      </ion-col>
+      <ion-col class="ion-no-padding" size="6" (click)="alertaPracticaProfesional()">
+        <ion-button color="white" expand="block" [disabled]="!habilitarPracticas" routerLink="ofertas-practica">
+          <div>
+            <ion-icon slot="start" src="assets/icon/work.svg" color="medium"></ion-icon>
+            <span>Práctica Profesional</span>
+          </div>
+        </ion-button>
+      </ion-col>
+      <ion-col class="ion-no-padding" size="6">
+        <ion-button color="white" expand="block" routerLink="seguro-accidentes">
+          <div>
+            <ion-icon slot="start" src="assets/icon/local_hospital.svg" color="medium"></ion-icon>
+            <span>Seguro de Accidentes</span>
+          </div>
+        </ion-button>
+      </ion-col>
+      <ion-col class="ion-no-padding" size="6">
+        <ion-button color="white" expand="block" routerLink="solicitudes-academicas">
+          <div>
+            <ion-icon slot="start" src="assets/icon/list_alt.svg" color="medium"></ion-icon>
+            <span>Solicitudes</span>
+          </div>
+        </ion-button>
+      </ion-col>
+      <!-- <ion-col size="6" class="ion-no-padding">
+        <ion-button color="white" expand="block" routerLink="microsoft-teams">
+          <div [matBadge]="'-'" matBadgePosition="after" matBadgeColor="accent" [matBadgeHidden]="!(inacapTeams && inacapTeams.todayCount > 0)">
+            <ion-icon slot="start" src="assets/icon/teams.svg"></ion-icon>
+            <span>Teams</span>
+          </div>
+        </ion-button>
+      </ion-col> -->
+      <ion-col size="6" class="ion-no-padding">
+        <ion-button color="white" expand="block" routerLink="sede">
+          <div>
+            <ion-icon slot="start" name="business" color="medium"></ion-icon>
+            <span>Mi Sede</span>
+          </div>
+        </ion-button>
+      </ion-col>
+      <ion-col size="6" class="ion-no-padding">
+        <ion-button color="white" expand="block" routerLink="onedrive">
+          <div>
+            <ion-icon slot="start" src="assets/icon/cloud.svg" color="medium"></ion-icon>
+            <span>OneDrive</span>
+          </div>
+        </ion-button>
+      </ion-col>
+      <ion-col size="6" class="ion-no-padding" *ngIf="mostrarReservaEspacios">
+        <ion-button color="white" expand="block" routerLink="reserva-espacios">
+          <div>
+            <ion-icon slot="start" src="assets/icon/today.svg" color="medium"></ion-icon>
+            <span>Reserva de Espacios</span>
+          </div>
+        </ion-button>
+      </ion-col>
+      <ion-col size="6" class="ion-no-padding" *ngIf="!mostrarReservaEspacios">
+        <ion-button color="white" expand="block" routerLink="portal-pagos">
+          <div>
+            <ion-icon slot="start" src="assets/icon/account_balance_wallet.svg" color="medium"></ion-icon>
+            <span>Portal de Pagos</span>
+          </div>
+        </ion-button>
+      </ion-col>
+      <ion-col size="6" class="ion-no-padding" *ngIf="!mostrarOnline">
+        <ion-button color="white" expand="block" routerLink="cuenta-corriente">
+          <div>
+            <ion-icon slot="start" src="assets/icon/assignment_ind.svg" color="medium"></ion-icon>
+            <span>Visualización de Pagos</span>
+          </div>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid class="botones cerrar-sesion">
+    <ion-row>
+      <ion-col size="12">
+        <ion-button color="white" (click)="logout()">Cerrar Sesión</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <p class="version">Versión - {{version}}</p>
+
+</ion-content>

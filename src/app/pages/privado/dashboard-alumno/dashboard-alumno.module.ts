@@ -1,20 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
 import { IonicModule } from '@ionic/angular';
-
 import { DashboardAlumnoPageRoutingModule } from './dashboard-alumno-routing.module';
-
 import { DashboardAlumnoPage } from './dashboard-alumno.page';
+import { ComponentsModule } from 'src/app/core/components/components.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    DashboardAlumnoPageRoutingModule
+    DashboardAlumnoPageRoutingModule,
+    ComponentsModule
   ],
   declarations: [DashboardAlumnoPage]
 })
-export class DashboardAlumnoPageModule {}
+export class DashboardAlumnoPageModule { }

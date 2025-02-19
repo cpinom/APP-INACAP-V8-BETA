@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Curso" [defaultHref]="backUrl"></ion-back-button>
+    </ion-buttons>
+    <!-- <ion-buttons slot="end">
+      <ion-button (click)="compartir()" [disabled]="deshabilitarCompartir">
+        <ion-icon src="assets/icon/ios_share.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons> -->
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card color="white" class="primary-card">
+    <ion-card-header>
+      <ion-card-title>Evaluaciones</ion-card-title>
+      <ion-card-subtitle>{{asignatura}}</ion-card-subtitle>
+    </ion-card-header>
+  </ion-card>
+
+  <section *ngIf="evaluaciones && evaluaciones.length > 0">
+    <div class="section-content">
+      <ion-list>
+        <ion-item *ngFor="let item of evaluaciones" detail="false">
+          <div slot="start" [innerHTML]="resolverFechaEvaluacion(item)"></div>
+          <ion-label>
+            <h2>{{item.asigTdesc}}</h2>
+            <p>Evaluación: {{item.caliNevaluacion}} : {{item.caliNponderacion}}%</p>
+          </ion-label>
+          <div slot="end" class="ponderacion {{resolverNota(item.calaNnota)}}">{{item.calaNnota || '-.-'}}</div>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+
+  <section *ngIf="evaluaciones && evaluaciones.length === 0" class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/star.svg"></ion-icon>
+      <p>Sin evaluaciones en este momento</p>
+    </div>
+  </section>
+
+</ion-content>
+
+<ion-footer class="notas-finales" *ngIf="data && data.estadoSeccion && data.estadoSeccion.length">
+  <ion-grid>
+    <ion-row>
+      <ion-col *ngFor="let item of data.estadoSeccion">
+        <p>{{item.text}}</p>
+        <strong class="{{resolverNota(item.value)}}">{{item.value || '-.-'}}</strong>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

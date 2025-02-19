@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="cerrar()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="guardar()">Listo</ion-button>
+    </ion-buttons>
+    <ion-title>Accesos Directos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <section class="accesos-titulo">
+    <h2>Arrastra los elementos en el orden que gustes.</h2>
+  </section>
+
+  <ion-list inset="true">
+    <ion-reorder-group [disabled]="false" (ionItemReorder)="handleReorder($any($event))">
+      <ion-item *ngFor="let item of data">
+        <ion-icon slot="start" [src]="item.icon" color="medium"></ion-icon>
+        <ion-label>{{item.label}}</ion-label>
+        <ion-reorder slot="end"></ion-reorder>
+      </ion-item>
+    </ion-reorder-group>
+  </ion-list>
+
+</ion-content>

@@ -1,0 +1,224 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Servicios" defaultHref="/alumno/servicios"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <!-- <ion-toolbar>
+    <ion-segment [(ngModel)]="tabsModel">
+      <ion-segment-button [value]="0">Nuevo Caso</ion-segment-button>
+      <ion-segment-button [value]="1">Mis Casos</ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+  <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar> -->
+  <ion-card class="primary-card" color="white">
+    <ion-card-header>
+      <ion-card-title>Centro de Atención</ion-card-title>
+    </ion-card-header>
+    <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar>
+  </ion-card>
+</ion-header>
+
+<ion-content>
+
+  <ng-container *ngIf="mostrarCentroAyuda">
+  
+    <ng-container *ngIf="mostrarData && categorias">
+
+    <section class="tabs-wrapper">
+      <div class="section-content">
+        <div class="tabs">
+          <ion-segment [(ngModel)]="tabsModel" mode="md" value="0" [swipeGesture]="false">
+            <ion-segment-button [value]="0">
+              <ion-label>Nuevo Caso</ion-label>
+            </ion-segment-button>
+            <ion-segment-button [value]="1">
+              <ion-label>Mis Casos</ion-label>
+            </ion-segment-button>
+          </ion-segment>
+        </div>
+        <ng-container *ngIf="tabsModel == 0">
+          <form [formGroup]="form">
+            <ion-list>
+              <ion-item>
+                <!-- <ion-label position="stacked">Ámbito</ion-label> -->
+                <ion-select label="Ámbito" labelPlacement="stacked" placeholder="Seleccione..." formControlName="ambito" okText="Aceptar" cancelText="Cancelar">
+                  <ion-select-option *ngFor="let item of ambitos" [value]="item">{{item}}</ion-select-option>
+                </ion-select>
+              </ion-item>
+              <div class="invalid" *ngIf="submitted && ambito.hasError('required')">Campo obligatorio.</div>
+              <ng-container *ngIf="mostrarTematicas">
+                <ion-item>
+                  <!-- <ion-label position="stacked">Temática motivo</ion-label> -->
+                  <ion-select label="Temática motivo" labelPlacement="stacked" placeholder="Seleccione..." formControlName="tematica" okText="Aceptar"
+                    cancelText="Cancelar">
+                    <ion-select-option *ngFor="let item of tematicas" [value]="item">{{item}}</ion-select-option>
+                  </ion-select>
+                </ion-item>
+                <div class="invalid" *ngIf="submitted && tematica.hasError('required')">Campo obligatorio.</div>
+              </ng-container>
+              <ng-container *ngIf="mostrarSubmotivo">
+                <ion-item>
+                  <!-- <ion-label position="stacked">Submotivo</ion-label> -->
+                  <ion-select label="Submotivo" labelPlacement="stacked" placeholder="Seleccione..." formControlName="submotivo" okText="Aceptar"
+                    cancelText="Cancelar">
+                    <ion-select-option *ngFor="let item of submotivos" [value]="item.label">
+                      {{item.nombre}}
+                    </ion-select-option>
+                  </ion-select>
+                </ion-item>
+                <div class="invalid" *ngIf="submitted && submotivo.hasError('required')">Campo obligatorio.</div>
+              </ng-container>
+              <ion-item>
+                <!-- <ion-label position="stacked">Descripción</ion-label> -->
+                <ion-textarea label="Descripción" labelPlacement="stacked" rows="4" formControlName="descripcion"></ion-textarea>
+              </ion-item>
+              <div class="invalid" *ngIf="submitted && descripcion.hasError('required')">Campo obligatorio.</div>
+              <div class="invalid" *ngIf="submitted && descripcion.hasError('maxlength')">El texto no debe sobrepasar los 255 caracteres.</div>
+              <div class="invalid" *ngIf="submitted && descripcion.hasError('pattern')">Existen caracteres no permitidos.</div>
+            </ion-list>
+          </form>
+        </ng-container>
+        <ng-container *ngIf="tabsModel == 1">
+          <ion-list *ngIf="casos.length">
+            <ion-item *ngFor="let item of casos" (click)="mostrarDetalle(item, detalleCaso)" detail="true" class="ion-activatable">
+              <ion-label>
+                <h2>{{item.ambito}}</h2>
+                <b>#{{item.caseNumber}}</b>
+                <p>{{item.tematica}}</p>
+                <p>{{item.submotivo}}</p>
+                <p style="display: flex;align-items: center;">
+                  <ion-icon src="assets/icon/check_circle_outline.svg" style="font-size: 18px; margin-right: 5px;"
+                    color="success" *ngIf="item.status == 'Resuelto'"></ion-icon>
+                  <ion-icon src="assets/icon/schedule.svg" style="font-size: 18px; margin-right: 5px;" color="medium"
+                    *ngIf="item.status == 'Recibido' || item.status == 'En proceso'"></ion-icon>
+                  <ion-icon src="assets/icon/highlight_off.svg" style="font-size: 18px; margin-right: 5px;"
+                    color="danger" *ngIf="item.status == 'Cancelado'"></ion-icon>
+                  <ion-icon src="assets/icon/people.svg" style="font-size: 18px; margin-right: 5px;" color="info"
+                    *ngIf="item.status == 'Escalado'"></ion-icon>
+                  {{item.status}}
+                </p>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+          <div *ngIf="casos.length == 0" class="empty-state">
+            <div>
+              <ion-icon src="assets/icon/info.svg"></ion-icon>
+              <p><em>No hay casos históricos.</em></p>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </section>
+
+    <section *ngIf="tabsModel == 0">
+      <ion-button type="submit" expand="block" color="info" shape="round" (click)="crearCaso()">Enviar</ion-button>
+    </section>
+
+    </ng-container>
+
+    <div *ngIf="mostrarData && !categorias" class="empty-state">
+      <div>
+        <ion-icon src="assets/icon/info.svg"></ion-icon>
+        <p>Información no disponible en este momento.</p>
+        <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+      </div>
+    </div>
+
+    <ion-modal #detalleCaso [presentingElement]="routerOutletEl" [canDismiss]="true" (didDismiss)="onDetalleDismiss($event)">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-title>Detalle Caso</ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="detalleCaso.dismiss()">
+                <ion-icon name="close"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content>
+          <ng-container *ngIf="caso">
+            <ion-card color="white" class="primary-card">
+              <ion-card-header>
+                <ion-card-title>{{caso.ambito}}</ion-card-title>
+                <ion-card-subtitle style="display: flex;align-items: center;">
+                  <ion-icon color="success" *ngIf="caso.status == 'Resuelto'"
+                    src="assets/icon/check_circle.svg" style="margin-right: 5px;"></ion-icon>
+                  <ion-icon color="medium" *ngIf="caso.status == 'Recibido' || caso.status == 'En proceso'"
+                    src="assets/icon/schedule.svg" style="margin-right: 5px;"></ion-icon>
+                  <span>{{caso.status}}</span>
+                </ion-card-subtitle>
+              </ion-card-header>
+            </ion-card>
+            <ion-list inset="true">
+              <ion-item>
+                <ion-label>
+                  <p class="label">Nro Caso</p>
+                  <p class="detail">#{{caso.caseNumber}}</p>
+                </ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label>
+                  <p class="label">Ambito</p>
+                  <p class="detail">{{caso.ambito}}</p>
+                </ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label>
+                  <p class="label">Temática</p>
+                  <p class="detail">{{caso.tematica}}</p>
+                </ion-label>
+              </ion-item>
+              <ion-item *ngIf="caso.submotivo">
+                <ion-label>
+                  <p class="label">Submotivo</p>
+                  <p class="detail">{{caso.submotivo}}</p>
+                </ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label>
+                  <p class="label">Fecha creación</p>
+                  <p class="detail">{{caso.dateCreated}}</p>
+                </ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label>
+                  <p class="label">Descripción</p>
+                  <p class="detail">{{caso.description}}</p>
+                </ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label>
+                  <p class="label">Fecha Últ. modificación</p>
+                  <p class="detail">{{caso.dateLastModif}}</p>
+                </ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label>
+                  <p class="label">Correo contacto</p>
+                  <p class="detail">{{caso.contactEmail}}</p>
+                </ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label>
+                  <p class="label">Teléfono contacto</p>
+                  <p class="detail">{{caso.contactPhone}}</p>
+                </ion-label>
+              </ion-item>
+            </ion-list>
+          </ng-container>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+    
+  </ng-container>
+
+  <div *ngIf="mostrarCentroAyuda == false" class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Sección no disponible en este momento.</p>
+    </div>
+  </div>
+
+</ion-content>

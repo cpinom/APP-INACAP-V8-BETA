@@ -1,0 +1,31 @@
+ion-header {
+    ion-card {
+        margin-bottom: 0 !important;
+    }
+}
+
+ion-content {
+    section.director-carrera {
+        margin-top: 12px;
+
+        h2 {
+            font-weight: 500;
+            font-size: var(--FS16);
+            margin-top: 0;
+            margin-bottom: 2px;
+        }
+
+        p {
+            margin: 0;
+            color: var(--ion-color-medium);
+
+            a {
+                text-decoration: none;
+            }
+        }
+
+        ion-icon {
+            color: var(--ion-color-medium);
+        }
+    }
+}

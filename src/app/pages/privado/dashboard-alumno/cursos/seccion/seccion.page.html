@@ -1,0 +1,142 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [text]="backText" [defaultHref]="backUrl"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-card *ngIf="seccion" class="primary-card" color="white">
+    <ion-card-header>
+      <ion-card-title>{{seccion.asigTdesc}}</ion-card-title>
+      <ion-card-subtitle>
+        {{seccion.asigCcod}} <span *ngIf="data">- Sección {{data.seccion.seccTdesc}}</span><br/>
+        Tipo Asignatura - <b>{{seccion.tasgTdesc}}</b>
+      </ion-card-subtitle>
+    </ion-card-header>
+    <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar>
+  </ion-card>
+</ion-header>
+
+<ion-content class="detalle-seccion">
+
+  <ng-container *ngIf="mostrarData && data">
+
+    <ion-card class="notificacion" color="info" *ngIf="data.seccion.notificacion">
+      <ion-card-content>
+        <ion-icon src="assets/icon/error_outline.svg"></ion-icon>
+        <span>{{data.seccion.notificacion}}</span>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="secondary-card" color="white" id="docente">
+      <ion-card-content>
+        <app-cached-image slot="start" [src]="resolverFoto(data.seccion.persNcorr)"></app-cached-image>
+        <div>
+          <p class="label">Docente</p>
+          <h3>{{data.seccion.persTnombre}}</h3>
+          <a (click)="correo(data.seccion.persTemail)">{{data.seccion.persTemail}}</a>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card color="white" class="secondary-card" id="asistencia" (click)="mostrarAsistencia()">
+      <ion-card-header>
+        <ion-card-title>
+          <span>Asistencia</span>
+          <ion-icon src="assets/icon/arrow_forward_ios.svg" color="medium"></ion-icon>
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content class="has-chart">
+        <ion-row>
+          <ion-col size="7" class="ion-no-padding" style="display: flex; align-items: center;">
+            <ul class="ion-no-margin">
+              <li><span class="circle blue"></span>{{data.asistencia.horasAsistidas}} horas asistidas</li>
+              <li><span class="circle grey"></span>{{data.asistencia.horasRealizadas}} horas de clases realizadas</li>
+            </ul>
+          </ion-col>
+          <ion-col size="5" class="ion-no-padding" style="text-align: right" *ngIf="seccion">
+            <input type="text" [number]="seccion.asistencia" class="dial" appKnob [bgColor]="colorGris" [fgColor]="colorAzul">
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card color="white" class="secondary-card" id="notas" (click)="mostrarEvaluaciones()" *ngIf="data.notas.length">
+      <ion-card-header>
+        <ion-card-title>
+          <span>Evaluaciones</span>
+          <ion-icon src="assets/icon/arrow_forward_ios.svg" color="medium"></ion-icon>
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item class="evaluacion" *ngIf="evaluacion" lines="none">
+          <div slot="start" [innerHTML]="resolverFechaEvaluacion(evaluacion.caliFevaluacion)"></div>
+          <ion-label>
+            <h2>{{evaluacion.asigTdesc}}</h2>
+            <p>Evaluación {{evaluacion.caliNevaluacion}} : {{evaluacion.caliNponderacion}}%</p>
+          </ion-label>
+          <div slot="end" class="ponderacion {{resolverNotaRojo(evaluacion.calaNnota)}}">
+            {{evaluacion.calaNnota || '-.-'}}
+          </div>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card color="white secondary-card" id="horario">
+      <ion-card-header>
+        <ion-card-title>
+          <span>Horario</span>
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <mbsc-eventcalendar [theme]="theme" [themeVariant]="themeVariant" [view]="myView" [data]="eventosHorario"
+          [locale]="pickerLocale" [(selectedDate)]="fechaHorario" (onPageChange)="onHorarioChange($event)" templa
+          [agendaEmptyTemplate]="horarioEmptyTpl">
+          <ng-template #horarioEmptyTpl>
+            <div class="mbsc-align-center mbsc-padding">
+              <ion-spinner name="lines" color="info" *ngIf="cargandoClases"></ion-spinner>
+              <span *ngIf="!cargandoClases && eventosHorario">Sin Clases</span>
+              <span *ngIf="!cargandoClases && !eventosHorario">Información no disponible</span>
+            </div>
+          </ng-template>
+        </mbsc-eventcalendar>
+        <!-- <div scrollX="true" class="fixed horario">
+          <ul>
+            <ng-container *ngFor="let item of data.horarioSeccion">
+              <li class="{{objectKeys(item.bloques).length == 0 ? 'empty' : ''}}">
+                <div class="scroll-item" style="height: 100%">
+                  <div class="title">{{item.diasTdesc}}</div>
+                  <div class="content" *ngFor="let key of objectKeys(item.bloques)">
+                    <p class="start-time" *ngFor="let hora of item.bloques[key]">
+                      {{hora.horaInicio}} - {{hora.horaTermino}}</p>
+                    <p class="classroom">{{key}}</p>
+                  </div>s
+                </div>
+              </li>
+            </ng-container>
+          </ul>
+        </div> -->
+      </ion-card-content>
+    </ion-card>
+
+    <ion-list style="margin-bottom: 20px;">
+      <ion-item detail="true" (click)="mostrarAlumnos()" class="ion-activatable">
+        <ion-icon slot="start" src="assets/icon/groups.svg" color="medium"></ion-icon>
+        <ion-label>Mis Compañeros</ion-label>
+      </ion-item>
+      <ion-item detail="true" (click)="mostrarBibliografia()" class="ion-activatable">
+        <ion-icon slot="start" src="assets/icon/book.svg" color="medium"></ion-icon>
+        <ion-label>Bibliografía</ion-label>
+      </ion-item>
+    </ion-list>
+
+  </ng-container>
+
+  <section *ngIf="mostrarData && !data" class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Información no disponible en este momento.</p>
+      <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+    </div>
+  </section>
+
+</ion-content>

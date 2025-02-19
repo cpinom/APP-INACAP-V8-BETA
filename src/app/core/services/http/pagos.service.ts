@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { InAppBrowserOptions } from '@awesome-cordova-plugins/in-app-browser/ngx';
 import { LoadingController, ModalController } from '@ionic/angular';
-import { Global } from 'src/app/app.global';
 import { FormasPagoComponent } from '../components/pagos/formas-pago/formas-pago.component';
 import { PortalPagosService } from './portalpagos.service';
 import { UtilsService } from './utils.service';
@@ -20,7 +19,7 @@ export class PagosService {
   constructor(private modalCtrl: ModalController,
     private loading: LoadingController,
     private api: PortalPagosService,
-    private global: Global,
+    private global: AppGlobal,
     private utils: UtilsService) { }
 
   async procesarPago(formasPago, pagoId, monto, personaId?, service?, showDetail?: boolean): Promise<PagoResult> {
@@ -128,7 +127,7 @@ export class PagosService {
           reject({ code: 1, message: result.message });
         }
       }
-      catch (error) {
+      catch (error: any) {
         reject({ code: 2, message: 'Error en comunicación con el servidor.', error: error });
       }
       finally {

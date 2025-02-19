@@ -1,0 +1,122 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Inicio" defaultHref="/alumno/inicio"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-card class="primary-card" color="white">
+    <ion-card-header>
+      <ion-card-title>Malla Curricular</ion-card-title>
+      <ion-card-subtitle *ngIf="carrera">{{carrera.carrTdesc}}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar>
+  </ion-card>
+</ion-header>
+
+<ion-content>
+
+  <ng-container *ngIf="mostrarData && niveles">
+
+    <section *ngFor="let item of niveles" class="malla">
+      <div class="section-header">
+        {{item.niveTnombre}}
+        <span>{{totalHoras(item)}} horas</span>
+      </div>
+      <!--<div class="section-content">
+      <ion-list>
+        <ion-item *ngFor="let asig of item.malla">
+          <div slot="start" class="label" style="flex: 0 0 60px; text-align: center; margin-right: 10px;">
+            {{asig.asigCcod}}</div>
+          <ion-label>
+            <h2>{{asig.asigTdesc}}</h2>
+            <p>{{asig.asigNhoras}} horas</p>
+          </ion-label>
+          <div slot="end" class="nota {{asig.notaFinal && asig.notaFinal >= 4 ? 'green' : 'red'}}"
+            *ngIf="asig.notaFinal">{{asig.notaFinal}}</div>
+        </ion-item>
+      </ion-list>
+    </div>-->
+      <ion-row *ngFor="let asig of item.malla">
+        <ion-col size="12">
+          <ion-card [class.green]="asig.situFinal == 'course-passed'" [class.red]="asig.situFinal == 'course-failed'">
+            <ion-card-header>
+              <ion-card-title>{{asig.asigTdesc}}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <div>
+                <p>{{asig.asigCcod}}</p>
+                <p>{{asig.asigNhoras}} horas</p>
+              </div>
+              <div class="status">
+                <div class="nota" *ngIf="asig.nota" [class.green]="asig.situFinal == 'course-passed'"
+                  [class.red]="asig.situFinal == 'course-failed'">
+                  {{asig.nota}}
+                </div>
+                <div class="desc">
+                  <span class="green" *ngIf="asig.situFinal == 'course-passed'">Aprobada</span>
+                  <span class="red" *ngIf="asig.situFinal == 'course-failed'">Reprobada</span>
+                </div>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+        <!-- <ng-container *ngIf="asig.asigCcodRe">
+        <ion-col size="6">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>{{asig.asigTdesc}}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <div>
+                <p>{{asig.asigCcod}}</p>
+                <p>{{asig.asigNhoras}} horas</p>
+              </div>
+              <div slot="end" class="nota {{asig.notaFinal && asig.notaFinal >= 4 ? 'green' : 'red'}}"
+                *ngIf="asig.notaFinal">{{asig.notaFinal}}</div>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+        <ion-col size="6">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>{{asig.asigTdescRe}}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <div>
+                <p>{{asig.asigCcodRe}}</p>
+                <p>{{asig.asigNhorasRe}} horas</p>
+              </div>
+              <div slot="end" class="nota {{asig.notaFinal && asig.notaFinal >= 4 ? 'green' : 'red'}}"
+                *ngIf="asig.notaFinal">{{asig.notaFinal}}</div>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ng-container> -->
+      </ion-row>
+    </section>
+
+  </ng-container>
+
+  <section *ngIf="mostrarData && !niveles" class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Información no disponible en este momento.</p>
+      <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+    </div>
+  </section>
+
+</ion-content>
+
+<ion-footer *ngIf="mostrarData && niveles">
+  <div>
+    <span>
+      Cantidad de horas plan
+      <strong>{{totalHorasPlan}}</strong>
+    </span>
+    <span>
+      Cantidad de Asignaturas
+      <strong>{{totalAsignaturas}}</strong>
+    </span>
+  </div>
+</ion-footer>

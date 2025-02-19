@@ -175,7 +175,7 @@ export class NuevaOpinionComponent implements OnInit, OnDestroy {
 
       }
     }
-    catch (error) {
+    catch (error: any) {
       return Promise.reject(error);
     }
     finally {
@@ -271,7 +271,7 @@ export class NuevaOpinionComponent implements OnInit, OnDestroy {
           await this.dialog.dismissModal(true);
         }
       }
-      catch (error) {
+      catch (error: any) {
         this.error.handle(error);
       }
       finally {

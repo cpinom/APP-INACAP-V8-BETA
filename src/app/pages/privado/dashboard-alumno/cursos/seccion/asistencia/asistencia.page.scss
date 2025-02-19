@@ -1,0 +1,32 @@
+ion-header {
+    ion-card {
+        margin-bottom: 0 !important;
+    }
+}
+ion-card.primary-card {
+    margin-bottom: 10px !important;
+}
+div.info {
+    display: flex;
+    align-items: center;
+    margin: 14px;
+
+    div {
+        font-size: var(--FS14);
+        margin-left: 10px;
+
+        p {
+            margin: 0;
+        }
+    }
+}
+
+p {
+    color: var(--ion-color-medium);
+}
+
+ion-item {
+    ion-icon {
+        margin-right: 15px;
+    }
+}

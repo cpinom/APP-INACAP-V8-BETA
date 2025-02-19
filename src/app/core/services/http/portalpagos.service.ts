@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Global } from 'src/app/app.global';
+import { AppGlobal } from 'src/app/app.global';
 import { AuthService } from './auth.service';
 import { PrivateService } from './private.service';
 import { HTTP } from '@awesome-cordova-plugins/http/ngx';

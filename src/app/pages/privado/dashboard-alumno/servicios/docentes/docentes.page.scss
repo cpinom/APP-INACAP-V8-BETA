@@ -1,0 +1,18 @@
+ion-header {
+  ion-card {
+    margin-bottom: 0 !important;
+  }
+}
+
+ion-content section {
+  margin-top: 20px;
+
+  ion-list {
+    ion-item {
+        ion-avatar {
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+    }
+}
+}

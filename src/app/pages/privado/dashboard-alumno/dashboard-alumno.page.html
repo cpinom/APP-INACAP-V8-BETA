@@ -1,13 +1,27 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>dashboard-alumno</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-tabs>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">dashboard-alumno</ion-title>
-    </ion-toolbar>
-  </ion-header>
-</ion-content>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="inicio" (click)="checkTap($event, 0)">
+      <ion-icon src="assets/icon/home.svg"></ion-icon>
+      <ion-label>Inicio</ion-label>
+    </ion-tab-button>
+    <ion-tab-button tab="cursos" (click)="checkTap($event, 1)">
+      <ion-icon src="assets/icon/class.svg"></ion-icon>
+      <ion-label>Cursos</ion-label>
+    </ion-tab-button>
+    <ion-tab-button tab="portafolio" (click)="checkTap($event, 2)">
+      <ion-icon src="assets/icon/dashboard.svg"></ion-icon>
+      <ion-label>Portafolio</ion-label>
+    </ion-tab-button>
+    <ion-tab-button tab="servicios" (click)="checkTap($event, 4)">
+      <ion-icon src="assets/icon/list_alt.svg"></ion-icon>
+      <ion-label>Servicios</ion-label>
+    </ion-tab-button>
+    <ion-tab-button tab="perfil" (click)="checkTap($event, 4)">
+      <!-- <ion-icon src="assets/icon/list_alt.svg"></ion-icon> -->
+      <avatar-comp></avatar-comp>
+      <ion-label>Perfil</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+
+</ion-tabs>

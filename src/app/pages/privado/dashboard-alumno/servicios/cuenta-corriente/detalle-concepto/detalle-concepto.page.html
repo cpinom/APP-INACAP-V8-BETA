@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{concepto}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrar()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <section style="margin-top: 12px;">
+    <div class="section-content">
+      <ion-list>
+        <ion-item *ngFor="let item of data.data">
+          <ion-label>
+            <h2>Medio de Pago: {{item.medioPago}}</h2>
+            <p>Período: {{item.periodo}}</p>
+            <p>Fecha: {{item.fecha}}</p>
+            <p>Carrera: {{item.carrera}}</p>
+            <p>Monto (*): {{item.montoFormato | numberSeparator}}</p>
+          </ion-label>
+          <ion-button color="light" size="small" (click)="descargar(item)" *ngIf="item.btn == 'true'">
+            <ion-icon slot="icon-only" src="assets/icon/picture_as_pdf.svg"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+  
+  <section class="section-saldos">
+    <div class="section-content">
+      <div class="leyendas">
+        <p>(*) Valores válidos a la fecha: {{data.fechaActual}}</p>
+        <p>(**) El Financiamiento informado está sujeto a ratificación por las entidades competentes (MINEDUC /
+          INGRESA según corresponda). De no ser ratificados, los montos a pagar son los establecidos en el contrato de
+          prestación de servicios educacionales correspondiente.</p>
+      </div>
+    </div>
+  </section>
+
+</ion-content>

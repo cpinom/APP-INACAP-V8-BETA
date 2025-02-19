@@ -1,4 +1,4 @@
-<mbsc-eventcalendar [theme]="theme" [themeVariant]="themeVariant" [(selectedDate)]="fecha" [data]="eventos"
+<!-- <mbsc-eventcalendar [theme]="theme" [themeVariant]="themeVariant" [(selectedDate)]="fecha" [data]="eventos"
   [view]="myView" [locale]="pickerLocale" (onPageChange)="onSelectedDateChange($event)"
   (onEventClick)="onEventClick($event)" [agendaEmptyTemplate]="horarioEmptyTpl">
   <ng-template #horarioEmptyTpl>
@@ -34,4 +34,16 @@
       </div>
     </article>
   </div>
-</section>
+</section> -->
+
+<mbsc-eventcalendar [theme]="theme" [themeVariant]="themeVariant" [(selectedDate)]="fecha"
+          [data]="eventos" [view]="myView" (onEventClick)="onEventClick($event)" [locale]="pickerLocale"
+           [agendaEmptyTemplate]="horarioEmptyTpl">
+          <ng-template #horarioEmptyTpl>
+            <div class="mbsc-align-center mbsc-padding">
+              <!-- <ion-spinner name="lines" color="info" *ngIf="item.cargando"></ion-spinner>
+              <span *ngIf="!item.cargando && item.eventos">Sin Clases</span>
+              <span *ngIf="!item.cargando && !item.eventos">Información no disponible</span> -->
+            </div>
+          </ng-template>
+        </mbsc-eventcalendar>

@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Mi Progresión" defaultHref="/alumno/inicio/progresion"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-card class="primary-card" color="white">
+    <ion-card-header>
+      <ion-card-title>Acuerdo Atención Tutorial</ion-card-title>
+    </ion-card-header>
+    <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar>
+  </ion-card>
+</ion-header>
+
+<ion-content>
+
+  <ng-container *ngIf="mostrarData && data">
+
+    <ng-container *ngIf="data && !data.firmaAcuerdo">
+      <form [formGroup]="form" (ngSubmit)="enviar()">
+        <ion-list inset="true">
+          <ion-item>
+            <ion-label>
+              <div class="texto-glosa" [innerHTML]="data.glosa"></div>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-checkbox color="danger" formControlName="acuerdo" labelPlacement="end">
+              <span class="ion-text-wrap">Toma de conocimiento de Acuerdo de Atenci&oacute;n Tutorial</span>
+            </ion-checkbox>
+          </ion-item>
+        </ion-list>
+        <section style="margin-bottom: 15px;">
+          <ion-button type="submit" color="info" shape="round" expand="block" [disabled]="form.invalid">
+            Enviar Acuerdo Autorizado
+          </ion-button>
+        </section>
+      </form>
+    </ng-container>
+
+    <section *ngIf="data && data.firmaAcuerdo" class="empty-state">
+      <div>
+        <ion-icon src="assets/icon/info.svg"></ion-icon>
+        <p>{{data.mensaje}}</p>
+      </div>
+    </section>
+
+  </ng-container>
+
+  <section *ngIf="mostrarData && !data" class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Información no disponible en este momento.</p>
+      <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+    </div>
+  </section>
+
+</ion-content>

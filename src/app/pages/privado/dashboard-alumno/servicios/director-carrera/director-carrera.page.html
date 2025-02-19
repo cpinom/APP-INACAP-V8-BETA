@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Servicios" defaultHref="/alumno/servicios"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-card class="primary-card" color="white">
+    <ion-card-header>
+      <ion-card-title>Director de Carrera</ion-card-title>
+    </ion-card-header>
+    <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar>
+  </ion-card>
+</ion-header>
+
+<ion-content>
+
+  <ng-container *ngIf="mostrarData && !mostrarError">
+    <section class="director-carrera" *ngIf="data">
+      <div class="section-content">
+        <ion-list>
+          <ion-item>
+            <app-cached-image slot="start" [src]="resolverFoto(data.persNcorr)"></app-cached-image>
+            <ion-label style="white-space: normal">
+              <h2>{{data.persTnombre}} {{data.persTapePaterno}}</h2>
+              <p>{{sede}}</p>
+              <p>{{carrera}}</p>
+            </ion-label>
+            <ion-icon slot="end" (click)="correo(data.persTemailInacap)" *ngIf="data.persTemailInacap"
+              src="assets/icon/email.svg"></ion-icon>
+          </ion-item>
+        </ion-list>
+      </div>
+    </section>
+    <section *ngIf="!data" class="empty-state">
+      <div>
+        <ion-icon src="assets/icon/group.svg"></ion-icon>
+        <p>Sin registros en este momento.</p>
+      </div>
+    </section>
+  </ng-container>
+
+  <section *ngIf="mostrarError" class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Información no disponible en este momento.</p>
+      <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+    </div>
+  </section>
+
+</ion-content>

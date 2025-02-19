@@ -1,0 +1,72 @@
+.section-detalle {
+    .section-content {
+        display: block;
+        overflow-x: auto;
+        padding: 15px;
+    }
+    .table {
+        width: 100%;
+        background-color: transparent;
+        font-size: var(--FS14);
+    }
+    .table td,
+    .table th {
+        padding: 0.5rem;
+        vertical-align: middle;
+        border: var(--border);
+        text-align: left;
+        white-space: nowrap;
+    }
+    .table tbody tr:nth-of-type(odd) {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    .table td {
+        &.amber-text {
+            color: var(--ion-color-warning) !important;
+        }
+        &.red-text {
+            color: var(--ion-color-danger) !important;
+        }
+        ion-button {
+            --ion-color-base: transparent !important;
+            --ion-color-shade: transparent !important;
+            --box-shadow: none !important;
+            margin: 0;
+            height: auto;
+        }
+    }
+}
+
+.section-saldos {
+    .section-content {
+        padding: 15px;
+
+        .leyendas {
+            color: var(--ion-color-medium);
+            font-style: italic;
+            font-size: var(--FS14);
+        }
+    }
+}
+
+::ng-deep body.dark {
+    .section-detalle {
+        .table td,
+        .table th {
+            padding: 0.5rem;
+            vertical-align: middle;
+            // border: 1px solid #666666 !important;
+        }
+        .table tbody tr:nth-of-type(odd) {
+            background-color: rgba(255, 255, 255, 0.05) !important;
+        }
+        .table td {
+            ion-button {
+                ion-icon {
+                    color: var(--ion-color-light) !important;
+                }
+            }
+        }
+    }
+}

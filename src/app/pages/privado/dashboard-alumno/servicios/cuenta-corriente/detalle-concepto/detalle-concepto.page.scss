@@ -1,0 +1,23 @@
+ion-item {
+    ion-button {
+        --ion-color-base: transparent !important;
+        --ion-color-shade: transparent !important;
+        --box-shadow: none !important;
+
+        ion-icon {
+            color: var(--ion-color-medium);
+        }
+    }
+}
+
+.section-saldos {
+    .section-content {
+        padding: 15px;
+
+        .leyendas {
+            color: var(--ion-color-medium);
+            font-style: italic;
+            font-size: var(--FS14);
+        }
+    }
+}

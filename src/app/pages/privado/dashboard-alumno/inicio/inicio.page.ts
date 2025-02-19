@@ -1,0 +1,885 @@
+import { AfterViewInit, Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { UtilsService } from 'src/app/core/services/utils.service';
+import { ProfileService } from 'src/app/core/services/profile.service';
+import { IonContent, IonModal, IonRouterOutlet, ModalController, NavController, Platform } from '@ionic/angular';
+import { SnackbarService } from 'src/app/core/services/snackbar.service';
+import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
+import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Haptics } from '@capacitor/haptics';
+import { Subscription } from 'rxjs';
+import { EventsService } from 'src/app/core/services/events.service';
+import { DialogService } from 'src/app/core/services/dialog.service';
+import { MbscEventClickEvent, MbscEventcalendarView, MbscPageChangeEvent, localeEs } from '@mobiscroll/angular';
+import * as moment from 'moment';
+import { FCM } from '@capacitor-community/fcm';
+import { DatosContactoPage } from './datos-contacto/datos-contacto.page';
+import { AccesosDirectosPage } from './accesos-directos/accesos-directos.page';
+import { AlumnoService } from 'src/app/core/services/http/alumno.service';
+import { InacapMailService } from 'src/app/core/services/http/inacapmail.service';
+import { EstacionamientosService } from 'src/app/core/services/http/estacionamientos.service';
+import { AppGlobal } from 'src/app/app.global';
+import { VISTAS_ALUMNO } from 'src/app/core/constants/alumno';
+
+declare const confetti: any;
+
+@Component({
+  selector: 'app-inicio',
+  templateUrl: './inicio.page.html',
+  styleUrls: ['./inicio.page.scss'],
+})
+export class InicioPage implements OnInit, AfterViewInit {
+
+  @ViewChild(IonContent) content!: IonContent;
+  @ViewChild('ramos', { read: ElementRef }) public ramosContent!: ElementRef<any>;
+  @ViewChild('evaluacionesMdl') evaluacionesMdl!: IonModal;
+  fechaHorario: any = moment().toDate();
+  mostrarDescatados = true;
+  mostrarStatus = false;
+  errorStatus = false;
+  ultimaCarga!: string;
+  principal: any;
+  status: any;
+  programa: any;
+  cursos!: any[];
+  clases: any;
+  cargandoClases = false;
+  mostrarData!: boolean;
+  descatadoFn: any;
+  tabsModel = '0';
+  practica!: boolean;
+  numeroEvalInicial = 3;
+  numeroEvalMostrando = this.numeroEvalInicial;
+  urlMoodle = 'https://lms.inacap.cl/auth/saml2/login.php?wants=https://lms.inacap.cl/my/';
+  perfilIncompleto = true;
+  evaluaciones!: any[];
+  perfilOk!: boolean;
+  periodoForm: FormGroup;
+  inacapMail: any;
+  inacapTeams: any;
+  alertPeriodo = {
+    header: 'Período Académico',
+    subHeader: 'Selecciona el período que deseas visualizar'
+  };
+  horarioObservable!: Subscription;
+  scrollObs: Subscription;
+  reloadObs: Subscription;
+  myView: MbscEventcalendarView = {
+    calendar: { type: 'week' },
+    agenda: { type: 'day' }
+  };
+  pickerLocale = localeEs;
+  theme: string;
+  themeVariant: any;
+  eventosHorario: any;
+  accesosDirectos = [
+    {
+      key: 'MOODLE',
+      icon: 'assets/icon/cast.svg',
+      label: 'Ambiente de Aprendizaje'
+    },
+    {
+      key: 'INACAPMAIL',
+      icon: 'assets/icon/outlook.svg',
+      label: 'INACAPMail'
+    },
+    {
+      key: 'HORARIO',
+      icon: 'assets/icon/access_time.svg',
+      label: 'Horario'
+    },
+    {
+      key: 'CREDENCIAL',
+      icon: 'assets/icon/account_circle.svg',
+      label: 'Credencial Virtual'
+    }
+  ];
+
+  cargandoEstados = false;
+
+  private api = inject(AlumnoService);
+  private mailApi = inject(InacapMailService);
+  private estacionmientosApi = inject(EstacionamientosService);
+  private auth = inject(AuthService);
+  private profile = inject(ProfileService);
+  private global = inject(AppGlobal);
+  private utils = inject(UtilsService);
+  private snackbar = inject(SnackbarService);
+  private error = inject(ErrorHandlerService);
+  private events = inject(EventsService);
+  private dialog = inject(DialogService);
+  private router = inject(Router);
+  private fb = inject(FormBuilder);
+  private routerOutlet = inject(IonRouterOutlet);
+  private nav = inject(NavController);
+  private pt = inject(Platform);
+  private modal = inject(ModalController);
+
+
+  constructor() {
+
+    moment.locale('es');
+
+    this.periodoForm = this.fb.group({
+      periodo: ['', Validators.required]
+    });
+
+    this.scrollObs = this.events.app.subscribe((event: any) => {
+      if (event.action == 'scrollTop' && event.index == 0 && this.router.url == '/alumno/inicio') {
+        this.content?.scrollToTop(500);
+        this.tabsModel = '0';
+        this.ramosContent && this.ramosContent.nativeElement.scrollTo({ left: 0, behavior: 'smooth' });
+      }
+    });
+
+    this.reloadObs = this.events.app.subscribe((event: any) => {
+      if (event.action == 'app:alumno-principal-inicio') {
+        this.cargar();
+      }
+    });
+
+    this.profile.getStorage('principal').then(principal => {
+      this.perfilOk = !!principal;
+    });
+
+    this.periodo?.valueChanges.subscribe((value) => {
+      this.guardarPeriodo(value);
+    });
+
+    this.theme = this.pt.is('ios') ? 'ios' : 'material';
+    this.themeVariant = this.profile.isDarkMode() ? 'dark' : 'light';
+  }
+  ngAfterViewInit() { }
+  ngOnInit() { }
+  ngOnDestroy() {
+    this.scrollObs.unsubscribe();
+    this.reloadObs.unsubscribe();
+  }
+  async ionViewWillEnter() {
+    this.mostrarData = false;
+    this.theme = this.pt.is('ios') ? 'ios' : 'material';
+    this.themeVariant = this.profile.isDarkMode() ? 'dark' : 'light';
+
+    await this.cargar();
+    await this.verificarSaludo();
+  }
+  async recargar(e?: any) {
+    if (!e) {
+      this.mostrarData = false;
+    }
+    setTimeout(() => {
+      this.cargar(true).finally(() => {
+        e && e.target.complete();
+      })
+    }, 100)
+
+  }
+  async cargar(forzar?: boolean) {
+    let principal_storaged = await this.profile.getStorage('principal');
+    let principal;
+
+    try {
+      const result = await this.api.getPrincipalV5();
+
+      if (result.success) {
+        principal = result.data;
+        principal.programaIndex = 0;
+        principal.mostrarDescatados = true;
+        principal.mostrarEstacionamientos = true;
+        principal.mostrarFotoPerfil = true;
+
+        if (!forzar && principal_storaged) {
+          principal.programaIndex = principal_storaged.programaIndex;
+          principal.mostrarDescatados = principal_storaged.mostrarDescatados;
+          principal.mostrarEstacionamientos = principal_storaged.mostrarEstacionamientos;
+          principal.mostrarFotoPerfil = principal_storaged.mostrarFotoPerfil;
+          principal.mostrarSaludo = principal_storaged.mostrarSaludo;
+        }
+      }
+    }
+    catch {
+      if (principal_storaged != null) {
+        principal = principal_storaged;
+      }
+    }
+
+    if (principal) {
+      if (principal.periodos.length) {
+        const periodo = (principal.periodos as any[]).filter(t => t.periSeleccionado == true)[0];
+
+        if (periodo) {
+          this.periodo?.setValue(periodo.periCcod, { emitEvent: false });
+        }
+      }
+
+      this.programa = principal.programas[principal.programaIndex];
+      this.cursos = this.procesarCursos(this.programa.asignaturas || []);
+      this.evaluaciones = principal.evaluaciones.filter((t: any) => t.planCcod == this.programa.planCcod);
+      this.principal = principal;
+      this.practica = this.programa.habilitaPractica;
+      this.mostrarData = true;
+      this.perfilOk = true;
+      this.events.app.next({ action: 'app:alumno-principal' });
+
+      await this.profile.setStorage('principal', principal);
+      await this.cargarHorario();
+      await this.cargarStatus();
+      this.cargarCorreos();
+      this.verificarSuscripciones();
+      this.verificarDatosContacto();
+    }
+    else {
+      this.mostrarData = true;
+    }
+  }
+  async cargarHorario() {
+    const fechaLunes = moment(this.fechaHorario).clone().startOf('week');
+    const fechaInicio = fechaLunes.clone().startOf('week').format('DD/MM/YYYY');
+    const fechaTermino = fechaLunes.clone().add(5, 'day').format('DD/MM/YYYY');
+    let periCcod = this.programa.periCcod;
+    let sedeCcod = this.programa.sedeCcod;
+    let params = {
+      periCcod: periCcod,
+      sedeCcod: sedeCcod,
+      fechaInicio: fechaInicio,
+      fechaTermino: fechaTermino
+    };
+    this.cargandoClases = true;
+
+    try {
+      let result = await this.api.getHorarioV5(params);
+
+      if (result.success) {
+        this.procesarHorario(result.horario.clasesProgramadas);
+      }
+      else {
+        throw Error();
+      }
+    }
+    catch {
+      this.eventosHorario = undefined;
+    }
+    finally {
+      this.cargandoClases = false;
+    }
+  }
+  async onHorarioChange(args: MbscPageChangeEvent) {
+    this.fechaHorario = moment(args.firstDay);
+    this.cargarHorario();
+  }
+  async onSeccionClick(args: MbscEventClickEvent) {
+    let seccion = args.event['data'];
+    this.seccionTap(seccion);
+  }
+  procesarCursos(cursos: any[]) {
+    if (cursos.length) {
+      cursos = cursos.sort((a: any, b: any) => {
+        if (a.estadoClase === 1 && b.estadoClase !== 1) {
+          return -1;
+        }
+        if (a.estadoClase !== 1 && b.estadoClase === 1) {
+          return 1;
+        }
+        return 0;
+      })
+    }
+
+    return cursos;
+  }
+  procesarHorario(clases: any) {
+    const fechaLunes = moment(this.fechaHorario).clone().startOf('week');
+    let dias = this.groupBy(clases, 'diasCcod');
+    let eventos = [];
+
+    for (let dia in dias) {
+      let fecha = fechaLunes.clone().add(Number(dia) - 1, 'day');
+      let secciones = this.groupBy(dias[dia], 'seccCcod');
+
+      for (let seccion in secciones) {
+        let inicio = secciones[seccion][0];
+        let termino = secciones[seccion][secciones[seccion].length - 1];
+        let cssClass = '';
+
+        if (inicio.estadoBloque == 1) cssClass = 'suspendida';
+        if (inicio.estadoBloque == 2 || inicio.estadoBloque == 4) cssClass = 'progreso';
+        if (inicio.estadoBloque == 3) cssClass = 'realizada';
+
+        eventos.push({
+          title: `${inicio['asigTdesc']} - <b>${inicio['asigCcod']}</b><br/>Sala : ${inicio['salaEjecucion'] || inicio['salaProgramada']}`,
+          start: moment(`${fecha.format('DD/MM/YYYY')} ${inicio.horaHinicio}`, 'DD/MM/YYYY HH:mi').toDate(),
+          end: moment(`${fecha.format('DD/MM/YYYY')} ${termino.horaHtermino}`, 'DD/MM/YYYY HH:mi').toDate(),
+          cssClass: cssClass,
+          data: inicio
+        })
+      }
+    }
+
+    this.eventosHorario = eventos;
+  }
+  async cargarStatus() {
+    this.mostrarStatus = true;
+    this.errorStatus = false;
+
+    try {
+      let sedeCcod = this.programa.sedeCcod;
+      let planCcod = this.programa.planCcod;
+      let result = await this.api.getStatusV5(sedeCcod, planCcod);
+
+      if (result.success) {
+        this.status = result.data;
+
+        Object.assign(result.data, { loaded: moment().format('DDMMYYYYHHmmss') });
+
+        this.profile.setStorage('status', result.data);
+      }
+    }
+    catch (error: any) {
+      if (error && error.status == 401) {
+        this.error.handle(error);
+        return;
+      }
+      this.errorStatus = true;
+      this.profile.getStorage('status').then(status => {
+        this.ultimaCarga = 'Última actualización: ' + moment(status.loaded, 'DDMMYYYYHHmmss').format('DD/MM/YYYY HH:mm');
+      })
+    }
+    finally {
+      this.mostrarStatus = false;
+    }
+  }
+  async cargarCorreos() {
+    try {
+      let folderId = await this.mailApi.getStorage('inboxId');
+      let result = await this.mailApi.getMailSummary(folderId || '');
+
+      if (result.success) {
+        this.inacapMail = result.inbox;
+        this.mailApi.setStorage('inboxId', result.inbox.id);
+      }
+    }
+    catch (error: any) {
+      if (error && error.status == 401) {
+        this.error.handle(error);
+      }
+    }
+  }
+  async verificarSuscripciones() {
+    const preferencias = await this.profile.getPreferencias();
+
+    if (preferencias.movil.hasOwnProperty('notificaciones')) {
+      if (preferencias.movil.notificaciones.inacapmail == 1) {
+        let storageSubs = await this.mailApi.getStorage('subscription');
+        let verifiySubs = true;
+
+        if (storageSubs) {
+          let now = moment();
+          let expiration_date = moment(storageSubs, 'DD/MM/YYYY hh:mm');
+
+          if (now.isSameOrBefore(expiration_date, 'seconds')) {
+            verifiySubs = false;
+          }
+        }
+
+        if (verifiySubs) {
+          try {
+            const resultSubs = await this.mailApi.getMailSubscription();
+
+            if (resultSubs.success) {
+              this.mailApi.setStorage('subscription', resultSubs.data.fechaExpiracion);
+            }
+          }
+          catch { }
+        }
+      }
+      if (this.programa) {
+        const sedeTopic = this.programa.sedeTopic;
+
+        if (preferencias.movil.notificaciones.sede == 1) {
+          if (sedeTopic && this.pt.is('capacitor')) {
+            try {
+              const subscribeTo = await FCM.subscribeTo({ topic: sedeTopic });
+            }
+            catch { }
+          }
+        }
+        else {
+          if (sedeTopic && this.pt.is('capacitor')) {
+            try {
+              const unsubscribeFrom = await FCM.unsubscribeFrom({ topic: sedeTopic });
+            }
+            catch { }
+          }
+        }
+      }
+    }
+  }
+  async guardarPeriodo(periCcod: any) {
+    let loading = await this.dialog.showLoading({ message: 'Guardando...' });
+    let revertirCambios = false;
+
+    try {
+      let params = { periCcod: periCcod };
+      let result = await this.api.guardarPeriodo(params);
+
+      if (result.success) {
+        await this.cargar(true);
+
+        this.snackbar.showToast(result.message, 3000, 'success');
+        this.api.removeStorage('cursos');
+        this.api.removeStorage('users');
+      }
+      else {
+        throw Error();
+      }
+    }
+    catch (error: any) {
+      if (error && error.status == 401) {
+        this.error.handle(error);
+        return;
+      }
+      revertirCambios = true;
+      this.snackbar.showToast('No fue posible completar la solicitud.', 3000, 'danger');
+    }
+    finally {
+      await loading.dismiss();
+    }
+
+    if (revertirCambios) {
+      try {
+        const principal = await this.profile.getStorage('principal');
+        const periodo = (principal.periodos as any[]).filter(t => t.periSeleccionado)[0];
+
+        this.periodo?.setValue(periodo.periCcod, { emitEvent: false });
+      }
+      catch { }
+    }
+  }
+  async seccionTap(data: any) {
+    let seccCcod = data.seccCcod;
+    let principal = await this.profile.getStorage('principal');
+    let programa = principal.programas[principal.programaIndex];
+    let asignaturas = programa.asignaturas as any[];
+    let seccion = asignaturas.find(item => item.seccCcod == seccCcod);
+    let params = {
+      asigCcod: seccion.asigCcod,
+      asigTdesc: seccion.asigTdesc,
+      tasgTdesc: seccion.tasgTdesc,
+      modaTdesc: seccion.modaTdesc,
+      seccCcod: seccion.seccCcod,
+      ssecNcorr: seccion.ssecNcorr,
+      asistencia: seccion.asistencia,
+      matrNcorr: programa.matrNcorr,
+      periCcod: programa.periCcod
+    };
+
+    await this.nav.navigateForward(`${this.router.url}/seccion`, { state: params });
+  }
+  async mostrarAccesosDirectos() {
+    const modal = await this.dialog.showModal({
+      component: AccesosDirectosPage,
+      componentProps: { data: this.accesosDirectos },
+      canDismiss: true,
+      presentingElement: this.routerOutlet.nativeEl
+    });
+
+    modal.onDidDismiss().then(async (result) => {
+      if (result.data) {
+      }
+    });
+  }
+  proximasEvaluaciones() {
+    if (this.global.Environment == 'Desarrollo') {
+      return this.evaluaciones;
+    }
+    let evaluaciones: any[] = [];
+
+    if (this.evaluaciones) {
+      this.evaluaciones.forEach(item => {
+        let fechaActual = moment();
+        let fechaEvaluacion = moment(item.caliFevaluacion, 'DD/MM/YYYY');
+
+        if (fechaActual.isSameOrBefore(fechaEvaluacion, 'D')) {
+          evaluaciones.push(item);
+        }
+      })
+    }
+
+    return evaluaciones;
+  }
+  resolverFechaEvaluacion(data: any) {
+    return moment(data.caliFevaluacion, 'DD/MM/YYYY').format('[<span class="dia">]DD[</span> ]MMM').replace('.', '');
+  }
+  async mostrarDetalleEstacionamiento(e: Event, modal: IonModal) {
+    e.preventDefault();
+
+    const { estados } = this.status.estacionamientos;
+
+    if (estados) {
+      await modal.present();
+    }
+  }
+  async recargarEstacionamientos() {
+    this.cargandoEstados = true;
+
+    try {
+      let sedeCcod = this.programa.sedeCcod;
+      let aepeNcorr = 1;
+      let response = await this.estacionmientosApi.getEstados(sedeCcod, aepeNcorr);
+
+      if (response.success) {
+        this.status.estacionamientos.estados = response.estados;
+        this.status.estacionamientos.perfilEstados = response.perfilEstados;
+      }
+    }
+    catch (error: any) {
+      if (error && error.status) {
+        this.error.handle(error);
+      }
+    }
+    finally {
+      this.cargandoEstados = false;
+    }
+  }
+  async verificarDatosContacto() {
+    if (this.status) {
+      const { datosContacto } = this.status;
+      const { actualizarCelular, actualizarCorreo } = datosContacto;
+      let cantidad = datosContacto.cantidad;
+
+      if (actualizarCelular == true || actualizarCorreo == true) {
+        let actualizaDatos = await this.profile.getStorage('actualizaDatos');
+
+        if (actualizaDatos) {
+          cantidad = actualizaDatos.cantidad;
+
+          let esPasado = moment(actualizaDatos.fecha, 'DD/MM/YYYY').isBefore(moment(), 'day');
+
+          if (!esPasado) {
+            return;
+          }
+        }
+
+        const currentModal = await this.modal.getTop();
+
+        if (!currentModal) {
+          await this.dialog.showModal({
+            component: DatosContactoPage,
+            componentProps: {
+              actualizarCorreo: actualizarCorreo,
+              actualizarCelular: actualizarCelular,
+              cantidad: cantidad
+            },
+            presentingElement: this.routerOutlet.nativeEl,
+            canDismiss: async (data?: any, role?: string) => {
+              if (role == 'gesture' || role == 'backdrop') {
+                return false;
+              }
+              return true
+            }
+          });
+        }
+      }
+      else {
+        await this.profile.removeStorage('actualizaDatos');
+      }
+    }
+  }
+  async verificarSaludo() {
+    let principal = await this.profile.getStorage('principal');
+    let perfil;
+
+    if (!principal) return;
+    if (principal.mostrarSaludo === false) return;
+
+    try {
+      let programa = principal.programas[principal.programaIndex];
+      let result = await this.api.getPerfilV5(programa.sedeCcod);
+
+      if (result.success) {
+        perfil = result.perfil;
+        await this.profile.setPrincipal(perfil);
+
+        if (perfil.estadoSolicitudFoto == 0) {
+          this.events.app.next({ action: 'app:foto-perfil-enviada' });
+        }
+      }
+    }
+    catch { }
+
+    // if (this.pt.is('mobileweb')) {
+    //   perfil.estadoCumpleanos = 1;
+    // }
+
+    if (perfil && perfil.estadoCumpleanos == 1) {
+      var duration = 10 * 1000;
+      var animationEnd = Date.now() + duration;
+      var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+      function randomInRange(min: number, max: number) {
+        return Math.random() * (max - min) + min;
+      }
+
+      var interval = setInterval(function () {
+        var timeLeft = animationEnd - Date.now();
+
+        if (timeLeft <= 0) {
+          return clearInterval(interval);
+        }
+
+        var particleCount = 50 * (timeLeft / duration);
+        confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+        confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+      }, 250);
+
+      await Haptics.vibrate({ duration: 5000 });
+      await this.presentarSaludo(perfil, principal);
+    }
+  }
+  async presentarSaludo(perfil: any, principal: any) {
+    const message = `Hola ${(perfil.persTnombreSocial || perfil.persTnombre)}.<br/>¡Te deseamos un muy feliz cumpleaños! <br/>Gracias por ser parte de INACAP.`
+
+    await this.dialog.showAlert({
+      keyboardClose: false,
+      backdropDismiss: false,
+      cssClass: 'success-alert',
+      header: '¡¡¡Felicidades!!!',
+      message: `<div class="image"><img src = "./assets/images/birthday.svg" width="35px" height="35px"></div>${message}`,
+      buttons: [
+        {
+          text: 'Cerrar',
+          handler: async () => { }
+        }
+      ]
+    });
+
+    principal.mostrarSaludo = false;
+
+    await this.profile.setStorage('principal', principal);
+  }
+  async credencialVirtualTap() {
+
+    // await this.dialog.showModal({
+    //   component: CredencialVirtualPage,
+    //   canDismiss: true,
+    //   presentingElement: this.routerOutlet.nativeEl
+    // })
+
+  }
+  async justificacionInasistenciaTap() {
+    if (this.mostrarJustificaEvaluacion) {
+      const principal = await this.profile.getStorage('principal');
+      const programa = principal.programas[principal.programaIndex];
+      const params = {
+        tisoCcod: 1,
+        tisoTdesc: 'Solicitud de Justificación de Inasistencia a una Evaluación',
+        planCcod: programa.planCcod
+      };
+
+      await this.nav.navigateForward(`${this.router.url}/solicitud-justificacion-inasistencia`, { state: params });
+    }
+  }
+  async alertaPracticaProfesional() {
+
+    if (!this.habilitarPracticas) {
+      await this.dialog.showAlert({
+        cssClass: 'warning-alert',
+        header: 'Práctica Profesional',
+        message: `<div class="image"><img src="./assets/images/warning.svg" /><br />El módulo de práctica profesional estará disponible una vez obtenidos los créditos necesarios, según su plan de estudio.</div>`,
+        buttons: [{
+          text: 'Aceptar'
+        }]
+      });
+    }
+
+  }
+  // async perfilTap() {
+  //   const modal = await this.dialog.showModal({
+  //     component: PerfilPage,
+  //     componentProps: {
+  //       rootPage: PrincipalPage
+  //     },
+  //     canDismiss: true,
+  //     presentingElement: this.routerOutlet.nativeEl
+  //   });
+
+  //   modal.onDidDismiss().then(async (result) => {
+  //     if (result.data) {
+  //       if (result.data.cuentaCorriente === true) {
+  //         await this.router.navigate(['alumno/servicios/cuenta-corriente'])
+  //       }
+  //     }
+  //   });
+
+  //   await modal.present();
+  // }
+  async moodleTap() {
+    try {
+      let auth = await this.auth.getAuth();
+      let token = encodeURIComponent(auth.private_token);
+      let url = `https://siga.inacap.cl/inacap.api.movil/Moodle?user=${auth.user.data.persNcorr}&token=${token}`;
+
+      await this.utils.openLink(url);
+    }
+    catch {
+      await this.utils.openLink(this.urlMoodle);
+    }
+    finally {
+      this.api.marcarVista(VISTAS_ALUMNO.AAI);
+    }
+  }
+  async moodleOnlineTap() {
+    await this.utils.openLink('https://spcv.eclass.com/sso/spinitsso-redirect-cv?id=19&portal=811&campus=1104');
+  }
+  async mostrarEvaluaciones() {
+    await this.evaluacionesMdl.present();
+  }
+  notificacionesTap() {
+    this.events.app.next({ action: 'app:alumno-notificaciones' });
+  }
+  resolverEstado(estadoClase: any) {
+    switch (estadoClase) {
+      case 1:
+        return ['green'];
+      default:
+        return 'gray';
+    }
+  }
+  resolverNotaRojo(nota: number) {
+    if (nota < 4) {
+      return 'rojo';
+    }
+    return '';
+  }
+  resolverAsistenciaRojo(asistencia: number) {
+    if (asistencia < 60) {
+      return 'rojo';
+    }
+    return '';
+  }
+  resolverAsistencia(asistenca: number) {
+    return Math.round(asistenca);
+  }
+  async ocultarDescatado(index: number, e: any) {
+    e.stopPropagation();
+    if (index == 0) this.principal.mostrarDescatados = false;
+    if (index == 1) this.principal.mostrarEstacionamientos = false;
+    if (index == 2) this.principal.mostrarFotoPerfil = false;
+
+    await this.profile.setStorage('principal', this.principal);
+  }
+  groupBy(xs: any[], key: string) {
+    return xs.reduce(function (rv, x) {
+      (rv[x[key]] = rv[x[key]] || []).push(x);
+      return rv;
+    }, {});
+  }
+  get mostrarNotificaciones() {
+    return this.global.NotificationFlag;
+  }
+  get periodo() { return this.periodoForm.get('periodo'); }
+  get estacionamiento() {
+    if (this.mostrarEstacionamientos) {
+      const { estacionamientos } = this.status;
+      const { postulacion, estados } = estacionamientos;
+
+      if (estados.disponibles > 0) {
+        return { cls: 'success', text: 'Estacionamientos disponibles', icon: postulacion.aeveTicono }
+      }
+      else {
+        return { cls: 'danger', text: 'Estacionamiento completo', icon: postulacion.aeveTicono }
+      }
+    }
+
+    return { cls: 'secondary', text: 'No Disponible', icon: 'error' };
+  }
+  get mostrarEstacionamientos() {
+    if (this.principal && !this.principal.mostrarEstacionamientos) {
+      return false;
+    }
+
+    if (this.status && this.status.estacionamientos) {
+      const { estacionamientos } = this.status;
+      const { postulacion, perfilEstados } = estacionamientos;
+
+      if (perfilEstados && perfilEstados.estado == 1) {
+        if (postulacion && postulacion.aepeCcod == 2) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+  get destacado() {
+    if (this.status && this.status.destacado) {
+      return this.status.destacado;
+    }
+  }
+  get mostrarDestacados() {
+    if (this.status && this.status.destacado) {
+      if (this.principal.mostrarDescatados) {
+        return true;
+      }
+    }
+    return false;
+  }
+  get mostrarJustificaEvaluacion() {
+    if (this.status) {
+      return this.status.justificaEvaluacion === true;
+    }
+    return false;
+  }
+  get mostrarPostulaciones() {
+    if (this.status && this.status.delegados) {
+      return this.status.delegados.postulaciones.habilita == true;
+    }
+    return false;
+  }
+  get mostrarVotaciones() {
+    if (this.status && this.status.delegados) {
+      return this.status.delegados.votaciones.habilita == true;
+    }
+    return false;
+  }
+  get mostrarReservaEspacios() {
+    if (this.status) {
+      return this.status.reservaEspacios == 1;
+    }
+    return false;
+  }
+  get resolverDestacado() {
+    let html = '';
+
+    if (this.destacado) {
+      if (this.destacado.link) {
+        html += `<a href="${this.destacado.link}">${this.destacado.titulo}</a>`;
+      }
+      else {
+        html += `<div>${this.destacado.titulo}</div>`;
+      }
+    }
+
+    return html;
+  }
+  get mostrarOnline() {
+    if (this.programa && this.programa.sedeCcod == 47) {
+      return true;
+    }
+    return false;
+  }
+  get habilitarPracticas() {
+    if (this.status) {
+      return this.status.habilitaPractica == 1;
+    }
+
+    return false;
+  }
+  async logout() {
+    await this.auth.tryLogout();
+  }
+  get version() {
+    return this.global.Version;
+  }
+
+}

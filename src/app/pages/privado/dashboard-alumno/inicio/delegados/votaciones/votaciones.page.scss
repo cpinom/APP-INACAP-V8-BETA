@@ -1,0 +1,49 @@
+.primary-card {
+    margin-bottom:  0 !important;
+}
+
+section.bienvenida {
+    margin-bottom: 30px;
+    margin-top: 15px;
+
+    .section-content {
+        color: #4a4a4a;
+        padding: 15px;
+        line-height: 21px;
+
+        .url {
+            display: block;
+            margin-top: 18px;
+        }
+    }
+}
+
+ion-slide {
+    display: block;
+    text-align: inherit;
+}
+
+ion-list.candidatos {
+    margin-top: 15px;
+    ion-item {
+        --padding-start: 0;
+
+        ion-radio {
+            margin-right: 20px;
+        }
+
+        ion-label {
+            display: flex;
+            align-items: center;
+            font-size: 18px !important;
+            font-weight: 500;
+
+            ion-avatar {
+                margin-right: 10px;
+                height: 80px;
+                width: 80px;
+                flex: 0 0 80px;
+            }
+        }
+    }
+}

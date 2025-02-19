@@ -1,0 +1,28 @@
+ion-header {
+  ion-card {
+    margin-bottom: 0 !important;
+  }
+}
+
+ion-content {
+  .tabs-wrapper {
+    margin-top: 15px;
+  }
+  .invalid {
+    margin: 5px 15px;
+    font-size: var(--FS12);
+    color: var(--ion-color-danger);
+  }
+
+  p.label {
+    font-size: var(--FS14);
+    margin-bottom: 6px;
+    white-space: normal;
+  }
+
+  p.detail {
+    font-size: var(--FS16);
+    color: var(--color);
+    white-space: normal;
+  }
+}

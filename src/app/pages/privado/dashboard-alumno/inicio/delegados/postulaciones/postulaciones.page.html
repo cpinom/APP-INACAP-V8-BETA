@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Inicio" defaultHref="/alumno/inicio"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card class="primary-card" color="white" *ngIf="mostrarData && data">
+    <ion-card-header>
+      <ion-card-title>{{data.titulo}}</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+
+  <div class="loaderInacap" *ngIf="!hideLoadingSpinner">
+    <ion-spinner name="lines" color="info"></ion-spinner>
+  </div>
+
+  <ng-container *ngIf="mostrarData && data">
+
+    <section class="first bienvenida">
+      <div class="section-header">Información previa</div>
+      <div class="section-content">
+        <ng-container *ngIf="data.contestada == false">
+          <span [innerHTML]="data.bienvenida"></span>
+          <span class="url" *ngIf="data.link">Para más información puedes <a delegate [href]="data.link">ingresar aquí.</a></span>
+        </ng-container>
+        <ng-container *ngIf="data.contestada == true">
+          <span [innerHTML]="data.bienvenida"></span>
+        </ng-container>
+      </div>
+    </section>
+
+    <section class="btn-presenta" *ngIf="!data.contestada">
+      <ion-button color="info" shape="round" expand="block" (click)="postular()">Postularme como Delegado</ion-button>
+      <ion-button color="info" shape="round" expand="block" fill="outline" (click)="rechazar()">No quiero participar</ion-button>
+    </section>
+
+    <section class="btn-contestada" *ngIf="data.contestada == true && data.respuesta == data.evento.postulaOk">
+      <ion-button color="info" shape="round" expand="block" (click)="postular()">Confirmo Postulación</ion-button>
+      <ion-button color="info" shape="round" expand="block" fill="outline" (click)="cancelar()">Cancelar Postulación</ion-button>
+    </section>
+
+  </ng-container>
+
+  <section class="empty-state" *ngIf="mostrarData && !data">
+    <div>
+      <ion-icon src="assets/icon/group.svg"></ion-icon>
+      <p>Información no disponible. Contáctese con su DAE para mayor información.</p>
+    </div>
+  </section>
+
+</ion-content>

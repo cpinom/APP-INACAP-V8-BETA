@@ -1,0 +1,109 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Servicios" defaultHref="/alumno/servicios"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-card class="primary-card" color="white">
+    <ion-card-header>
+      <ion-card-title>Visualización de Pagos</ion-card-title>
+    </ion-card-header>
+    <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar>
+  </ion-card>
+
+  <ng-container *ngIf="mostrarData && info">
+
+    <section>
+      <div class="section-content">
+        <ion-list>
+          <ion-item>
+            <!-- <ion-label position="stacked">Institución</ion-label> -->
+            <ion-input label="Institución" labelPlacement="stacked" type="text" [value]="info.institucion" [readonly]="true"></ion-input>
+          </ion-item>
+        </ion-list>
+      </div>
+    </section>
+
+    <section class="section-totales">
+      <div class="section-content">
+        <div>SALDO TOTAL (*)</div>
+        <div>$ {{info.totalPagar}}</div>
+      </div>
+    </section>
+
+    <ion-button class="btn-pagar" color="info" shape="round" expand="full" (click)="pagar()">
+      <ion-label>Pagar</ion-label>
+    </ion-button>
+
+    <section class="section-saldos">
+      <div class="section-content">
+        <div class="box" *ngIf="semestreAnterior">
+          <div class="box-title">Semestres Anteriores</div>
+          <div class="box-content">$ {{info.semanterior}}</div>
+        </div>
+        <div class="box">
+          <div class="box-title">Semestres Actual</div>
+          <div class="box-content">$ {{info.total}}</div>
+          <div class="box-footer">
+            <div>
+              <b>Compromisos Semestre</b>
+              <b>${{info.compromiso}}</b>
+            </div>
+            <div>
+              <span>Financiamiento Estatal (**)</span>
+              <span>${{info.estatal}}</span>
+            </div>
+            <div>
+              <span>Beneficios INACAP</span>
+              <span>${{info.beneficiosInacap}}</span>
+            </div>
+            <div>
+              <span>Otros Beneficios</span>
+              <span>${{info.otrosBeneficios}}</span>
+            </div>
+            <div>
+              <span>Otros Abonos</span>
+              <span>${{info.otrosAbonos}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="leyendas">
+          <p>(*) Valores válidos a la fecha: {{fechaActual}}</p>
+          <p>(**) El Financiamiento informado está sujeto a ratificación por las entidades competentes (MINEDUC /
+            INGRESA según corresponda). De no ser ratificados, los montos a pagar son los establecidos en el contrato de
+            prestación de servicios educacionales correspondiente.</p>
+        </div>
+      </div>
+    </section>
+
+    <ion-card class="section-otros" [routerLink]="['detalle-cuenta', institucion, carrera]">
+      <ion-card-content>
+        <ion-item detail="true" lines="none">Ver Detalle De Cuenta Corriente</ion-item>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="section-otros" [routerLink]="['beneficios', institucion, carrera, compNdocto]">
+      <ion-card-content>
+        <ion-item detail="true" lines="none">Ver Detalle De Beneficios</ion-item>
+      </ion-card-content>
+    </ion-card>
+
+  </ng-container>
+
+  <section *ngIf="mostrarData && !info" class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Información no disponible en este momento.</p>
+      <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+    </div>
+  </section>
+
+</ion-content>

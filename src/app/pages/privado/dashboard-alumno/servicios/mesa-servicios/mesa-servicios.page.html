@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Servicios" defaultHref="/alumno/servicios"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card class="primary-card" color="white">
+    <ion-card-header>
+      <ion-card-title>Mesa de Servicios TI</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+
+  <section>
+    <div class="section-content">
+      <ion-list>
+        <ion-item detail="false" href="tel:+56224305700" role="button">
+          <ion-icon slot="start" src="assets/icon/local_phone.svg"></ion-icon>
+          <ion-label>+562 24305700</ion-label>
+        </ion-item>
+        <ion-item detail="false" (click)="correo()">
+          <ion-icon slot="start" src="assets/icon/email.svg"></ion-icon>
+          <ion-label>ayuda&#64;inacap.cl</ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+
+</ion-content>

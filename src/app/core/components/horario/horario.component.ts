@@ -32,7 +32,11 @@ export class HorarioComponent implements OnInit {
   fecha: any;
   eventos: any;
   cargando = false;
-  myView: MbscEventcalendarView = { agenda: { type: 'week' } };
+  // myView: MbscEventcalendarView = { agenda: { type: 'week' } };
+  myView: MbscEventcalendarView = {
+    calendar: { type: 'week' },
+    agenda: { type: 'day' },
+  };
   pickerLocale = localeEs;
 
   private alumnoApi = inject(AlumnoService);
@@ -45,7 +49,7 @@ export class HorarioComponent implements OnInit {
 
     moment.locale('es');
 
-    this.theme = this.pt.is('ios') ? 'ios' : 'material';
+    this.theme = 'ios'; //this.pt.is('ios') ? 'ios' : 'material';
     this.themeVariant = this.profile.isDarkMode() ? 'dark' : 'light';
 
     screen.orientation.addEventListener("change", () => {

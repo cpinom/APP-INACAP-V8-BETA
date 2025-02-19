@@ -93,7 +93,7 @@ export class SedeComponent implements OnInit {
         throw Error();
       }
     }
-    catch (error) {
+    catch (error: any) {
       this.onError.emit(error);
     }
     finally {
@@ -155,7 +155,7 @@ export class SedeComponent implements OnInit {
         }
       }
     }
-    catch (error) {
+    catch (error: any) {
       this.error.handle(error, undefined, true);
     }
     finally {

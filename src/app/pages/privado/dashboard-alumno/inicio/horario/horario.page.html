@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Inicio" [defaultHref]="backUrl"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Horario</ion-title>
+  </ion-toolbar>
+  <!-- <ion-card class="primary-card" color="white" *ngIf="mostrarTitulo">
+    <ion-card-header>
+      <ion-card-title>Horario</ion-card-title>
+    </ion-card-header>
+    <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar>
+  </ion-card> -->
+</ion-header>
+
+<ion-content>
+
+  <ng-container *ngIf="mostrarData">
+    <horario-comp rol="alumno" (onEventoTap)="onEventoTap($event)" (onAfterLoad)="onAfterLoad($event)"
+      (onCompleteLoad)="onCompleteLoad($event)" (onError)="onError($event)"
+      (onChangeOrientation)="onChangeOrientation($event)"></horario-comp>
+  </ng-container>
+
+  <section *ngIf="mostrarError" class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Información no disponible en este momento.</p>
+      <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+    </div>
+  </section>
+</ion-content>

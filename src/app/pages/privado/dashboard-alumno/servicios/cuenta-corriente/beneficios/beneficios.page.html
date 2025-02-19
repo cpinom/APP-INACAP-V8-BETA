@@ -1,0 +1,171 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Cuenta Corriente" defaultHref="/alumno/servicios/cuenta-corriente"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card class="primary-card" color="white">
+    <ion-card-header>
+      <ion-card-title>Detalle Beneficios</ion-card-title>
+    </ion-card-header>
+    <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar>
+  </ion-card>
+
+  <!-- <div class="loaderInacap" *ngIf="!hideLoadingSpinner">
+    <ion-spinner name="lines" color="info"></ion-spinner>
+  </div> -->
+
+  <ng-container *ngIf="mostrarData">
+
+    <section>
+      <form [formGroup]="form">
+        <div class="section-content">
+          <ion-list>
+            <ion-item>
+              <!-- <ion-label position="stacked">Institución</ion-label> -->
+              <ion-select label="Institución" labelPlacement="stacked" formControlName="institucion" okText="Aceptar" cancelText="Cancelar">
+                <ion-select-option [value]="item.instCcod" *ngFor="let item of instituciones">{{item.instTrazonSocial}}
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-item>
+              <!-- <ion-label position="stacked">Semestre</ion-label> -->
+              <ion-select label="Semestre" labelPlacement="stacked" formControlName="semestre" okText="Aceptar" cancelText="Cancelar">
+                <ion-select-option [value]="1">Actual</ion-select-option>
+                <ion-select-option [value]="2">Todos</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-item>
+              <!-- <ion-label position="stacked">Beneficio</ion-label> -->
+              <ion-select label="Beneficio" labelPlacement="stacked" formControlName="beneficio" okText="Aceptar" cancelText="Cancelar" placeholder="Seleccione...">
+                <ion-select-option [value]="item.beneficio" *ngFor="let item of beneficios">{{item.filtro}}
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-list>
+        </div>
+      </form>
+    </section>
+
+    <section class="section-detalle" *ngIf="beneficio.value == 1">
+      <div class="section-header">Financiamiento Estatal</div>
+      <div class="section-content">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nombre Beneficio</th>
+              <th>Semestre</th>
+              <th>Monto</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of conceptos">
+              <td>{{item.nombre}}</td>
+              <td>{{item.periodo}}</td>
+              <td>${{item.monto}}</td>
+              <td class="amber-text">{{item.estado}}</td>
+            </tr>
+            <tr *ngIf="conceptos.length == 0">
+              <td colspan="4" class="ion-text-center">Sin registros...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section-detalle" *ngIf="beneficio.value == 2">
+      <div class="section-header">Beneficios INACAP</div>
+      <div class="section-content">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nombre Beneficio</th>
+              <th>Semestre</th>
+              <th>Monto</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of conceptos">
+              <td>{{item.nombre}}</td>
+              <td>{{item.periodo}}</td>
+              <td>${{item.monto}}</td>
+            </tr>
+            <tr *ngIf="conceptos.length == 0">
+              <td colspan="3" class="ion-text-center">Sin registros...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section-detalle" *ngIf="beneficio.value == 3">
+      <div class="section-header">Otros Beneficios</div>
+      <div class="section-content">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nombre Beneficio</th>
+              <th>Semestre</th>
+              <th>Monto</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of conceptos">
+              <td>{{item.nombre}}</td>
+              <td>{{item.periodo}}</td>
+              <td>${{item.monto}}</td>
+            </tr>
+            <tr *ngIf="conceptos.length == 0">
+              <td colspan="3" class="ion-text-center">Sin registros...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section-detalle" *ngIf="beneficio.value == 4">
+      <div class="section-header">Cheques en Cartera</div>
+      <div class="section-content">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>N&uacute;mero de Cheque</th>
+              <th>Semestre</th>
+              <th>Monto</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of conceptos">
+              <td>{{item.numero}}</td>
+              <td>{{item.periodo}}</td>
+              <td>${{item.monto}}</td>
+              <td class="amber-text">{{item.estado}}</td>
+            </tr>
+            <tr *ngIf="conceptos.length == 0">
+              <td colspan="4" class="ion-text-center">Sin registros...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section-saldos">
+      <div class="section-content">
+        <div class="leyendas">
+          <p>(*) Valores válidos a la fecha: {{fechaActual}}</p>
+          <p>(**) El Financiamiento informado está sujeto a ratificación por las entidades competentes (MINEDUC /
+            INGRESA según corresponda). De no ser ratificados, los montos a pagar son los establecidos en el contrato de
+            prestación de servicios educacionales correspondiente.</p>
+        </div>
+      </div>
+    </section>
+
+  </ng-container>
+
+</ion-content>

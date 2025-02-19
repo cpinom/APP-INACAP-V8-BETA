@@ -1,0 +1,47 @@
+ion-header {
+    ion-card {
+        margin-bottom: 0 !important;
+    }
+}
+
+ion-content {
+    ion-item {
+        --padding-start: 15px;
+    }
+    section {
+        h2 {
+            font-weight: 500;
+            margin-top: 0;
+            margin-bottom: 2px;
+        }
+
+        p {
+            margin: 0;
+            color: var(--ion-color-medium);
+
+            a {
+                text-decoration: none;
+            }
+        }
+
+        ion-icon {
+            margin-inline-start: 12px;
+        }
+    }
+
+    ion-card.secondary-card {
+        margin-top: 0 !important;
+        ion-card-content {
+            ul {
+                margin-top: 0;
+                list-style: disc;
+                padding-left: 20px;
+            }
+        }
+    }
+}
+
+#empty-state {
+    color: var(--ion-color-medium);
+    font-style: italic;
+}

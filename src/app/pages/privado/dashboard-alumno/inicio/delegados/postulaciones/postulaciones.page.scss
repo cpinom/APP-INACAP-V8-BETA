@@ -1,0 +1,36 @@
+
+section.bienvenida {
+    margin-bottom: 30px;
+
+    .section-content {
+        // color: #4a4a4a;
+        padding: 15px;
+        line-height: 21px;
+
+        .url {
+            display: block;
+            margin-top: 18px;
+        }
+    }
+}
+section.btn-presenta {
+    ion-button[fill="outline"] {
+        margin-top: 12px;
+        
+        &::part(native) {
+            border-width: 2px;
+        }
+    }
+}
+section.btn-contestada {
+    display: flex;
+    flex-direction: column;
+
+    ion-button[fill="outline"] {
+        margin-top: 12px;
+        
+        &::part(native) {
+            border-width: 2px;
+        }
+    }
+}

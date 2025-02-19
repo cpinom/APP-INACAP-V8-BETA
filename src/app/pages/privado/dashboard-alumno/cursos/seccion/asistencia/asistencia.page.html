@@ -1,0 +1,217 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Curso" [defaultHref]="backUrl"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-card color="white" class="primary-card">
+    <ion-card-header>
+      <ion-card-title>Asistencia</ion-card-title>
+      <ion-card-subtitle>{{asignatura}}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar>
+  </ion-card>
+</ion-header>
+
+<ion-content>
+
+  <!-- <section class="first" *ngIf="mostrarData">
+    <div class="section-content">
+
+      <div class="tabs" *ngIf="detalleAsistencia.asistenciaCC.length">
+        <ion-segment [(ngModel)]="tabModel" mode="md" [swipeGesture]="false">
+          <ion-segment-button [value]="0">
+            <ion-label>Asistencia</ion-label>
+          </ion-segment-button>
+          <ion-segment-button [value]="1">
+            <ion-label>Campos Clínicos</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </div>
+
+      <ng-container *ngIf="tabModel == 0">
+
+        <ion-accordion-group *ngIf="asistencia[3].length" style="margin: 15px;" expand="inset">
+          <ion-accordion value="first">
+            <ion-item slot="header" color="light">
+              <ion-label>Próximas</ion-label>
+              <ion-badge slot="end" color="info">{{asistencia[3].length}}</ion-badge>
+            </ion-item>
+            <div slot="content">
+              <ion-list slot="content">
+                <ion-item *ngFor="let item of asistencia[3]">
+                  <ion-icon slot="start" src="assets/icon/{{resolverIcon(item.title)}}.svg" [color]="resolverColor(item.title)"></ion-icon>
+                  <ion-label>
+                    <h2 style="display: flex;">
+                      <div style="width: 40px; text-align: center;">{{item.dia.substr(0,3).toLowerCase()}}</div> {{item.fecha}}</h2>
+                  </ion-label>
+                </ion-item>
+              </ion-list>
+            </div>
+          </ion-accordion>
+        </ion-accordion-group>
+    
+        <section *ngIf="asistencia[0].length">
+          <div class="section-header">Esta semana</div>
+          <div class="section-content">
+            <ion-list>
+              <ion-item *ngFor="let item of asistencia[0]">
+                <ion-icon slot="start" src="assets/icon/{{resolverIcon(item.title)}}.svg" [color]="resolverColor(item.title)"></ion-icon>
+                <ion-label>
+                  <h2>{{item.fecha}}</h2>
+                  <p>{{item.title}}</p>
+                </ion-label>
+                <ion-badge slot="end" color="info" *ngIf="item.hrs">{{item.hrs}} horas</ion-badge>
+              </ion-item>
+            </ion-list>
+          </div>
+        </section>
+    
+        <section *ngIf="asistencia[1].length">
+          <div class="section-header">Mensuales</div>
+          <div class="section-content">
+            <ion-list>
+              <ion-item *ngFor="let item of asistencia[1]">
+                <ion-icon slot="start" src="assets/icon/{{resolverIcon(item.title)}}.svg" [color]="resolverColor(item.title)"></ion-icon>
+                <ion-label>
+                  <h2>{{item.fecha}}</h2>
+                  <p>{{item.title}}</p>
+                </ion-label>
+                <ion-badge slot="end" color="info" *ngIf="item.hrs">{{item.hrs}} horas</ion-badge>
+              </ion-item>
+            </ion-list>
+          </div>
+        </section>
+    
+        <section *ngIf="asistencia[2].length">
+          <div class="section-header">Anteriores</div>
+          <div class="section-content">
+            <ion-list>
+              <ion-item *ngFor="let item of asistencia[2]">
+                <ion-icon slot="start" src="assets/icon/{{resolverIcon(item.title)}}.svg" [color]="resolverColor(item.title)"></ion-icon>
+                <ion-label>
+                  <h2>{{item.fecha}}</h2>
+                  <p>{{item.title}}</p>
+                </ion-label>
+                <ion-badge slot="end" color="info" *ngIf="item.hrs">{{item.hrs}} horas</ion-badge>
+              </ion-item>
+            </ion-list>
+          </div>
+        </section>
+    
+        <section *ngIf="listado.length === 0" class="empty-state">
+          <div>
+            <ion-icon src="assets/icon/info.svg"></ion-icon>
+            <p>Sin registros en este momento.</p>
+          </div>
+        </section>
+
+      </ng-container>
+
+      <ng-container *ngIf="tabModel == 1">
+        <ion-list>
+          <ion-item *ngFor="let item of detalleAsistencia.asistenciaCC">
+            <ion-icon slot="start" src="assets/icon/radio_button_unchecked.svg" *ngIf="item.apesNasistencia == 0"></ion-icon>
+            <ion-icon slot="start" src="assets/icon/check_circle_outline.svg" color="success" *ngIf="item.apesNasistencia == 1"></ion-icon>
+            <ion-icon slot="start" src="assets/icon/highlight_off.svg" color="danger" *ngIf="item.apesNasistencia == 2"></ion-icon>
+            <ion-label>
+              <h2>{{item.apcvFmodulo}}</h2>
+              <p>Sin registro</p>
+            </ion-label>
+            <ion-button size="small" fill="outline" slot="end" (click)="registrarAsistencia(item)" *ngIf="item.apesNasistencia == 0">Registrar Asistencia</ion-button>
+          </ion-item>
+        </ion-list>
+      </ng-container>
+
+    </div>
+
+  </section> -->
+
+  <ng-container *ngIf="mostrarData && asistencia">
+
+    <ion-accordion-group *ngIf="asistencia[3].length" style="margin: 15px;" expand="inset">
+      <ion-accordion value="first">
+        <ion-item slot="header" color="light">
+          <ion-label>Próximas</ion-label>
+          <ion-badge slot="end" color="info">{{asistencia[3].length}}</ion-badge>
+        </ion-item>
+        <div slot="content">
+          <ion-list slot="content">
+            <ion-item *ngFor="let item of asistencia[3]">
+              <ion-icon slot="start" src="assets/icon/{{resolverIcon(item.title)}}.svg" [color]="resolverColor(item.title)"></ion-icon>
+              <ion-label>
+                <h2 style="display: flex;">
+                  <div style="width: 40px; text-align: center;">{{item.dia.substr(0,3).toLowerCase()}}</div> {{item.fecha}}</h2>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+        </div>
+      </ion-accordion>
+    </ion-accordion-group>
+
+    <section *ngIf="asistencia[0].length">
+      <div class="section-header">Esta semana</div>
+      <div class="section-content">
+        <ion-list>
+          <ion-item *ngFor="let item of asistencia[0]">
+            <ion-icon slot="start" src="assets/icon/{{resolverIcon(item.title)}}.svg" [color]="resolverColor(item.title)"></ion-icon>
+            <ion-label>
+              <h2>{{item.fecha}}</h2>
+              <p>{{item.title}}</p>
+            </ion-label>
+            <ion-badge slot="end" color="info" *ngIf="item.hrs">{{item.hrs}} horas</ion-badge>
+          </ion-item>
+        </ion-list>
+      </div>
+    </section>
+
+    <section *ngIf="asistencia[1].length">
+      <div class="section-header">Mensuales</div>
+      <div class="section-content">
+        <ion-list>
+          <ion-item *ngFor="let item of asistencia[1]">
+            <ion-icon slot="start" src="assets/icon/{{resolverIcon(item.title)}}.svg" [color]="resolverColor(item.title)"></ion-icon>
+            <ion-label>
+              <h2>{{item.fecha}}</h2>
+              <p>{{item.title}}</p>
+            </ion-label>
+            <ion-badge slot="end" color="info" *ngIf="item.hrs">{{item.hrs}} horas</ion-badge>
+          </ion-item>
+        </ion-list>
+      </div>
+    </section>
+
+    <section *ngIf="asistencia[2].length">
+      <div class="section-header">Anteriores</div>
+      <div class="section-content">
+        <ion-list>
+          <ion-item *ngFor="let item of asistencia[2]">
+            <ion-icon slot="start" src="assets/icon/{{resolverIcon(item.title)}}.svg" [color]="resolverColor(item.title)"></ion-icon>
+            <ion-label>
+              <h2>{{item.fecha}}</h2>
+              <p>{{item.title}}</p>
+            </ion-label>
+            <ion-badge slot="end" color="info" *ngIf="item.hrs">{{item.hrs}} horas</ion-badge>
+          </ion-item>
+        </ion-list>
+      </div>
+    </section>
+
+    <section *ngIf="listado.length === 0" class="empty-state">
+      <div>
+        <ion-icon src="assets/icon/info.svg"></ion-icon>
+        <p>Sin registros en este momento.</p>
+      </div>
+    </section>
+
+  </ng-container>
+
+  <section *ngIf="mostrarData && !asistencia" class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Información no disponible en este momento.</p>
+      <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+    </div>
+  </section>
+
+</ion-content>

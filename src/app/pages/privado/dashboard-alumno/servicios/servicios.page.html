@@ -1,0 +1,96 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Servicios</ion-title>
+    <ion-buttons slot="start">
+      <ion-button icon-only routerLink="configuraciones" role="button" aria-label="Ver notificaciones">
+        <ion-icon src="assets/icon/settings.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button icon-only (click)="notificacionesTap()" role="button" aria-label="Ver notificaciones">
+        <ion-icon src="assets/icon/notifications.svg"></ion-icon>
+        <ion-badge *ngIf="mostrarNotificaciones">1</ion-badge>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <section class="first">
+    <div class="section-header">Servicios Académicos</div>
+    <div class="section-content">
+      <ion-list>
+        <ion-item detail="true" routerLink="asesor-pedagogico">
+          <ion-label>Asesor Pegadógico</ion-label>
+        </ion-item>
+        <!-- <ion-item detail="true" routerLink="bibliotecas">
+          <ion-label>Biblioteca</ion-label>
+        </ion-item> -->
+        <ion-item detail="true" (click)="bibliotecasTap()">
+          <ion-label>Buscador de Bibliotecas</ion-label>
+        </ion-item>
+        <ion-item detail="true" routerLink="buscador-docente" *ngIf="perfilOk && mostrarBuscadorDocentes">
+          <ion-label>Buscador de Docentes</ion-label>
+        </ion-item>
+        <!-- <ion-item detail="true" routerLink="clinicas-academicas">
+          <ion-label>Clínicas Académicas</ion-label>
+        </ion-item> -->
+        <ion-item detail="true" routerLink="director-carrera" *ngIf="perfilOk">
+          <ion-label>Director de Carrera</ion-label>
+        </ion-item>
+        <ion-item detail="true" routerLink="docentes" *ngIf="perfilOk">
+          <ion-label>Docentes</ion-label>
+        </ion-item>
+        <ion-item detail="true" routerLink="emplea-inacap">
+          <ion-label>Emplea INACAP</ion-label>
+        </ion-item>
+        <ion-item detail="true" routerLink="ofertas-practica" *ngIf="practica">
+          <ion-label>Ofertas de Práctica Profesional</ion-label>
+        </ion-item>
+        <ion-item detail="true" routerLink="solicitudes-academicas" *ngIf="mostrarSolicitudes">
+          <ion-label>Solicitudes Académicas</ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-header">Servicios Administrativos</div>
+    <div class="section-content">
+      <ion-list>
+        <ion-item detail="true" routerLink="solicitud-soporte" *ngIf="mostrarCentroAyuda">
+          <ion-label>Centro de Atención</ion-label>
+        </ion-item>
+        <ion-item detail="true" routerLink="certificados" *ngIf="mostrarCertificados">
+          <ion-label>Certificados</ion-label>
+        </ion-item>
+        <ion-item detail="true" routerLink="consulta-bip" *ngIf="mostrarBip">
+          <ion-label>Consulta bip!</ion-label>
+        </ion-item>
+        <ion-item detail="true" routerLink="credenciales-digitales">
+          <ion-label>Mis Certificados Intermedios</ion-label>
+        </ion-item>
+        <ion-item detail="true" routerLink="cuenta-corriente">
+          <ion-label>Visualización de Pagos</ion-label>
+        </ion-item>
+        <ion-item detail="true" routerLink="devolucion-gratuidad">
+          <ion-label>Devolución Gratuidad</ion-label>
+        </ion-item>
+        <ion-item detail="true" routerLink="mesa-servicios">
+          <ion-label>Mesa de Servicios TI</ion-label>
+        </ion-item>
+        <ion-item detail="true" routerLink="portal-pagos">
+          <ion-label>Portal de Pagos</ion-label>
+        </ion-item>
+        <ion-item detail="true" routerLink="situaciones-pendientes">
+          <ion-label>Situaciones Pendientes</ion-label>
+        </ion-item>
+        <ion-item detail="true" routerLink="solicitud-estacionamiento">
+          <ion-label>Solicitud de Estacionamiento</ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+
+</ion-content>

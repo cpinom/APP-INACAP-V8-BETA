@@ -1,0 +1,124 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Servicios" defaultHref="/alumno/servicios"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="recargar()">
+        <ion-icon src="assets/icon/calendar_today.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card class="periodos primary-card" color="white">
+    <ion-card-header>
+      <ion-card-title>Mis Certificados Intermedios</ion-card-title>
+      <ion-card-subtitle>Credenciales disponibles</ion-card-subtitle>
+      <!-- <ion-card-subtitle *ngIf="periodo">{{periodo.periTdesc}}</ion-card-subtitle> -->
+    </ion-card-header>
+    <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar>
+  </ion-card>
+
+  <section class="carreras first" *ngIf="carreras && carreras.length">
+    <div class="section-header">Mis Carreras</div>
+    <div class="section-content">
+      <form [formGroup]="carreraForm">
+        <ion-list>
+          <ion-item *ngIf="carreras && carreras.length">
+            <ion-select placeholder="Seleccione..." [interfaceOptions]="{ header: 'Mis Carreras' }"
+              interface="action-sheet" formControlName="carrera" cancelText="Cancelar">
+              <ion-select-option [value]="item" *ngFor="let item of carreras" style="white-space: normal">
+                {{item.espeTdesc}}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-list>
+      </form>
+    </div>
+  </section>
+
+  <ion-list inset="true" *ngIf="certificados && certificados.length">
+    <ion-item *ngFor="let item of certificados" detail="true" class="ion-activatable" (click)="solicitar(item)">
+      <ion-icon slot="start" src="assets/icon/verified.svg" class="cert"></ion-icon>
+      <ion-label>
+        <h2>{{item.tdetTdesc}}</h2>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <!-- <ion-modal class="modal-credencial" #mdldetalle trigger="open-modal" [initialBreakpoint]="0.5" [breakpoints]="[0.5]">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="end">
+            <ion-button [strong]="true" (click)="mdldetalle.dismiss()">Cerrar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ng-container *ngIf="certificado">
+          <ion-list inset="true">
+            <ion-item lines="none" class="ion-activatable">
+              <ion-icon slot="start" src="assets/icon/verified.svg" class="cert"></ion-icon>
+              <ion-label>
+                <h2>{{certificado.tdetTdesc}}</h2>
+                <p class="cursos">Asignaturas que comprende este certificado</p>
+                <ul>
+                  <li *ngFor="let item of certificado.asignaturas">{{item.asigTdesc}}</li>
+                </ul>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+          <section>
+            <ion-button expand="block" shape="round" color="info" (click)="compartir(mdldetalle)">Compartir</ion-button>
+          </section>
+        </ng-container>
+      </ion-content>
+    </ng-template>
+  </ion-modal> -->
+
+  <!-- <section *ngIf="mostrarCargando">
+    <div class="section-content">
+      <ion-list>
+        <ion-item>
+          <ion-label>
+            <ion-skeleton-text animated style="width: 70%;"></ion-skeleton-text>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <ion-skeleton-text animated style="width: 80%;"></ion-skeleton-text>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <ion-skeleton-text animated style="width: 40%;"></ion-skeleton-text>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <ion-skeleton-text animated style="width: 60%;"></ion-skeleton-text>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section> -->
+
+  <section *ngIf="!mostrarCargando && certificados && certificados.length == 0" class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/new_releases.svg"></ion-icon>
+      <p>No existen Certificados Intermedios para tu carrera.</p>
+    </div>
+  </section>
+
+  <section *ngIf="mostrarError" class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/warning.svg"></ion-icon>
+      <p>Información no disponible en estos momentos.</p>
+    </div>
+  </section>
+
+</ion-content>

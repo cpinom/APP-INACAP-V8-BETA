@@ -5,7 +5,7 @@ import { DocenteService } from 'src/app/core/services/http/docente.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { MensajeService } from 'src/app/core/services/mensaje.service';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
-import * as desconocido from 'src/scripts/foto.desconocido.js';
+import * as desconocido from 'src/scripts/foto.desconocido';
 
 @Component({
   selector: 'app-estudiante-tut',

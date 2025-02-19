@@ -1,0 +1,114 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Inicio" defaultHref="/alumno/inicio"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-card class="primary-card" color="white">
+    <ion-card-header>
+      <ion-card-title>Elecciones de Delegados</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+</ion-header>
+
+<ion-content>
+
+  <div class="loaderInacap" *ngIf="!hideLoadingSpinner">
+    <ion-spinner name="lines" color="info"></ion-spinner>
+  </div>
+
+ 
+
+  <ng-container *ngIf="mostrarData && (candidatos && candidatos.length)">
+
+    <swiper-container #swiperEl>
+
+      <swiper-slide>
+        <section class="bienvenida">
+          <div class="section-header">Información previa</div>
+          <div class="section-content">     
+            <span>
+              Para las elecciones de Delegados de este año queremos aclarar que: <br/><br/>
+              - El <b>voto es secreto</b> y personal. <br/>
+              - En este proceso <b>podrá elegir a un Delegado de su mismo nivel, carrera y jornada.</b><br/>
+              - En el voto se desplegarán las distintas candidaturas. <b>Podrá elegir una sola</b>.<br/>
+              - En caso de que sea un solo candidato(a), aparecerá únicamente ese candidato(a).<br />
+              - Además de las opciones para votar por los(as) candidatos(as), <b>existe la posibilidad de votar nulo o blanco.</b><br/>
+              - Los votos en blanco y nulos, <b>no suman votos</b> para ninguna candidatura.<br/>
+              - <b>El voto se emitirá al momento de pulsar “ENVIAR VOTO”</b>. Una vez emitido, no podrás modificar tu preferencia.
+            </span>
+          </div>
+        </section>
+        <section>
+          <ion-button color="info" shape="round" expand="block" (click)="presentarCandidatos()">Continuar</ion-button>
+        </section>
+      </swiper-slide>
+      <swiper-slide>
+        <section class="bienvenida">
+          <div class="section-header">Candidatos</div>
+          <div class="section-content">
+            <span>
+              Cada estudiante podrá emitir sólo un voto.<br/>Los candidatos que se muestran a continuación corresponden a tu 
+              <b>carrera {{academico.carrera}}</b>, 
+              <b>nivel {{academico.nivel}} y jornada {{academico.jornada}}</b>.
+            </span>
+            <ion-list class="candidatos">
+              <ion-radio-group [(ngModel)]="votoPersona">
+                <ion-item *ngFor="let item of candidatos">
+                  <ion-radio slot="start" value="{{item.persNcorr}}" mode="md"></ion-radio>
+                  <ion-label>
+                    <ion-avatar>
+                      <img [src]="resolverFoto(item.persNcorr)" [appImage]="fotoDesconocido" />
+                    </ion-avatar>
+                    <div>
+                      <h2>{{item.nombreAlumno}}</h2>
+                      <p>{{item.carrTdesc}}</p>
+                    </div>
+                  </ion-label>
+                </ion-item>
+                <ion-item>
+                  <ion-radio slot="start" value="0" mode="md"></ion-radio>
+                  <ion-label>Voto en blanco</ion-label>
+                </ion-item>
+                <ion-item>
+                  <ion-radio slot="start" value="-1" mode="md"></ion-radio>
+                  <ion-label>Voto nulo</ion-label>
+                </ion-item>
+              </ion-radio-group>
+            </ion-list>
+          </div>
+        </section>
+        <section style="margin-bottom: 20px;">
+          <ion-button color="info" shape="round" expand="block" (click)="votar()" [disabled]="!votoPersona">Enviar Voto</ion-button>
+        </section>
+      </swiper-slide>
+  
+    </swiper-container>
+
+  </ng-container>
+
+  <section class="empty-state" *ngIf="mostrarData && votoEmitido">
+    <div>
+      <ion-icon src="assets/icon/group.svg"></ion-icon>
+      <p>Tu voto ya fue emitido.</p>
+    </div>
+    <ion-button style="margin: 30px 0 0;" color="info" shape="round" expand="block" (click)="cerrar()">Cerrar</ion-button>
+  </section>
+
+  <section class="empty-state" *ngIf="mostrarData && !votoEmitido && (candidatos && candidatos.length == 0)">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Para tu carrera {{academico.carrera}}, nivel {{academico.nivel}} y jornada {{academico.jornada}}, no hubo candidatos inscritos.</p>
+    </div>
+    <ion-button style="margin: 30px 0 0;" color="info" shape="round" expand="block" (click)="cerrar()">Cerrar</ion-button>
+  </section>
+
+  <section class="empty-state" *ngIf="mostrarData && !votoEmitido && !candidatos">
+    <div>
+      <ion-icon src="assets/icon/group.svg"></ion-icon>
+      <p>Información no disponible. Contáctese con su DAE para mayor información.</p>
+    </div>
+    <ion-button style="margin: 50px 0 0;" color="info" shape="round" expand="block" (click)="cerrar()">Cerrar</ion-button>
+  </section>
+
+</ion-content>

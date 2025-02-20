@@ -38,7 +38,7 @@ export class AsesorPedagogicoPage implements OnInit {
 
       if (result.success) {
         this.personas = result.data;
-      } 
+      }
       else {
         throw Error();
       }
@@ -68,7 +68,7 @@ export class AsesorPedagogicoPage implements OnInit {
       this.snackbar.showToast(error, 2000, 'danger');
     }
   }
-  resolverFoto(persNcorr) {
+  resolverFoto(persNcorr: any) {
     return `${this.global.Api}/api/v3/imagen-persona/${persNcorr}`;
   }
 }

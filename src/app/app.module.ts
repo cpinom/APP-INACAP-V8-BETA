@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { LoginPageModule } from './core/components/login/login.module';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { PagosModule } from './core/components/pagos/pagos.module';
+import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -16,11 +18,13 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
       innerHTMLTemplatesEnabled: true
     }),
     AppRoutingModule,
-    LoginPageModule
+    LoginPageModule,
+    PagosModule
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
+    InAppBrowser
   ],
   bootstrap: [AppComponent],
 })

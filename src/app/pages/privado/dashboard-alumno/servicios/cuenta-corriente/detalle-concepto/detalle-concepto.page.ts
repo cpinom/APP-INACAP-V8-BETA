@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Directory, Filesystem } from '@capacitor/filesystem';
 import { LoadingController, ModalController, Platform } from '@ionic/angular';
-import { CuentaCorrienteService } from 'src/app/core/services/cuentacorriente.service';
+import { CuentaCorrienteService } from 'src/app/core/services/http/cuentacorriente.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
 import { FileOpener } from '@capacitor-community/file-opener';
+import { DialogService } from 'src/app/core/services/dialog.service';
 
 @Component({
   selector: 'app-detalle-concepto',
@@ -15,29 +16,26 @@ export class DetalleConceptoPage implements OnInit {
 
   data: any;
 
-  constructor(private modalCtrl: ModalController,
-    private api: CuentaCorrienteService,
-    private loading: LoadingController,
+  constructor(private api: CuentaCorrienteService,
+    private dialog: DialogService,
     private error: ErrorHandlerService,
     private snackbar: SnackbarService,
     private pt: Platform) { }
 
   ngOnInit() { }
-  cerrar() {
-    this.modalCtrl.dismiss();
+  async cerrar() {
+    await this.dialog.dismissModal();
   }
-  async descargar(item) {
-    let loading = await this.loading.create({ message: 'Descargando...' });
-    let params = {
+  async descargar(item:any) {
+    const loading = await this.dialog.showLoading({ message: 'Descargando...' });
+    const params = {
       ingrNcorr: item.ingreso,
       folio: item.folio
     };
 
-    await loading.present();
-
     try {
-      let result = await this.api.descargarDocumento(params);
-      let fileName = 'documento_' + item.ingreso + '.pdf';
+      const result = await this.api.descargarDocumento(params);
+      const fileName = 'documento_' + item.ingreso + '.pdf';
 
       if (result.success) {
         if (this.pt.is('mobileweb')) {
@@ -63,7 +61,7 @@ export class DetalleConceptoPage implements OnInit {
     }
     catch (error: any) {
       if (error.status == 404) {
-        this.snackbar.showToast('Documento no disponible', 2000);
+        await this.snackbar.showToast('Documento no disponible', 2000);
       }
       else {
         this.error.handle(error);

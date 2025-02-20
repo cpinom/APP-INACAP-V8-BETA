@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
 import { VISTAS_ALUMNO } from 'src/app/core/constants/alumno';
-import { CuentaCorrienteService } from 'src/app/core/services/cuentacorriente.service';
+import { CuentaCorrienteService } from 'src/app/core/services/http/cuentacorriente.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
+import { DialogService } from 'src/app/core/services/dialog.service';
 
 @Component({
   selector: 'app-cuenta-corriente',
@@ -12,17 +12,19 @@ import { ErrorHandlerService } from 'src/app/core/services/error-handler.service
 })
 export class CuentaCorrientePage implements OnInit {
 
-  instituciones: any[];
+  instituciones!: any[];
   info: any;
   semestreAnterior = false;
   validarCAE = false;
   mostrarCargando = true;
   mostrarData = false;
 
-  constructor(private api: CuentaCorrienteService,
-    private error: ErrorHandlerService,
-    private router: Router,
-    private alert: AlertController) { }
+  private api = inject(CuentaCorrienteService);
+  private error = inject(ErrorHandlerService);
+  private router = inject(Router);
+  private dialog = inject(DialogService);
+
+  constructor() { }
 
   async ngOnInit() {
     await this.cargar();
@@ -37,7 +39,7 @@ export class CuentaCorrientePage implements OnInit {
         this.info = result.info;
         this.semestreAnterior = parseInt(result.info.semanterior.trim().replace('.', '')) > 0;
         this.validarCAE = result.validarCAE === 1;
-      } 
+      }
       else {
         throw Error();
       }
@@ -52,7 +54,7 @@ export class CuentaCorrientePage implements OnInit {
       this.mostrarData = true;
     }
   }
-  recargar(e?) {
+  recargar(e?: any) {
     this.mostrarCargando = true;
     this.mostrarData = false;
     setTimeout(() => {
@@ -63,7 +65,7 @@ export class CuentaCorrientePage implements OnInit {
   }
   async pagar() {
     if (this.validarCAE === true) {
-      const alert = await this.alert.create({
+      await this.dialog.showAlert({
         header: 'Cuenta Corriente Estudiantes',
         message: 'El excedente generado por asignación de CAE en Colegiaturas no podrá ser aplicado a deuda por concepto de Matricula, por lo cual, podrá generar una diferencia entre el saldo indicado en la cuenta corriente y el monto a pagar según portal de pago.',
         buttons: [
@@ -79,9 +81,7 @@ export class CuentaCorrientePage implements OnInit {
           }
         ]
       });
-
-      await alert.present();
-    } 
+    }
     else {
       await this.router.navigate(['alumno/servicios/portal-pagos']);
     }

@@ -1,4 +1,4 @@
-@import "src/theme/horario-section.scss";
+//@import "src/theme/horario-section.scss";
 
 ion-header {
     ion-card {
@@ -114,10 +114,10 @@ ion-card#horario {
             }
         }
         ::ng-deep .mbsc-calendar-body {
-            .mbsc-ios.mbsc-calendar-today,
-            .mbsc-ios.mbsc-calendar-week-nr {
-                // color: var(--ion-color-primary);
-            }
+            // .mbsc-ios.mbsc-calendar-today,
+            // .mbsc-ios.mbsc-calendar-week-nr {
+            //     // color: var(--ion-color-primary);
+            // }
             .mbsc-ios.mbsc-selected .mbsc-calendar-cell-text {
                 background: var(--ion-color-primary);
                 border-color: var(--ion-color-primary);

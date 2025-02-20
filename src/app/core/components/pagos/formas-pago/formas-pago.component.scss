@@ -1,0 +1,21 @@
+ion-content {
+    //--background: #fff;
+
+    h3 {
+        font-size: var(--FS18);
+        font-weight: 600;
+        margin: 10px 20px;
+    }
+
+    ion-button {
+        margin: 20px 15px;
+    }
+
+    ion-item {
+        &.md {
+            ion-radio {
+                margin-inline-end: 20px;
+            }
+        }
+    }
+}

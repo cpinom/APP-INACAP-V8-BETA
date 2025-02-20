@@ -1,11 +1,12 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { IonRouterOutlet, LoadingController, ModalController } from '@ionic/angular';
-import { CuentaCorrienteService } from 'src/app/core/services/cuentacorriente.service';
+import { IonRouterOutlet } from '@ionic/angular';
+import { CuentaCorrienteService } from 'src/app/core/services/http/cuentacorriente.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
 import { DetalleConceptoPage } from '../detalle-concepto/detalle-concepto.page';
+import { DialogService } from 'src/app/core/services/dialog.service';
 
 @Component({
   selector: 'app-detalle-cuenta',
@@ -14,32 +15,33 @@ import { DetalleConceptoPage } from '../detalle-concepto/detalle-concepto.page';
 })
 export class DetalleCuentaPage implements OnInit {
 
-  @ViewChild('conceptosDiv', { read: ElementRef }) public conceptosContent: ElementRef<any>;
-  instituciones: any[];
+  @ViewChild('conceptosDiv', { read: ElementRef }) public conceptosContent!: ElementRef<any>;
+  instituciones!: any[];
   form: FormGroup;
-  conceptos: any[];
+  conceptos!: any[];
   mostrarData = false;
   mostrarCargando = true;
 
-  constructor(private api: CuentaCorrienteService,
-    private fb: FormBuilder,
-    private route: ActivatedRoute,
-    private modalCtrl: ModalController,
-    private routerOutlet: IonRouterOutlet,
-    private loading: LoadingController,
-    private error: ErrorHandlerService,
-    private snackbar: SnackbarService) {
+  private api = inject(CuentaCorrienteService);
+  private fb = inject(FormBuilder);
+  private route = inject(ActivatedRoute);
+  private error = inject(ErrorHandlerService);
+  private snackbar = inject(SnackbarService);
+  private dialog = inject(DialogService);
+  private routerOutlet = inject(IonRouterOutlet);
+
+  constructor() {
 
     this.form = this.fb.group({
       institucion: [],
       semestre: [2]
     });
 
-    this.institucion.valueChanges.subscribe(() => {
+    this.institucion?.valueChanges.subscribe(() => {
       this.recargar();
     });
 
-    this.semestre.valueChanges.subscribe(() => {
+    this.semestre?.valueChanges.subscribe(() => {
       this.recargar();
     });
   }
@@ -64,8 +66,8 @@ export class DetalleCuentaPage implements OnInit {
     if (result.success) {
       const instCcod = this.route.snapshot.paramMap.get('instCcod');
       this.instituciones = result.instituciones;
-      this.institucion.setValue(instCcod, { emitEvent: false });
-    } 
+      this.institucion?.setValue(instCcod, { emitEvent: false });
+    }
     else {
       throw Error();
     }
@@ -73,8 +75,8 @@ export class DetalleCuentaPage implements OnInit {
   async cargar() {
     let carrCcod = this.route.snapshot.paramMap.get('carrCcod');
     let params = {
-      instCcod: this.institucion.value,
-      tipoSemestre: this.semestre.value,
+      instCcod: this.institucion?.value,
+      tipoSemestre: this.semestre?.value,
       carrCcod: carrCcod
     };
     let result = await this.api.getCuentaCorriente(params);
@@ -85,7 +87,7 @@ export class DetalleCuentaPage implements OnInit {
       if (this.conceptosContent) {
         this.conceptosContent.nativeElement.scrollTo({ left: 0, behavior: 'smooth' });
       }
-    } 
+    }
     else {
       throw Error();
     }
@@ -94,7 +96,7 @@ export class DetalleCuentaPage implements OnInit {
     if (this.mostrarCargando) this.mostrarCargando = false;
   }
   async recargar() {
-    this.conceptos = undefined;
+    this.conceptos = [];
     this.mostrarCargando = true;
     this.mostrarData = false;
 
@@ -111,21 +113,19 @@ export class DetalleCuentaPage implements OnInit {
       this.mostrarCargando = false;
     }
   }
-  async detalle(data, e) {
-    let loading = await this.loading.create({ message: 'Cargando...' });
-    let instCcod = this.route.snapshot.paramMap.get('instCcod');
-    let carrCcod = this.route.snapshot.paramMap.get('carrCcod');
-    let params = {
+  async detalle(data: any, e: any) {
+    const loading = await this.dialog.showLoading({ message: 'Cargando...' });
+    const instCcod = this.route.snapshot.paramMap.get('instCcod');
+    const carrCcod = this.route.snapshot.paramMap.get('carrCcod');
+    const params = {
       instCcod: instCcod,
-      tipoSemestre: this.semestre.value,
+      tipoSemestre: this.semestre?.value,
       carrCcod: carrCcod,
       ingrNcorr: data.ingreso,
       dcomNcompromiso: data.dcomNcompromiso,
       tcomCcod: data.tcomCcod,
       compNdocto: data.compNdocto
     };
-
-    await loading.present();
 
     let result: any;
 
@@ -138,11 +138,11 @@ export class DetalleCuentaPage implements OnInit {
       }
     }
     finally {
-      await this.loading.dismiss();
+      await loading.dismiss();
     }
 
     if (result && result.success && result.data.length) {
-      const modal = await this.modalCtrl.create({
+      await this.dialog.showModal({
         component: DetalleConceptoPage,
         componentProps: {
           data: Object.assign(result, { fechaActual: this.fechaActual })
@@ -150,9 +150,7 @@ export class DetalleCuentaPage implements OnInit {
         canDismiss: true,
         presentingElement: this.routerOutlet.nativeEl
       });
-
-      await modal.present();
-    } 
+    }
     else {
       this.snackbar.showToast('Detalle no disponible.', 3000, 'danger');
     }

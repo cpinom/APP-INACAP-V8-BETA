@@ -19,6 +19,7 @@ import { MbscModule } from '@mobiscroll/angular';
 import { MensajeModule } from './mensaje/mensaje.module';
 import { PeriodosComponent } from './periodos/periodos.component';
 import { BarcodeScanningModalComponent } from './barcode-scanning-modal/barcode-scanning-modal.component';
+import { ConsultaBipComponent } from './consulta-bip/consulta-bip.component';
 
 @NgModule({
   schemas: [],
@@ -45,7 +46,8 @@ import { BarcodeScanningModalComponent } from './barcode-scanning-modal/barcode-
     NuevaOpinionComponent,
     SedeComponent,
     PeriodosComponent,
-    BarcodeScanningModalComponent
+    BarcodeScanningModalComponent,
+    ConsultaBipComponent
   ],
   exports: [
     HeaderComponent,
@@ -59,7 +61,8 @@ import { BarcodeScanningModalComponent } from './barcode-scanning-modal/barcode-
     NuevaOpinionComponent,
     SedeComponent,
     PeriodosComponent,
-    BarcodeScanningModalComponent
+    BarcodeScanningModalComponent,
+    ConsultaBipComponent
   ]
 })
 export class ComponentsModule { }

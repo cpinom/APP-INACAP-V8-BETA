@@ -1,0 +1,82 @@
+.secondary-card {
+    ion-button {
+        margin: 0;
+    }
+    ion-item .left-icon {
+        width: 30px;
+        height: 25px;
+        margin-right: 8px;
+
+        ion-spinner {
+            width: 24px;
+            height: 24px;
+        }
+    }
+}
+
+.secondary-card.result {
+    margin: 16px !important;
+
+    ion-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: row;
+
+        ion-card-title {
+            padding-bottom: 0;
+            border-bottom: 0;
+        }
+    }
+
+    ion-card-content {
+        padding: 0;
+    }
+    ion-button.fav-btn {
+        position: absolute;
+        top: 2px;
+        right: 10px;
+        --box-shadow: none !important;
+        --padding-end: 5px !important;
+        --padding-start: 5px !important;
+    }
+}
+
+.tarjetasGuardadas {
+    ion-list {
+        ion-item {
+            /*ion-label {
+                p {opacity: 0.7}
+            }*/
+            .left-icon {
+                width: 30px;
+                height: 25px;
+                margin-right: 8px;
+            }
+            ion-button {
+                ion-icon {
+                    margin: 0;
+                }
+            }
+            // ion-button {
+            //     width: 48px;
+            //     height: 48px;
+            //     ion-icon {
+            //         color: white;
+            //     }
+            // }
+        }
+    }
+}
+
+// div.invalid {
+//     width: 100%;
+//     color: red;
+//     font-size: 12px;
+//     margin-bottom: 10px;
+// }
+.invalid {
+    font-size: var(--FS12);
+    color: var(--ion-color-danger);
+    margin: 5px 15px;
+}

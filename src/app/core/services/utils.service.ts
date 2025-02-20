@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Browser } from '@capacitor/browser';
 import { DialogService } from './dialog.service';
 import { IOSSettings, NativeSettings } from 'capacitor-native-settings';
+import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +10,7 @@ import { IOSSettings, NativeSettings } from 'capacitor-native-settings';
 export class UtilsService {
 
   private dialog = inject(DialogService);
+  private iab = inject(InAppBrowser);
 
   constructor() { }
 
@@ -58,6 +60,9 @@ export class UtilsService {
   }
   async openLink(url: string) {
     return await Browser.open({ url: url });
+  }
+  openInAppLink(url: string, options?: any) {
+    return this.iab.create(url, '_blank', options);
   }
   getUrlParams(name: string, url: string) {
     name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");

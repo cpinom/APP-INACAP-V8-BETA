@@ -11,7 +11,7 @@ import { ProfileService } from 'src/app/core/services/profile.service';
 })
 export class SedePage implements OnInit {
 
-  @ViewChild(SedeComponent, { static: true }) sedeCmp;
+  @ViewChild(SedeComponent, { static: true }) sedeCmp!: SedeComponent;
   mostrarCargando = true;
   mostrarError = false;
 
@@ -33,7 +33,7 @@ export class SedePage implements OnInit {
     this.sedeCmp.loadData(sedes);
   }
   async recargar() {
-    this.sedeCmp._sedeCcod = undefined;
+    this.sedeCmp._sedeCcod = '';
     this.mostrarCargando = true;
     this.mostrarError = false;
     setTimeout(() => {

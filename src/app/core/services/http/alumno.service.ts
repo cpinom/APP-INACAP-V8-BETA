@@ -67,4 +67,39 @@ export class AlumnoService extends PrivateService {
   getAlumnosV5(seccCcod: any) {
     return this.get(`${this.baseUrl}/v5/alumno/detalle-curso/alumnos?seccCcod=${seccCcod}`);
   }
+  getAsesorPedagogicoV5(sedeCcod: string): Promise<any> {
+    return this.get(`${this.baseUrl}/v5/alumno/asesor-pedagogico?sedeCcod=${sedeCcod}`);
+  }
+  // GRATUIDAD
+  getGratiudad() {
+    return this.get(`${this.baseUrl}/v4/alumno/gratuidad/principal`);
+  }
+  solicitarDevolucion(params: any): Promise<any> {
+    return this.post(`${this.baseUrl}/v4/alumno/gratuidad/solicitud`, params);
+  }
+  getEvalDiagnostica() {
+    return this.get(`${this.baseUrl}/v4/alumno/resultados-eval-diagnostica`);
+  }
+  getDirectorCarrera(sedeCcod: string, carrCcod: string): Promise<any> {
+    carrCcod = encodeURIComponent(carrCcod);
+    return this.get(`${this.baseUrl}/v5/alumno/director-carrera?sedeCcod=${sedeCcod}&carrCcod=${carrCcod}`);
+  }
+  getDocentesV5(carrCcod: any): Promise<any> {
+    carrCcod = encodeURIComponent(carrCcod);
+    return this.get(`${this.baseUrl}/v5/alumno/docentes?carrCcod=${carrCcod}`);
+  }
+  getPracticasPrincipal(sedeCcod: number, planCcod: number, carrCcod: string): Promise<any> {
+    carrCcod = encodeURIComponent(carrCcod);
+    return this.get(`${this.baseUrl}/v5/alumno/practicas/principal?sedeCcod=${sedeCcod}&planCcod=${planCcod}&carrCcod=${carrCcod}`);
+  }
+  getFiltrosPracticas(sedeCcod: number, carrCcod: string) {
+    carrCcod = encodeURIComponent(carrCcod);
+    return this.get(`${this.baseUrl}/v5/alumno/practicas/filtros?sedeCcod=${sedeCcod}&carrCcod=${carrCcod}`);
+  }
+  filtrarPracticas(career: number, region: number, page: number) {
+    return this.get(`${this.baseUrl}/v5/alumno/practicas/filtrar?career=${career}&region=${region}&page=${page}`);
+  }
+  getBloqueos(): Promise<any> {
+    return this.get(`${this.baseUrl}/v3/alumno/situaciones-pendientes`);
+  }
 }

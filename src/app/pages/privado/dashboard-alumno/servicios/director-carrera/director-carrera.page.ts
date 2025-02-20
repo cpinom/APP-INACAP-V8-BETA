@@ -15,8 +15,8 @@ import { SnackbarService } from 'src/app/core/services/snackbar.service';
 export class DirectorCarreraPage implements OnInit {
 
   data: any;
-  sede: string;
-  carrera: string;
+  sede!: string;
+  carrera!: string;
   mostrarCargando = true;
   mostrarData = false;
   mostrarError = false;

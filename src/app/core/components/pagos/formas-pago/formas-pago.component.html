@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar style="padding-top: 6px !important;">
+    <ion-title>Confirmación del Pago</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrar()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <h3>Medios de Pago Disponibles</h3>
+
+  <form [formGroup]="pagoForm" (ngSubmit)="procesar()">
+
+    <ion-list inset="true">
+      <ion-radio-group formControlName="tpaoCcod">
+        <ion-item *ngFor="let item of formasPago">
+          <ion-radio [value]="item.tpaoCcod">
+            <!-- se agrega espacio en blanco &#160; para que aparezca la imagen -->
+            <div>&#160;<img [src]="resolverImagen(item.tpaoCcod)" style="width: auto; max-height: 35px" /></div>
+          </ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+
+    <ion-button type="submit" color="success" shape="round" expand="block" [disabled]="!pagoForm.valid">
+      <ion-icon src="assets/icon/verified_user.svg"></ion-icon>
+      Pagar - <b>CLP ${{montoCarro}}</b>
+    </ion-button>
+
+  </form>
+
+</ion-content>

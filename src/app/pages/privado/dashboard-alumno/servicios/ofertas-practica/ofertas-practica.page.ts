@@ -18,7 +18,7 @@ export class OfertasPracticaPage implements OnInit {
 
   data: any;
   ofertas: any;
-  carrCcod: string;
+  carrCcod!: string;
   programas: any;
   programa: any;
   practica: any;
@@ -96,14 +96,14 @@ export class OfertasPracticaPage implements OnInit {
       tisoTdesc: 'Solicitud de Inscripción de Práctica',
       planCcod: this.programa.planCcod
     };
-    
+
     await this.nav.navigateForward(`${this.router.url}/solicitud-practica`, { state: params });
   }
   async mostrarCertificadoPractica() {
     await this.utils.openLink('https://certificadoinacap.geasa.cl/');
   }
   async cambiarCarrera() {
-    this.programa = this.programas.find(t => t.carrCcod == this.carrCcod);
+    this.programa = this.programas.find((t: any) => t.carrCcod == this.carrCcod);
     this.mostrarCargando = true;
     this.mostrarData = false;
     this.cargar();
@@ -111,7 +111,7 @@ export class OfertasPracticaPage implements OnInit {
   async detalleEmpleo(params: any) {
     await this.nav.navigateForward(`${this.router.url}/detalle`, { state: params });
   }
-  formatFecha(data) {
+  formatFecha(data: string) {
     let fecha = moment(data, 'YYYY-MM-DD');
     let today = moment();
     let yesterday = today.clone().subtract(1, 'days').startOf('day');

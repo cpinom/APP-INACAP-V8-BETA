@@ -51,7 +51,7 @@
       </form>
     </section>
 
-    <section class="section-detalle" *ngIf="beneficio.value == 1">
+    <section class="section-detalle" *ngIf="beneficio?.value == 1">
       <div class="section-header">Financiamiento Estatal</div>
       <div class="section-content">
         <table class="table">
@@ -78,7 +78,7 @@
       </div>
     </section>
 
-    <section class="section-detalle" *ngIf="beneficio.value == 2">
+    <section class="section-detalle" *ngIf="beneficio?.value == 2">
       <div class="section-header">Beneficios INACAP</div>
       <div class="section-content">
         <table class="table">
@@ -103,7 +103,7 @@
       </div>
     </section>
 
-    <section class="section-detalle" *ngIf="beneficio.value == 3">
+    <section class="section-detalle" *ngIf="beneficio?.value == 3">
       <div class="section-header">Otros Beneficios</div>
       <div class="section-content">
         <table class="table">
@@ -128,7 +128,7 @@
       </div>
     </section>
 
-    <section class="section-detalle" *ngIf="beneficio.value == 4">
+    <section class="section-detalle" *ngIf="beneficio?.value == 4">
       <div class="section-header">Cheques en Cartera</div>
       <div class="section-content">
         <table class="table">

@@ -16,7 +16,7 @@ export class DevolucionGratuidadPage implements OnInit {
 
   mostrarData = false;
   data: any;
-  mensaje: string;
+  mensaje!: string;
   form: FormGroup;
   tipoDevolucion: any;
   submitted = false;
@@ -47,7 +47,7 @@ export class DevolucionGratuidadPage implements OnInit {
     await this.cargar();
     this.api.marcarVista(VISTAS_ALUMNO.DEVOLUCION_GRATIUDAD);
   }
-  recargar(e) {
+  recargar(e: any) {
     this.cargar().finally(() => {
       e.target.complete();
     })
@@ -57,9 +57,9 @@ export class DevolucionGratuidadPage implements OnInit {
       let result = await this.api.getGratiudad();
 
       if (result.success) {
-        this.montosSolicitados = result.montosPagados.filter(t => t.solicitado == 1).length > 0;
+        this.montosSolicitados = result.montosPagados.filter((t: any) => t.solicitado == 1).length > 0;
         this.data = result;
-      } 
+      }
       else {
         this.mensaje = result.message;
       }
@@ -91,12 +91,12 @@ export class DevolucionGratuidadPage implements OnInit {
         if (this.tipoDevolucion == 2) {
           if (this.form.valid) {
             params = Object.assign(params, this.form.value);
-          } 
+          }
           else {
             permiteAvanzar = false;
           }
         }
-      } 
+      }
       else {
         this.snack.showToast('El monto debe ser mayor a CLP $0.');
         return;
@@ -117,7 +117,7 @@ export class DevolucionGratuidadPage implements OnInit {
               this.submitted = false;
               this.data.montosPagados = result.montosPagados;
               this.snack.showToast(result.message, 2000, 'success');
-            } 
+            }
             else {
               this.snack.showToast(result.message, 2000, 'danger');
             }
@@ -156,26 +156,26 @@ export class DevolucionGratuidadPage implements OnInit {
   async tipoDevolucionChanged(e: any) {
     if (this.tipoDevolucion == 2) {
       if (this.data.bancCcod) {
-        this.bancCcod.setValue(this.data.bancCcod);
+        this.bancCcod?.setValue(this.data.bancCcod);
       }
       if (this.data.tcueCcod) {
-        this.tcueCcod.setValue(this.data.tcueCcod);
+        this.tcueCcod?.setValue(this.data.tcueCcod);
       }
       if (this.data.persTnumeroCuenta) {
-        this.persTnumeroCuenta.setValue(this.data.persTnumeroCuenta);
+        this.persTnumeroCuenta?.setValue(this.data.persTnumeroCuenta);
       }
     }
     else {
-      this.bancCcod.setValue('');
-      this.tcueCcod.setValue('');
-      this.persTnumeroCuenta.setValue('');
+      this.bancCcod?.setValue('');
+      this.tcueCcod?.setValue('');
+      this.persTnumeroCuenta?.setValue('');
     }
   }
   get monto() {
     if (this.data) {
       let monto = 0;
 
-      this.data.montosPagados.forEach(item => {
+      this.data.montosPagados.forEach((item: any) => {
         if (item.checked === true) {
           monto += item.monto;
         }
@@ -190,16 +190,16 @@ export class DevolucionGratuidadPage implements OnInit {
   get tcueCcod() { return this.form.get('tcueCcod'); }
   get persTnumeroCuenta() { return this.form.get('persTnumeroCuenta'); }
   get persTnumeroCuentaError() {
-    if (this.persTnumeroCuenta.hasError('required')) {
+    if (this.persTnumeroCuenta?.hasError('required')) {
       return 'Campo obligatorio.';
     }
-    if (this.persTnumeroCuenta.hasError('pattern')) {
+    if (this.persTnumeroCuenta?.hasError('pattern')) {
       return 'Debe ingresar sólo dígitos.';
     }
-    if (this.persTnumeroCuenta.hasError('minlength')) {
+    if (this.persTnumeroCuenta?.hasError('minlength')) {
       return 'El número de cuenta debe tener entre 5 y 24 caracteres.';
     }
-    if (this.persTnumeroCuenta.hasError('maxlength')) {
+    if (this.persTnumeroCuenta?.hasError('maxlength')) {
       return 'El número de cuenta debe tener entre 5 y 24 caracteres';
     }
 
@@ -207,7 +207,7 @@ export class DevolucionGratuidadPage implements OnInit {
   }
   get montoSeleccionado() {
     if (this.data) {
-      return this.data.montosPagados.filter(t => t.checked == true).length > 0;
+      return this.data.montosPagados.filter((t: any) => t.checked == true).length > 0;
     }
     return false;
   }

@@ -23,6 +23,8 @@
     "@angular/platform-browser": "^18.0.0",
     "@angular/platform-browser-dynamic": "^18.0.0",
     "@angular/router": "^18.0.0",
+    "@awesome-cordova-plugins/core": "^6.14.0",
+    "@awesome-cordova-plugins/in-app-browser": "^6.14.0",
     "@capacitor-community/app-icon": "^5.0.0",
     "@capacitor-community/fcm": "^5.0.3",
     "@capacitor-community/file-opener": "^6.0.0",

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import * as logoTrabajando from 'src/scripts/logo.trabajando.js';
+// import * as logoTrabajando from 'src/scripts/logo.trabajando.js';
 import * as moment from 'moment';
 import { Router } from '@angular/router';
 import { UtilsService } from 'src/app/core/services/utils.service';
@@ -14,7 +14,7 @@ import { NavController } from '@ionic/angular';
 })
 export class DetallePage implements OnInit {
   data: any;
-  logo = logoTrabajando.imgBase64;
+  logo = '';//logoTrabajando.imgBase64;
 
   constructor(public router: Router,
     private utils: UtilsService,
@@ -31,7 +31,7 @@ export class DetallePage implements OnInit {
   abrirWebTrabajando(url: string) {
     this.utils.openLink(`${url}#apply`);
   }
-  formatFecha(fechaString) {
+  formatFecha(fechaString: string) {
     const fecha = moment(fechaString);
     return fecha.format('D [de] MMMM, YYYY');
   }

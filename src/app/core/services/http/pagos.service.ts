@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { InAppBrowserOptions } from '@awesome-cordova-plugins/in-app-browser/ngx';
 import { LoadingController, ModalController } from '@ionic/angular';
-import { FormasPagoComponent } from '../components/pagos/formas-pago/formas-pago.component';
 import { PortalPagosService } from './portalpagos.service';
-import { UtilsService } from './utils.service';
+import { AppGlobal } from 'src/app/app.global';
+import { UtilsService } from '../utils.service';
+import { FormasPagoComponent } from '../../components/pagos/formas-pago/formas-pago.component';
 
 interface PagoResult {
   success: boolean,
@@ -22,7 +23,7 @@ export class PagosService {
     private global: AppGlobal,
     private utils: UtilsService) { }
 
-  async procesarPago(formasPago, pagoId, monto, personaId?, service?, showDetail?: boolean): Promise<PagoResult> {
+  async procesarPago(formasPago: any[], pagoId: any, monto: any, personaId?: any, service?: any, showDetail?: boolean): Promise<PagoResult> {
     const modal = await this.modalCtrl.create({
       component: FormasPagoComponent,
       breakpoints: [0, 0.4, 0.8],
@@ -85,7 +86,7 @@ export class PagosService {
               };
               const browser = this.utils.openInAppLink(result.url, options);
 
-              browser.on('loadstart').subscribe(event => {
+              browser.on('loadstart').subscribe((event: any) => {
                 console.log('loadstart');
                 console.log(event.url);
 
@@ -104,7 +105,7 @@ export class PagosService {
                 }
               });
 
-              browser.on('exit').subscribe(event => {
+              browser.on('exit').subscribe((event: any) => {
                 console.log('exit');
                 console.log(event);
 

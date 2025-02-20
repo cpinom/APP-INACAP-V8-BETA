@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertController, IonModal, IonRouterOutlet, LoadingController } from '@ionic/angular';
 import { VISTAS_ALUMNO } from 'src/app/core/constants/alumno';
-import { CentroAyudaService } from 'src/app/core/services/centro-ayuda.service';
+import { CentroAyudaService } from 'src/app/core/services/http/centro-ayuda.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { EventsService } from 'src/app/core/services/events.service';
 import { ProfileService } from 'src/app/core/services/profile.service';
@@ -48,20 +48,20 @@ export class SolicitudSoportePage implements OnInit {
       ])]
     });
 
-    this.ambito.valueChanges.subscribe(() => {
-      this.tematica.setValue(null);
-      this.submotivo.setValue(null);
+    this.ambito?.valueChanges.subscribe(() => {
+      this.tematica?.setValue(null);
+      this.submotivo?.setValue(null);
     });
 
-    this.tematica.valueChanges.subscribe(() => {
-      this.submotivo.setValue(null);
+    this.tematica?.valueChanges.subscribe(() => {
+      this.submotivo?.setValue(null);
 
       if (this.submotivos.length == 1 && this.submotivos[0].nombre == '') {
-        this.submotivo.setValue(this.submotivos[0].label);
+        this.submotivo?.setValue(this.submotivos[0].label);
         this.mostrarSubmotivo = false;
-      } 
+      }
       else {
-        if (this.tematica.valid && this.submotivos.length > 0) {
+        if (this.tematica?.valid && this.submotivos.length > 0) {
           this.mostrarSubmotivo = true;
         }
       }
@@ -157,8 +157,8 @@ export class SolicitudSoportePage implements OnInit {
     if (this.form.valid) {
       let loading = await this.loading.create({ message: 'Procesando...' });
       let params = {
-        submotivo: this.submotivo.value,
-        descripcion: this.descripcion.value
+        submotivo: this.submotivo?.value,
+        descripcion: this.descripcion?.value
       };
 
       await loading.present();
@@ -170,7 +170,7 @@ export class SolicitudSoportePage implements OnInit {
           this.presentSuccess('Su caso ha sido recibido correctamente.');
           this.procesarCasos(result.data.casos || []);
           this.resetForm();
-        } 
+        }
         else {
           this.presentError(result.message);
         }
@@ -231,10 +231,10 @@ export class SolicitudSoportePage implements OnInit {
     })
   }
   resetForm() {
-    this.ambito.setValue('');
-    this.tematica.setValue('');
-    this.submotivo.setValue('');
-    this.descripcion.setValue('');
+    this.ambito?.setValue('');
+    this.tematica?.setValue('');
+    this.submotivo?.setValue('');
+    this.descripcion?.setValue('');
     this.submitted = false;
     this.form.markAsUntouched();
     this.form.reset()
@@ -254,7 +254,7 @@ export class SolicitudSoportePage implements OnInit {
     return [];
   }
   get tematicas() {
-    if (this.ambito.value) {
+    if (this.ambito?.value) {
       let tematicas = [];
 
       for (let item in this.categorias.ambitos[this.ambito.value].tematicas) {
@@ -267,11 +267,11 @@ export class SolicitudSoportePage implements OnInit {
     return [];
   }
   get submotivos() {
-    if (this.tematica.value) {
+    if (this.tematica?.value) {
       let submotivos = [];
 
-      for (let item in this.categorias.ambitos[this.ambito.value].tematicas[this.tematica.value].submotivos) {
-        let submotivo = this.categorias.ambitos[this.ambito.value].tematicas[this.tematica.value].submotivos[item];
+      for (let item in this.categorias.ambitos[this.ambito?.value].tematicas[this.tematica.value].submotivos) {
+        let submotivo = this.categorias.ambitos[this.ambito?.value].tematicas[this.tematica.value].submotivos[item];
         submotivos.push(submotivo);
       }
 
@@ -281,7 +281,7 @@ export class SolicitudSoportePage implements OnInit {
     return [];
   }
   get mostrarTematicas() {
-    return this.ambito.valid === true;
+    return this.ambito?.valid === true;
   }
   get ambito() { return this.form.get('ambito'); }
   get tematica() { return this.form.get('tematica'); }

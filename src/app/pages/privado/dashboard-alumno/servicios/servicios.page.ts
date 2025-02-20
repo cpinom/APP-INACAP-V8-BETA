@@ -15,12 +15,12 @@ import { UtilsService } from 'src/app/core/services/utils.service';
 })
 export class ServiciosPage implements OnInit {
 
-  @ViewChild(IonContent) content: IonContent;
+  @ViewChild(IonContent) content!: IonContent;
   sedeCcod: any;
   status: any;
   urlBibliotecas = 'https://inacap.primo.exlibrisgroup.com/discovery/search?vid=56INACAP_INST:INACAP&lang=es';
-  practica: boolean;
-  perfilOk: boolean;
+  practica!: boolean;
+  perfilOk!: boolean;
   mostrarCentroAyuda = false;
   scrollObs: Subscription;
 

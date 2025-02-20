@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { CapacitorHttp, HttpOptions } from '@capacitor/core';
+import { Preferences } from '@capacitor/preferences';
 import { AppGlobal } from 'src/app/app.global';
 
 @Injectable({
@@ -10,7 +11,9 @@ export class PublicService {
   baseUrl: string = '';
   storagePrefix: string = 'Public-MOVIL';
 
-  constructor(private global: AppGlobal) {
+  private global = inject(AppGlobal);
+
+  constructor() {
     this.baseUrl = this.global.Api;
   }
 
@@ -110,5 +113,21 @@ export class PublicService {
   validarDocumento(params: any) {
     return this.post(`${this.baseUrl}/api/v5/validar-documento`, params);
   }
+
+  async getStorage(key: string) {
+    return Preferences.get({ key: `${this.storagePrefix}-${key}` }).then(result => {
+      return result.value ? JSON.parse(result.value) : null;
+    });
+  }
+  async setStorage(key: string, value: any) {
+    await Preferences.set({
+      key: `${this.storagePrefix}-${key}`,
+      value: JSON.stringify(value)
+    });
+  }
+  async removeStorage(key: string) {
+    await Preferences.remove({ key: `${this.storagePrefix}-${key}` });
+  }
+  async clearStorage() { }
 
 }

@@ -1,0 +1,73 @@
+ion-header {
+  ion-card {
+    margin-bottom: 0 !important;
+  }
+}
+
+mat-stepper {
+  background-color: transparent !important;
+  margin-top: 10px;
+}
+
+:host ::ng-deep .mat-horizontal-content-container {
+  padding: 0 !important;
+}
+:host ::ng-deep .mat-stepper-label-position-bottom .mat-horizontal-stepper-header {
+  padding-top: 12px;
+  padding-bottom: 0;
+}
+
+:host ::ng-deep .mat-stepper-label-position-bottom .mat-stepper-horizontal-line,
+:host ::ng-deep .mat-stepper-label-position-bottom .mat-horizontal-stepper-header:not(:first-child)::before,
+:host ::ng-deep .mat-stepper-label-position-bottom .mat-horizontal-stepper-header:not(:last-child)::after,
+:host ::ng-deep [dir="rtl"] .mat-stepper-label-position-bottom .mat-horizontal-stepper-header:not(:first-child)::after,
+:host ::ng-deep [dir="rtl"] .mat-stepper-label-position-bottom .mat-horizontal-stepper-header:not(:last-child)::before {
+  top: 24px;
+}
+
+:host ::ng-deep .mat-step-header .mat-step-icon-state-edit,
+:host ::ng-deep .mat-step-header .mat-step-icon-state-done {
+  background-color: var(--ion-color-success) !important;
+  color: #fff;
+}
+
+:host ::ng-deep .mat-step-header .mat-step-icon-selected {
+  // background-color: var(--ion-color-info) !important;
+  color: #fff;
+}
+
+ion-content {
+  .invalid {
+    font-size: var(--FS12);
+    color: var(--ion-color-danger);
+    margin: 4px 15px 4px;
+  }
+  .section-participante {
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-right: 30px;
+
+      ion-button {
+        height: 22px;
+      }
+    }
+  }
+
+  ion-icon[name="person-add"] {
+    font-size: 18px;
+  }
+
+  p.label {
+    font-size: var(--FS14);
+    margin-bottom: 6px;
+    white-space: normal;
+  }
+
+  p.detail {
+    font-size: var(--FS16);
+    color: var(--color);
+    white-space: normal;
+  }
+}

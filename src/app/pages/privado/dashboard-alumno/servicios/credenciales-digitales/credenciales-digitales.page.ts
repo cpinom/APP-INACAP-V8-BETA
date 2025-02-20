@@ -1,11 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Directory, Filesystem } from '@capacitor/filesystem';
-// import { Share } from '@capacitor/share';
-import { ActionSheetController, AlertController, IonModal, LoadingController, NavController, Platform } from '@ionic/angular';
+import { ActionSheetController, AlertController, LoadingController, NavController, Platform } from '@ionic/angular';
 import { VISTAS_ALUMNO } from 'src/app/core/constants/alumno';
-import { CertificadosService } from 'src/app/core/services/certificados.service';
+import { CertificadosService } from 'src/app/core/services/http/certificados.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { ProfileService } from 'src/app/core/services/profile.service';
 import { UtilsService } from 'src/app/core/services/utils.service';
@@ -30,24 +29,24 @@ export class CredencialesDigitalesPage implements OnInit {
   periodo: any;
   programa: any;
 
-  constructor(private profile: ProfileService,
-    private fb: FormBuilder,
-    private error: ErrorHandlerService,
-    private router: Router,
-    private api: CertificadosService,
-    private loading: LoadingController,
-    private pt: Platform,
-    private alert: AlertController,
-    private nav: NavController,
-    private action: ActionSheetController,
-    private utils: UtilsService,
-    private dialog: DialogService) {
+  private profile = inject(ProfileService);
+  private api = inject(CertificadosService);
+  private pt = inject(Platform);
+  private nav = inject(NavController);
+  private action = inject(ActionSheetController);
+  private utils = inject(UtilsService);
+  private dialog = inject(DialogService);
+  private error = inject(ErrorHandlerService);
+  private router = inject(Router);
+  private fb = inject(FormBuilder);
+
+  constructor() {
 
     this.carreraForm = this.fb.group({
       carrera: ['', Validators.required]
     });
 
-    this.carrera.valueChanges.subscribe(() => {
+    this.carrera?.valueChanges.subscribe(() => {
       this.cargarCertificados();
     });
 
@@ -68,15 +67,13 @@ export class CredencialesDigitalesPage implements OnInit {
     let inputs = [];
 
     try {
-      let loading = await this.loading.create({ message: 'Espere...' });
-
-      await loading.present();
+      const loading = await this.dialog.showLoading({ message: 'Espere...' });
 
       try {
         let result = await this.api.getPeriodos();
 
         if (result.success) {
-          inputs = result.periodos.map(t => {
+          inputs = result.periodos.map((t: any) => {
             return {
               value: t.periCcod,
               label: t.periTdesc,
@@ -103,7 +100,7 @@ export class CredencialesDigitalesPage implements OnInit {
       return Promise.resolve();
     }
 
-    let alert = await this.alert.create({
+    const alert = await this.dialog.showAlert({
       backdropDismiss: false,
       keyboardClose: false,
       header: 'Seleccione el período académico',
@@ -119,8 +116,6 @@ export class CredencialesDigitalesPage implements OnInit {
       ],
       inputs: inputs,
     });
-
-    await alert.present();
 
     const periodoResult = await alert.onWillDismiss();
 
@@ -151,7 +146,7 @@ export class CredencialesDigitalesPage implements OnInit {
     let programa = principal.programas[principal.programaIndex];
 
     if (carrCcod) {
-      let programaIndex = principal.programas.findIndex(t => t.carrCcod == carrCcod);
+      let programaIndex = principal.programas.findIndex((t: any) => t.carrCcod == carrCcod);
 
       if (programaIndex > -1) {
         programa = principal.programas[programaIndex];
@@ -171,7 +166,7 @@ export class CredencialesDigitalesPage implements OnInit {
         periCcod: this.periodo
       };
       let result = await this.api.getPrincipalV4(params);
-      let intermedios = result.disponibles.find(t => t.title.toUpperCase() == 'CERTIFICADOS INTERMEDIOS');
+      let intermedios = result.disponibles.find((t: any) => t.title.toUpperCase() == 'CERTIFICADOS INTERMEDIOS');
 
       if (intermedios) {
         this.certificados = intermedios.children;
@@ -183,15 +178,15 @@ export class CredencialesDigitalesPage implements OnInit {
       this.carreras = result.carreras;
 
       if (carrCcod) {
-        carrera = result.carreras.find(t => t.carrCcod == carrCcod);
+        carrera = result.carreras.find((t: any) => t.carrCcod == carrCcod);
       }
       else {
         carrera = result.carreras[0];
       }
 
       if (carrera) {
-        this.carrera.setValue(carrera, { emitEvent: false });
-        this.api.setStorage('carrCcod', carrera.carrCcod);
+        this.carrera?.setValue(carrera, { emitEvent: false });
+        await this.api.setStorage('carrCcod', carrera.carrCcod);
       }
     }
     catch (error: any) {
@@ -206,11 +201,11 @@ export class CredencialesDigitalesPage implements OnInit {
     this.certificados = [];
 
     try {
-      let carrera = this.carrera.value;
+      let carrera = this.carrera?.value;
       let params = { exAlumno: 0, planCcod: carrera.planCcod, espeCcod: carrera.espeCcod, periCcod: this.periodo };
       let result = await this.api.getCertificados(params);
 
-      let intermedios = result.disponibles.find(t => t.title.toUpperCase() == 'CERTIFICADOS INTERMEDIOS');
+      let intermedios = result.disponibles.find((t: any) => t.title.toUpperCase() == 'CERTIFICADOS INTERMEDIOS');
 
       if (intermedios) {
         this.certificados = intermedios.children;
@@ -260,7 +255,7 @@ export class CredencialesDigitalesPage implements OnInit {
     await actionSheet.present();
   }
   async generar(certificado: any) {
-    let carrera = this.carrera.value;
+    let carrera = this.carrera?.value;
     let params = {
       tdetCcod: certificado.tdetCcod,
       ticeCcod: certificado.ticeCcod,
@@ -273,9 +268,7 @@ export class CredencialesDigitalesPage implements OnInit {
     };
 
 
-    const loading = await this.loading.create({ message: 'Preparando Certificado...' });
-
-    await loading.present();
+    const loading = await this.dialog.showLoading({ message: 'Preparando Certificado...' });
 
     try {
       let result = await this.api.solicitarCertificadoV4(params);
@@ -303,18 +296,19 @@ export class CredencialesDigitalesPage implements OnInit {
     }
   }
   async descargarPdf(pdf: string) {
-    let loading = await this.loading.create({ message: 'Descargando...' });
-    let url = $(pdf).attr('name');
-    let mcerNcorr = this.utils.getUrlParams('mcer_ncorr', url);
-    let tdetCcod = this.utils.getUrlParams('tdet_ccod', url);
-    let codVerif = this.utils.getUrlParams('verif', url);
-    let params = {
+    const url = $(pdf).attr('name');
+
+    if (!url) return;
+
+    const loading = await this.dialog.showLoading({ message: 'Descargando...' });
+    const mcerNcorr = this.utils.getUrlParams('mcer_ncorr', url);
+    const tdetCcod = this.utils.getUrlParams('tdet_ccod', url);
+    const codVerif = this.utils.getUrlParams('verif', url);
+    const params = {
       mcerNcorr: mcerNcorr,
       tdetCcod: tdetCcod,
       codVerif: codVerif
     };
-
-    await loading.present();
 
     try {
       let result = await this.api.descargarCertificado(params);
@@ -339,16 +333,6 @@ export class CredencialesDigitalesPage implements OnInit {
             filePath: file.uri,
             contentType: 'application/pdf'
           });
-          // const file = await Filesystem.writeFile({
-          //   path: fileName,
-          //   data: result.data,
-          //   directory: Directory.Cache
-          // });
-
-          // Share.share({
-          //   url: file.uri,
-          //   dialogTitle: 'Certificado Intermedio',
-          // });
         }
         this.api.marcarVista(VISTAS_ALUMNO.COMPARTE_CREDENCIALES)
       }

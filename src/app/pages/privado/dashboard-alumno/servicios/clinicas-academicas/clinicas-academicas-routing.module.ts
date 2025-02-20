@@ -6,6 +6,14 @@ const routes: Routes = [
   {
     path: '',
     component: ClinicasAcademicasPage
+  },
+  {
+    path: 'agendar-hora',
+    loadChildren: () => import('./agendar-hora/agendar-hora.module').then(m => m.AgendarHoraPageModule)
+  },
+  {
+    path: 'detalle-agenda',
+    loadChildren: () => import('./detalle-agenda/detalle-agenda.module').then(m => m.DetalleAgendaPageModule)
   }
 ];
 

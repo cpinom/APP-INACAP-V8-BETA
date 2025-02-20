@@ -46,7 +46,7 @@
                   <ion-select-option *ngFor="let item of ambitos" [value]="item">{{item}}</ion-select-option>
                 </ion-select>
               </ion-item>
-              <div class="invalid" *ngIf="submitted && ambito.hasError('required')">Campo obligatorio.</div>
+              <div class="invalid" *ngIf="submitted && ambito?.hasError('required')">Campo obligatorio.</div>
               <ng-container *ngIf="mostrarTematicas">
                 <ion-item>
                   <!-- <ion-label position="stacked">Temática motivo</ion-label> -->
@@ -55,7 +55,7 @@
                     <ion-select-option *ngFor="let item of tematicas" [value]="item">{{item}}</ion-select-option>
                   </ion-select>
                 </ion-item>
-                <div class="invalid" *ngIf="submitted && tematica.hasError('required')">Campo obligatorio.</div>
+                <div class="invalid" *ngIf="submitted && tematica?.hasError('required')">Campo obligatorio.</div>
               </ng-container>
               <ng-container *ngIf="mostrarSubmotivo">
                 <ion-item>
@@ -67,15 +67,15 @@
                     </ion-select-option>
                   </ion-select>
                 </ion-item>
-                <div class="invalid" *ngIf="submitted && submotivo.hasError('required')">Campo obligatorio.</div>
+                <div class="invalid" *ngIf="submitted && submotivo?.hasError('required')">Campo obligatorio.</div>
               </ng-container>
               <ion-item>
                 <!-- <ion-label position="stacked">Descripción</ion-label> -->
                 <ion-textarea label="Descripción" labelPlacement="stacked" rows="4" formControlName="descripcion"></ion-textarea>
               </ion-item>
-              <div class="invalid" *ngIf="submitted && descripcion.hasError('required')">Campo obligatorio.</div>
-              <div class="invalid" *ngIf="submitted && descripcion.hasError('maxlength')">El texto no debe sobrepasar los 255 caracteres.</div>
-              <div class="invalid" *ngIf="submitted && descripcion.hasError('pattern')">Existen caracteres no permitidos.</div>
+              <div class="invalid" *ngIf="submitted && descripcion?.hasError('required')">Campo obligatorio.</div>
+              <div class="invalid" *ngIf="submitted && descripcion?.hasError('maxlength')">El texto no debe sobrepasar los 255 caracteres.</div>
+              <div class="invalid" *ngIf="submitted && descripcion?.hasError('pattern')">Existen caracteres no permitidos.</div>
             </ion-list>
           </form>
         </ng-container>

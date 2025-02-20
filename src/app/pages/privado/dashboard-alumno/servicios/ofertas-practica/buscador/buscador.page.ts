@@ -15,7 +15,7 @@ import * as moment from 'moment';
 })
 export class BuscadorPage implements OnInit {
 
-  @ViewChild(IonInfiniteScroll) infiniteItem: IonInfiniteScroll;
+  @ViewChild(IonInfiniteScroll) infiniteItem!: IonInfiniteScroll;
   mostrarCargando = true;
   mostrarData = false;
   programa: any;
@@ -92,7 +92,7 @@ export class BuscadorPage implements OnInit {
           throw Error();
         }
 
-        this.region.setValue(region, { emitEvent: false })
+        this.region?.setValue(region, { emitEvent: false })
       }
       catch (error: any) {
         this.error.handle(error);
@@ -113,7 +113,7 @@ export class BuscadorPage implements OnInit {
   async loadData(e: any) {
     this.filtros.page = this.filtros.page + 1;
     let career = this.filtros.carrCcodReqlut;
-    let region = this.region.value || this.filtros.sedeCcodReqlut;
+    let region = this.region?.value || this.filtros.sedeCcodReqlut;
     let page = this.filtros.page;
     this.filtrarPracticas(career, region, page).finally(() => {
       e.target.complete();
@@ -157,17 +157,17 @@ export class BuscadorPage implements OnInit {
     this.mostrarData = false;
     mdl && (await mdl.dismiss());
     let career = this.filtros.carrCcodReqlut;
-    let region = this.region.value || this.filtros.sedeCcodReqlut;
+    let region = this.region?.value || this.filtros.sedeCcodReqlut;
 
     await this.filtrarPracticas(career, region, 1);
   }
   async limpiarFiltros() {
-    this.region.setValue(-1, { emitEvent: false });
+    this.region?.setValue(-1, { emitEvent: false });
   }
   async detalleEmpleo(params: any) {
     await this.nav.navigateForward(`${this.router.url.replace('/buscador', '')}/detalle`, { state: params });
   }
-  formatFecha(data) {
+  formatFecha(data: string) {
     let fecha = moment(data, 'YYYY-MM-DD');
     let today = moment();
     let yesterday = today.clone().subtract(1, 'days').startOf('day');
@@ -194,7 +194,7 @@ export class BuscadorPage implements OnInit {
   async filtrarIterno() {
     const filtro = this.filtros.filtro || '';
 
-    this.ofertasFiltradas = this.ofertas.filter(element => {
+    this.ofertasFiltradas = this.ofertas.filter((element: any) => {
       var text = element.jobTitle.normalize("NFD").replace(/[\u0300-\u036f]/g, '').toLowerCase();
       var filter = filtro.normalize("NFD").replace(/[\u0300-\u036f]/g, '').toLowerCase();
       var index = text.indexOf(filter);

@@ -1,0 +1,232 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Clínicas Académicas" [defaultHref]="backUrl"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-card class="primary-card" color="white">
+    <ion-card-header>
+      <ion-card-title>Agendar Hora Clínica Académica</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+</ion-header>
+
+<ion-content>
+
+  @if (mostrarCargando) {
+  <div class="loaderInacap">
+    <ion-spinner name="lines" color="info"></ion-spinner>
+  </div>
+  }
+
+  @if(mostrarData && ofertas) {
+  @if (ofertas.length) {
+  <mat-stepper linear #stepper labelPosition="bottom" (selectionChange)="onSelectionChange($event)">
+
+    <ng-template matStepperIcon="done">
+      <ion-icon src="assets/icon/done.svg"></ion-icon>
+    </ng-template>
+
+    <ng-template matStepperIcon="edit">
+      <ion-icon src="assets/icon/done.svg"></ion-icon>
+    </ng-template>
+
+    <mat-step [stepControl]="horaForm">
+      <form [formGroup]="horaForm">
+        <section>
+          <div class="section-header">Buscar hora de Clínica</div>
+          <div class="section-content">
+            <ion-list>
+              <ion-radio-group formControlName="oferta">
+                @for (item of ofertas; track $index) {
+                <ion-item>
+                  <ion-radio [value]="item">
+                    <ion-label>
+                      <h2>{{item.acacTnombre}}</h2>
+                      <p>{{item.tutor}}</p>
+                      <p>Cupo: {{item.acacNcupo}}</p>
+                      <p>Fecha: {{item.acofFmodulo}}</p>
+                      <p>Hora: {{item.horaHinicio}} - {{item.horaHtermino}}</p>
+                    </ion-label>
+                  </ion-radio>
+                </ion-item>
+                }
+              </ion-radio-group>
+            </ion-list>
+          </div>
+        </section>
+        <section>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <ion-button color="secondary" shape="round" expand="full" [routerLink]="backUrl" routerDirection="back">
+                  Volver
+                </ion-button>
+              </ion-col>
+              <ion-col>
+                <ion-button color="info" shape="round" expand="full" (click)="mostrarParticipantes()"
+                  [disabled]="!horaForm.valid">
+                  Siguiente
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </section>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="participantesForm">
+      <form [formGroup]="participantesForm">
+        <ng-container formArrayName="participantes">
+          @for (item of participantes.controls; track $index) {
+          <section class="section-participante">
+            <div class="section-header">
+              <span>Asistentes ({{$index+1}}/{{participantes.controls.length}})</span>
+              <ion-button fill="outline" slot="end" size="small" color="info" *ngIf="$index > 0" (click)="eliminarParticipante($index)">Eliminar</ion-button>
+            </div>
+            <div class="section-content" [formGroupName]="$index">
+              <ion-item>
+                <ion-input label="RUT (*)" labelPlacement="stacked" formControlName="rut" placeholder="Ingrese el rut" clearInput></ion-input>
+              </ion-item>
+              <div class="invalid" *ngIf="submitted && item.get('rut').hasError('required')">Campo obligatorio.</div>
+              <div class="invalid" *ngIf="submitted && item.get('rut').hasError('rut')">Rut inválido.</div>
+              <div class="invalid" *ngIf="submitted && item.get('rut').hasError('noEsAlumno')">Rut no pertenece a un estudiante INACAP.</div>
+              <ion-item>
+                <ion-input label="Correo electrónico (*)" labelPlacement="stacked" formControlName="correo" placeholder="Ingrese el correo" type="email" clearInput></ion-input>
+              </ion-item>
+              <div class="invalid" *ngIf="submitted && item.get('correo').hasError('required')">Campo obligatorio.</div>
+              <div class="invalid" *ngIf="submitted && item.get('correo').hasError('email')">Correo inválido.</div>
+              <ion-item>
+                <ion-input label="Nombre Completo" labelPlacement="stacked" formControlName="nombre" placeholder="Ingrese el nombre completo" clearInput></ion-input>
+              </ion-item>
+              <div class="invalid" *ngIf="submitted && item.get('nombre').hasError('required')">Campo obligatorio.</div>
+              <div class="invalid" *ngIf="submitted && item.get('nombre').hasError('maxlength')">Máximo de 500 caracteres permitidos.</div>
+              <div class="invalid" *ngIf="submitted && item.get('nombre').hasError('pattern')">Campo con caracteres no permitidos.</div>
+            </div>
+          </section>
+          }
+        </ng-container>
+        <section style="margin-inline: 15px">
+          <ion-button (click)="agregarParticipante()" color="info" shape="round" fill="outline" size="small">
+            <ion-icon slot="start" name="person-add"></ion-icon>
+            <ion-label>Agregar Asistente</ion-label>
+          </ion-button>
+        </section>
+        <section>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <ion-button color="secondary" shape="round" expand="full" (click)="stepper.previous()">
+                  Volver
+                </ion-button>
+              </ion-col>
+              <ion-col>
+                <ion-button color="info" shape="round" expand="full" (click)="mostrarDetalleHora()" [disabled]="!participantesForm.valid">
+                  Siguiente
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </section>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="resumenForm">
+      <form [formGroup]="resumenForm">
+        <section>
+          <div class="section-header">Confirmar Datos de Reserva</div>
+          <div class="section-content">
+            <ion-item>
+              <ion-select formControlName="asigCcod" label="Tema (*)" labelPlacement="stacked"
+                placeholder="Seleccione un Tema" multiple="true" okText="Aceptar" cancelText="Cancelar">
+                @for (item of asignaturas; track $index) {
+                <ion-select-option [value]="item.asigCcod">{{item.asigTdesc}}</ion-select-option>
+                }
+              </ion-select>
+            </ion-item>
+            <div class="invalid" *ngIf="asigCcod.hasError('required')">Campo obligatorio.</div>
+            <ion-item>
+              <ion-label>
+                <p class="label">Clínica Académica</p>
+                <p class="detail">{{oferta.value?.acacTnombre}}</p>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <p class="label">Fecha seleccionada</p>
+                <p class="detail">{{oferta.value?.acofFmodulo}}</p>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <p class="label">Hora seleccionada</p>
+                <p class="detail">{{oferta.value?.horaHinicio}} - {{oferta.value?.horaHtermino}}</p>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <p class="label">Asistentes</p>
+                <p class="detail">{{participantes.length}}</p>
+              </ion-label>
+            </ion-item>
+          </div>
+        </section>
+        @if (otrosParticipantes.length) {
+        <section>
+          <div class="section-header">Asistentes</div>
+          <div class="section-content">
+            <ion-list>
+              @for (item of otrosParticipantes; track $index) {
+              <ion-item>
+                <ion-label>
+                  <p class="label">Correo</p>
+                  <p class="detail">{{item}}</p>
+                </ion-label>
+              </ion-item>
+              }
+            </ion-list>
+          </div>
+        </section>
+        }
+      </form>
+      <section>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-button color="secondary" shape="round" expand="full" (click)="stepper.previous()">
+                Volver
+              </ion-button>
+            </ion-col>
+            <ion-col>
+              <ion-button color="info" shape="round" expand="full" (click)="reservarHora()" [disabled]="!resumenForm.valid">
+                Reservar Hora
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </section>
+    </mat-step>
+
+  </mat-stepper>
+  }
+  @else {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Sin Clínicas disponibles en este momento.</p>
+    </div>
+  </section>
+  }
+  }
+
+  @if(mostrarData && !ofertas) {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Información no disponible en este momento.</p>
+      <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+    </div>
+  </section>
+  }
+
+</ion-content>

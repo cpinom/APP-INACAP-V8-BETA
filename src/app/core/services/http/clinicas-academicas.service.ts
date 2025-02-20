@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { PrivateService } from './private.service';
-import { Preferences } from '@capacitor/preferences';
 
 @Injectable({
   providedIn: 'root'
@@ -8,11 +7,10 @@ import { Preferences } from '@capacitor/preferences';
 export class ClinicasAcademicasService extends PrivateService {
 
   public override storagePrefix: string = 'Clinicas-MOVIL';
-  private apiPrefix = 'api';
 
   constructor() {
     super();
-    this.baseUrl = `${this.global.Api}/${this.apiPrefix}`;
+    this.baseUrl = `${this.global.Api}/api`;
   }
 
   getDocentePrincipal(sedeCcod: any) {

@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { LoadingController } from '@ionic/angular';
-import { CuentaCorrienteService } from 'src/app/core/services/cuentacorriente.service';
+import { CuentaCorrienteService } from 'src/app/core/services/http/cuentacorriente.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 
 @Component({
@@ -12,18 +11,19 @@ import { ErrorHandlerService } from 'src/app/core/services/error-handler.service
 })
 export class BeneficiosPage implements OnInit {
 
-  instituciones: any[];
-  beneficios: any[];
+  instituciones!: any[];
+  beneficios!: any[];
   form: FormGroup;
-  conceptos: any[];
+  conceptos!: any[];
   mostrarData = false;
   mostrarCargando = true;
 
-  constructor(private api: CuentaCorrienteService,
-    private fb: FormBuilder,
-    private route: ActivatedRoute,
-    private loading: LoadingController,
-    private error: ErrorHandlerService) {
+  private api = inject(CuentaCorrienteService);
+  private fb = inject(FormBuilder);
+  private route = inject(ActivatedRoute);
+  private error = inject(ErrorHandlerService);
+
+  constructor() {
 
     this.form = this.fb.group({
       institucion: [null, Validators.required],
@@ -31,15 +31,15 @@ export class BeneficiosPage implements OnInit {
       beneficio: [null, Validators.required]
     });
 
-    this.institucion.valueChanges.subscribe(() => {
+    this.institucion?.valueChanges.subscribe(() => {
       this.cargarBeneficios(false);
     });
 
-    this.semestre.valueChanges.subscribe(() => {
+    this.semestre?.valueChanges.subscribe(() => {
       this.cargarBeneficios(false);
     });
 
-    this.beneficio.valueChanges.subscribe(() => {
+    this.beneficio?.valueChanges.subscribe(() => {
       this.cargarBeneficios(false);
     });
   }
@@ -58,11 +58,11 @@ export class BeneficiosPage implements OnInit {
       if (result.success) {
         let instCcod = this.route.snapshot.paramMap.get('instCcod');
         this.instituciones = result.instituciones;
-        this.institucion.setValue(instCcod, { emitEvent: false });
+        this.institucion?.setValue(instCcod, { emitEvent: false });
         this.beneficios = result.beneficios;
 
         if (result.beneficios.length) {
-          this.beneficio.setValue(this.beneficios[0].beneficio, { emitEvent: false });
+          this.beneficio?.setValue(this.beneficios[0].beneficio, { emitEvent: false });
         }
       }
     }
@@ -77,9 +77,9 @@ export class BeneficiosPage implements OnInit {
       let carrCcod = this.route.snapshot.paramMap.get('carrCcod');
       let compNdocto = this.route.snapshot.paramMap.get('compNdocto');
       let params = {
-        tipoBeneficio: this.beneficio.value,
-        tipoSemestre: this.semestre.value,
-        instCcod: this.institucion.value,
+        tipoBeneficio: this.beneficio?.value,
+        tipoSemestre: this.semestre?.value,
+        instCcod: this.institucion?.value,
         carrCcod: carrCcod,
         compNdocto: compNdocto
       };

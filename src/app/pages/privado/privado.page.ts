@@ -24,11 +24,9 @@ export class PrivadoPage implements OnInit {
       this.mostrarAlumno = auth.user.esAlumno;
       this.mostrarDocente = auth.user.esDocente;
       this.mostrarExalumno = auth.user.esExalumno;
-
     });
   }
   async redirectToProfile(rol: string) {
-    debugger
     
     await this.authService.setProfile(rol);
 

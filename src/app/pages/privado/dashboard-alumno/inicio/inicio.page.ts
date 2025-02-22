@@ -336,7 +336,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     }
     catch (error: any) {
       if (error && error.status == 401) {
-        this.error.handle(error);
+        await this.error.handle(error);
         return;
       }
       this.errorStatus = true;
@@ -360,7 +360,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     }
     catch (error: any) {
       if (error && error.status == 401) {
-        this.error.handle(error);
+        await this.error.handle(error);
       }
     }
   }
@@ -414,20 +414,22 @@ export class InicioPage implements OnInit, AfterViewInit {
       }
     }
   }
+  async periodoSeleccionado(periCcod: any) {
+    this.periodo?.setValue(periCcod);
+  }
   async guardarPeriodo(periCcod: any) {
-    let loading = await this.dialog.showLoading({ message: 'Guardando...' });
+    const loading = await this.dialog.showLoading({ message: 'Guardando...' });
     let revertirCambios = false;
 
     try {
-      let params = { periCcod: periCcod };
-      let result = await this.api.guardarPeriodo(params);
+      const params = { periCcod: periCcod };
+      const result = await this.api.guardarPeriodo(params);
 
       if (result.success) {
         await this.cargar(true);
-
-        this.snackbar.showToast(result.message, 3000, 'success');
-        this.api.removeStorage('cursos');
-        this.api.removeStorage('users');
+        await this.snackbar.showToast(result.message, 3000, 'success');
+        await this.api.removeStorage('cursos');
+        await this.api.removeStorage('users');
       }
       else {
         throw Error();
@@ -435,7 +437,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     }
     catch (error: any) {
       if (error && error.status == 401) {
-        this.error.handle(error);
+        await this.error.handle(error);
         return;
       }
       revertirCambios = true;
@@ -534,7 +536,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     }
     catch (error: any) {
       if (error && error.status) {
-        this.error.handle(error);
+        await this.error.handle(error);
       }
     }
     finally {

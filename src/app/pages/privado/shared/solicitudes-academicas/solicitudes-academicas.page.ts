@@ -1,8 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IonRouterOutlet, LoadingController, ModalController, NavController } from '@ionic/angular';
-import { AuthService } from 'src/app/core/services/auth.service';
+import { IonRouterOutlet, NavController } from '@ionic/angular';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
 import { SolicitudDetallePage } from './solicitud-detalle/solicitud-detalle.page';
@@ -20,6 +19,7 @@ import { DialogService } from 'src/app/core/services/dialog.service';
 })
 export class SolicitudesAcademicasPage implements OnInit {
 
+  mostrarCargando = true;
   activeTab: number = 0;
   carreras!: any[];
   carrera: any;
@@ -46,8 +46,8 @@ export class SolicitudesAcademicasPage implements OnInit {
       planCcod: ['', Validators.required]
     });
 
-    this.planCcod?.valueChanges.subscribe(() => {
-      this.cargarSolicitudes();
+    this.planCcod?.valueChanges.subscribe(async () => {
+      await this.cargarSolicitudes();
     });
 
     this.events.app.subscribe(event => {
@@ -59,15 +59,6 @@ export class SolicitudesAcademicasPage implements OnInit {
 
   }
   async ngOnInit() {
-    // let auth = await this.auth.getAuth();
-
-    // if (auth.perfil) {
-    //   this.esExalumno = auth.perfil == '/dashboard-exalumno'
-    // } else {
-    //   this.esExalumno = auth.user.esExalumno;
-    // }
-
-    // Diferenciar marca si es exalumno
     if (this.esExalumno) {
       this.api.marcarVista(VISTAS_EXALUMNO.SOLICITUDES);
     }
@@ -76,7 +67,6 @@ export class SolicitudesAcademicasPage implements OnInit {
     }
     await this.cargar();
   }
-  async ionViewWillEnter() { }
   async cargar() {
     try {
       let planCcod = await this.api.getStorage('plan');
@@ -109,7 +99,7 @@ export class SolicitudesAcademicasPage implements OnInit {
           }
 
           this.planCcod?.setValue(carrera.planCcod, { emitEvent: false });
-          this.api.setStorage('plan', carrera.planCcod);
+          await this.api.setStorage('plan', carrera.planCcod);
         }
       }
       else {
@@ -122,21 +112,22 @@ export class SolicitudesAcademicasPage implements OnInit {
         this.historial = result.historial;
 
         this.planCcod?.setValue(carrera.planCcod, { emitEvent: false });
-        this.api.setStorage('plan', carrera.planCcod);
+        await this.api.setStorage('plan', carrera.planCcod);
       }
     }
     catch (error: any) {
-      this.error.handle(error, async () => {
-        if (error.status != 401) {
-          await this.nav.navigateBack(this.backUrl);
-        }
-      });
+      if (error && error.status == 401) {
+        await this.error.handle(error);
+        return;
+      }
     }
     finally {
+      this.mostrarCargando = false;
       this.mostrarData = true;
     }
   }
-  recargar(e: any) {
+  recargar(e?: any) {
+    this.mostrarCargando = false;
     this.cargar().finally(() => {
       e && e.target.complete();
     });
@@ -159,7 +150,7 @@ export class SolicitudesAcademicasPage implements OnInit {
       }
     }
     catch (error: any) {
-      this.error.handle(error);
+      await this.error.handle(error);
     }
     finally {
       await snackbar.dismiss();
@@ -167,35 +158,49 @@ export class SolicitudesAcademicasPage implements OnInit {
   }
   async cargarSolicitudes() {
     this.mostrarData = false;
+    this.mostrarCargando = true;
 
     try {
-      let params = { planCcod: this.planCcod?.value };
-      let result = await this.api.getSolicitudes(params);
-      this.solicitudes = result;
-      await this.api.setStorage('plan', this.planCcod?.value);
+      const planCcod = this.planCcod?.value;
+      const result = await this.api.getSolicitudesV5(planCcod);
+
+      if (result.success) {
+        this.solicitudes = result.data.solicitudes;
+        await this.api.setStorage('plan', this.planCcod?.value);
+      }
+      else {
+        throw Error();
+      }
     }
     catch (error: any) {
-      this.error.handle(error, () => {
-        if (error.status != 401) {
-          this.router.navigate([this.backUrl], { replaceUrl: true });
-        }
-      });
+      if (error && error.status == 401) {
+        await this.error.handle(error);
+        return;
+      }
+
+      await this.snackbar.showToast('No se pudo cargar las solicitudes', 3000, 'danger');
     }
     finally {
       this.mostrarData = true;
+      this.mostrarCargando = false;
     }
   }
   async detalleSolicitud(item: any) {
-    const params = { soliNcorr: item.soliNcorr, tisoCcod: item.tisoCcod };
     const loading = await this.dialog.showLoading({ message: 'Cargando...' });
 
     try {
-      const result = await this.api.getDetalleSolicitud(params);
+      const result = await this.api.getDetalleSolicitudV5(item.soliNcorr, item.tisoCcod);
+
       await loading.dismiss();
+
+      if (!result.success) {
+        throw Error();
+      }
+
       const modal = await this.dialog.showModal({
         component: SolicitudDetallePage,
         componentProps: {
-          data: result
+          data: result.data
         },
         canDismiss: true,
         presentingElement: this.routerOutlet.nativeEl
@@ -208,7 +213,12 @@ export class SolicitudesAcademicasPage implements OnInit {
       }
     }
     catch (error: any) {
-      this.error.handle(error);
+      if (error && error.status == 401) {
+        await this.error.handle(error);
+        return;
+      }
+
+      await this.presentError('Detalle Solicitud', 'No se pudo cargar el detalle de la solicitud.');
     }
     finally {
       await loading.dismiss();
@@ -227,13 +237,23 @@ export class SolicitudesAcademicasPage implements OnInit {
       await this.nav.navigateForward(`${this.router.url}/solicitud-simple`, { state: data });
     }
   }
-  resolverClsEstado(item: any) {
+  resolverEstado(item: any) {
     if (item.esolCcod == 3) return 'danger';
     if (item.esolCcod == 2) return 'success';
     if (item.esolCcod == 1) return 'warning';
     if (item.esolCcod == 6) return 'medium';
     if (item.esolCcod == 8 || item.esolCcod == 11) return 'danger';
     return '';
+  }
+  async presentError(title: string, message: string) {
+    const alert = await this.dialog.showAlert({
+      cssClass: 'alert-message',
+      message: `<img src="./assets/images/warning.svg" /><br />${message}`,
+      header: title,
+      buttons: ['Aceptar']
+    });
+
+    return alert;
   }
   get planCcod() { return this.carreraForm.get('planCcod'); }
   get backUrl() { return this.router.url.replace('/solicitudes-academicas', ''); }

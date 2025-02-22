@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { EmpleaInacapPage } from './emplea-inacap.page';
-import { AccessGuard } from 'src/app/core/guards/access.guard';
 
 const routes: Routes = [
   {
@@ -10,12 +9,11 @@ const routes: Routes = [
   },
   {
     path: 'detalle-oferta',
-    loadChildren: () => import('./detalle-oferta/detalle-oferta.module').then( m => m.DetalleOfertaPageModule)
+    loadChildren: () => import('./detalle-oferta/detalle-oferta.module').then(m => m.DetalleOfertaPageModule)
   },
   {
     path: 'configuraciones',
-    canActivate: [AccessGuard],
-    loadChildren: () => import('src/app/pages/privado/common/configuraciones/configuraciones.module').then(m => m.ConfiguracionesPageModule)
+    loadChildren: () => import('src/app/pages/privado/shared/configuraciones/configuraciones.module').then(m => m.ConfiguracionesPageModule)
   }
 ];
 
@@ -23,4 +21,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class EmpleaInacapPageRoutingModule {}
+export class EmpleaInacapPageRoutingModule { }

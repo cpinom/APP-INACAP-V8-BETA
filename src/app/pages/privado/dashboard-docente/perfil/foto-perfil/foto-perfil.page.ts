@@ -74,7 +74,7 @@ export class FotoPerfilPage implements OnInit {
       }
     }
     catch (error: any) {
-      this.error.handle(error);
+      await this.error.handle(error);
     }
     finally {
       await loading.dismiss();
@@ -104,7 +104,7 @@ export class FotoPerfilPage implements OnInit {
       }
     }
     catch (error: any) {
-      this.error.handle(error);
+      await this.error.handle(error);
     }
     finally {
       await loading.dismiss();
@@ -121,7 +121,7 @@ export class FotoPerfilPage implements OnInit {
       result = await this.api.guardarFotoPerfil(params);
     }
     catch (error: any) {
-      this.error.handle(error);
+      await this.error.handle(error);
     }
     finally {
       await loading.dismiss();

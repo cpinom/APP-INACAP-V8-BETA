@@ -63,7 +63,7 @@ export class MicrosoftTeamsPage implements OnInit {
     }
     catch (error: any) {
       this.nav.navigateBack(this.backUrl)
-      this.error.handle(error);
+      await this.error.handle(error);
       return;
     }
     finally {

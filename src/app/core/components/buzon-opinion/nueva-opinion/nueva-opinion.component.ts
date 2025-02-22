@@ -72,7 +72,7 @@ export class NuevaOpinionComponent implements OnInit, OnDestroy {
       }
     }
     catch (error: any) {
-      this.error.handle(error);
+      await this.error.handle(error);
     }
     finally {
       await loading.dismiss();
@@ -94,7 +94,7 @@ export class NuevaOpinionComponent implements OnInit, OnDestroy {
       }
       catch (error: any) {
         if (error && error.status == 401) {
-          this.error.handle(error);
+          await this.error.handle(error);
           return;
         }
 
@@ -126,7 +126,7 @@ export class NuevaOpinionComponent implements OnInit, OnDestroy {
         }
         catch (error: any) {
           if (error && error.status == 401) {
-            this.error.handle(error);
+            await this.error.handle(error);
             return
           }
 
@@ -220,7 +220,7 @@ export class NuevaOpinionComponent implements OnInit, OnDestroy {
     }
     catch (error: any) {
       if (error && error.status == 401) {
-        this.error.handle(error);
+        await this.error.handle(error);
         return;
       }
 
@@ -272,7 +272,7 @@ export class NuevaOpinionComponent implements OnInit, OnDestroy {
         }
       }
       catch (error: any) {
-        this.error.handle(error);
+        await this.error.handle(error);
       }
       finally {
         await loading.dismiss();

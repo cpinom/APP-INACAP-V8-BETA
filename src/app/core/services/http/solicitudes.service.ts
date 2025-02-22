@@ -25,20 +25,32 @@ export class SolicitudesService extends PrivateService {
   getSolicitudes(params: any) {
     return this.post(`${this.baseUrl}/v3/solicitudes/solicitudes`, params);
   }
+  getSolicitudesV5(planCcod: any) {
+    return this.get(`${this.baseUrl}/v5/solicitudes/solicitudes?planCcod=${planCcod}`);
+  }
   anularSolicitud(params: any) {
     return this.post(`${this.baseUrl}/v4/solicitudes/anular-solicitud`, params);
   }
   getDetalleSolicitud(params: any): Promise<any> {
     return this.post(`${this.baseUrl}/v3/solicitudes/detalle-solicitud`, params);
   }
+  getDetalleSolicitudV5(soliNcorr: any, tisoCcod: any): Promise<any> {
+    return this.get(`${this.baseUrl}/v5/solicitudes/detalle-solicitud?soliNcorr=${soliNcorr}&tisoCcod=${tisoCcod}`);
+  }
   getDatosSolicitud(params: any): Promise<any> {
     return this.post(`${this.baseUrl}/v4/solicitudes/datos-solicitud`, params);
+  }
+  getDatosSolicitudV5(tisoCcod: any, planCcod: any): Promise<any> {
+    return this.get(`${this.baseUrl}/v5/solicitudes/datos-solicitud?tisoCcod=${tisoCcod}&planCcod=${planCcod}`);
   }
   getHorasPracticas(params: any): Promise<any> {
     return this.post(`${this.baseUrl}/v3/solicitudes/horas-praticas`, params);
   }
   getAsignaturasPendientes(params: any): Promise<any> {
     return this.post(`${this.baseUrl}/v3/solicitudes/asignaturas-pendientes`, params);
+  }
+  getAsignaturasPendientesV5(sedeCcod: any, planCcod: any): Promise<any> {
+    return this.get(`${this.baseUrl}/v5/solicitudes/asignaturas-pendientes?sedeCcod=${sedeCcod}&planCcod=${planCcod}`);
   }
   getCiudades(params: any): Promise<any> {
     return this.post(`${this.baseUrl}/v3/solicitudes/ciudades`, params);
@@ -56,6 +68,12 @@ export class SolicitudesService extends PrivateService {
   agregarArchivo(filepath: string, filename: string, params: any): Promise<any> {
     return Promise.reject();
     // return this.upload(`${this.baseUrl}/v3/solicitudes/agregar-archivo`, filepath, filename, params);
+  }
+  agregarArchivoV5(tisoCcod: any, stiaNcorr: any, params: any) {
+    return this.post(`${this.baseUrl}/v5/solicitudes/agregar-archivo?tisoCcod=${tisoCcod}&stiaNcorr=${stiaNcorr}`, params);
+  }
+  descargarAdjuntoV5(soarNcorr: any) {
+    return this.get(`${this.baseUrl}/v5/solicitudes/descargar-archivo?soarNcorr=${soarNcorr}`);
   }
   eliminarArchivo(params: any): Promise<any> {
     return this.post(`${this.baseUrl}/v3/solicitudes/eliminar-archivo`, params);

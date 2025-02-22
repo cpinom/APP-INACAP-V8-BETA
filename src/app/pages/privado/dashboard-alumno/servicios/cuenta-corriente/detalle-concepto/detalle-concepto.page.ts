@@ -64,7 +64,7 @@ export class DetalleConceptoPage implements OnInit {
         await this.snackbar.showToast('Documento no disponible', 2000);
       }
       else {
-        this.error.handle(error);
+        await this.error.handle(error);
       }
     }
     finally {

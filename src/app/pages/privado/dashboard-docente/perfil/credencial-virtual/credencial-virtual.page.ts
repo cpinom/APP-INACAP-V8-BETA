@@ -52,7 +52,7 @@ export class CredencialVirtualPage implements OnInit {
       }
       catch (error: any) {
         if (error && error.status == 401) {
-          this.error.handle(error);
+          await this.error.handle(error);
         }
       }
     }

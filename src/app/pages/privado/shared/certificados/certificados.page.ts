@@ -312,7 +312,7 @@ export class CertificadosPage implements OnInit {
       this.api.setStorage('carrCcod', carrera.carrCcod);
     }
     catch (error: any) {
-      this.error.handle(error);
+      await this.error.handle(error);
     }
     finally {
       this.mostrarData = true;
@@ -338,7 +338,7 @@ export class CertificadosPage implements OnInit {
         data['accion'] = await this.api.getDetalleCertificado(params);
       }
       catch (error: any) {
-        this.error.handle(error);
+        await this.error.handle(error);
       }
       finally {
         await loading.dismiss();
@@ -461,7 +461,7 @@ export class CertificadosPage implements OnInit {
     }
     catch (error:any) {
       if (error&&error.status == 401) {
-        this.error.handle(error);
+        await this.error.handle(error);
         return;
       }
 
@@ -484,7 +484,7 @@ export class CertificadosPage implements OnInit {
         this.snackbar.showToast('Su solicitud está siendo procesada. En breve llegará el certificado al correo indicado.', 3000, 'success');
       }
       catch (error: any) {
-        this.error.handle(error);
+        await this.error.handle(error);
       }
       finally {
         loading.dismiss();
@@ -505,7 +505,7 @@ export class CertificadosPage implements OnInit {
         this.snackbar.showToast('El certificado solicitado ha sido eliminado correctamente.', 3000, 'success');
       }
       catch (error: any) {
-        this.error.handle(error);
+        await this.error.handle(error);
       }
       finally {
         loading.dismiss();

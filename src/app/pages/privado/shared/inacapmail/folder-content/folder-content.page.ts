@@ -137,7 +137,7 @@ export class FolderContentPage implements OnInit, OnDestroy {
     }
     catch (error: any) {
       if (error && error.status == 401) {
-        this.error.handle(error);
+        await this.error.handle(error);
       }
     }
     finally {
@@ -188,7 +188,7 @@ export class FolderContentPage implements OnInit, OnDestroy {
       }
       else {
         if (error && error.status == 401) {
-          this.error.handle(error);
+          await this.error.handle(error);
         }
       }
     }
@@ -230,7 +230,7 @@ export class FolderContentPage implements OnInit, OnDestroy {
     }
     catch (error: any) {
       this.messages = messagesBack;
-      this.error.handle(error);
+      await this.error.handle(error);
     }
     finally {
       await message.dismiss();

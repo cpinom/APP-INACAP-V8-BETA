@@ -95,7 +95,7 @@ export class MensajeService {
     }
     catch (error: any) {
       if (error?.status == 401) {
-        this.error.handle(error);
+        await this.error.handle(error);
         return;
       }
       return Promise.reject('Error creando mensaje.');
@@ -134,7 +134,7 @@ export class MensajeService {
     }
     catch (error: any) {
       if (error?.status == 401) {
-        this.error.handle(error);
+        await this.error.handle(error);
         return;
       }
       return Promise.reject('Error creando mensaje.');

@@ -8,243 +8,269 @@
 
 <ion-content>
 
-  <ng-container *ngIf="data">
+  @if (mostrarCargando) {
+  <div class="loaderInacap">
+    <ion-spinner name="lines" color="primary"></ion-spinner>
+  </div>
+  }
 
-    <ion-card color="white" class="primary-card">
-      <ion-card-header>
-        <ion-card-title>{{data.titulo}}</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <div #glosa class="glosa" delegate>
-          <ng-container *ngIf="glosaCompleta">
-            <span [innerHTML]="data.glosa"></span>
-          </ng-container>
-          <ng-container *ngIf="!glosaCompleta">
-            <span *ngIf="!showMore" [innerHTML]="trimString(data.glosa, 200)"></span>
-            <span *ngIf="showMore" [innerHTML]="data.glosa"></span>
-            <a class="more" (click)="showMore = !showMore">
-              Mostrar <span [innerHtml]="showMore ? 'menos' : 'más'"></span>
-            </a>
-          </ng-container>         
-        </div>
-      </ion-card-content>
-    </ion-card>
+  @if (mostrarData && data) {
 
-    <ng-container *ngIf="tipoSolicitud == 5">
-      <section>
-        <div class="section-header">Asignaturas Reprobadas</div>
-        <div class="section-content">
-          <ion-list>
-            <ion-item *ngFor="let item of data.asignaturas">
-              <ion-checkbox labelPlacement="end" color="info" [(ngModel)]="item.checked">
-                <span class="ion-text-wrap">{{item.asigTdesc}}</span>
-              </ion-checkbox>
-              <!-- <ion-label>{{item.asigTdesc}}</ion-label> -->
-            </ion-item>
-            <ion-item *ngIf="data.asignaturas.length == 0">
-              <ion-label class="ion-text-center">Sin asignaturas...</ion-label>
-            </ion-item>
-          </ion-list>
-        </div>
-      </section>
-    </ng-container>
+  <ion-card color="white" class="primary-card">
+    <ion-card-header>
+      <ion-card-title>{{data.titulo}}</ion-card-title>
+    </ion-card-header>
+    @if (solicitudDisponible) {
+    <ion-card-content>
+      <div #glosa class="glosa" delegate>
+        <ng-container *ngIf="glosaCompleta">
+          <span [innerHTML]="data.glosa"></span>
+        </ng-container>
+        <ng-container *ngIf="!glosaCompleta">
+          <span *ngIf="!showMore" [innerHTML]="trimString(data.glosa, 200)"></span>
+          <span *ngIf="showMore" [innerHTML]="data.glosa"></span>
+          <a class="more" (click)="showMore = !showMore">
+            Mostrar <span [innerHtml]="showMore ? 'menos' : 'más'"></span>
+          </a>
+        </ng-container>
+      </div>
+    </ion-card-content>
+    }
+  </ion-card>
 
-    <ng-container *ngIf="tipoSolicitud == 7">
-      <section>
-        <div class="section-header">Listado de asignaturas</div>
-        <div class="section-content">
-          <ion-list>
-            <ion-item *ngFor="let item of data.asignaturas">
-              <ion-checkbox labelPlacement="end" color="info" [(ngModel)]="item.checked">
-                <span class="ion-text-wrap">{{item.asigTdesc}}</span>
-              </ion-checkbox>
-              <!-- <ion-label>{{item.asigTdesc}}</ion-label> -->
-            </ion-item>
-            <ion-item *ngIf="data.asignaturas.length == 0">
-              <ion-label class="ion-text-center">No existen asignaturas...</ion-label>
-            </ion-item>
-          </ion-list>
-        </div>
-      </section>
-      <section>
-        <div class="section-content">
-          <form [formGroup]="solicitudForm">
-            <ion-item class="normal">
-              <!-- <ion-label position="stacked" style="white-space: normal">Motivo</ion-label> -->
-              <ion-textarea label="Motivo" labelPlacement="stacked" rows="6" placeholder="Ingrese el motivo" formControlName="motivo"></ion-textarea>
-            </ion-item>
-            <div class="invalid" *ngIf="submitted && motivo?.invalid">Campo obligatorio</div>
-          </form>
-        </div>
-      </section>
-    </ng-container>
+  @if (solicitudDisponible) {
 
-    <ng-container *ngIf="tipoSolicitud == 12">
-      <section>
-        <div class="section-content">
-          <form [formGroup]="solicitudForm">
-            <ion-list>
-              <ion-item class="normal">
-                <!-- <ion-label position="stacked">Sedes</ion-label> -->
-                <ion-select label="Sedes" labelPlacement="stacked" placeholder="Seleccione..." formControlName="sede" okText="Aceptar" cancelText="Cancelar">
-                  <ion-select-option [value]="item.sedeCcod" *ngFor="let item of data.sedes">
-                    {{item.sedeTdesc}}
-                  </ion-select-option>
-                </ion-select>
-              </ion-item>
-              <div class="invalid" *ngIf="submitted && sede?.hasError('required')">Campo obligatorio.</div>
-              <ion-item class="normal">
-                <!-- <ion-label position="stacked" style="white-space: normal">Motivo</ion-label> -->
-                <ion-textarea label="Motivo" labelPlacement="stacked" rows="6" placeholder="Ingrese el motivo" formControlName="motivo"></ion-textarea>
-              </ion-item>
-              <div class="invalid" *ngIf="submitted && motivo?.hasError('required')">Campo obligatorio.</div>
-            </ion-list>
-          </form>
-        </div>
-      </section>
-    </ng-container>
-
-    <ng-container *ngIf="tipoSolicitud == 15">
-      <section>
-        <div class="section-header">Cargas académicas</div>
-        <div class="section-content">
-          <ion-item lines="none" *ngIf="data.secciones.length == 0">
-            <ion-label class="ion-text-center">Sin Datos...</ion-label>
-          </ion-item>
-          <ion-accordion-group expand="inset" style="margin: 0;">
-            <ion-accordion [value]="item.ssecNcorr" *ngFor="let item of data.secciones">
-              <ion-item slot="header">
-                <ion-label>
-                  <h2>{{item.asigTdesc}}</h2>
-                  <p [class.success]="item.ssecSelected > 0">{{mostrarCambiosCarga(item)}}</p>
-                </ion-label>
-              </ion-item>
-              <div class="ion-padding" slot="content">
-                <ion-list>
-                  <ion-radio-group [(ngModel)]="item.ssecSelected">
-                    <ion-item *ngFor="let seccion of item.disponibles">
-                      <!-- <ion-label>{{seccion.ssecTdesc}}</ion-label> -->
-                      <ion-radio [value]="seccion.ssecNcorr">
-                        <span class="ion-text-wrap">{{seccion.ssecTdesc}}</span>
-                      </ion-radio>
-                    </ion-item>
-                  </ion-radio-group>
-                </ion-list>
-              </div>
-            </ion-accordion>
-          </ion-accordion-group>
-        </div>
-      </section>
-    </ng-container>
-
-    <ng-container *ngIf="tipoSolicitud == 21">
-      <section>
-        <div class="section-content">
-          <ion-list>
-            <ion-item>
-              <ion-label>Solicita cambio a jornada : <b>{{data.jornada.text}}</b></ion-label>
-            </ion-item>
-          </ion-list>
-        </div>
-      </section>
-    </ng-container>
-
-    <ng-container *ngIf="tipoSolicitud == 22">
-      <section>      
-        <div class="section-content">
-          <form [formGroup]="solicitudForm">
-            <ion-list>
-              <ion-item class="normal">
-                <!-- <ion-label position="stacked">Programa de Estudio</ion-label> -->
-                <ion-select label="Programa de Estudio" labelPlacement="stacked" interface="action-sheet" [interfaceOptions]="{ header: 'Programa de Estudio' }" placeholder="Seleccione..." formControlName="programa" okText="Aceptar" cancelText="Cancelar">
-                  <ion-select-option [value]="item.oferNcorr" *ngFor="let item of data.programas">
-                    {{item.carrTdesc}}
-                  </ion-select-option>
-                </ion-select>
-              </ion-item>
-              <div class="invalid" *ngIf="submitted && programa?.hasError('required')">Campo obligatorio</div>
-            </ion-list>
-          </form>
-        </div>
-      </section>
-    </ng-container>
-
-    <ng-container *ngIf="tipoSolicitud == 34">
-      <form [formGroup]="solicitudForm">          
-        <section>
-          <div class="section-header">Listado de Evaluaciones</div>
-          <div class="section-content">
-            <ion-list>
-              <ng-container formArrayName="evaluaciones">
-                <ion-item class="normal" *ngFor="let item of data.evaluaciones; let i = index">
-                  <!-- <ion-label>{{item.asigTdesc}}</ion-label> -->
-                  <ion-checkbox labelPlacement="end" [formControlName]="i" color="info">
-                    <span class="ion-text-wrap">{{item.asigTdesc}}</span>
-                  </ion-checkbox>
-                </ion-item>
-              </ng-container>
-              <ion-item *ngIf="data.evaluaciones.length == 0">
-                <ion-label class="ion-text-center">No existen evaluaciones.</ion-label>
-              </ion-item>             
-              <div class="invalid" *ngIf="submitted && !validarEvaluaciones">Campo obligatorio</div>
-            </ion-list>
-          </div>
-        </section>        
-        <section>
-          <div class="section-content">
-            <ion-list>
-              <ion-item class="normal">
-                <!-- <ion-label position="stacked" style="white-space: normal">Motivo</ion-label> -->
-                <ion-textarea label="Motivo" labelPlacement="stacked" rows="4" formControlName="motivo" placeholder="Ingrese motivo"></ion-textarea>
-              </ion-item>
-              <div class="invalid" *ngIf="submitted && motivo?.hasError('required')">Campo obligatorio.</div>
-              <div class="invalid" *ngIf="submitted && motivo?.hasError('maxlength')">El motivo no debe superar los 1000 caracteres.</div>
-            </ion-list>
-          </div>
-        </section>        
+  @if (tipoSolicitud == 5) {
+  <section>
+    <div class="section-header">Asignaturas Reprobadas</div>
+    <div class="section-content">
+      <ion-list>
+        <ion-item *ngFor="let item of data.asignaturas">
+          <ion-checkbox labelPlacement="end" color="info" [(ngModel)]="item.checked">
+            <span class="ion-text-wrap">{{item.asigTdesc}}</span>
+          </ion-checkbox>
+        </ion-item>
+        <ion-item *ngIf="data.asignaturas.length == 0">
+          <ion-label class="ion-text-center">Sin asignaturas...</ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+  }
+  @else if (tipoSolicitud == 7) {
+  <section>
+    <div class="section-header">Listado de asignaturas</div>
+    <div class="section-content">
+      <ion-list>
+        <ion-item *ngFor="let item of data.asignaturas">
+          <ion-checkbox labelPlacement="end" color="info" [(ngModel)]="item.checked">
+            <span class="ion-text-wrap">{{item.asigTdesc}}</span>
+          </ion-checkbox>
+        </ion-item>
+        <ion-item *ngIf="data.asignaturas.length == 0">
+          <ion-label class="ion-text-center">No existen asignaturas...</ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+  <section>
+    <div class="section-content">
+      <form [formGroup]="solicitudForm">
+        <ion-item>
+          <ion-textarea label="Motivo" labelPlacement="stacked" rows="6" placeholder="Ingrese el motivo"
+            formControlName="motivo"></ion-textarea>
+        </ion-item>
+        <div class="invalid" *ngIf="submitted && motivo?.invalid">Campo obligatorio</div>
       </form>
-    </ng-container>
-
-    <ng-container *ngIf="tipoSolicitud == 45">
-      <section>
-        <div class="section-content">
-          <form [formGroup]="solicitudForm">
+    </div>
+  </section>
+  }
+  @else if (tipoSolicitud == 12) {
+  <section>
+    <div class="section-content">
+      <form [formGroup]="solicitudForm">
+        <ion-list>
+          <ion-item class="normal">
+            <ion-select label="Sedes" labelPlacement="stacked" placeholder="Seleccione..." formControlName="sede"
+              okText="Aceptar" cancelText="Cancelar">
+              <ion-select-option [value]="item.sedeCcod" *ngFor="let item of data.sedes">
+                {{item.sedeTdesc}}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+          <div class="invalid" *ngIf="submitted && sede?.hasError('required')">Campo obligatorio.</div>
+          <ion-item class="normal">
+            <ion-textarea label="Motivo" labelPlacement="stacked" rows="6" placeholder="Ingrese el motivo"
+              formControlName="motivo"></ion-textarea>
+          </ion-item>
+          <div class="invalid" *ngIf="submitted && motivo?.hasError('required')">Campo obligatorio.</div>
+        </ion-list>
+      </form>
+    </div>
+  </section>
+  }
+  @else if (tipoSolicitud == 15) {
+  <section>
+    <div class="section-header">Cargas académicas</div>
+    <div class="section-content">
+      <ion-item lines="none" *ngIf="data.secciones.length == 0">
+        <ion-label class="ion-text-center">Sin Datos...</ion-label>
+      </ion-item>
+      <ion-accordion-group expand="inset" style="margin: 0;">
+        <ion-accordion [value]="item.ssecNcorr" *ngFor="let item of data.secciones">
+          <ion-item slot="header">
+            <ion-label>
+              <h2>{{item.asigTdesc}}</h2>
+              <p [class.success]="item.ssecSelected > 0">{{mostrarCambiosCarga(item)}}</p>
+            </ion-label>
+          </ion-item>
+          <div class="ion-padding" slot="content">
             <ion-list>
-              <ion-item class="normal">
-                <!-- <ion-label position="stacked">Sede</ion-label> -->
-                <ion-select label="Sede" labelPlacement="stacked" placeholder="Seleccione..." formControlName="sede" (ionChange)="sedesChange()" okText="Aceptar" cancelText="Cancelar">
-                  <ion-select-option [value]="item.sedeCcod" *ngFor="let item of data.sedes">
-                    {{item.sedeTdesc}}
-                  </ion-select-option>
-                </ion-select>
-              </ion-item>
+              <ion-radio-group [(ngModel)]="item.ssecSelected">
+                <ion-item *ngFor="let seccion of item.disponibles">
+                  <ion-radio [value]="seccion.ssecNcorr">
+                    <span class="ion-text-wrap">{{seccion.ssecTdesc}}</span>
+                  </ion-radio>
+                </ion-item>
+              </ion-radio-group>
             </ion-list>
-            <div class="invalid" *ngIf="submitted && sede?.hasError('required')">Campo obligatorio.</div>
-          </form>
-        </div>
-      </section>
-      <section *ngIf="data.asignaturas">
-        <div class="section-header">Listado de asignaturas pendientes</div>
-        <div class="section-content">
-          <ion-list>
-            <ion-item *ngFor="let item of data.asignaturas">
-              <ion-checkbox labelPlacement="end" color="info" [(ngModel)]="item.checked">
+          </div>
+        </ion-accordion>
+      </ion-accordion-group>
+    </div>
+  </section>
+  }
+  @else if (tipoSolicitud == 21) {
+  <section>
+    <div class="section-content">
+      <ion-list>
+        <ion-item>
+          <ion-label>Solicita cambio a jornada : <b>{{data.jornada.text}}</b></ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+  }
+  @else if (tipoSolicitud == 22) {
+  <section>
+    <div class="section-content">
+      <form [formGroup]="solicitudForm">
+        <ion-list>
+          <ion-item class="normal">
+            <ion-select label="Programa de Estudio" labelPlacement="stacked" interface="action-sheet"
+              [interfaceOptions]="{ header: 'Programa de Estudio' }" placeholder="Seleccione..."
+              formControlName="programa" okText="Aceptar" cancelText="Cancelar">
+              <ion-select-option [value]="item.oferNcorr" *ngFor="let item of data.programas">
+                {{item.carrTdesc}}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+          <div class="invalid" *ngIf="submitted && programa?.hasError('required')">Campo obligatorio</div>
+        </ion-list>
+      </form>
+    </div>
+  </section>
+  }
+  @else if (tipoSolicitud == 34) {
+  <form [formGroup]="solicitudForm">
+    <section>
+      <div class="section-header">Listado de Evaluaciones</div>
+      <div class="section-content">
+        <ion-list>
+          <ng-container formArrayName="evaluaciones">
+            <ion-item class="normal" *ngFor="let item of data.evaluaciones; let i = index">
+              <ion-checkbox labelPlacement="end" [formControlName]="i" color="info">
                 <span class="ion-text-wrap">{{item.asigTdesc}}</span>
               </ion-checkbox>
-              <!-- <ion-label>{{item.asigTdesc}}</ion-label> -->
             </ion-item>
-            <ion-item *ngIf="data.asignaturas.length == 0">
-              <ion-label class="ion-text-center">Sin asignaturas...</ion-label>
-            </ion-item>
-          </ion-list>
-        </div>
-      </section>
-    </ng-container>
-
-    <ion-button color="info" shape="round" expand="block" (click)="procesar()" style="margin: 20px 15px">
+          </ng-container>
+          <ion-item *ngIf="data.evaluaciones.length == 0">
+            <ion-label class="ion-text-center">No existen evaluaciones.</ion-label>
+          </ion-item>
+          <div class="invalid" *ngIf="submitted && !validarEvaluaciones">Campo obligatorio</div>
+        </ion-list>
+      </div>
+    </section>
+    <section>
+      <div class="section-content">
+        <ion-list>
+          <ion-item class="normal">
+            <ion-textarea label="Motivo" labelPlacement="stacked" rows="4" formControlName="motivo"
+              placeholder="Ingrese motivo"></ion-textarea>
+          </ion-item>
+          <div class="invalid" *ngIf="submitted && motivo?.hasError('required')">Campo obligatorio.</div>
+          <div class="invalid" *ngIf="submitted && motivo?.hasError('maxlength')">El motivo no debe superar los 1000
+            caracteres.</div>
+        </ion-list>
+      </div>
+    </section>
+  </form>
+  }
+  @else if (tipoSolicitud == 45) {
+  <section>
+    <div class="section-content">
+      <form [formGroup]="solicitudForm">
+        <ion-list>
+          <ion-item>
+            <ion-select label="Sede" labelPlacement="stacked" placeholder="Seleccione..." formControlName="sede"
+              (ionChange)="sedesChange()" okText="Aceptar" cancelText="Cancelar">
+              <ion-select-option [value]="item.sedeCcod" *ngFor="let item of data.sedes">
+                {{item.sedeTdesc}}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+          <div class="invalid" *ngIf="submitted && sede?.hasError('required')">Campo obligatorio.</div>
+        </ion-list>
+      </form>
+    </div>
+  </section>
+  @if (data.asignaturas) {
+  <section>
+    <div class="section-header">Listado de asignaturas pendientes</div>
+    <div class="section-content">
+      <ion-list>
+        @for (item of data.asignaturas; track $index) {
+        <ion-item>
+          <ion-checkbox labelPlacement="end" color="info" [(ngModel)]="item.checked">
+            <span class="ion-text-wrap">{{item.asigTdesc}}</span>
+          </ion-checkbox>
+        </ion-item>
+        }
+        @if (data.asignaturas.length == 0) {
+        <ion-item>
+          <ion-label class="ion-text-center">Sin asignaturas...</ion-label>
+        </ion-item>
+        }
+      </ion-list>
+    </div>
+  </section>
+  }
+  }
+  <section style="margin: 15px;">
+    <ion-button color="primary" shape="round" expand="block" (click)="procesar()">
       Enviar Solicitud
     </ion-button>
+  </section>
+  }
+  @else {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Tipo de Solicitud no disponible en este momento.</p>
+    </div>
+  </section>
+  }
 
-  </ng-container>
-  
+  }
+
+  @if (mostrarData && !data) {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Información no disponible en este momento.</p>
+      <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+    </div>
+  </section>
+  }
+
 </ion-content>

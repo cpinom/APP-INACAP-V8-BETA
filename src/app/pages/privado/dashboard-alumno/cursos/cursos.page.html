@@ -13,82 +13,75 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-  <!-- <ion-toolbar *ngIf="principal && principal.periodos.length > 1">
-
-    <form [formGroup]="periodoForm">
-      <ion-item>
-        <ion-label>Período</ion-label>
-        <ion-select [interfaceOptions]="alertPeriodo" formControlName="periodo" okText="Actualizar" cancelText="Cerrar">
-          <ion-select-option *ngFor="let item of principal.periodos" [value]="item.periCcod">
-            {{item.periTdesc | titleCase}}
-          </ion-select-option>
-        </ion-select>
-      </ion-item>
-    </form>
-  </ion-toolbar> -->
+  @if (principal && principal.periodos.length > 1) {
+  <app-periodos [periodos]="principal.periodos" [selected]="periodo?.value"
+    (onPeriodoSelected)="periodoSeleccionado($event)"></app-periodos>
+  }
 </ion-header>
 
 <ion-content>
 
-  <ng-container *ngIf="programa">
+  <ion-list inset="true" class="card-list">
 
-    <ion-card class="primary-card" color="white">
-      <ion-card-header>
-        <ion-card-title *ngIf="principal.programas.length == 1">{{programa.carrTdesc}}</ion-card-title>
-        <div class="select-container" *ngIf="principal.programas.length > 1">
-          <ion-select placeholder="Seleccione..." interface="action-sheet" [(ngModel)]="programa" (ionChange)="guardarPrograma()" cancelText="Cancelar">
-            <ion-select-option [value]="item" *ngFor="let item of principal.programas" style="white-space: normal">
-              {{item.carrTdesc}}</ion-select-option>
-          </ion-select>
-        </div>
-        <ion-card-subtitle>{{periodoText}}</ion-card-subtitle>
-      </ion-card-header>
-    </ion-card>
+    <ion-item detail="false">
+      <ion-icon slot="start" src="assets/icon/book.svg" class="rounded"></ion-icon>
+      <ion-label>
+        <h2>Cursos - {{periodoText}}</h2>
+        @if (programa) {
+        <p class="programa" (click)="seleccionarPrograma()">{{programa.carrTdesc}}
+          @if (principal.programas.length > 1) {
+          <ion-icon src="assets/icon/arrow_drop_down.svg"></ion-icon>
+          }
+        </p>
+        <p class="jornada">
+          <ion-icon src="assets/icon/wb_sunny.svg" color="medium"></ion-icon>
+          <span>Jornada {{programa.jornTdesc}}</span>
+        </p>
+        }
+      </ion-label>
+    </ion-item>
 
-    <!-- <ion-list inset="true">
-      <ion-item routerLink="laboratorio" detail="true">
-        <ion-icon slot="start" src="assets/icon/psychology.svg"></ion-icon>
-        <ion-label>
-          <h2>Reforzamiento con IA</h2>
-        </ion-label>
-      </ion-item>
-      <ion-item routerLink="reforzamiento" detail="true">
-        <ion-icon slot="start" src="assets/icon/rocket_launch.svg"></ion-icon>
-        <ion-label>
-          <h2>Prepárate con IA</h2>
-        </ion-label>
-      </ion-item>
-    </ion-list> -->
+  </ion-list>
 
-    <ion-list [inset]="true" *ngIf="programa.asignaturas.length > 0">
-      <ion-item *ngFor="let item of programa.asignaturas" detail="true" (click)="seccionTap(item)" class="ion-activatable">
-        <ion-label>
-          <h2 class="course-state"><i *ngIf="item.estadoClase==1"></i>{{item.asigTdesc}}</h2>
-          <p class="label">Docente - {{item.nombreDocente}}</p>
-          <div class="progress">
-            <ion-progress-bar color="info" [value]="resolverAsistencia(item.asistencia, 1)"></ion-progress-bar>
-            <div>{{resolverAsistencia(item.asistencia, 2)}}%</div>
-          </div>
-          <div class="progress-legend"><i></i>Porcentaje de asistencia</div>
-        </ion-label>
-      </ion-item>
-    </ion-list>
+  @if (programa) {
+  @if (programa.asignaturas.length) {
+  <ion-list [inset]="true">
+    @for (item of programa.asignaturas; track $index) {
+    <ion-item detail="false" (click)="seccionTap(item)" class="ion-activatable">
+      <ion-label>
+        <h2 class="course-state">
+          @if (item.estadoClase == 1) {
+          <i></i>
+          }
+          {{item.asigTdesc}}
+        </h2>
+        <p class="label">Docente - {{item.nombreDocente}}</p>
+        <p>Sección - {{item.seccTdesc}}</p>
+        <p>Tipo - {{item.tasgTdesc}}</p>
+        <p>Modalidad - {{item.modaTdesc}}</p>
+      </ion-label>
+      <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
+    </ion-item>
+    }
+  </ion-list>
+  }
+  @else {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/book.svg"></ion-icon>
+      <p>Sin cursos en este momento para el periodo académico seleccionado</p>
+    </div>
+  </section>
+  }
+  }
 
-    <section *ngIf="programa.asignaturas.length === 0" class="empty-state">
-      <div>
-        <ion-icon src="assets/icon/book.svg"></ion-icon>
-        <p>Sin cursos en este momento para el periodo académico seleccionado</p>
-      </div>
-    </section>
-
-  </ng-container>
-
-  <section *ngIf="!programa" class="empty-state">
+  @if (!programa) {
+  <section class="empty-state">
     <div>
       <ion-icon src="assets/icon/info.svg"></ion-icon>
       <p>Información no disponible en este momento.</p>
-      <!-- <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button> -->
     </div>
   </section>
+  }
 
 </ion-content>

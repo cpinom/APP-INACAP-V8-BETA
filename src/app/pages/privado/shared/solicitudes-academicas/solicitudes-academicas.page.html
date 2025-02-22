@@ -5,152 +5,133 @@
     </ion-buttons>
     <ion-title>Solicitudes</ion-title>
   </ion-toolbar>
-  <!-- <ion-toolbar>
-    <ion-segment [(ngModel)]="activeTab">
-      <ion-segment-button [value]="0">Nueva Solicitud</ion-segment-button>
-      <ion-segment-button [value]="1">Históricas</ion-segment-button>
-    </ion-segment>
-  </ion-toolbar> -->
-  <div class="tabs">
-    <ion-segment [(ngModel)]="activeTab" mode="md" [swipeGesture]="false">
-      <ion-segment-button [value]="0">
-        <ion-icon src="assets/icon/access_time.svg"></ion-icon>
-        <ion-label>Nueva Solicitud</ion-label>
-      </ion-segment-button>
-      <ion-segment-button [value]="1">
-        <ion-icon src="assets/icon/description.svg"></ion-icon>
-        <ion-label>Solicitudes Históricas</ion-label>
-      </ion-segment-button>
-    </ion-segment>
-  </div>
 </ion-header>
 
 <ion-content>
+
+  <ion-list inset="true" class="card-list">
+    <ion-item detail="false">
+      <ion-icon slot="start" src="assets/icon/task.svg" class="rounded variant-4"></ion-icon>
+      <ion-label>
+        <h2>Solicitudes Académicas</h2>
+        <p>Busca las solicitudes que necesites para tu día a día.</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <div class="tabs">
+    <ion-segment [(ngModel)]="activeTab" mode="ios" [swipeGesture]="false">
+      <ion-segment-button [value]="0">
+        <ion-label>Nueva Solicitud</ion-label>
+      </ion-segment-button>
+      <ion-segment-button [value]="1">
+        <ion-label>Historial</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
 
   <ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ng-container *ngIf="activeTab == 0 && mostrarData">
+  @if (mostrarCargando) {
+  <div class="loaderInacap">
+    <ion-spinner name="lines" color="primary"></ion-spinner>
+  </div>
+  }
 
-    <!-- <section [class.first]="carreras.length > 1" *ngIf="carreras.length > 1"> -->
-    <section>
-      <!-- <div class="section-header">Mis Carreras</div> -->
-      <div class="section-content">
-        <form [formGroup]="carreraForm">
-          <ion-list>
-            <ion-item>
-              <ion-select label="Mis Carreras" labelPlacement="stacked" placeholder="Seleccione..." [interfaceOptions]="{ header: 'Mis Carreras' }" interface="action-sheet" formControlName="planCcod" cancelText="Cancelar">
-                <ion-select-option [value]="item.planCcod" *ngFor="let item of carreras" style="white-space: normal">
-                  {{item.espeTdesc}}
-                </ion-select-option>
-              </ion-select>
-            </ion-item>
-          </ion-list>
-        </form>
-      </div>
-    </section>
+  @if (mostrarData && carreras) {
 
-    <section>
-      <div class="section-content">
+  @if (activeTab == 0) {
 
-        <ion-list *ngIf="solicitudes && solicitudes.length > 0">
-          <ion-item *ngFor="let item of solicitudes" detail="true" (click)="resolverSolicitud(item)" class="ion-activatable">
-            <ion-label>
-              <h2>{{item.tisoTdesc}}</h2>
-            </ion-label>
-          </ion-item>
-        </ion-list>
+  <form [formGroup]="carreraForm">
+    <ion-list inset="true" class="carreras-list">
+      <ion-item>
+        <ion-select label="Mis Carreras" labelPlacement="stacked" placeholder="Seleccione..."
+          [interfaceOptions]="{ header: 'Mis Carreras' }" interface="action-sheet" formControlName="planCcod"
+          cancelText="Cancelar">
+          @for (item of carreras; track $index) {
+          <ion-select-option [value]="item.planCcod" style="white-space: normal">
+            {{item.espeTdesc}}
+          </ion-select-option>
+          }
+        </ion-select>
+      </ion-item>
+    </ion-list>
+  </form>
 
-        <section *ngIf="solicitudes && solicitudes.length == 0" class="empty-state">
-          <div>
-            <ion-icon src="assets/icon/note_add.svg"></ion-icon>
-            <p>Sin solicitudes disponibles en este momento.</p>
-          </div>
-        </section>
+  @if (solicitudes && solicitudes.length > 0) {
 
-      </div>
-    </section>
+  <ion-list inset="true" class="solicitudes-list">
+    @for (item of solicitudes; track $index) {
+    <ion-item detail="false" (click)="resolverSolicitud(item)" class="ion-activatable">
+      <ion-label>
+        <h2>{{item.tisoTdesc}}</h2>
+      </ion-label>
+      <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
+    </ion-item>
+    }
+  </ion-list>
 
-  </ng-container>
+  }
+  @else {
 
-  <ng-container *ngIf="activeTab == 1 && mostrarData">
-    <section>
-      <div class="section-content">
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/note_add.svg"></ion-icon>
+      <p>Sin solicitudes disponibles en este momento.</p>
+    </div>
+  </section>
 
-        <ion-list *ngIf="historial && historial.length > 0">
-          <ion-item-sliding *ngFor="let item of historial">
-            <ion-item (click)="detalleSolicitud(item)" detail="true" [class]="resolverClsEstado(item)">
-              <ion-label>
-                <h2>{{item.tisoTdesc}}</h2>
-                <p>Folio - {{item.soliNcorr}}</p>
-                <p>Estado - {{item.esolTdesc}}</p>
-                <p>Carrera - {{item.carrTdesc}}</p>
-              </ion-label>
-            </ion-item>
-            <ion-item-options side="end" *ngIf="item.tisoCcod != 35">
-              <ion-item-option color="danger" (click)="anular(item.soliNcorr)" [disabled]="item.esolCcod != 1 && item.esolCcod != 7">
-                <ion-icon src="assets/icon/delete.svg"></ion-icon>
-              </ion-item-option>
-            </ion-item-options>
-          </ion-item-sliding>
-        </ion-list>
+  }
 
-        <section class="empty-state" *ngIf="historial && historial.length == 0">
-          <div>
-            <ion-icon src="assets/icon/search.svg"></ion-icon>
-            <p>Sin solicitudes históricas en este momento.</p>
-          </div>
-        </section>
+  }
+  @else if (activeTab == 1) {
 
-      </div>
-    </section>
-  </ng-container>
+  @if (historial && historial.length > 0) {
+  <ion-list inset="true" class="solicitudes-historial">
+    @for (item of historial; track $index) {
+    <ion-item-sliding>
+      <ion-item (click)="detalleSolicitud(item)" detail="false" class="ion-activatable">
+        <ion-label>
+          <h2>{{item.tisoTdesc}}</h2>
+          <p>Folio - {{item.soliNcorr}}</p>
+          <p>Carrera - {{item.carrTdesc}}</p>
+          <p class="estado-actividad {{resolverEstado(item)}}">{{item.esolTdesc}}</p>
+        </ion-label>
+        <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
+      </ion-item>
+      <ion-item-options side="end" *ngIf="item.tisoCcod != 35">
+        <ion-item-option color="danger" (click)="anular(item.soliNcorr)"
+          [disabled]="item.esolCcod != 1 && item.esolCcod != 7">
+          <ion-icon src="assets/icon/delete.svg"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+    }
+  </ion-list>
+  }
+  @else {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/search.svg"></ion-icon>
+      <p>Sin solicitudes históricas en este momento.</p>
+    </div>
+  </section>
+  }
 
-  <ng-container *ngIf="!mostrarData">
+  }
 
-    <section>
-      <div class="section-header">
-        <ion-skeleton-text animated style="width: 30%;"></ion-skeleton-text>
-      </div>
-      <div class="section-content">
-        <ion-list>
-          <ion-item>
-            <ion-label>
-              <ion-skeleton-text animated style="width: 70%;"></ion-skeleton-text>
-            </ion-label>
-          </ion-item>
-        </ion-list>
-      </div>
-    </section>
+  }
 
-    <section>
-      <div class="section-content">
-        <ion-list>
-          <ion-item>
-            <ion-label>
-              <ion-skeleton-text animated style="width: 70%;"></ion-skeleton-text>
-            </ion-label>
-          </ion-item>
-          <ion-item>
-            <ion-label>
-              <ion-skeleton-text animated style="width: 80%;"></ion-skeleton-text>
-            </ion-label>
-          </ion-item>
-          <ion-item>
-            <ion-label>
-              <ion-skeleton-text animated style="width: 40%;"></ion-skeleton-text>
-            </ion-label>
-          </ion-item>
-          <ion-item>
-            <ion-label>
-              <ion-skeleton-text animated style="width: 60%;"></ion-skeleton-text>
-            </ion-label>
-          </ion-item>
-        </ion-list>
-      </div>
-    </section>
-
-  </ng-container>
+  @if (mostrarData && !carreras) {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Información no disponible en este momento.</p>
+      <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+    </div>
+  </section>
+  }
 
 </ion-content>

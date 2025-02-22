@@ -106,7 +106,7 @@ export class NuevaSolicitudPage implements OnInit {
           this.events.app.next({ action: 'app:certificados-recargar' });
         }
         catch (error: any) {
-          this.error.handle(error);
+          await this.error.handle(error);
         }
         finally {
           await loading.dismiss();
@@ -203,7 +203,7 @@ export class NuevaSolicitudPage implements OnInit {
     }
     catch (error: any) {
       if (error && error.status == 401) {
-        this.error.handle(error);
+        await this.error.handle(error);
         return;
       }
 
@@ -246,7 +246,7 @@ export class NuevaSolicitudPage implements OnInit {
     //     }
     //   }
     //   catch (error: any) {
-    //     this.error.handle(error);
+    //     await this.error.handle(error);
     //   }
     //   finally {
     //     await loading.dismiss();
@@ -263,7 +263,7 @@ export class NuevaSolicitudPage implements OnInit {
   //     result = await this.api.generaCarro({ resoNcorr: this.data.resoNcorr });
   //   }
   //   catch (error: any) {
-  //     this.error.handle(error);
+  //     await this.error.handle(error);
   //   }
   //   finally {
   //     await loading.dismiss();
@@ -288,7 +288,7 @@ export class NuevaSolicitudPage implements OnInit {
   //     }
   //     catch (error: any) {
   //       if (error && error.code == 0) return;
-  //       this.error.handle(error);
+  //       await this.error.handle(error);
   //     }
   //   }
   // }

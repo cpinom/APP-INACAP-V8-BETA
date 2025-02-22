@@ -71,7 +71,7 @@ export class DetallePagoPage implements OnInit {
       }
     }
     catch (error: any) {
-      this.error.handle(error);
+      await this.error.handle(error);
     }
     finally {
       await loading.dismiss();

@@ -17,39 +17,76 @@
 
 <ion-content>
 
-  <section class="first">
+  <ion-list inset="true" class="card-list">
+    <ion-item detail="false">
+      <ion-icon slot="start" src="assets/icon/list_alt.svg" class="rounded variant-3"></ion-icon>
+      <ion-label>
+        <h2>Servicios</h2>
+        <p>Descubre y explora otros servicios que tenemos disponibles para ti.</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <section>
+    <div class="section-header">Contactos Relevantes</div>
+    <div class="section-content">
+      <ion-list>
+        <ion-item detail="false" routerLink="asesor-pedagogico">
+          <ion-label>Asesor Pegadógico</ion-label>
+          <ion-icon slot="end" src="assets/icon/contacts.svg"></ion-icon>
+        </ion-item>
+        <ion-item detail="false" routerLink="director-carrera" *ngIf="perfilOk">
+          <ion-label>Director de Carrera</ion-label>
+          <ion-icon slot="end" src="assets/icon/contacts.svg"></ion-icon>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+
+  <section>
     <div class="section-header">Servicios Académicos</div>
     <div class="section-content">
       <ion-list>
-        <ion-item detail="true" routerLink="asesor-pedagogico">
-          <ion-label>Asesor Pegadógico</ion-label>
-        </ion-item>
         <!-- <ion-item detail="true" routerLink="bibliotecas">
           <ion-label>Biblioteca</ion-label>
         </ion-item> -->
-        <ion-item detail="true" (click)="bibliotecasTap()">
+        <ion-item detail="false" (click)="bibliotecasTap()">
+          <ion-icon slot="start" src="assets/icon/book.svg"></ion-icon>
           <ion-label>Buscador de Bibliotecas</ion-label>
+          <ion-icon slot="end" src="assets/icon/launch.svg"></ion-icon>
         </ion-item>
-        <ion-item detail="true" routerLink="buscador-docente" *ngIf="perfilOk && mostrarBuscadorDocentes">
+        <ion-item detail="false" routerLink="buscador-docente" *ngIf="perfilOk && mostrarBuscadorDocentes">
+          <ion-icon slot="start" src="assets/icon/person_search.svg"></ion-icon>
           <ion-label>Buscador de Docentes</ion-label>
+          <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
         </ion-item>
-        <!-- <ion-item detail="true" routerLink="clinicas-academicas">
+        <ion-item detail="false" routerLink="clinicas-academicas">
           <ion-label>Clínicas Académicas</ion-label>
-        </ion-item> -->
-        <ion-item detail="true" routerLink="director-carrera" *ngIf="perfilOk">
-          <ion-label>Director de Carrera</ion-label>
+          <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
+        </ion-item>  
+        <ion-item detail="false" routerLink="dae">
+          <ion-icon slot="start" src="assets/icon/account_balance.svg"></ion-icon>
+          <ion-label>DAE</ion-label>
+          <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
+        </ion-item>      
+        <ion-item detail="false" routerLink="docentes" *ngIf="perfilOk">
+          <ion-icon slot="start" src="assets/icon/person_pin.svg"></ion-icon>
+          <ion-label>Mis Docentes</ion-label>
+          <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
         </ion-item>
-        <ion-item detail="true" routerLink="docentes" *ngIf="perfilOk">
-          <ion-label>Docentes</ion-label>
-        </ion-item>
-        <ion-item detail="true" routerLink="emplea-inacap">
+        <ion-item detail="false" routerLink="emplea-inacap">
+          <ion-icon slot="start" src="assets/icon/badge.svg"></ion-icon>
           <ion-label>Emplea INACAP</ion-label>
+          <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
         </ion-item>
-        <ion-item detail="true" routerLink="ofertas-practica" *ngIf="practica">
+        <ion-item detail="false" routerLink="ofertas-practica" *ngIf="practica">
           <ion-label>Ofertas de Práctica Profesional</ion-label>
+          <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
         </ion-item>
-        <ion-item detail="true" routerLink="solicitudes-academicas" *ngIf="mostrarSolicitudes">
+        <ion-item detail="false" routerLink="solicitudes-academicas" *ngIf="mostrarSolicitudes">
+          <ion-icon slot="start" src="assets/icon/task.svg"></ion-icon>
           <ion-label>Solicitudes Académicas</ion-label>
+          <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
         </ion-item>
       </ion-list>
     </div>

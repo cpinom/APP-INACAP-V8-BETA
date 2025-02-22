@@ -116,7 +116,7 @@ export class EditarCorreoPage implements OnInit {
         if (this.modo == 1) {
           this.modalCtrl.dismiss();
         }
-        this.error.handle(error);
+        await this.error.handle(error);
       }
       finally {
         await loading.dismiss();
@@ -144,7 +144,7 @@ export class EditarCorreoPage implements OnInit {
         }
       }
       catch (error: any) {
-        this.error.handle(error);
+        await this.error.handle(error);
       }
       finally {
         await loading.dismiss();

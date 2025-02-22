@@ -19,7 +19,6 @@ const routes: Routes = [
     path: 'solicitud-practica',
     loadChildren: () => import('./solicitud-practica/solicitud-practica.module').then( m => m.SolicitudPracticaPageModule)
   }
-
 ];
 
 @NgModule({

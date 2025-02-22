@@ -56,7 +56,6 @@ export class SeccionPage implements OnInit, OnDestroy {
 
     this.seccion = this.router.getCurrentNavigation()?.extras.state;
     this.auth.getAuth().then(auth => {
-      debugger
       this.userId = auth.user.data.persNcorr;
     });
 
@@ -108,7 +107,7 @@ export class SeccionPage implements OnInit, OnDestroy {
     }
     catch (error: any) {
       if (error && error.status == 401) {
-        this.error.handle(error);
+        await this.error.handle(error);
       }
     }
     finally {

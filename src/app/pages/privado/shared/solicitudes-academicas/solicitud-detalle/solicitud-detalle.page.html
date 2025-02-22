@@ -16,7 +16,7 @@
     <ion-card color="white" class="primary-card">
       <ion-card-header>
         <ion-card-title>{{data.solicitud.tisoTdesc}}</ion-card-title>
-        <ion-card-subtitle>
+        <!-- <ion-card-subtitle>
           <ion-icon color="success" *ngIf="data.solicitud.esolCcod == 2" src="assets/icon/check_circle.svg"></ion-icon>
           <ion-icon color="danger" *ngIf="data.solicitud.esolCcod == 3" src="assets/icon/highlight_off.svg"></ion-icon>
           <ion-icon color="medium"
@@ -24,122 +24,145 @@
             src="assets/icon/highlight_off.svg"></ion-icon>
           <ion-icon color="medium" *ngIf="data.solicitud.esolCcod == 1" src="assets/icon/access_time.svg"></ion-icon>
           <span>{{data.solicitud.esolTdesc}}</span>
-        </ion-card-subtitle>
+        </ion-card-subtitle> -->
       </ion-card-header>
     </ion-card>
 
     <section>
+      <div class="section-header">Datos Solicitud</div>
       <div class="section-content">
-        <ion-list class="ion-no-margin">
+        <ion-list class="detalle">
           <ion-item>
             <ion-label>
-              <p class="label">Folio solicitud</p>
-              <p class="detail">{{data.solicitud.soliNcorr}}</p>
-            </ion-label>
-          </ion-item>
-          <ion-item>
-            <ion-label>
-              <p class="label">Programa de estudio</p>
-              <p class="detail">{{data.solicitud.carrera}}</p>
+              <h2>Folio solicitud:<span>{{data.solicitud.soliNcorr}}</span></h2>              
             </ion-label>
           </ion-item>
           <ion-item>
             <ion-label>
-              <p class="label">Sede</p>
-              <p class="detail">{{data.solicitud.sedeTdesc}}</p>
+              <h2>Programa de estudio: <span>{{data.solicitud.carrera}}</span></h2>
             </ion-label>
           </ion-item>
           <ion-item>
             <ion-label>
-              <p class="label">Período académico</p>
-              <p class="detail">{{data.solicitud.periodo}}</p>
+              <h2>Sede:<span>{{data.solicitud.sedeTdesc}}</span></h2>              
             </ion-label>
           </ion-item>
-          <ion-item *ngIf="data.solicitud.resoNcorr">
+          <ion-item>
             <ion-label>
-              <p class="label">Folio resolución</p>
-              <p class="detail">{{data.solicitud.resoNcorr}}</p>
+              <h2>Período académico:<span>{{data.solicitud.periodo}}</span></h2>              
             </ion-label>
           </ion-item>
+          <ion-item>
+            <ion-label>
+              <h2>Estado Solicitud:<p class="estado-actividad {{resolverEstado(data.solicitud)}}">{{data.solicitud.esolTdesc}}</p></h2>              
+            </ion-label>
+          </ion-item>
+          @if (data.solicitud.resoNcorr) {
+          <ion-item>
+            <ion-label>
+              <h2>Folio resolución:<span>{{data.solicitud.resoNcorr}}</span></h2>              
+            </ion-label>
+          </ion-item>
+          }
         </ion-list>
       </div>
     </section>
 
+    @if (data.solicitud.esolCcod == 3) {
     <section *ngIf="data.solicitud.esolCcod == 3">
       <div class="section-content">
-        <ion-list class="ion-no-margin">
+        <ion-list class="detalle">
           <ion-item>
             <ion-label>
-              <p class="label">Motivo de rechazo</p>
-              <p class="detail">{{data.solicitud.soliTmotivoRechazo}}</p>
+              <h2>Motivo de rechazo:<span>{{data.solicitud.soliTmotivoRechazo}}</span></h2>              
             </ion-label>
           </ion-item>
         </ion-list>
       </div>
     </section>
+    }
 
-    <section *ngIf="data.solicitud.tisoCcod == '35' && data.causales.length > 0">
+    @if (data.solicitud.tisoCcod == '35' && data.causales.length > 0) {
+    <section>
       <div class="section-header">Causales de Anulación Contrato</div>
       <div class="section-content">
-        <ion-list class="ion-no-margin">
-          <ion-item *ngFor="let item of data.causales">
+        <ion-list class="detalle">
+          @for (item of data.causales; track $index) {
+          <ion-item>
             <ion-label *ngIf="item.tacoCcod != 7">
-              <p class="detail">{{item.tacoTdesc}}</p>
+              <h2>{{item.tacoTdesc}}</h2>
             </ion-label>
             <ion-label *ngIf="item.tacoCcod == 7">
-              <p class="label">{{item.tacoTdesc}}</p>
-              <p class="detail">{{item.caacTdesc || 'Sin dato'}}</p>
+              <h2>{{item.tacoTdesc}}<span>{{item.caacTdesc || 'Sin dato'}}</span></h2>              
             </ion-label>
           </ion-item>
+          }
         </ion-list>
       </div>
     </section>
+    }
 
-    <section *ngIf="data.detalle.length">
+    @if (data.detalle.length) {
+    <section>
       <div class="section-header">Detalle</div>
       <div class="section-content">
-        <ion-list class="ion-no-margin">
-          <ion-item *ngFor="let item of data.detalle">
+        <ion-list class="detalle">
+          @for (item of data.detalle; track $index) {
+          <ion-item>
             <ion-label>
-              <p class="label">{{item.cams_tlabel}}</p>
-              <p class="detail">{{item.detalle || 'Sin dato'}}</p>
+              <h2>{{resolverLabel(item.cams_tlabel)}}<span>{{item.detalle || 'Sin dato'}}</span></h2>              
             </ion-label>
           </ion-item>
+          }
         </ion-list>
       </div>
     </section>
+    }
 
-    <section *ngIf="data.documentos.length">
+    @if (data.documentos.length) {
+    <section>
       <div class="section-header">Documentos adjuntos</div>
       <div class="section-content">
-        <ion-list class="ion-no-margin">
-          <ion-item *ngFor="let item of data.documentos">
+        <ion-list>
+          @for (item of data.documentos; track $index) {
+          <ion-item (click)="descargarArchivo(item)" detail="false" class="ion-activatable">
+            <ion-icon [src]="resolverIcono(item.soarTnombre)" slot="start" color="medium"></ion-icon>
             <ion-label>
-              <!-- <p class="label">{{item.cams_tlabel}}</p> -->
-              <p class="detail">{{item.soarTnombre}}</p>
+              <h2>{{item.soarTnombre}}</h2>
             </ion-label>
+            <ion-icon slot="end" src="assets/icon/download.svg"></ion-icon>
           </ion-item>
+          }
         </ion-list>
       </div>
     </section>
+    }
 
-    <section *ngIf="data.enlaces.length">
+    @if (data.enlaces.length) {
+    <section>
       <div class="section-header">Descargas</div>
       <div class="section-content">
-        <ion-list class="ion-no-margin">
-          <ion-item *ngFor="let item of data.enlaces" (click)="descargar(item.url)" detail="true">
+        <ion-list>
+          @for (item of data.enlaces; track $index) {
+          <ion-item (click)="descargar(item.url)" detail="false" class="ion-activatable">
             <ion-icon slot="start" src="assets/icon/insert_drive_file.svg"></ion-icon>
             <ion-label style="white-space: normal">{{item.nombre}}</ion-label>
+            <ion-icon slot="end" src="assets/icon/launch.svg"></ion-icon>
           </ion-item>
+          }
         </ion-list>
       </div>
     </section>
+    }
 
-    <section style="margin: 20px 0;" *ngIf="data.solicitud.tisoCcod != '35'">
-      <ion-button color="danger" shape="round" expand="block" (click)="anular()" [disabled]="data.solicitud.esolCcod != 1 && data.solicitud.esolCcod != 7">
+    @if (data.solicitud.tisoCcod != '35') {
+    <section style="margin: 15px">
+      <ion-button color="danger" shape="round" expand="block" (click)="anular()"
+        [disabled]="data.solicitud.esolCcod != 1 && data.solicitud.esolCcod != 7">
         Anular
       </ion-button>
     </section>
+    }
 
   </ng-container>
 

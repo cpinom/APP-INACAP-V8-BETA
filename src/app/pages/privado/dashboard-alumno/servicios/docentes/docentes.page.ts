@@ -14,8 +14,8 @@ import { SnackbarService } from 'src/app/core/services/snackbar.service';
 })
 export class DocentesPage implements OnInit {
 
-  carrera: any;
   docentes: any;
+  programas!: any[];
   mostrarCargando = true;
   mostrarData = false;
 
@@ -26,22 +26,22 @@ export class DocentesPage implements OnInit {
     private mensaje: MensajeService,
     private snackbar: SnackbarService) { }
 
-  ngOnInit() {
-    this.cargar();
+  async ngOnInit() {
+    await this.cargar();
     this.api.marcarVista(VISTAS_ALUMNO.DOCENTES);
   }
   async cargar() {
     try {
-      let principal = await this.profile.getStorage('principal');
-      let programa = principal.programas[principal.programaIndex];
-
-      this.carrera = programa;
-
-      let result = await this.api.getDocentesV5(programa.carrCcod);
+      const principal = await this.profile.getStorage('principal');
+      const carrCcod = principal.programas.map((programa: any) => programa.carrCcod).join(',');
+      const result = await this.api.getDocentesV5(carrCcod);
 
       if (result.success) {
         const { data } = result;
-        this.docentes = data.docentes;
+        const docentes = this.procesarDocentes(data.docentes);
+
+        this.docentes = docentes;
+        this.programas = principal.programas;
       }
       else {
         throw Error();
@@ -49,13 +49,29 @@ export class DocentesPage implements OnInit {
     }
     catch (error: any) {
       if (error && error.status == 401) {
-        this.error.handle(error);
+        await this.error.handle(error);
       }
     }
     finally {
       this.mostrarCargando = false;
       this.mostrarData = true;
     }
+  }
+  procesarDocentes(data: any[]) {
+    const agrupadoPorCarrera = data.reduce((acc, curr) => {
+      const key = curr.carrCcod;
+      if (!acc[key]) {
+        acc[key] = [];
+      }
+      acc[key].push(curr);
+      return acc;
+    }, {} as Record<string, typeof data>);    
+    
+    return Object.entries(agrupadoPorCarrera);
+  }
+  resolverCarrera(carrCcod: string) {
+    const programa = this.programas.find(programa => programa.carrCcod == carrCcod);
+    return programa.carrTdesc;
   }
   async recargar() {
     this.mostrarCargando = true;

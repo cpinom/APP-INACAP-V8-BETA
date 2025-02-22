@@ -12,8 +12,12 @@
         <ion-badge *ngIf="mostrarNotificaciones">1</ion-badge>
       </ion-button>
     </ion-buttons>
-    <ion-progress-bar type="indeterminate" *ngIf="mostrarStatus"></ion-progress-bar>
+    <!-- <ion-progress-bar type="indeterminate" *ngIf="mostrarStatus"></ion-progress-bar> -->
   </ion-toolbar>
+  @if (principal && principal.periodos.length > 1) {
+  <app-periodos [periodos]="principal.periodos" [selected]="periodo?.value"
+    (onPeriodoSelected)="periodoSeleccionado($event)"></app-periodos>
+  }
   <!-- <ion-toolbar *ngIf="principal && principal.periodos.length > 1">
     <form [formGroup]="periodoForm">
       <ion-item>
@@ -41,7 +45,8 @@
       <ion-list>
         <ion-item lines="none" style="--inner-padding-end: 14px">
           <ion-icon slot="start" color="danger" *ngIf="destacado.tipo == 4" src="assets/icon/dangerous.svg"></ion-icon>
-          <ion-icon slot="start" color="success" *ngIf="destacado.tipo == 3" src="assets/icon/check_circle.svg"></ion-icon>
+          <ion-icon slot="start" color="success" *ngIf="destacado.tipo == 3"
+            src="assets/icon/check_circle.svg"></ion-icon>
           <ion-icon slot="start" color="info" *ngIf="destacado.tipo == 2" src="assets/icon/info.svg"></ion-icon>
           <ion-icon slot="start" color="warning" *ngIf="destacado.tipo == 1" src="assets/icon/warning.svg"></ion-icon>
           <ion-label>
@@ -54,11 +59,13 @@
   </ion-card>
 
   <!-- Banner Estacionamientos -->
-  <ion-card color="white" class="destacado-list" (click)="mostrarDetalleEstacionamiento($event, usuarioModal)" *ngIf="mostrarEstacionamientos">
+  <ion-card color="white" class="destacado-list" (click)="mostrarDetalleEstacionamiento($event, usuarioModal)"
+    *ngIf="mostrarEstacionamientos">
     <ion-card-content>
       <ion-list>
         <ion-item lines="none" style="--inner-padding-end: 14px" class="ion-activatable">
-          <ion-icon slot="start" src="assets/icon/{{estacionamiento.icon}}.svg" [color]="estacionamiento.cls"></ion-icon>
+          <ion-icon slot="start" src="assets/icon/{{estacionamiento.icon}}.svg"
+            [color]="estacionamiento.cls"></ion-icon>
           <ion-label>
             <h2>{{estacionamiento.text}}</h2>
           </ion-label>
@@ -89,11 +96,16 @@
             </div>
           </ion-col>
           <ion-col size="4" class="grafico">
-            <input type="text" [number]="status.estacionamientos.estados.porcentaje" class="dial" appKnob [bgColor]="'#DCDFFC'" [fgColor]="'#3A3A92'" [height]="80" [width]="80" />
+            <input type="text" [number]="status.estacionamientos.estados.porcentaje" class="dial" appKnob
+              [bgColor]="'#DCDFFC'" [fgColor]="'#3A3A92'" [height]="80" [width]="80" />
           </ion-col>
           <ion-col size="8" class="indicadores">
-            <span><p class="circulo selected"></p>Ocupados: {{status.estacionamientos.estados.ocupados}}</span>
-            <span><p class="circulo"></p>Espacios libres: {{status.estacionamientos.estados.disponibles}}</span>
+            <span>
+              <p class="circulo selected"></p>Ocupados: {{status.estacionamientos.estados.ocupados}}
+            </span>
+            <span>
+              <p class="circulo"></p>Espacios libres: {{status.estacionamientos.estados.disponibles}}
+            </span>
           </ion-col>
         </ion-row>
         <ion-button color="info" shape="round" expand="block" (click)="recargarEstacionamientos()"
@@ -129,7 +141,8 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-card color="white" class="destacado-list" (click)="justificacionInasistenciaTap()" *ngIf="mostrarJustificaEvaluacion">
+  <ion-card color="white" class="destacado-list" (click)="justificacionInasistenciaTap()"
+    *ngIf="mostrarJustificaEvaluacion">
     <ion-card-content>
       <ion-list>
         <ion-item detail="true" lines="none" class="ion-activatable">
@@ -172,7 +185,8 @@
           <ion-item lines="none" class="ion-no-padding">
             <ion-label>
               <span class="text">Asistencia:</span>
-              <span class="asistencia-number" [ngClass]="resolverAsistenciaRojo(item.asistencia)">{{resolverAsistencia(item.asistencia)}}</span>
+              <span class="asistencia-number"
+                [ngClass]="resolverAsistenciaRojo(item.asistencia)">{{resolverAsistencia(item.asistencia)}}</span>
               <span class="sm" [ngClass]="resolverAsistenciaRojo(item.asistencia)">%</span>
             </ion-label>
           </ion-item>

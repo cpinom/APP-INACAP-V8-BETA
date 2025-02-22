@@ -71,7 +71,7 @@ export class NotificacionesPage implements OnInit, OnDestroy {
       this.mostrarEmpty = true;
 
       if (error && error.status == 401) {
-        this.error.handle(error);
+        await this.error.handle(error);
       }
     }
     finally {
@@ -173,7 +173,7 @@ export class NotificacionesPage implements OnInit, OnDestroy {
       }
     }
     catch (error: any) {
-      this.error.handle(error);
+      await this.error.handle(error);
     }
     finally {
       await message.dismiss();
@@ -202,7 +202,7 @@ export class NotificacionesPage implements OnInit, OnDestroy {
       }
     }
     catch (error: any) {
-      this.error.handle(error);
+      await this.error.handle(error);
     }
     finally {
       await message.dismiss();

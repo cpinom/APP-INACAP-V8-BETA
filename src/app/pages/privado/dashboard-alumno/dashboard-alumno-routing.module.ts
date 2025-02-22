@@ -20,6 +20,30 @@ const routes: Routes = [
         data: { role: Rol.alumno },
         loadChildren: () => import('./inicio/inicio.module').then(m => m.InicioPageModule)
       },
+      {
+        path: 'cursos',
+        canMatch: [accessGuard],
+        data: { role: Rol.alumno },
+        loadChildren: () => import('./cursos/cursos.module').then(m => m.CursosPageModule)
+      },
+      {
+        path: 'portafolio',
+        canMatch: [accessGuard],
+        data: { role: Rol.alumno },
+        loadChildren: () => import('./portafolio/portafolio.module').then(m => m.PortafolioPageModule)
+      },
+      {
+        path: 'servicios',
+        canMatch: [accessGuard],
+        data: { role: Rol.alumno },
+        loadChildren: () => import('./servicios/servicios.module').then(m => m.ServiciosPageModule)
+      },
+      {
+        path: 'perfil',
+        canMatch: [accessGuard],
+        data: { role: Rol.alumno },
+        loadChildren: () => import('./perfil/perfil.module').then(m => m.PerfilPageModule)
+      }
     ]
   }
 ];

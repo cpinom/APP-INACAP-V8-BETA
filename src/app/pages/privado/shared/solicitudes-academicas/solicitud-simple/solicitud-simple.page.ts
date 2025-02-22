@@ -4,10 +4,7 @@ import { Router } from '@angular/router';
 import { ActionSheetController, IonPopover, NavController } from '@ionic/angular';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
-
-
 import * as $ from 'jquery';
-import { EventsService } from 'src/app/core/services/events.service';
 import { SolicitudesService } from 'src/app/core/services/http/solicitudes.service';
 import { DialogService } from 'src/app/core/services/dialog.service';
 import { VISTAS_ALUMNO } from 'src/app/core/constants/alumno';
@@ -20,6 +17,8 @@ import { VISTAS_ALUMNO } from 'src/app/core/constants/alumno';
 export class SolicitudPage implements OnInit {
 
   @ViewChild('datePicker') datePicker!: IonPopover;
+  mostrarCargando = true;
+  mostrarData = false;
   data: any;
   showMore!: boolean;
   solicitud: any;
@@ -54,28 +53,38 @@ export class SolicitudPage implements OnInit {
   }
 
   async cargar() {
-    const loading = await this.dialog.showLoading({ message: 'Cargando...' });
-    const params = { planCcod: this.solicitud.planCcod, tisoCcod: this.solicitud.tisoCcod };
+    const planCcod = this.solicitud.planCcod;
+    const tisoCcod = this.solicitud.tisoCcod;
 
     try {
-      let result = await this.api.getDatosSolicitud(params);
+      const result = await this.api.getDatosSolicitudV5(tisoCcod, planCcod);
 
-      this.data = result.data;
-      this.data.glosa = result.glosa;
-      this.data.titulo = this.solicitud.tisoTdesc;
-      this.tipoSolicitud = this.solicitud.tisoCcod;
-      this.setupForm();
+      if (result.success) {
+        this.data = result.data;
+        this.data.glosa = result.glosa;
+        this.data.titulo = this.solicitud.tisoTdesc;
+        this.tipoSolicitud = this.solicitud.tisoCcod;
+        this.setupForm();
+      }
     }
     catch (error: any) {
-      this.error.handle(error, async () => {
-        await this.nav.navigateBack(this.backUrl);
-      });
+      if (error && error.status == 401) {
+        await this.error.handle(error);
+        return;
+      }
+
+      await this.snackbar.showToast('Ha ocurrido un error al cargar la solicitud.');
     }
     finally {
-      await loading.dismiss();
+      this.mostrarCargando = false;
+      this.mostrarData = true;
     }
   }
-
+  async recargar() {
+    this.mostrarCargando = true;
+    this.mostrarData = false;
+    await this.cargar();
+  }
   setupForm() {
     if (this.tipoSolicitud == 7) { // RED. CARGA ACADEMICA
       this.solicitudForm = this.formBuilder.group({
@@ -119,14 +128,13 @@ export class SolicitudPage implements OnInit {
     }
 
   }
-
   async procesar() {
     this.submitted = true;
 
     if (this.solicitudForm.valid) {
       let enviarSolicitud = true;
       let errorSolicitud = '';
-      let data = this.solicitud; // await this.api.getStorage('solicitud');
+      let data = this.solicitud;
       let planCcod = data.planCcod;
       let params: any = {
         tisoCcod: this.tipoSolicitud,
@@ -284,12 +292,12 @@ export class SolicitudPage implements OnInit {
           return;
         }
 
-        let loading = await this.dialog.showLoading({ message: 'Procesando...' });
+        const loading = await this.dialog.showLoading({ message: 'Procesando...' });
         let message = '';
         let mostrarExito = false;
 
         try {
-          let result = await this.api.procesarSolicitud(params);
+          const result = await this.api.procesarSolicitud(params);
 
           if (result.success) {
             mostrarExito = true;
@@ -298,10 +306,16 @@ export class SolicitudPage implements OnInit {
           else {
             message = result.message
           }
-        } catch (error: any) {
-          this.error.handle(error);
+        }
+        catch (error: any) {
+          if (error && error.status == 401) {
+          await this.error.handle(error);
           return
-        } finally {
+          }
+
+          message = 'Ha ocurrido un error al procesar la solicitud.';
+        }
+        finally {
           await loading.dismiss();
 
           if (this.tipoSolicitud == 1) {
@@ -312,25 +326,43 @@ export class SolicitudPage implements OnInit {
         if (mostrarExito) {
           await this.presentSuccess(message);
           await this.router.navigate([this.backUrl], { replaceUrl: true });
-          // this.events.notifyDataChanged('app:soli citudes-academicas-inicio', {});
         }
         else {
-          this.error.handle(message);
+          await this.presentError(message);
         }
       }
       else {
-        this.snackbar.showToast(errorSolicitud);
+        await this.presentError(errorSolicitud);
       }
     }
   }
-
   async sedesChange() {
-    let sedeCcod = this.sede?.value;
-    let params = { sedeCcod: sedeCcod };
-    let result = await this.api.getAsignaturasPendientes(params);
-    this.data.asignaturas = result;
-  }
+    const loading = await this.dialog.showLoading({ message: 'Cargando asignaturas...' });
+    const sedeCcod = this.sede?.value;
+    const planCcod = this.solicitud.planCcod;
 
+    try {
+      const result = await this.api.getAsignaturasPendientesV5(sedeCcod, planCcod);
+
+      if (result.success) {
+        this.data.asignaturas = result.data.asignaturas;
+      }
+      else {
+        throw Error();
+      }
+    }
+    catch (error: any) {
+      if (error && error.status == 401) {
+        await this.error.handle(error);
+        return;
+      }
+
+      await this.snackbar.showToast('Ha ocurrido un error al cargar las asignaturas.');
+    }
+    finally {
+      await loading.dismiss();
+    }
+  }
   causalChange(data: any) {
     if (data.tacoCcod == 7) {
       let control = this.motivo;
@@ -347,15 +379,13 @@ export class SolicitudPage implements OnInit {
       this.justificacionCausales = data.checked;
     }
   }
-
   mostrarCambiosCarga(seccion: any) {
     return seccion.ssecSelected == 0 ? 'Sin cambio...' : seccion.disponibles.find((t: any) => t.ssecNcorr == seccion.ssecSelected).ssecTdesc;
   }
-
   async confirmarEnvio(): Promise<boolean> {
     return new Promise(async (resolve) => {
       const actionSheet = await this.action.create({
-        header: '¿Segur@ que quiere enviar la Solicitud?',
+        header: '¿Segur@ que quieres enviar la Solicitud?',
         buttons: [
           {
             text: 'Continuar',
@@ -377,7 +407,6 @@ export class SolicitudPage implements OnInit {
       await actionSheet.present();
     })
   }
-
   async presentSuccess(message: string) {
     await this.dialog.showAlert({
       header: 'Detalle Solicitud',
@@ -392,19 +421,32 @@ export class SolicitudPage implements OnInit {
       ]
     });
   }
+  async presentError(message: string) {
+    const alert = await this.dialog.showAlert({
+      cssClass: 'alert-message',
+      message: `<img src="./assets/images/warning.svg" /><br />${message}`,
+      header: 'Envío de Solicitud',
+      buttons: ['Aceptar']
+    });
 
+    return alert;
+  }
   trimString(string: string, length: number) {
     return string.length > length
       ? string.substring(0, length) + "..."
       : string;
   }
-
   get glosaCompleta() {
     if (this.tipoSolicitud == 3 || this.tipoSolicitud == 6 || this.tipoSolicitud == 10 || this.tipoSolicitud == 15 || this.tipoSolicitud == 17 || this.tipoSolicitud == 21 || this.tipoSolicitud == 22 || this.tipoSolicitud == 34 || this.tipoSolicitud == 40)
       return true;
     return false;
   }
-
+  get solicitudDisponible() {
+    if (this.tipoSolicitud == 5 || this.tipoSolicitud == 7 || this.tipoSolicitud == 12 || this.tipoSolicitud == 15 || this.tipoSolicitud == 21 || this.tipoSolicitud == 22 || this.tipoSolicitud == 34 || this.tipoSolicitud == 45) {
+      return true;
+    }
+    return false;
+  }
   get sede() { return this.solicitudForm.get('sede'); }
   get evaluaciones() { return this.solicitudForm.get('evaluaciones') as FormArray; }
   get terminos() { return this.solicitudForm.get('terminos'); }

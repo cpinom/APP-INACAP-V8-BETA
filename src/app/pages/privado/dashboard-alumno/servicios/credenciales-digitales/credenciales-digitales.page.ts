@@ -217,7 +217,7 @@ export class CredencialesDigitalesPage implements OnInit {
       this.api.setStorage('carrCcod', carrera.carrCcod);
     }
     catch (error: any) {
-      this.error.handle(error);
+      await this.error.handle(error);
     }
     finally {
       this.mostrarCargando = false;
@@ -289,7 +289,7 @@ export class CredencialesDigitalesPage implements OnInit {
       }
     }
     catch (error: any) {
-      this.error.handle(error);
+      await this.error.handle(error);
     }
     finally {
       await loading.dismiss();
@@ -342,7 +342,7 @@ export class CredencialesDigitalesPage implements OnInit {
     }
     catch (error: any) {
       if (error && error.status == 401) {
-        this.error.handle(error);
+        await this.error.handle(error);
         return;
       }
 

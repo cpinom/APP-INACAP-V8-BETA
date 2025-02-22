@@ -6,17 +6,26 @@
   </ion-toolbar>
   <ion-card *ngIf="seccion" class="primary-card" color="white">
     <ion-card-header>
-      <ion-card-title>{{seccion.asigTdesc}}</ion-card-title>
-      <ion-card-subtitle>
+      <ion-card-title>
+        <h2>{{seccion.asigTdesc}}</h2>
+        <p>{{seccion.asigCcod}}</p>
+      </ion-card-title>
+      <!-- <ion-card-subtitle>
         {{seccion.asigCcod}} <span *ngIf="data">- Sección {{data.seccion.seccTdesc}}</span><br/>
         Tipo Asignatura - <b>{{seccion.tasgTdesc}}</b>
-      </ion-card-subtitle>
+      </ion-card-subtitle> -->
     </ion-card-header>
-    <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar>
+    <!-- <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar> -->
   </ion-card>
 </ion-header>
 
 <ion-content class="detalle-seccion">
+
+  @if (mostrarCargando) {
+  <div class="loaderInacap">
+    <ion-spinner name="lines" color="primary"></ion-spinner>
+  </div>
+  }
 
   <ng-container *ngIf="mostrarData && data">
 
@@ -54,7 +63,8 @@
             </ul>
           </ion-col>
           <ion-col size="5" class="ion-no-padding" style="text-align: right" *ngIf="seccion">
-            <input type="text" [number]="seccion.asistencia" class="dial" appKnob [bgColor]="colorGris" [fgColor]="colorAzul">
+            <input type="text" [number]="seccion.asistencia" class="dial" appKnob [bgColor]="colorGris"
+              [fgColor]="colorAzul">
           </ion-col>
         </ion-row>
       </ion-card-content>

@@ -94,7 +94,7 @@ export class CursosPage implements OnInit {
     }
     catch (error: any) {
       if (error && error.status == 401) {
-        this.error.handle(error);
+        await this.error.handle(error);
         return;
       }
 
@@ -145,9 +145,9 @@ export class CursosPage implements OnInit {
       if (result.success) {
         await this.cargar(true);
 
-        this.snackbar.showToast(result.message, 3000, 'success');
-        this.api.removeStorage('cursos');
-        this.api.removeStorage('users');
+        await this.snackbar.showToast(result.message, 3000, 'success');
+        await this.api.removeStorage('cursos');
+        await this.api.removeStorage('users');
       }
       else {
         throw Error();
@@ -155,7 +155,7 @@ export class CursosPage implements OnInit {
     }
     catch (error: any) {
       if (error && error.status == 401) {
-        this.error.handle(error);
+        await this.error.handle(error);
         return;
       }
       revertirCambios = true;

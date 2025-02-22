@@ -279,7 +279,7 @@ export class InicioPage implements OnInit {
     }
     catch (error: any) {
       if (error && error.status == 401) {
-        this.error.handle(error);
+        await this.error.handle(error);
         return;
       }
     }
@@ -306,7 +306,7 @@ export class InicioPage implements OnInit {
     }
     catch (error: any) {
       if (error && error.status == 401) {
-        this.error.handle(error);
+        await this.error.handle(error);
         return;
       }
       this.errorStatus = true;
@@ -328,7 +328,7 @@ export class InicioPage implements OnInit {
     }
     catch (error: any) {
       if (error && error.status == 401) {
-        this.error.handle(error);
+        await this.error.handle(error);
       }
     }
   }
@@ -358,7 +358,7 @@ export class InicioPage implements OnInit {
     }
     catch (error: any) {
       if (error && error.status == 401) {
-        this.error.handle(error);
+        await this.error.handle(error);
         return;
       }
       revertirCambios = true;
@@ -468,7 +468,7 @@ export class InicioPage implements OnInit {
     }
     catch (error: any) {
       if (error && error.status) {
-        this.error.handle(error);
+        await this.error.handle(error);
       }
     }
     finally {

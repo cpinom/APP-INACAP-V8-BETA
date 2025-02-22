@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ActionSheetController, AlertController, IonModal, IonPopover, IonRouterOutlet, NavController, Platform } from '@ionic/angular';
@@ -9,6 +9,7 @@ import { EventsService } from 'src/app/core/services/events.service';
 import { SolicitudesService } from 'src/app/core/services/http/solicitudes.service';
 import { MediaService } from 'src/app/core/services/media.service';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
+import { UtilsService } from 'src/app/core/services/utils.service';
 
 export enum SOLICITUD {
   JUSTIFICACION_INASISTENCIA = 1,
@@ -29,6 +30,9 @@ export enum SOLICITUD {
 export class SolicitudDocumentosPage implements OnInit {
 
   @ViewChild('datePicker') datePicker!: IonPopover;
+  @ViewChild('archivoInput') adjuntarEl!: ElementRef;
+  mostrarData = false;
+  mostrarCargando = true;
   solicitud: any;
   data: any;
   showMore!: boolean;
@@ -60,6 +64,7 @@ export class SolicitudDocumentosPage implements OnInit {
   private action = inject(ActionSheetController);
   private events = inject(EventsService);
   private media = inject(MediaService);
+  private utils = inject(UtilsService);
 
   constructor() {
     this.solicitud = this.router.getCurrentNavigation()?.extras.state;
@@ -73,11 +78,11 @@ export class SolicitudDocumentosPage implements OnInit {
     await this.cargar();
   }
   async cargar() {
-    let loading = await this.dialog.showLoading({ message: 'Cargando...' });
-    let params = { planCcod: this.solicitud.planCcod, tisoCcod: this.solicitud.tisoCcod };
+    const planCcod = this.solicitud.planCcod;
+    const tisoCcod = this.solicitud.tisoCcod;
 
     try {
-      let result = await this.api.getDatosSolicitud(params);
+      const result = await this.api.getDatosSolicitudV5(tisoCcod, planCcod);
 
       if (result.success) {
         if (this.solicitud.tisoCcod == SOLICITUD.JUSTIFICACION_INASISTENCIA) {
@@ -89,22 +94,23 @@ export class SolicitudDocumentosPage implements OnInit {
         this.data = result.data;
         this.data.glosa = result.glosa;
         this.data.titulo = this.solicitud.tisoTdesc;
-        await this.setupForm();
+        this.setupForm();
       }
       else {
-        await loading.dismiss();
         await this.presentError(result.message, true);
       }
     }
     catch (error: any) {
-      this.error.handle(error, async () => {
-        if (error.status != 401) {
-          await this.nav.navigateBack(this.backUrl);
-        }
-      })
+      if (error && error.status == 401) {
+        await this.error.handle(error);
+        return;
+      }
+
+      await this.snackbar.showToast('Ha ocurrido un error al cargar la solicitud.');
     }
     finally {
-      await loading.dismiss();
+      this.mostrarCargando = false;
+      this.mostrarData = true;
     }
 
     this.presentingElement = this.routerOutlet.nativeEl;
@@ -120,7 +126,8 @@ export class SolicitudDocumentosPage implements OnInit {
       keyboardClose: false,
       backdropDismiss: false,
       header: 'Solicitudes',
-      message: msg ? msg : message,
+      cssClass: 'alert-message',
+      message: `<img src="./assets/images/warning.svg" /><br />${msg ? msg : message}`,
       buttons: [
         {
           text: 'Aceptar',
@@ -134,7 +141,7 @@ export class SolicitudDocumentosPage implements OnInit {
       ]
     });
   }
-  async setupForm() {
+  setupForm() {
 
     if (this.solicitud.tisoCcod == SOLICITUD.JUSTIFICACION_INASISTENCIA) {
 
@@ -471,7 +478,7 @@ export class SolicitudDocumentosPage implements OnInit {
       }
     }
     catch (error: any) {
-      this.error.handle(error);
+      await this.error.handle(error);
       return
     }
     finally {
@@ -500,72 +507,123 @@ export class SolicitudDocumentosPage implements OnInit {
       inputEl.click();
     }
     else {
-      let file = await this.media.getMedia();
+      // let file = await this.media.getMedia();
 
-      if (file) {
-        let fileSize = file.size / 1024 / 1024;
+      // if (file) {
+      //   let fileSize = file.size / 1024 / 1024;
 
-        if (fileSize <= 3) {
-          let loading = await this.dialog.showLoading({ message: 'Cargando archivo...' });
+      //   if (fileSize <= 3) {
+      //     let loading = await this.dialog.showLoading({ message: 'Cargando archivo...' });
 
-          try {
-            const params = { tisoCcod: this.solicitud.tisoCcod, stiaNcorr: this.tipoDocumento.stiaNcorr };
-            const response: any = await this.api.agregarArchivo(file.path, file.name, params);
-            const result = response.data;
+      //     try {
+      //       const params = { tisoCcod: this.solicitud.tisoCcod, stiaNcorr: this.tipoDocumento.stiaNcorr };
+      //       const response: any = await this.api.agregarArchivo(file.path, file.name, params);
+      //       const result = response.data;
 
-            if (result.success == false) {
-              await this.presentError(result.message);
-              return;
-            }
+      //       if (result.success == false) {
+      //         await this.presentError(result.message);
+      //         return;
+      //       }
 
-            this.tipoDocumento.archivos = result.data.filter((t: any) => t.stiaNcorr == this.tipoDocumento.stiaNcorr);
-            this.resolverTerminos();
-          }
-          catch (error: any) {
-            this.presentError('No fue posible cargar el archivo.');
-          }
-          finally {
-            await loading.dismiss();
-          }
-        }
-        else {
-          this.presentError('El archivo no pueden exceder los 3 MB.');
-        }
-      }
+      //       this.tipoDocumento.archivos = result.data.filter((t: any) => t.stiaNcorr == this.tipoDocumento.stiaNcorr);
+      //       this.resolverTerminos();
+      //     }
+      //     catch (error: any) {
+      //       this.presentError('No fue posible cargar el archivo.');
+      //     }
+      //     finally {
+      //       await loading.dismiss();
+      //     }
+      //   }
+      //   else {
+      //     this.presentError('El archivo no pueden exceder los 3 MB.');
+      //   }
+      // }
     }
   }
   async adjuntarArchivoWeb(event: any) {
     if (event.target.files.length > 0) {
-      let formData = new FormData();
-      let file = event.target.files[0];
-      var fileSize = file.size / 1024 / 1024;
+      const file = event.target.files[0];
+      const extensionesPermitidas = this.tipoDocumento.doctExtension.split(',').map((t: any) => t.trim());
+      const extensionArchivo = `.${this.utils.getFileExtension(file.name)}`;
 
-      if (fileSize <= 3) {
-        let loading = await this.dialog.showLoading({ message: 'Cargando archivo...' });
-        formData.append('file', file);
+      if (extensionesPermitidas.includes(extensionArchivo) == false) {
+        await this.presentError(`El archivo no tiene una extensión válida. Debes adjuntar arhcivos con las siguientes extensiones "${this.tipoDocumento.doctExtension}".`);
+        return;
+      }
 
-        try {
-          let params = { tisoCcod: this.solicitud.tisoCcod, stiaNcorr: this.tipoDocumento.stiaNcorr };
-          let result = await this.api.agregarArchivoWeb(formData, params);
+      const fileSize = file.size / 1024 / 1024;
 
-          if (result.success == false) {
-            await this.presentError(result.message);
-            return;
+      if (fileSize >= 150) {
+        await this.presentError('Los documentos no pueden exceder los 150 MB.');
+        return;
+      }
+
+      try {
+        const base64 = await this.utils.fileToBase64(file);
+        await this.uploadBase64Fragmented(base64, file.name);
+      }
+      catch (error: any) {
+        debugger
+        if (error && error.status == 401) {
+          await this.error.handle(error);
+          return;
+        }
+
+        await this.presentError('No se pudo procesar el archivo. Vuelve a intentarlo.');
+      }
+      finally {
+        this.adjuntarEl.nativeElement.value = '';
+      }
+    }
+  }
+  async uploadBase64Fragmented(base64String: string, fileName: string): Promise<void> {
+    const fragments = this.utils.divideBase64(base64String);
+    const totalParts = fragments.length;
+    const loading = await this.dialog.showLoading({ message: 'Cargando archivo...' });
+
+    try {
+      for (let i = 0; i < fragments.length; i++) {
+        const base64Fragment = fragments[i];
+        const partNumber = i + 1;
+        const params = {
+          file: base64Fragment,
+          fileName: encodeURIComponent(fileName),
+          partNumber: partNumber,
+          totalParts: totalParts
+        };
+
+        if (totalParts > 1 && partNumber == totalParts) {
+          loading.message = '(100%) finalizando....';
+        }
+
+        const tisoCcod = this.solicitud.tisoCcod;
+        const stiaNcorr = this.tipoDocumento.stiaNcorr;
+        const result = await this.api.agregarArchivoV5(tisoCcod, stiaNcorr, params);
+
+        if (result.success) {
+          if (result.code == 202) {
+            const progreso = Math.round(result.progress);
+            loading.message = `(${progreso}%) procesando....`;
           }
+          else if (result.code == 200) {
+            this.tipoDocumento.archivos = result.data.archivos.filter((t: any) => t.stiaNcorr == this.tipoDocumento.stiaNcorr);
+            this.resolverTerminos();
 
-          this.tipoDocumento.archivos = result.data.filter((t: any) => t.stiaNcorr == this.tipoDocumento.stiaNcorr);
-          this.resolverTerminos();
+            await this.snackbar.showToast('Archivo cargado correctamente.', 3000, 'success');
+          }
         }
-        catch (error: any) {
-          this.presentError('No fue posible cargar el archivo.');
+        else {
+          throw Error(result);
         }
-        finally {
-          await loading.dismiss();
-        }
+
       }
-      else {
-        this.presentError('El archivo no puede exceder los 3 MB.');
-      }
+    }
+    catch (error: any) {
+      return Promise.reject(error);
+    }
+    finally {
+      await loading.dismiss();
     }
   }
   async eliminarArchivo(data: any, soarNcorr: any) {
@@ -582,7 +640,7 @@ export class SolicitudDocumentosPage implements OnInit {
       }
     }
     catch (error: any) {
-      this.error.handle(error);
+      await this.error.handle(error);
     }
     finally {
       await loading.dismiss();
@@ -617,7 +675,7 @@ export class SolicitudDocumentosPage implements OnInit {
       }
       catch (error: any) {
         if (error && error.status == 401) {
-          this.error.handle(error);
+          await this.error.handle(error);
           return;
         }
 
@@ -633,23 +691,32 @@ export class SolicitudDocumentosPage implements OnInit {
   }
   async tipoTrabajadorChange() {
     if (this.tipoTrabajador?.valid) {
-      let snackbar = await this.snackbar.create('Cargando...', false, 'secondary');
-      let params = { tisoCcod: this.solicitud.tisoCcod, identCcod: this.tipoTrabajador.value };
+      const loading = await this.dialog.showLoading({ message: 'Cargando...' });
+      const params = { tisoCcod: this.solicitud.tisoCcod, identCcod: this.tipoTrabajador.value };
 
       this.deshabilitaEnviar = true;
-      await snackbar.present();
 
       try {
-        let result = await this.api.getTiposDocumentos(params);
+        const result = await this.api.getTiposDocumentos(params);
 
         if (result.success) {
           this.tiposDocumentos = result.tipos;
         }
+        else {
+          throw Error();
+        }
       }
-      catch { }
+      catch (error: any) {
+        if (error && error.status == 401) {
+          await this.error.handle(error);
+          return;
+        }
+
+        await this.presentError('No fue posible completar la solicitud.');
+      }
       finally {
         this.deshabilitaEnviar = false;
-        await snackbar.dismiss();
+        await loading.dismiss();
       }
     }
   }
@@ -665,11 +732,10 @@ export class SolicitudDocumentosPage implements OnInit {
     if (this.viaConvalidacionSel) {
       this.viaConvalidacion?.setValue(this.viaConvalidacionSel);
 
-      let snackbar = await this.snackbar.create('Cargando...', false, 'secondary');
-      let params = { tisoCcod: this.solicitud.tisoCcod, identCcod: this.viaConvalidacion?.value.viasCcod };
+      const loading = await this.dialog.showLoading({ message: 'Cargando...' });
+      const params = { tisoCcod: this.solicitud.tisoCcod, identCcod: this.viaConvalidacion?.value.viasCcod };
 
       this.deshabilitaEnviar = true;
-      await snackbar.present();
 
       try {
         let result = await this.api.getTiposDocumentos(params);
@@ -678,11 +744,21 @@ export class SolicitudDocumentosPage implements OnInit {
           this.tiposDocumentos = result.tipos;
           this.resolverTerminos();
         }
+        else {
+          throw Error();
+        }
       }
-      catch { }
+      catch (error: any) {
+        if (error && error.status == 401) {
+          await this.error.handle(error);
+          return;
+        }
+
+        await this.presentError('No fue posible completar la solicitud.');
+      }
       finally {
         this.deshabilitaEnviar = false;
-        await snackbar.dismiss();
+        await loading.dismiss();
       }
     }
   }
@@ -736,7 +812,7 @@ export class SolicitudDocumentosPage implements OnInit {
       const actionSheet = await this.action.create({
         cssClass: message ? 'solicitud-alert' : '',
         header: 'Enviar Solicitud',
-        subHeader: message || '¿Segur@ que quiere enviar la Solicitud?',
+        subHeader: message || '¿Segur@ que quieres enviar la Solicitud?',
         buttons: [
           {
             text: 'Continuar',

@@ -21,8 +21,32 @@
         white-space: normal;
     }
 
-    ion-item ion-icon {
-        color: var(--ion-color-medium);
-        margin-right: 15px;
+    // ion-item ion-icon {
+    //     color: var(--ion-color-medium);
+    //     margin-right: 15px;
+    // }
+
+    ion-list.detalle {
+        ion-item {
+            ion-label {
+                h2 {
+                    margin-bottom: 0;
+                    line-height: 18px;
+
+                    p.estado-actividad {
+                        margin-top: 0;
+                        margin-left: 6px;
+                    }
+
+                    span {
+                        font-size: var(--FS14);
+                        color: var(--ion-color-step-700);
+                        line-height: 18px;
+                        margin-left: 3px;
+                        font-weight: 400;
+                    }
+                }
+            }
+        }
     }
 }

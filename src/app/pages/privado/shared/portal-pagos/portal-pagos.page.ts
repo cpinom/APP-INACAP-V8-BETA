@@ -60,7 +60,7 @@ export class PortalPagosPage implements OnInit {
     }
     catch (error: any) {
       if (error && error.status == 401) {
-        this.error.handle(error);
+        await this.error.handle(error);
       }
     }
     finally {
@@ -87,7 +87,7 @@ export class PortalPagosPage implements OnInit {
     }
     catch (error: any) {
       if (error && error.status == 401) {
-        this.error.handle(error);
+        await this.error.handle(error);
       }
     }
     finally {
@@ -142,7 +142,7 @@ export class PortalPagosPage implements OnInit {
       }
     }
     catch (error: any) {
-      this.error.handle(error);
+      await this.error.handle(error);
     }
     finally {
       await loading.dismiss();
@@ -181,7 +181,7 @@ export class PortalPagosPage implements OnInit {
     }
     catch (error: any) {
       if (error && error.code == 0) return;
-      this.error.handle(error);
+      await this.error.handle(error);
     }
   }
   async detalleCompromiso(item: any, e: Event, sliding: IonItemSliding) {
@@ -206,7 +206,7 @@ export class PortalPagosPage implements OnInit {
       });
     }
     catch (error: any) {
-      this.error.handle(error);
+      await this.error.handle(error);
     }
     finally {
       await loading.dismiss();

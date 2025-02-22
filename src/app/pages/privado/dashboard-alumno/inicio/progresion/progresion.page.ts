@@ -76,7 +76,7 @@ export class ProgresionPage implements AfterViewInit {
     }
     catch (error: any) {
       if (error && error.status == 401) {
-        this.error.handle(error);
+        await this.error.handle(error);
       }
     }
     finally {

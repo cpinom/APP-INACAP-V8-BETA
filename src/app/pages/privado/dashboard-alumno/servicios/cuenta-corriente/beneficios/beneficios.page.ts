@@ -67,7 +67,7 @@ export class BeneficiosPage implements OnInit {
       }
     }
     catch (error: any) {
-      this.error.handle(error);
+      await this.error.handle(error);
     }
   }
 
@@ -93,7 +93,7 @@ export class BeneficiosPage implements OnInit {
         }
       }
       catch (error: any) {
-        this.error.handle(error);
+        await this.error.handle(error);
       }
       finally {
         this.mostrarCargando = false;

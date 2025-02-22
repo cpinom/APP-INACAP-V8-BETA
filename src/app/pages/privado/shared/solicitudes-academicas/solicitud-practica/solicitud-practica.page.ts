@@ -366,7 +366,7 @@ export class SolicitudPracticaPage implements OnInit {
         }
       }
       catch (error: any) {
-        this.error.handle(error);
+        await this.error.handle(error);
       }
       finally {
         await loading.dismiss();
@@ -423,7 +423,7 @@ export class SolicitudPracticaPage implements OnInit {
         this.comuna?.setValue('', { emitEvent: false });
       }
       catch (error: any) {
-        this.error.handle(error);
+        await this.error.handle(error);
       }
       finally {
         await loading.dismiss();
@@ -451,7 +451,7 @@ export class SolicitudPracticaPage implements OnInit {
         }
       }
       catch (error: any) {
-        this.error.handle(error);
+        await this.error.handle(error);
       }
       finally {
         loading.dismiss();
@@ -474,7 +474,7 @@ export class SolicitudPracticaPage implements OnInit {
         else { }
       }
       catch (error: any) {
-        this.error.handle(error);
+        await this.error.handle(error);
       }
       finally {
         await loading.dismiss();

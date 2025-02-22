@@ -151,7 +151,7 @@ export class ConfiguracionesPage implements OnInit {
     }
     catch (error: any) {
       if (error && error.status == 401) {
-        this.error.handle(error);
+        await this.error.handle(error);
       }
       else {
         this.contrastMode = !this.contrastMode;
@@ -178,7 +178,7 @@ export class ConfiguracionesPage implements OnInit {
     }
     catch (error: any) {
       if (error && error.status == 401) {
-        this.error.handle(error);
+        await this.error.handle(error);
       }
       else {
         this.darkMode = !this.darkMode;
@@ -247,7 +247,7 @@ export class ConfiguracionesPage implements OnInit {
     }
     catch (error: any) {
       if (error && error.status == 401) {
-        this.error.handle(error);
+        await this.error.handle(error);
       }
       else {
         this.error.handle("No se pudieron actualizar sus preferencias, favor intente más tarde.")

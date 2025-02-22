@@ -1,15 +1,11 @@
-form {
-    ion-item:not(.normal) {
-        --padding-start: 0;
-    }
-}
 
 p.success {
     color: var(--ion-color-success);
 }
 
 ion-card-content {
-    font-size: var(--FS14) !important;
+    font-size: var(--FS13) !important;
+    line-height: 16px;
 
     .glosa {
         border-top: var(--border);
@@ -44,11 +40,11 @@ ion-popover {
     }
 }
 
-.invalid {
-    font-size: var(--FS12);
-    color: var(--ion-color-danger);
-    margin: 5px 15px;
-}
+// .invalid {
+//     font-size: var(--FS12);
+//     color: var(--ion-color-danger);
+//     margin: 5px 15px;
+// }
 
 ::ng-deep ion-alert.success-alert {
     div.image {

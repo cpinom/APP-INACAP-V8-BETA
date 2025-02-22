@@ -69,7 +69,7 @@ export class VotacionesPage implements OnInit, AfterViewInit {
     }
     catch (error: any) {
       if (error && error.status == 401) {
-        this.error.handle(error);
+        await this.error.handle(error);
       }
     }
     finally {
@@ -114,7 +114,7 @@ export class VotacionesPage implements OnInit, AfterViewInit {
         this.snackbar.showToast('No se pudo procesar su solicitud. Vuelva a intentar.');
       }
       catch (error: any) {
-        this.error.handle(error);
+        await this.error.handle(error);
       }
       finally {
         await loading.dismiss();

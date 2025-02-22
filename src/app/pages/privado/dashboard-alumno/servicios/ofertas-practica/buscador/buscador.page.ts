@@ -95,7 +95,7 @@ export class BuscadorPage implements OnInit {
         this.region?.setValue(region, { emitEvent: false })
       }
       catch (error: any) {
-        this.error.handle(error);
+        await this.error.handle(error);
       }
       finally { }
     }
@@ -142,7 +142,7 @@ export class BuscadorPage implements OnInit {
       }
     }
     catch (error: any) {
-      this.error.handle(error);
+      await this.error.handle(error);
     }
     finally {
       this.mostrarData = true;

@@ -96,7 +96,7 @@ export class EditarTelefonoPage implements OnInit {
           this.modalCtrl.dismiss();
         }
         if (error && error.status == 401) {
-          this.error.handle(error);
+          await this.error.handle(error);
           return;
         }
         this.snackbar.showToast('No pudimos procesar su solicitud. Vuelva a intentar.', 3000, 'danger');
@@ -138,7 +138,7 @@ export class EditarTelefonoPage implements OnInit {
         if (this.modo == 1) {
           this.modalCtrl.dismiss();
         }
-        this.error.handle(error);
+        await this.error.handle(error);
       }
       finally {
         await loading.dismiss();

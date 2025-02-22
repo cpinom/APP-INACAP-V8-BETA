@@ -150,11 +150,14 @@ export class MensajeComponent implements OnInit, OnDestroy {
     this.deshabilitarEventos();
 
     if (this.messageId) {
-      this.api.deleteMessageV5(this.messageId).catch(error => {
+      try {
+        await this.api.deleteMessageV5(this.messageId);
+      }
+      catch (error: any) {
         if (error && error.status == 401) {
-          this.error.handle(error);
+          await this.error.handle(error);
         }
-      });
+      };
     }
   }
   async ngOnInit() {
@@ -236,7 +239,7 @@ export class MensajeComponent implements OnInit, OnDestroy {
       await this.api.updateMessageV5(params);
     } catch (error: any) {
       if (error && error.status == 401) {
-        this.error.handle(error);
+        await this.error.handle(error);
       }
     }
     finally {
@@ -354,7 +357,7 @@ export class MensajeComponent implements OnInit, OnDestroy {
       }
       catch (error: any) {
         if (error && error.status == 401) {
-          this.error.handle(error);
+          await this.error.handle(error);
         }
       }
       finally {
@@ -393,7 +396,7 @@ export class MensajeComponent implements OnInit, OnDestroy {
     }
     catch (error: any) {
       if (error.status = 401) {
-        this.error.handle(error);
+        await this.error.handle(error);
       }
     }
     finally {

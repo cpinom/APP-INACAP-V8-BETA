@@ -41,7 +41,7 @@ export class DetallePagoComponent implements OnInit {
       this.data = result;
     }
     catch (error) {
-      this.error.handle(error);
+      await this.error.handle(error);
     }
     finally {
       this.hideLoadingSpinner = true;
@@ -83,7 +83,7 @@ export class DetallePagoComponent implements OnInit {
       }
     }
     catch (error) {
-      this.error.handle(error);
+      await this.error.handle(error);
     }
     finally {
       await loading.dismiss();

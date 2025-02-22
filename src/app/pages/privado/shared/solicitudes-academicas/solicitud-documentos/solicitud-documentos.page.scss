@@ -1,5 +1,6 @@
 ion-card-content {
-    font-size: var(--FS14) !important;
+    font-size: var(--FS13) !important;
+    line-height: 16px;
 
     .glosa {
         border-top: var(--border);
@@ -20,10 +21,6 @@ ion-card-content {
             text-align: center;
         }
     }
-
-    ion-radio:part(label) {
-        
-    }
 }
 
 ion-content {
@@ -32,10 +29,13 @@ ion-content {
             max-width: 70%;
         }
     }
-    .invalid {
-        font-size: var(--FS12);
-        color: var(--ion-color-danger);
-        margin: 5px 15px;
+    
+    ion-accordion-group {
+        ion-accordion {
+            ion-item {
+                font-size: var(--FS14) !important;
+            }   
+        }
     }
 }
 
@@ -78,7 +78,6 @@ ion-modal {
         }
     }
 }
-
 
 ::ng-deep body.dark {
     ion-accordion {

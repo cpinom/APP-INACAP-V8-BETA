@@ -337,9 +337,14 @@ body {
       &.variant-1 {
         background: #c8dce9;
       }
-
       &.variant-2 {
         background: #feeb80;
+      }
+      &.variant-3 {
+        background: #e381ab;
+      }
+      &.variant-4 {
+        background: #a7b0f1;
       }
     }
     &[slot="end"] {
@@ -413,7 +418,7 @@ body {
       --ion-background-color: var(--ion-color-primary);
       --indicator-box-shadow: none;
       --border-radius: 9px;
-      min-height: 52px;
+      min-height: 36px;
       font-size: var(--FS14);
 
       &.segment-button-checked {
@@ -423,6 +428,8 @@ body {
       ion-label {
         white-space: normal;
         line-height: var(--FS18);
+        margin-top: 8px;
+        margin-bottom: 8px;
       }
     }
   }
@@ -468,10 +475,12 @@ body {
           font-weight: 400 !important;
           color: var(--ion-color-step-100);
           display: block !important;
+          margin-bottom: 6px;
         }
         p {
           font-size: var(--FS14) !important;
           color: var(--ion-color-step-700) !important;
+          margin-bottom: 6px;
         }
       }
     }
@@ -491,21 +500,25 @@ body {
     &.success {
       color: var(--ion-color-success) !important;
       border-color: var(--ion-color-success);
+      background-color: #EFF9F1;
     }
 
     &.warning {
       color: var(--ion-color-warning) !important;
       border-color: var(--ion-color-warning);
+      background-color: #FFECCC;
     }
 
     &.danger {
       color: var(--ion-color-danger) !important;
       border-color: var(--ion-color-danger);
+      background-color: #FFE5E5;
     }
 
     &.info {
       color: var(--ion-color-primary) !important;
       border-color: var(--ion-color-primary);
+      background-color: #E1EDFA;
     }
   }
 

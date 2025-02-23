@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonContent } from '@ionic/angular';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { IonContent, Platform } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { VISTAS_ALUMNO } from 'src/app/core/constants/alumno';
 import { AppGlobal } from 'src/app/app.global';
@@ -24,12 +24,14 @@ export class ServiciosPage implements OnInit {
   mostrarCentroAyuda = false;
   scrollObs: Subscription;
 
-  constructor(private utils: UtilsService,
-    private profile: ProfileService,
-    private global: AppGlobal,
-    private api: AlumnoService,
-    private events: EventsService) {
+  private utils = inject(UtilsService);
+  private profile = inject(ProfileService);
+  private global = inject(AppGlobal);
+  private api = inject(AlumnoService);
+  private events = inject(EventsService);
+  private pt = inject(Platform);
 
+  constructor() {
     this.scrollObs = this.events.app.subscribe((event: any) => {
       if (event.action == 'scrollTop' && event.index == 4) {
         this.content?.scrollToTop(500);
@@ -56,6 +58,10 @@ export class ServiciosPage implements OnInit {
             this.mostrarCentroAyuda = true;
           }
         }
+
+        if (this.pt.is('mobileweb')) {
+          this.mostrarCentroAyuda = true;
+        }
       }
     }
   }
@@ -65,8 +71,8 @@ export class ServiciosPage implements OnInit {
   ngOnDestroy() {
     this.scrollObs.unsubscribe();
   }
-  bibliotecasTap() {
-    this.utils.openLink(this.urlBibliotecas);
+  async bibliotecasTap() {
+    await this.utils.openLink(this.urlBibliotecas);
     this.api.marcarVista(VISTAS_ALUMNO.BUSCADOR_BIBLIOTECAS);
   }
   notificacionesTap() {
@@ -85,11 +91,11 @@ export class ServiciosPage implements OnInit {
       if (this.status.servicios.bip) {
         if (typeof (this.status.servicios.bip) == 'boolean') {
           return this.status.servicios.bip;
-        } 
+        }
         else if (Array.isArray(this.status.servicios.bip)) {
           return this.status.servicios.bip.indexOf(this.sedeCcod) > -1;
         }
-      } 
+      }
       else {
         return false;
       }

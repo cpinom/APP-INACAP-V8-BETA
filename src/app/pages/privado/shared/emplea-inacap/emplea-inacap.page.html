@@ -3,7 +3,7 @@
     <ion-title>Emplea INACAP</ion-title>
     <ng-container *ngIf="esAlumno">
       <ion-buttons slot="start">
-        <ion-back-button text="Servicios" defaultHref="/alumno/servicios"></ion-back-button>
+        <ion-back-button text="Servicios" defaultHref="/dashboard-alumno/servicios"></ion-back-button>
       </ion-buttons>
     </ng-container>
     <ng-container *ngIf="esExalumno">
@@ -130,7 +130,7 @@
     <div>
       <ion-icon src="assets/icon/warning.svg"></ion-icon>
       <p>Información no disponbile en este momento.</p>
-      <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+      <ion-button color="primary" shape="round" (click)="recargar()">Recargar</ion-button>
     </div>
   </section>
 
@@ -191,7 +191,7 @@
               </ion-select>
             </ion-item>
           </ion-list>
-          <ion-button color="info" shape="round" expand="block" type="submit" style="margin-top: 15px">
+          <ion-button color="primary" shape="round" expand="block" type="submit" style="margin-top: 15px">
             Filtrar
           </ion-button>
           <ion-button fill="clear" expand="block" (click)="resetFiltros()">

@@ -54,7 +54,7 @@
           (onPageChange)="onSelectedDateChange($event, item)" [agendaEmptyTemplate]="horarioEmptyTpl">
           <ng-template #horarioEmptyTpl>
             <div class="mbsc-align-center mbsc-padding">
-              <ion-spinner name="lines" color="info" *ngIf="item.cargando"></ion-spinner>
+              <ion-spinner name="lines" color="primary" *ngIf="item.cargando"></ion-spinner>
               <span *ngIf="!item.cargando && item.eventos">Sin Clases</span>
               <span *ngIf="!item.cargando && !item.eventos">Información no disponible</span>
             </div>
@@ -70,7 +70,7 @@
     <div>
       <ion-icon src="assets/icon/search.svg"></ion-icon>
       <p>No se encontraron resultados. Favor utilizar otros criterios de búsqueda.</p>
-      <ion-button color="info" shape="round" [routerLink]="backUrl" routerDirection="back">
+      <ion-button color="primary" shape="round" [routerLink]="backUrl" routerDirection="back">
         Volver a buscar
       </ion-button>
     </div>
@@ -84,7 +84,7 @@
       [agendaEmptyTemplate]="horarioEmptyTpl">
       <ng-template #horarioEmptyTpl>
         <div class="mbsc-align-center mbsc-padding">
-          <ion-spinner name="lines" color="info" *ngIf="cargandoSala"></ion-spinner>
+          <ion-spinner name="lines" color="primary" *ngIf="cargandoSala"></ion-spinner>
           <span *ngIf="!cargandoSala && salaEventos">Sin Clases</span>
           <span *ngIf="!cargandoSala && !salaEventos">Información no disponible</span>
         </div>

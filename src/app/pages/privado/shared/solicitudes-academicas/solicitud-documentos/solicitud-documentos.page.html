@@ -38,7 +38,7 @@
         <ion-list>
           <ng-container formArrayName="evaluaciones">
             <ion-item class="normal" *ngFor="let item of data.evaluaciones; let i = index">
-              <ion-checkbox labelPlacement="end" [formControlName]="i" color="info">
+              <ion-checkbox labelPlacement="end" [formControlName]="i" color="primary">
                 <span class="ion-text-wrap">{{item.caliTdesc}}</span>
               </ion-checkbox>
             </ion-item>
@@ -120,7 +120,6 @@
     <div class="section-content">
       <form [formGroup]="solicitudForm">
         <ion-list>
-
           <ion-item detail="true" (click)="mostrarVias(viasModal)" class="ion-activatable">
             <ion-label style="max-width: 30%">Convalidación</ion-label>
             <ion-label class="ion-text-right">{{viaConvalidacion?.value ? viaConvalidacion?.value.viasTdesc :
@@ -131,7 +130,6 @@
           <ng-container *ngIf="viaConvalidacion?.value && viaConvalidacion?.value.tieneOrganizacion == 'SI'">
 
             <ion-item>
-              <!-- <ion-label position="stacked">Institución donde lo obtuvo</ion-label> -->
               <ion-select label="Institución donde lo obtuvo" labelPlacement="stacked" style="max-width: 100%"
                 placeholder="Seleccione..." formControlName="organismoAutorizado" okText="Aceptar"
                 cancelText="Cancelar">
@@ -145,7 +143,6 @@
             </div>
 
             <ion-item *ngIf="organismoAutorizado?.value == 0">
-              <!-- <ion-label position="stacked">Indique Institución</ion-label> -->
               <ion-input label="Indique Institución" labelPlacement="stacked" placeholder="Ingrese..."
                 formControlName="otroOrganismo" clearInput></ion-input>
             </ion-item>
@@ -242,7 +239,7 @@
     <div class="section-content">
       <ion-list>
         <ion-item *ngFor="let item of data.causales">
-          <ion-checkbox color="info" [(ngModel)]="item.checked" (ionChange)="causalChange(item)">
+          <ion-checkbox color="primary" [(ngModel)]="item.checked" (ionChange)="causalChange(item)">
             <span class="ion-text-wrap">{{item.tacoTdesc}}</span>
           </ion-checkbox>
         </ion-item>
@@ -252,12 +249,14 @@
   <section>
     <div class="section-content">
       <form [formGroup]="solicitudForm" *ngIf="justificacionCausales">
-        <ion-item class="normal">
-          <!-- <ion-label position="stacked" style="white-space: normal">Motivo</ion-label> -->
-          <ion-textarea label="Motivo" labelPlacement="stacked" rows="6" formControlName="motivo"
-            placeholder="Ingrese un motivo"></ion-textarea>
-        </ion-item>
-        <div class="invalid" *ngIf="submitted && motivo?.invalid">Campo obligatorio.</div>
+        <ion-list>
+          <ion-item class="normal">
+            <!-- <ion-label position="stacked" style="white-space: normal">Motivo</ion-label> -->
+            <ion-textarea label="Motivo" labelPlacement="stacked" rows="6" formControlName="motivo"
+              placeholder="Ingrese un motivo"></ion-textarea>
+          </ion-item>
+          <div class="invalid" *ngIf="submitted && motivo?.invalid">Campo obligatorio.</div>
+        </ion-list>
       </form>
     </div>
   </section>
@@ -273,17 +272,18 @@
     <div class="section-header">Seleccione Establecimiento</div>
     <div class="section-content">
       <form [formGroup]="solicitudForm">
-
-        <ion-item lines="none">
-          <!-- <ion-label position="stacked">Establecimiento</ion-label> -->
-          <ion-select label="Establecimiento" labelPlacement="stacked" style="max-width: 100%"
-            placeholder="Seleccione..." formControlName="colegio" okText="Aceptar" cancelText="Cancelar">
-            <ion-select-option [value]="item.coleCcod" *ngFor="let item of data.colegios">
-              {{item.coleTdesc}}
-            </ion-select-option>
-          </ion-select>
-        </ion-item>
-        <div class="invalid" *ngIf="submitted && colegio?.hasError('required')">Campo obligatorio.</div>
+        <ion-list>
+          <ion-item lines="none">
+            <!-- <ion-label position="stacked">Establecimiento</ion-label> -->
+            <ion-select label="Establecimiento" labelPlacement="stacked" style="max-width: 100%"
+              placeholder="Seleccione..." formControlName="colegio" okText="Aceptar" cancelText="Cancelar">
+              <ion-select-option [value]="item.coleCcod" *ngFor="let item of data.colegios">
+                {{item.coleTdesc}}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+          <div class="invalid" *ngIf="submitted && colegio?.hasError('required')">Campo obligatorio.</div>
+        </ion-list>
       </form>
     </div>
   </section>
@@ -378,7 +378,7 @@
           <div [innerHTML]="detalleSolicitud"></div>
         </div> -->
         <section>
-          <ion-button color="info" shape="round" expand="block" (click)="detalle.dismiss()">
+          <ion-button color="primary" shape="round" expand="block" (click)="detalle.dismiss()">
             Finalizar
           </ion-button>
         </section>

@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button text="Servicios" defaultHref="/alumno/servicios"></ion-back-button>
+      <ion-back-button text="Servicios" defaultHref="/dashboard-alumno/servicios"></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="end">
       <ion-button (click)="recargar()">
@@ -73,7 +73,7 @@
             </ion-item>
           </ion-list>
           <section>
-            <ion-button expand="block" shape="round" color="info" (click)="compartir(mdldetalle)">Compartir</ion-button>
+            <ion-button expand="block" shape="round" color="primary" (click)="compartir(mdldetalle)">Compartir</ion-button>
           </section>
         </ng-container>
       </ion-content>

@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button text="Inicio" defaultHref="/alumno/inicio"></ion-back-button>
+      <ion-back-button text="Inicio" defaultHref="/dashboard-alumno/inicio"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
   <ion-card class="primary-card" color="white">
@@ -169,7 +169,7 @@
             <ion-label>
               <p>{{data.tutorAsignado.nota}}</p>
             </ion-label>
-            <ion-button slot="end" fill="outline" size="small" color="info" (click)="apoyoTutor()">Solicitar Reunión</ion-button>
+            <ion-button slot="end" fill="outline" size="small" color="primary" (click)="apoyoTutor()">Solicitar Reunión</ion-button>
           </ion-item>
           <ion-item routerLink="acuerdo-tutorial" detail="true">
             <ion-label>Acuerdo Atención Tutorial</ion-label>
@@ -213,7 +213,7 @@
         <ion-list>
           <ion-item *ngFor="let item of data.plataformasApoyo">
             <ion-label>{{item.pagenTdesc}}</ion-label>
-            <ion-button slot="end" fill="outline" size="small" color="info" (click)="abrirPlataforma(item.pagenTcampolibre1)">Ingresar</ion-button>
+            <ion-button slot="end" fill="outline" size="small" color="primary" (click)="abrirPlataforma(item.pagenTcampolibre1)">Ingresar</ion-button>
           </ion-item>
         </ion-list>
       </div>
@@ -225,7 +225,7 @@
     <div>
       <ion-icon src="assets/icon/info.svg"></ion-icon>
       <p>Información no disponible en este momento.</p>
-      <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+      <ion-button color="primary" shape="round" (click)="recargar()">Recargar</ion-button>
     </div>
   </section>
 

@@ -20,7 +20,7 @@
       </div>
     </section>
 
-    <ion-button type="submit" expand="block" color="info" shape="round" [disabled]="!estadoBoton">
+    <ion-button type="submit" expand="block" color="primary" shape="round" [disabled]="!estadoBoton">
       Consultar Saldo
     </ion-button>
 
@@ -67,7 +67,7 @@
       <ion-list *ngIf="consultandoSaldos">
         <ion-item>
           <div>
-            <ion-spinner name="lines" color="info"></ion-spinner>
+            <ion-spinner name="lines" color="primary"></ion-spinner>
           </div>
           <ion-label>Consultando tarjetas...</ion-label>
         </ion-item>
@@ -119,7 +119,7 @@
     <ion-card-content style="padding: 0">
       <ion-item *ngIf="consultandoSaldos">
         <div>
-          <ion-spinner name="lines" color="info"></ion-spinner>
+          <ion-spinner name="lines" color="primary"></ion-spinner>
         </div>
         <ion-label>Consultando tarjetas...</ion-label>
       </ion-item>

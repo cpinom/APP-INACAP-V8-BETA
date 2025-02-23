@@ -27,24 +27,27 @@
   <ng-container *ngIf="mostrarData && data">
 
     <ion-list inset="true">
-      <ion-item class="ion-activatable" detail="true" (click)="mostrarInfoPracticas()">
+      <ion-item class="ion-activatable" detail="false" (click)="mostrarInfoPracticas()">
         <ion-icon slot="start" color="medium" src="assets/icon/info.svg"></ion-icon>
         <ion-label>Información de Prácticas</ion-label>
+        <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
       </ion-item>
-      <ion-item class="ion-activatable" detail="true" (click)="mostrarSolicitudPractica()">
+      <ion-item class="ion-activatable" detail="false" (click)="mostrarSolicitudPractica()">
         <ion-icon slot="start" color="medium" src="assets/icon/access_time.svg"></ion-icon>
         <ion-label>Sol. de Inscripción de Práctica</ion-label>
+        <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
       </ion-item>
-      <ion-item class="ion-activatable" detail="true" (click)="mostrarCertificadoPractica()">
+      <ion-item class="ion-activatable" detail="false" (click)="mostrarCertificadoPractica()">
         <ion-icon slot="start" color="medium" src="assets/icon/file_copy.svg"></ion-icon>
         <ion-label>Sol. Certificado Seguro - Prácticas</ion-label>
+        <ion-icon slot="end" src="assets/icon/launch.svg"></ion-icon>
       </ion-item>
     </ion-list>
 
     <section *ngIf="ofertas" class="ultimas-practicas">
       <div class="section-header">
         Emplea INACAP - Últimas Prácticas
-        <ion-button fill="outline" slot="end" size="small" color="info" routerLink="buscador">Ver Todo</ion-button>
+        <ion-button fill="outline" slot="end" size="small" color="primary" routerLink="buscador">Ver Todo</ion-button>
       </div>
       <div class="section-content">
         <ion-list>
@@ -75,7 +78,7 @@
     <div>
       <ion-icon src="assets/icon/info.svg"></ion-icon>
       <p>Información no disponible en este momento.</p>
-      <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+      <ion-button color="primary" shape="round" (click)="recargar()">Recargar</ion-button>
     </div>
   </section>
 

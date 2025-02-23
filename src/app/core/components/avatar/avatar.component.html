@@ -1,6 +1,6 @@
 <img [src]="img" *ngIf="!isLoading" />
 <ion-icon *ngIf="showVerified" class="verified" src="assets/icon/verified.svg"></ion-icon>
-<ion-spinner name="lines" color="info" *ngIf="isLoading"></ion-spinner>
+<ion-spinner name="lines" color="primary" *ngIf="isLoading"></ion-spinner>
 
 <ion-button *ngIf="showButton" (click)="buttonTap($event)" color="white">
   <ion-icon [src]="iconPath" [color]="iconColor"></ion-icon>

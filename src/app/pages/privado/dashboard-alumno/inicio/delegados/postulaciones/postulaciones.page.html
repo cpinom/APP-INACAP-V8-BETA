@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button text="Inicio" defaultHref="/alumno/inicio"></ion-back-button>
+      <ion-back-button text="Inicio" defaultHref="/dashboard-alumno/inicio"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -15,7 +15,7 @@
   </ion-card>
 
   <div class="loaderInacap" *ngIf="!hideLoadingSpinner">
-    <ion-spinner name="lines" color="info"></ion-spinner>
+    <ion-spinner name="lines" color="primary"></ion-spinner>
   </div>
 
   <ng-container *ngIf="mostrarData && data">
@@ -34,13 +34,13 @@
     </section>
 
     <section class="btn-presenta" *ngIf="!data.contestada">
-      <ion-button color="info" shape="round" expand="block" (click)="postular()">Postularme como Delegado</ion-button>
-      <ion-button color="info" shape="round" expand="block" fill="outline" (click)="rechazar()">No quiero participar</ion-button>
+      <ion-button color="primary" shape="round" expand="block" (click)="postular()">Postularme como Delegado</ion-button>
+      <ion-button color="primary" shape="round" expand="block" fill="outline" (click)="rechazar()">No quiero participar</ion-button>
     </section>
 
     <section class="btn-contestada" *ngIf="data.contestada == true && data.respuesta == data.evento.postulaOk">
-      <ion-button color="info" shape="round" expand="block" (click)="postular()">Confirmo Postulación</ion-button>
-      <ion-button color="info" shape="round" expand="block" fill="outline" (click)="cancelar()">Cancelar Postulación</ion-button>
+      <ion-button color="primary" shape="round" expand="block" (click)="postular()">Confirmo Postulación</ion-button>
+      <ion-button color="primary" shape="round" expand="block" fill="outline" (click)="cancelar()">Cancelar Postulación</ion-button>
     </section>
 
   </ng-container>

@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button text="Inicio" defaultHref="/alumno/inicio"></ion-back-button>
+      <ion-back-button text="Inicio" defaultHref="/dashboard-alumno/inicio"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
   <ion-card class="primary-card" color="white">
@@ -14,7 +14,7 @@
 <ion-content>
 
   <div class="loaderInacap" *ngIf="!hideLoadingSpinner">
-    <ion-spinner name="lines" color="info"></ion-spinner>
+    <ion-spinner name="lines" color="primary"></ion-spinner>
   </div>
 
  
@@ -40,7 +40,7 @@
           </div>
         </section>
         <section>
-          <ion-button color="info" shape="round" expand="block" (click)="presentarCandidatos()">Continuar</ion-button>
+          <ion-button color="primary" shape="round" expand="block" (click)="presentarCandidatos()">Continuar</ion-button>
         </section>
       </swiper-slide>
       <swiper-slide>
@@ -79,7 +79,7 @@
           </div>
         </section>
         <section style="margin-bottom: 20px;">
-          <ion-button color="info" shape="round" expand="block" (click)="votar()" [disabled]="!votoPersona">Enviar Voto</ion-button>
+          <ion-button color="primary" shape="round" expand="block" (click)="votar()" [disabled]="!votoPersona">Enviar Voto</ion-button>
         </section>
       </swiper-slide>
   
@@ -92,7 +92,7 @@
       <ion-icon src="assets/icon/group.svg"></ion-icon>
       <p>Tu voto ya fue emitido.</p>
     </div>
-    <ion-button style="margin: 30px 0 0;" color="info" shape="round" expand="block" (click)="cerrar()">Cerrar</ion-button>
+    <ion-button style="margin: 30px 0 0;" color="primary" shape="round" expand="block" (click)="cerrar()">Cerrar</ion-button>
   </section>
 
   <section class="empty-state" *ngIf="mostrarData && !votoEmitido && (candidatos && candidatos.length == 0)">
@@ -100,7 +100,7 @@
       <ion-icon src="assets/icon/info.svg"></ion-icon>
       <p>Para tu carrera {{academico.carrera}}, nivel {{academico.nivel}} y jornada {{academico.jornada}}, no hubo candidatos inscritos.</p>
     </div>
-    <ion-button style="margin: 30px 0 0;" color="info" shape="round" expand="block" (click)="cerrar()">Cerrar</ion-button>
+    <ion-button style="margin: 30px 0 0;" color="primary" shape="round" expand="block" (click)="cerrar()">Cerrar</ion-button>
   </section>
 
   <section class="empty-state" *ngIf="mostrarData && !votoEmitido && !candidatos">
@@ -108,7 +108,7 @@
       <ion-icon src="assets/icon/group.svg"></ion-icon>
       <p>Información no disponible. Contáctese con su DAE para mayor información.</p>
     </div>
-    <ion-button style="margin: 50px 0 0;" color="info" shape="round" expand="block" (click)="cerrar()">Cerrar</ion-button>
+    <ion-button style="margin: 50px 0 0;" color="primary" shape="round" expand="block" (click)="cerrar()">Cerrar</ion-button>
   </section>
 
 </ion-content>

@@ -309,8 +309,8 @@ export class SolicitudPage implements OnInit {
         }
         catch (error: any) {
           if (error && error.status == 401) {
-          await this.error.handle(error);
-          return
+            await this.error.handle(error);
+            return
           }
 
           message = 'Ha ocurrido un error al procesar la solicitud.';

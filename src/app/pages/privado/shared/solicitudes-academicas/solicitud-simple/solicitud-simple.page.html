@@ -46,7 +46,7 @@
     <div class="section-content">
       <ion-list>
         <ion-item *ngFor="let item of data.asignaturas">
-          <ion-checkbox labelPlacement="end" color="info" [(ngModel)]="item.checked">
+          <ion-checkbox labelPlacement="end" color="primary" [(ngModel)]="item.checked">
             <span class="ion-text-wrap">{{item.asigTdesc}}</span>
           </ion-checkbox>
         </ion-item>
@@ -63,7 +63,7 @@
     <div class="section-content">
       <ion-list>
         <ion-item *ngFor="let item of data.asignaturas">
-          <ion-checkbox labelPlacement="end" color="info" [(ngModel)]="item.checked">
+          <ion-checkbox labelPlacement="end" color="primary" [(ngModel)]="item.checked">
             <span class="ion-text-wrap">{{item.asigTdesc}}</span>
           </ion-checkbox>
         </ion-item>
@@ -179,7 +179,7 @@
         <ion-list>
           <ng-container formArrayName="evaluaciones">
             <ion-item class="normal" *ngFor="let item of data.evaluaciones; let i = index">
-              <ion-checkbox labelPlacement="end" [formControlName]="i" color="info">
+              <ion-checkbox labelPlacement="end" [formControlName]="i" color="primary">
                 <span class="ion-text-wrap">{{item.asigTdesc}}</span>
               </ion-checkbox>
             </ion-item>
@@ -231,7 +231,7 @@
       <ion-list>
         @for (item of data.asignaturas; track $index) {
         <ion-item>
-          <ion-checkbox labelPlacement="end" color="info" [(ngModel)]="item.checked">
+          <ion-checkbox labelPlacement="end" color="primary" [(ngModel)]="item.checked">
             <span class="ion-text-wrap">{{item.asigTdesc}}</span>
           </ion-checkbox>
         </ion-item>
@@ -268,7 +268,7 @@
     <div>
       <ion-icon src="assets/icon/info.svg"></ion-icon>
       <p>Información no disponible en este momento.</p>
-      <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+      <ion-button color="primary" shape="round" (click)="recargar()">Recargar</ion-button>
     </div>
   </section>
   }

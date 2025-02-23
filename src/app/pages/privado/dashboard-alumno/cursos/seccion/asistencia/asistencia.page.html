@@ -35,7 +35,7 @@
           <ion-accordion value="first">
             <ion-item slot="header" color="light">
               <ion-label>Próximas</ion-label>
-              <ion-badge slot="end" color="info">{{asistencia[3].length}}</ion-badge>
+              <ion-badge slot="end" color="primary">{{asistencia[3].length}}</ion-badge>
             </ion-item>
             <div slot="content">
               <ion-list slot="content">
@@ -61,7 +61,7 @@
                   <h2>{{item.fecha}}</h2>
                   <p>{{item.title}}</p>
                 </ion-label>
-                <ion-badge slot="end" color="info" *ngIf="item.hrs">{{item.hrs}} horas</ion-badge>
+                <ion-badge slot="end" color="primary" *ngIf="item.hrs">{{item.hrs}} horas</ion-badge>
               </ion-item>
             </ion-list>
           </div>
@@ -77,7 +77,7 @@
                   <h2>{{item.fecha}}</h2>
                   <p>{{item.title}}</p>
                 </ion-label>
-                <ion-badge slot="end" color="info" *ngIf="item.hrs">{{item.hrs}} horas</ion-badge>
+                <ion-badge slot="end" color="primary" *ngIf="item.hrs">{{item.hrs}} horas</ion-badge>
               </ion-item>
             </ion-list>
           </div>
@@ -93,7 +93,7 @@
                   <h2>{{item.fecha}}</h2>
                   <p>{{item.title}}</p>
                 </ion-label>
-                <ion-badge slot="end" color="info" *ngIf="item.hrs">{{item.hrs}} horas</ion-badge>
+                <ion-badge slot="end" color="primary" *ngIf="item.hrs">{{item.hrs}} horas</ion-badge>
               </ion-item>
             </ion-list>
           </div>
@@ -133,7 +133,7 @@
       <ion-accordion value="first">
         <ion-item slot="header" color="light">
           <ion-label>Próximas</ion-label>
-          <ion-badge slot="end" color="info">{{asistencia[3].length}}</ion-badge>
+          <ion-badge slot="end" color="primary">{{asistencia[3].length}}</ion-badge>
         </ion-item>
         <div slot="content">
           <ion-list slot="content">
@@ -159,7 +159,7 @@
               <h2>{{item.fecha}}</h2>
               <p>{{item.title}}</p>
             </ion-label>
-            <ion-badge slot="end" color="info" *ngIf="item.hrs">{{item.hrs}} horas</ion-badge>
+            <ion-badge slot="end" color="primary" *ngIf="item.hrs">{{item.hrs}} horas</ion-badge>
           </ion-item>
         </ion-list>
       </div>
@@ -175,7 +175,7 @@
               <h2>{{item.fecha}}</h2>
               <p>{{item.title}}</p>
             </ion-label>
-            <ion-badge slot="end" color="info" *ngIf="item.hrs">{{item.hrs}} horas</ion-badge>
+            <ion-badge slot="end" color="primary" *ngIf="item.hrs">{{item.hrs}} horas</ion-badge>
           </ion-item>
         </ion-list>
       </div>
@@ -191,7 +191,7 @@
               <h2>{{item.fecha}}</h2>
               <p>{{item.title}}</p>
             </ion-label>
-            <ion-badge slot="end" color="info" *ngIf="item.hrs">{{item.hrs}} horas</ion-badge>
+            <ion-badge slot="end" color="primary" *ngIf="item.hrs">{{item.hrs}} horas</ion-badge>
           </ion-item>
         </ion-list>
       </div>
@@ -210,7 +210,7 @@
     <div>
       <ion-icon src="assets/icon/info.svg"></ion-icon>
       <p>Información no disponible en este momento.</p>
-      <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+      <ion-button color="primary" shape="round" (click)="recargar()">Recargar</ion-button>
     </div>
   </section>
 

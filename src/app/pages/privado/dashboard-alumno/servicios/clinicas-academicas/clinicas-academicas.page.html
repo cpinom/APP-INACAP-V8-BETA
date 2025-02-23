@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button text="Servicios" defaultHref="/alumno/servicios"></ion-back-button>
+      <ion-back-button text="Servicios" defaultHref="/dashboard-alumno/servicios"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
   <ion-card class="primary-card" color="white">
@@ -15,13 +15,13 @@
 
   @if (mostrarCargando) {
   <div class="loaderInacap">
-    <ion-spinner name="lines" color="info"></ion-spinner>
+    <ion-spinner name="lines" color="primary"></ion-spinner>
   </div>
   }
 
   @if (mostrarData && data) {
   <section class="btn-agendar">
-    <ion-button color="info" shape="round" expand="block" [disabled]="!permiteAgendar" routerLink="agendar-hora">
+    <ion-button color="primary" shape="round" expand="block" [disabled]="!permiteAgendar" routerLink="agendar-hora">
       Inscribir Hora Clínica Académica
     </ion-button>
   </section>
@@ -107,7 +107,7 @@
     <div>
       <ion-icon src="assets/icon/info.svg"></ion-icon>
       <p>Información no disponible en este momento.</p>
-      <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+      <ion-button color="primary" shape="round" (click)="recargar()">Recargar</ion-button>
     </div>
   </section>
   }

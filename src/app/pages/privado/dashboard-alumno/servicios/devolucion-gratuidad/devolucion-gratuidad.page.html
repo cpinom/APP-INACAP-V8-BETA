@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button text="Servicios" defaultHref="/alumno/servicios"></ion-back-button>
+      <ion-back-button text="Servicios" defaultHref="/dashboard-alumno/servicios"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
   <ion-card class="primary-card" color="white">
@@ -27,7 +27,7 @@
         <div class="section-content">
           <ion-list>
             <ion-item *ngFor="let item of data.montosPagados">              
-              <ion-checkbox (ionChange)="item.checked = !item.checked" color="info" [disabled]="montosSolicitados">
+              <ion-checkbox (ionChange)="item.checked = !item.checked" color="primary" [disabled]="montosSolicitados">
                 <ion-label style="padding: 0;">
                   <h2>{{item.carrera}}</h2>
                   <p>{{item.institucion}}</p>
@@ -86,7 +86,7 @@
             </div>
           </section>
         </ng-container>
-        <ion-button type="submit" expand="block" shape="round" color="info" (click)="solicitar()">Solicitar</ion-button>
+        <ion-button type="submit" expand="block" shape="round" color="primary" (click)="solicitar()">Solicitar</ion-button>
       </ng-container>
 
       <section *ngIf="data.montosPagados.length > 0 && montosSolicitados" class="empty-state">

@@ -28,9 +28,14 @@ ion-content {
         ion-label + ion-select {
             max-width: 70%;
         }
+        ion-checkbox {
+            font-size: var(--FS14) !important;
+        }
     }
     
     ion-accordion-group {
+        margin-top: 0;
+        
         ion-accordion {
             ion-item {
                 font-size: var(--FS14) !important;

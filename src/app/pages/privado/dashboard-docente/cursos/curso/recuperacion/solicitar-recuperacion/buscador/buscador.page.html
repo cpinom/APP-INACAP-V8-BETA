@@ -92,7 +92,7 @@
           <ion-list>
             @for (equipo of data.implementos; track $index) {
             <ion-item>
-              <ion-checkbox color="info" (ionChange)="getEquipamiento($event, equipo)">
+              <ion-checkbox color="primary" (ionChange)="getEquipamiento($event, equipo)">
                 <span class="ion-text-wrap">{{equipo}}</span>
               </ion-checkbox>
             </ion-item>
@@ -103,7 +103,7 @@
       }
 
       <section>
-        <ion-button color="info" shape="round" expand="block" (click)="buscar()">
+        <ion-button color="primary" shape="round" expand="block" (click)="buscar()">
           Buscar Horarios disponibles
         </ion-button>
       </section>

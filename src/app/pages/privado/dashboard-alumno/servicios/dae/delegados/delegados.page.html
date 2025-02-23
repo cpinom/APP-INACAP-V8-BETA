@@ -1,0 +1,82 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="DAE" defaultHref="/dashboard-alumno/servicios/dae"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list inset="true" class="card-list">
+    <ion-item detail="false">
+      <ion-icon slot="start" src="assets/icon/how_to_vote.svg" class="rounded variant-4"></ion-icon>
+      <ion-label>
+        <h2>Nómina de Delegados {{programa?.sedeTdesc}}</h2>
+        <p>Conoce los delegados de tu carrera.</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  @if (mostrarCargando) {
+  <div class="loaderInacap">
+    <ion-spinner name="lines" color="primary"></ion-spinner>
+  </div>
+  }
+
+  @if (mostrarData && delegados) {
+  @if (delegados.length) {
+  <ion-list class="personas" inset="true">
+    @for (item of delegados; track $index) {
+    <ion-item class="ion-activatable" detail="false" (click)="info(item, usuarioModal)">
+      <app-cached-image slot="start" [src]="resolverFoto(item.persNcorr)" [hideViewer]="true"></app-cached-image>
+      <ion-label>
+        <h2>{{item.nombre}}</h2>
+        <p>{{item.carrera}}</p>
+        <p>Jornada {{item.jornada}}</p>
+      </ion-label>
+      <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
+    </ion-item>
+    }
+  </ion-list>
+  <ion-modal class="usuario-modal" #usuarioModal [breakpoints]="[0, 0.45]" [initialBreakpoint]="0.45">
+    <ng-template>
+      <ion-content>
+        <ng-container *ngIf="usuario">
+          <ion-button class="btn-cerrar" shape="round" color="secondary" fill="clear" size="small"
+            (click)="usuarioModal.dismiss()">
+            <ion-icon name="close-outline"></ion-icon>
+          </ion-button>
+          <div class="usuario">
+            <app-cached-image slot="start" [src]="resolverFoto(usuario.persNcorr)"></app-cached-image>
+            <h2><ion-icon color="primary" src="assets/icon/verified_user.svg"></ion-icon>{{usuario.nombre}}</h2>
+            <ion-button fill="clear" color="info" (click)="correo(usuario.correo, usuarioModal)">
+              <ion-icon slot="start" src="assets/icon/mail.svg"></ion-icon>
+              <ion-label>{{usuario.correo}}</ion-label>
+            </ion-button>
+          </div>
+        </ng-container>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+  }
+  @else {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/group.svg"></ion-icon>
+      <p>No existen delegados para su carrera. Por favor contactarse con su DAE para mayor información.</p>
+    </div>
+  </section>
+  }
+  }
+
+  @if (mostrarData && !delegados) {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Información no disponible en este momento.</p>
+    </div>
+  </section>
+  }
+
+</ion-content>

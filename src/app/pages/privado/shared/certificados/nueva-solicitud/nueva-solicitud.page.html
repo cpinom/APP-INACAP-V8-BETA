@@ -16,22 +16,21 @@
       </ion-card-header>
     </ion-card>
 
-    <ion-card color="white" class="primary-card indicaciones">
-      <ion-card-header>
-        <ion-card-subtitle>Indicaciones para obtener su Certificado</ion-card-subtitle>
-      </ion-card-header>
-      <ion-card-content style="font-size: var(--FS14);">
-        <ul class="">
-          <!-- <li>En el momento de la aprobación de su certificado se le cargará el arancel, si lo hubiere, en su cuenta corriente.</li> -->
-          <li>Si el certificado que necesita no se encuentra en la lista, diríjase a la Oficina Curricular de su sede.
-          </li>
-        </ul>
-      </ion-card-content>
-    </ion-card>
+    <section>
+      <div class="section-header">Instrucciones</div>
+      <div class="section-content">
+        <ion-list>
+          <ion-item>
+            <ion-label>Si el certificado que necesita no se encuentra en la lista, diríjase a la Oficina Curricular de
+              su sede.</ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+    </section>
 
     <form [formGroup]="certificadoForm" (ngSubmit)="solicitar()">
       <section>
-        <div class="section-header">Elija el pie de página del Certificado</div>
+        <div class="section-header">Elige el pie de página del Certificado</div>
         <div class="section-content">
           <ion-list>
             <ion-radio-group formControlName="ceppCcod">
@@ -43,17 +42,21 @@
             </ion-radio-group>
             <ng-container *ngIf="tipo?.value == 2">
               <ion-item>
-                <ion-input label="Nombre Institución" labelPlacement="stacked" formControlName="resoTdetalle" placeholder="Ingrese el nombre..." clearInput></ion-input>
+                <ion-input label="Nombre Institución" labelPlacement="stacked" formControlName="resoTdetalle"
+                  placeholder="Ingresa el nombre..." clearInput></ion-input>
               </ion-item>
               <div class="invalid" *ngIf="submitted && detalle?.hasError('required')">Campo obligatorio.</div>
-              <div class="invalid" *ngIf="submitted && detalle?.hasError('maxlength')">El texto no debe sobrepasar los 50 caracteres.</div>
+              <div class="invalid" *ngIf="submitted && detalle?.hasError('maxlength')">El texto no debe sobrepasar los
+                50 caracteres.</div>
               <div class="invalid" *ngIf="submitted && detalle?.hasError('pattern')">Existen caracteres no permitidos.
               </div>
             </ng-container>
           </ion-list>
         </div>
       </section>
-      <ion-button type="submit" expand="block" shape="round" color="info">Solicitar</ion-button>
+      <section style="margin: 15px;">
+        <ion-button type="submit" expand="block" shape="round" color="primary">Solicitar</ion-button>
+      </section>
     </form>
 
   </ng-container>
@@ -100,25 +103,9 @@
             cualquier sede de INACAP.</p>
         </div>
       </section>
-      <ion-button *ngIf="data.url" expand="block" shape="round" color="info" (click)="descargar()"
+      <ion-button *ngIf="data.url" expand="block" shape="round" color="primary" (click)="descargar()"
         style="margin-bottom: 10px;">Descargar</ion-button>
     </ng-container>
-
-    <!-- <ng-container *ngIf="data.cemeTtipo == 2">
-      <section>
-        <div class="section-content resolucion">
-          <p>Estimado Estudiante, su certificado tiene un costo de {{data.tdetMvalorUnitario}}, el cual debe ser
-            pagado en el Portal de Pagos de INACAP o en la caja de cualquier sede.</p>
-          <p>Una vez pagado recibirá un correo de confirmación en su casilla de correo electrónico de INACAP.</p>
-          <p>El certificado quedará disponible para su impresión o descarga en el listado de "Certificados >
-            Solicitados".</p>
-          <p>Si tiene problemas para imprimir o descargar su certificado, puede dirigirse a la Oficina Curricular de
-            cualquier sede de INACAP.</p>
-        </div>
-      </section>
-      <ion-button expand="block" shape="round" color="info" (click)="pagar()"
-        style="margin-bottom: 10px;">Pagar</ion-button>
-    </ng-container> -->
 
     <ng-container *ngIf="data.cemeTtipo == 3">
       <section>

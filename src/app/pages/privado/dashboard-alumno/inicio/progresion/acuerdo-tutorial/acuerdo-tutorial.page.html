@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button text="Mi Progresión" defaultHref="/alumno/inicio/progresion"></ion-back-button>
+      <ion-back-button text="Mi Progresión" defaultHref="/dashboard-alumno/inicio/progresion"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
   <ion-card class="primary-card" color="white">
@@ -31,7 +31,7 @@
           </ion-item>
         </ion-list>
         <section style="margin-bottom: 15px;">
-          <ion-button type="submit" color="info" shape="round" expand="block" [disabled]="form.invalid">
+          <ion-button type="submit" color="primary" shape="round" expand="block" [disabled]="form.invalid">
             Enviar Acuerdo Autorizado
           </ion-button>
         </section>
@@ -51,7 +51,7 @@
     <div>
       <ion-icon src="assets/icon/info.svg"></ion-icon>
       <p>Información no disponible en este momento.</p>
-      <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+      <ion-button color="primary" shape="round" (click)="recargar()">Recargar</ion-button>
     </div>
   </section>
 

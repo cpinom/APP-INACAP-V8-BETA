@@ -1,0 +1,70 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="DAE" defaultHref="/dashboard-alumno/servicios/dae"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list inset="true" class="card-list">
+    <ion-item detail="false">
+      <ion-icon slot="start" src="assets/icon/hiking.svg" class="rounded variant-3"></ion-icon>
+      <ion-label>
+        <h2>Inscripción de Actividades Extracurriculares</h2>
+        <p>DAE {{programa?.sedeTdesc}}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  @if (mostrarCargando) {
+  <div class="loaderInacap">
+    <ion-spinner name="lines" color="primary"></ion-spinner>
+  </div>
+  }
+
+  @if (mostrarData && actividades) {
+  @if (actividades.length) {
+  <section>
+    <div class="section-header">Actividades</div>
+    <div class="section-content">
+      <ion-list>
+        @for (item of actividades; track $index) {
+        <ion-item detail="false" (click)="inscripcion(item)">
+          <ion-label>
+            <h2>{{item.reacTnombre}}</h2>
+            <p>Fecha inicio: {{item.reacFinicio}}</p>
+            @if (item.inscrito == 1) {
+            <p class="estado-actividad success">Inscrito</p>
+            }
+          </ion-label>
+          <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
+        </ion-item>
+        }
+      </ion-list>
+    </div>
+  </section>
+
+  }
+  @else {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>No hay actividades disponibles en este momento.</p>
+    </div>
+  </section>
+  }
+  }
+
+  @if (mostrarData && !actividades) {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Información no disponible en este momento.</p>
+      <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+    </div>
+  </section>
+  }
+
+</ion-content>

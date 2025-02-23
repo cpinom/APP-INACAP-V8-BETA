@@ -240,7 +240,7 @@ body {
     }
 
     .section-header {
-      font-size: var(--FS14);
+      font-size: var(--FS13);
       color: var(--color);
       padding-top: 0px;
       padding-left: 25px;
@@ -296,11 +296,19 @@ body {
       padding-bottom: 0;
     }
 
-    ion-item {
+    ion-item,
+    .item {
+      font-size: var(--FS14);
+
       ion-label {
         margin-top: 15px;
         margin-bottom: 15px;
         font-size: var(--FS14);
+
+        &.sc-ion-label-md-h,
+        &.sc-ion-label-ios-h {
+          font-size: var(--FS14);
+        }
 
         h2 {
           font-size: var(--FS14) !important;
@@ -322,6 +330,30 @@ body {
       font-size: var(--FS12);
       color: var(--ion-color-danger);
       margin: 5px 15px;
+    }
+
+    &.detalle {
+      ion-item {
+        ion-label {
+          h2 {
+            margin-bottom: 0;
+            line-height: 18px;
+
+            p.estado-actividad {
+              margin-top: 0;
+              margin-left: 6px;
+            }
+
+            span {
+              font-size: var(--FS14);
+              color: var(--ion-color-step-700);
+              line-height: 18px;
+              margin-left: 3px;
+              font-weight: 400;
+            }
+          }
+        }
+      }
     }
   }
 
@@ -345,6 +377,9 @@ body {
       }
       &.variant-4 {
         background: #a7b0f1;
+      }
+      &.variant-5 {
+        background: #ffb066;
       }
     }
     &[slot="end"] {
@@ -440,6 +475,7 @@ body {
       text-align: center;
       max-width: 290px;
       margin: 0 auto;
+
       ion-icon {
         width: 90px;
         height: 90px;
@@ -449,6 +485,7 @@ body {
       p {
         color: var(--ion-color-medium);
         margin-top: 5px;
+        font-size: var(--FS14);
       }
     }
   }
@@ -500,25 +537,25 @@ body {
     &.success {
       color: var(--ion-color-success) !important;
       border-color: var(--ion-color-success);
-      background-color: #EFF9F1;
+      background-color: #eff9f1;
     }
 
     &.warning {
       color: var(--ion-color-warning) !important;
       border-color: var(--ion-color-warning);
-      background-color: #FFECCC;
+      background-color: #ffeccc;
     }
 
     &.danger {
       color: var(--ion-color-danger) !important;
       border-color: var(--ion-color-danger);
-      background-color: #FFE5E5;
+      background-color: #ffe5e5;
     }
 
     &.info {
       color: var(--ion-color-primary) !important;
       border-color: var(--ion-color-primary);
-      background-color: #E1EDFA;
+      background-color: #e1edfa;
     }
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { ActionSheetController, IonModal, IonRouterOutlet, NavController, Platform } from '@ionic/angular';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
@@ -8,7 +8,6 @@ import { UtilsService } from 'src/app/core/services/utils.service';
 import { Router } from '@angular/router';
 import { Directory, Filesystem } from '@capacitor/filesystem';
 import { FileOpener } from '@capacitor-community/file-opener';
-import { DetallePagoPage } from '../portal-pagos/detalle-pago/detalle-pago.page';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProfileService } from 'src/app/core/services/profile.service';
 import { EventsService } from 'src/app/core/services/events.service';
@@ -46,20 +45,22 @@ export class CertificadosPage implements OnInit {
   periodo: any;
   reloadObs: Subscription;
 
-  constructor(private auth: AuthService,
-    private api: CertificadosService,
-    private dialog: DialogService,
-    private action: ActionSheetController,
-    private snackbar: SnackbarService,
-    private error: ErrorHandlerService,
-    private utils: UtilsService,
-    private router: Router,
-    private pt: Platform,
-    public routerOutlet: IonRouterOutlet,
-    private nav: NavController,
-    private fb: FormBuilder,
-    private events: EventsService,
-    private profile: ProfileService) {
+  private authService = inject(AuthService);
+  private api = inject(CertificadosService);
+  private dialog = inject(DialogService);
+  private action = inject(ActionSheetController);
+  private snackbar = inject(SnackbarService);
+  private error = inject(ErrorHandlerService);
+  private utils = inject(UtilsService);
+  private router = inject(Router);
+  private pt = inject(Platform);
+  private nav = inject(NavController);
+  private fb = inject(FormBuilder);
+  private events = inject(EventsService);
+  private profile = inject(ProfileService);
+  routerOutlet = inject(IonRouterOutlet);
+
+  constructor() {
 
     this.reloadObs = this.events.app.subscribe((event: any) => {
       if (event.action == 'app:certificados-recargar') {
@@ -72,8 +73,8 @@ export class CertificadosPage implements OnInit {
       carrera: ['', Validators.required]
     });
 
-    this.carrera?.valueChanges.subscribe(() => {
-      this.cargarCertificados();
+    this.carrera?.valueChanges.subscribe(async () => {
+      await this.cargarCertificados();
     });
 
   }
@@ -89,7 +90,7 @@ export class CertificadosPage implements OnInit {
     }
   }
   async cargarTodo() {
-    let auth = await this.auth.getAuth();
+    const auth = await this.authService.getAuth();
 
     if (auth.perfil) {
       this.esExalumno = auth.perfil == '/dashboard-exalumno' ? 1 : 0
@@ -300,6 +301,7 @@ export class CertificadosPage implements OnInit {
     }
   }
   async cargarCertificados() {
+    this.mostrarCargando = true;
     this.mostrarData = false;
 
     try {
@@ -393,34 +395,6 @@ export class CertificadosPage implements OnInit {
       else {
         this.snackbar.showToast('Certificado no disponible.');
       }
-    }
-  }
-  filtrarCertificados() {
-    this.certificadosFiltrados = this.certificados.filter(element => {
-      return element.tdetTdesc.toLowerCase().indexOf(this.certificadosFiltro.toLowerCase()) > -1;
-    });
-  }
-  resetCertificados() {
-    this.certificadosFiltro = '';
-    this.certificadosFiltrados = this.certificados;
-  }
-  async mostrarDetallePago(detallePago: any, pagoExito: boolean) {
-    const modal = await this.dialog.showModal({
-      component: DetallePagoPage,
-      handle: false,
-      componentProps: {
-        pagoExito: pagoExito,
-        data: detallePago
-      },
-      canDismiss: true,
-      presentingElement: this.routerOutlet.nativeEl
-    });
-
-    const modalResult = await modal.onWillDismiss();
-
-    if (modalResult.data) {
-      this.mostrarData = false;
-      this.recargar();
     }
   }
   async descargar(url: string, tdetCcod: string) {
@@ -517,7 +491,7 @@ export class CertificadosPage implements OnInit {
     return new Promise(async (resolve) => {
       await this.dialog.showAlert({
         header: 'Eliminar Solicitud',
-        message: '¿Esta seguro que desea eliminar la solicitud seleccionada?',
+        message: '¿Estás seguro que deseas eliminar la certificado seleccionado?',
         cssClass: 'danger',
         buttons: [
           {
@@ -556,10 +530,10 @@ export class CertificadosPage implements OnInit {
             handler: (item) => {
               let msgError = '';
               if (item.correo.length === 0) {
-                msgError = 'Debe ingresar un correo';
+                msgError = 'Debes ingresar un correo';
               }
               else if (!(EMAIL_REGEXP.test(item.correo))) {
-                msgError = 'Debe ingresar un correo válido';
+                msgError = 'Debes ingresar un correo válido';
               }
               if (msgError.length > 0) {
                 this.snackbar.showToast(msgError);

@@ -1,0 +1,54 @@
+.usuario-modal {
+  ion-content {
+    // --background: white;
+
+    .btn-cerrar {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      --padding-start: 10px;
+      --padding-end: 10px;
+
+      ion-icon {
+        color: var(--ion-color-medium);
+        font-size: 32px;
+      }
+    }
+
+    .usuario {
+      display: flex;
+      justify-content: center;
+      text-align: center;
+      padding: 30px;
+      flex-direction: column;
+      align-items: center;
+
+      app-cached-image {
+        height: 150px;
+        width: 150px;
+      }
+
+      h2 {
+        display: flex;
+        align-items: center;
+        font-size: 20px;
+
+        ion-icon {
+          margin-right: 5px;
+        }
+      }
+
+      ion-button {
+        height: 22px;
+        min-height: 22px;
+
+        ion-icon {
+          font-size: 18px;
+        }
+        ion-label {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}

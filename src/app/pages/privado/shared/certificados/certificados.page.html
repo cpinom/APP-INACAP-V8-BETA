@@ -10,7 +10,7 @@
     </ion-buttons>
     <ion-title>Certificados</ion-title>
   </ion-toolbar>
-  <div class="tabs">
+  <!-- <div class="tabs">
     <ion-segment [(ngModel)]="activeTab" mode="md" [swipeGesture]="false">
       <ion-segment-button [value]="0">
         <ion-label>Certificados</ion-label>
@@ -19,10 +19,31 @@
         <ion-label>Solicitados</ion-label>
       </ion-segment-button>
     </ion-segment>
-  </div>
+  </div> -->
 </ion-header>
 
 <ion-content>
+
+  <ion-list inset="true" class="card-list">
+    <ion-item detail="false">
+      <ion-icon slot="start" src="assets/icon/description.svg" class="rounded variant-5"></ion-icon>
+      <ion-label>
+        <h2>Certificados</h2>
+        <p>Busca los certificados que necesites para tu día a día.</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <div class="tabs">
+    <ion-segment [(ngModel)]="activeTab" mode="ios" [swipeGesture]="false">
+      <ion-segment-button [value]="0">
+        <ion-label>Certificados</ion-label>
+      </ion-segment-button>
+      <ion-segment-button [value]="1">
+        <ion-label>Solicitados</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
 
   @if (mostrarCargando) {
   <div class="loaderInacap">
@@ -57,7 +78,7 @@
     <div class="section-header">Accesos Directos</div>
     <div class="section-content directos">
       @for (item of directos; track $index) {
-      <ion-card color="white" (click)="solicitar(item)" role="button">
+      <ion-card color="white" (click)="solicitar(item)" role="button" class="color-{{$index + 1}}">
         <ion-card-content>
           <ion-icon src="assets/icon/description.svg"></ion-icon>
           <span>{{item.tdetTdesc | titleCase}}</span>
@@ -68,15 +89,15 @@
   </section>
   }
   <section class="disponibles">
-    <div class="section-header">Disponibles</div>
+    <div class="section-header">Certificados Disponibles</div>
     <ion-accordion-group expand="inset">
       @for (item of disponibles; track $index) {
       <ion-accordion [value]="'disponible_' + $index">
         <ion-item slot="header">
           <ion-label>{{item.title}}</ion-label>
-          <ion-badge slot="end" color="light">{{item.children.length}}</ion-badge>
+          <p slot="end" class="estado-actividad">{{item.children.length}}</p>
         </ion-item>
-        <div class="ion-padding" slot="content">
+        <div slot="content">
           <ion-list [inset]="true">
             @for (o of item.children; track $index) {
             <ion-item routerLink="nueva-solicitud" (click)="solicitar(o)" detail="true" class="ion-activatable">
@@ -96,7 +117,7 @@
   @if (activeTab == 1) {
   @if (historial.length > 0) {
   <ion-list [inset]="true">
-    <ion-item *ngFor="let item of historial" (click)="detalleCertificado(item)" detail="true">
+    <ion-item *ngFor="let item of historial" (click)="detalleCertificado(item)" detail="false">
       <ion-label>
         <h2 text-wrap>{{item.tdetTdesc}}</h2>
         <p>{{item.carrTdesc}}</p>
@@ -104,6 +125,7 @@
         <p>Fecha - {{item.resoFsolicitud}}</p>
         <p>Estado - {{item.esolTdesc}}</p>
       </ion-label>
+      <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
     </ion-item>
   </ion-list>
   }
@@ -123,7 +145,7 @@
     <div>
       <ion-icon src="assets/icon/info.svg"></ion-icon>
       <p>Información no disponible en este momento.</p>
-      <ion-button color="info" shape="round" (click)="recargarError()">Recargar</ion-button>
+      <ion-button color="primary" shape="round" (click)="recargarError()">Recargar</ion-button>
     </div>
   </section>
   }
@@ -268,7 +290,7 @@
     <div>
       <ion-icon src="assets/icon/info.svg"></ion-icon>
       <p>Información no disponible en este momento.</p>
-      <ion-button color="info" shape="round" (click)="recargarError()">Recargar</ion-button>
+      <ion-button color="primary" shape="round" (click)="recargarError()">Recargar</ion-button>
     </div>
   </section> -->
 

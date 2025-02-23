@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ActionSheetController, IonModal, IonRouterOutlet, NavController } from '@ionic/angular';
@@ -23,25 +23,30 @@ export enum SOLICITUD {
 })
 export class SolicitudPracticaPage implements OnInit {
 
+  mostrarCargando = true;
+  mostrarData = false;
   praticaForm!: FormGroup;
   patternStr = '^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ!@#"\'\n\r\$%\^\&*\ \)\(+=.,_-]+$';
   patternNum = '^[0-9]*$';
+  patternPhone = /^\+569\d{8}$/;
   data: any;
   submitted = false;
   solicitud: any;
   detalleSolicitud: any;
   showMore!: boolean;
 
-  constructor(private fb: FormBuilder,
-    private router: Router,
-    private api: SolicitudesService,
-    private dialog: DialogService,
-    private error: ErrorHandlerService,
-    private snackbar: SnackbarService,
-    private nav: NavController,
-    public routerOutlet: IonRouterOutlet,
-    private events: EventsService,
-    private action: ActionSheetController) {
+  private fb = inject(FormBuilder);
+  private router = inject(Router);
+  private api = inject(SolicitudesService);
+  private dialog = inject(DialogService);
+  private error = inject(ErrorHandlerService);
+  private nav = inject(NavController);
+  private events = inject(EventsService);
+  private action = inject(ActionSheetController);
+  private snackbar = inject(SnackbarService);
+  routerOutlet = inject(IonRouterOutlet);
+
+  constructor() { 
     this.solicitud = this.router.getCurrentNavigation()?.extras.state;
   }
   async ngOnInit() {
@@ -97,7 +102,7 @@ export class SolicitudPracticaPage implements OnInit {
         ])],
         telefonoContacto: ['', Validators.compose([
           Validators.required,
-          Validators.pattern(/^(\+56){0,1}(9)[98765]\d{7}$/)
+          Validators.pattern(this.patternPhone)
         ])],
         correoContacto: ['', Validators.compose([
           Validators.required,
@@ -149,12 +154,12 @@ export class SolicitudPracticaPage implements OnInit {
         }
       });
 
-      this.region?.valueChanges.subscribe(() => {
-        this.cargarCiudades()
+      this.region?.valueChanges.subscribe(async () => {
+        await this.cargarCiudades()
       });
 
-      this.ciudad?.valueChanges.subscribe(() => {
-        this.cargarComunas();
+      this.ciudad?.valueChanges.subscribe(async () => {
+        await this.cargarComunas();
       });
 
       if (this.data.tipos.length) {
@@ -223,12 +228,12 @@ export class SolicitudPracticaPage implements OnInit {
         }
       });
 
-      this.region?.valueChanges.subscribe(() => {
-        this.cargarCiudades()
+      this.region?.valueChanges.subscribe(async() => {
+        await this.cargarCiudades()
       });
 
-      this.ciudad?.valueChanges.subscribe(() => {
-        this.cargarComunas();
+      this.ciudad?.valueChanges.subscribe(async() => {
+        await this.cargarComunas();
       });
 
       if (this.data.tiposPracticas.length) {
@@ -271,13 +276,11 @@ export class SolicitudPracticaPage implements OnInit {
     }
   }
   async cargar() {
-    let loading = await this.dialog.showLoading({ message: 'Cargando...' });
-    let planCcod = this.solicitud.planCcod;
-    let tisoCcod = this.solicitud.tisoCcod;
-    let params = { planCcod: planCcod, tisoCcod: tisoCcod };
+    const planCcod = this.solicitud.planCcod;
+    const tisoCcod = this.solicitud.tisoCcod;
 
     try {
-      let result = await this.api.getDatosSolicitud(params);
+      const result = await this.api.getDatosSolicitudV5(tisoCcod, planCcod);
 
       if (result.success) {
         this.data = result.data;
@@ -290,15 +293,25 @@ export class SolicitudPracticaPage implements OnInit {
       }
     }
     catch (error: any) {
-      this.error.handle(error, async () => {
-        await this.nav.navigateBack(this.backUrl);
-      });
+      if (error && error.status == 401) {
+        await this.error.handle(error);
+        return;
+      }
+
+      await this.snackbar.showToast('Ha ocurrido un error al cargar la solicitud.');
     }
     finally {
-      loading.dismiss();
+      this.mostrarCargando = false;
+      this.mostrarData = true;
     }
   }
+  async recargar() {
+    this.mostrarCargando = true;
+    this.mostrarData = false;
+    await this.cargar();
+  }
   async procesar(modal: IonModal) {
+    debugger
     this.submitted = true;
 
     if (this.praticaForm.valid) {
@@ -332,7 +345,7 @@ export class SolicitudPracticaPage implements OnInit {
           let horasMaxIngreso = parseInt(this.data.horasPracticasNro);
 
           if (horasIngreso > horasMaxIngreso) {
-            this.snackbar.showToast(`Las horas a homologar no deben sobrepasar las ${horasMaxIngreso} horas.`);
+            await this.snackbar.showToast(`Las horas a homologar no deben sobrepasar las ${horasMaxIngreso} horas.`);
             return;
           }
 
@@ -347,16 +360,16 @@ export class SolicitudPracticaPage implements OnInit {
         params['name'] = this.motivo?.value == 1 ? 'Otros Estudios' : 'Actividades de Vinculación con el Medio';
       }
 
-      let confirm = await this.confirmarEnvio();
+      const confirm = await this.confirmarEnvio();
 
       if (!confirm) {
         return;
       }
 
-      let loading = await this.dialog.showLoading({ message: 'Procesando solicitud...' });
+      const loading = await this.dialog.showLoading({ message: 'Procesando solicitud...' });
 
       try {
-        let result = await this.api.procesarSolicitud(params);
+        const result = await this.api.procesarSolicitud(params);
 
         if (result.success) {
           this.detalleSolicitud = result.html;
@@ -366,7 +379,12 @@ export class SolicitudPracticaPage implements OnInit {
         }
       }
       catch (error: any) {
-        await this.error.handle(error);
+        if (error && error.status == 401) {
+          await this.error.handle(error);
+          return
+        }
+
+        await this.snackbar.showToast('Ha ocurrido un error al procesar la solicitud.', 3000, 'danger');
       }
       finally {
         await loading.dismiss();
@@ -384,7 +402,7 @@ export class SolicitudPracticaPage implements OnInit {
       const actionSheet = await this.action.create({
         cssClass: message ? 'solicitud-alert' : '',
         header: 'Enviar Solicitud',
-        subHeader: message || '¿Segur@ que quiere enviar la Solicitud?',
+        subHeader: message || '¿Segur@ que quieres enviar la Solicitud?',
         buttons: [
           {
             text: 'Continuar',
@@ -407,16 +425,14 @@ export class SolicitudPracticaPage implements OnInit {
     })
   }
   async cargarCiudades() {
-    let control = this.region;
+    const control = this.region;
 
     if (control?.valid && this.pais?.value == 1) {
-      let loading = await this.snackbar.create('Cargando...', false, 'secondary');
-
-      await loading.present();
+      const loading = await this.dialog.showLoading({ message: 'Cargando...' });
 
       try {
-        let params = { regiCcod: control?.value };
-        let result = await this.api.getCiudades(params);
+        const params = { regiCcod: control?.value };
+        const result = await this.api.getCiudades(params);
         this.data.ciudades = result;
         this.data.comunas = [];
         this.ciudad?.setValue('', { emitEvent: false });
@@ -431,16 +447,14 @@ export class SolicitudPracticaPage implements OnInit {
     }
   }
   async cargarComunas() {
-    let control = this.ciudad;
+    const control = this.ciudad;
 
     if (control?.valid && this.pais?.value == 1) {
-      let loading = await this.snackbar.create('Cargando...', false, 'secondary');
-
-      await loading.present();
+      const loading = await this.dialog.showLoading({ message: 'Cargando...' });
 
       try {
-        let params = { ciudCcod: control?.value, regiCcod: this.region?.value };
-        let result = await this.api.getComunas(params);
+        const params = { ciudCcod: control?.value, regiCcod: this.region?.value };
+        const result = await this.api.getComunas(params);
         this.data.comunas = result;
 
         if (this.data.comunas.length == 1) {
@@ -454,24 +468,24 @@ export class SolicitudPracticaPage implements OnInit {
         await this.error.handle(error);
       }
       finally {
-        loading.dismiss();
+        await loading.dismiss();
       }
     }
   }
   async cargarHoras() {
     if (this.tipos?.valid) {
-      let params = { planCcod: this.solicitud.planCcod, treqCcod: this.tipos.value };
-      let loading = await this.snackbar.create('Cargando...', false, 'secondary');
-
-      await loading.present();
+      const params = { planCcod: this.solicitud.planCcod, treqCcod: this.tipos.value };
+      const loading = await this.dialog.showLoading({ message: 'Cargando...' });
 
       try {
-        let result = await this.api.getHorasPracticas(params);
+        const result = await this.api.getHorasPracticas(params);
 
         if (result.success) {
           this.data.horas = result.horas;
         }
-        else { }
+        else {
+          throw Error();
+        }
       }
       catch (error: any) {
         await this.error.handle(error);

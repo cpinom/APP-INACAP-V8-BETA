@@ -29,7 +29,7 @@
 
   <ng-container *ngIf="mostrarData && data">
 
-    <ion-card class="notificacion" color="info" *ngIf="data.seccion.notificacion">
+    <ion-card class="notificacion" color="primary" *ngIf="data.seccion.notificacion">
       <ion-card-content>
         <ion-icon src="assets/icon/error_outline.svg"></ion-icon>
         <span>{{data.seccion.notificacion}}</span>
@@ -103,7 +103,7 @@
           [agendaEmptyTemplate]="horarioEmptyTpl">
           <ng-template #horarioEmptyTpl>
             <div class="mbsc-align-center mbsc-padding">
-              <ion-spinner name="lines" color="info" *ngIf="cargandoClases"></ion-spinner>
+              <ion-spinner name="lines" color="primary" *ngIf="cargandoClases"></ion-spinner>
               <span *ngIf="!cargandoClases && eventosHorario">Sin Clases</span>
               <span *ngIf="!cargandoClases && !eventosHorario">Información no disponible</span>
             </div>
@@ -145,7 +145,7 @@
     <div>
       <ion-icon src="assets/icon/info.svg"></ion-icon>
       <p>Información no disponible en este momento.</p>
-      <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+      <ion-button color="primary" shape="round" (click)="recargar()">Recargar</ion-button>
     </div>
   </section>
 

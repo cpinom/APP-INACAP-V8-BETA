@@ -102,4 +102,16 @@ export class AlumnoService extends PrivateService {
   getBloqueos(): Promise<any> {
     return this.get(`${this.baseUrl}/v3/alumno/situaciones-pendientes`);
   }
+  getDAEV5(sedeCcod: any) {
+    return this.get(`${this.baseUrl}/v5/alumno/dae?sedeCcod=${sedeCcod}`);
+  }  
+  getDelegadosV5(sedeCcod: any, carrCcod: any, jornCcod: any, nombreDelegado: any) {
+    return this.get(`${this.baseUrl}/v5/alumno/delegados?sedeCcod=${sedeCcod}&carrCcod=${carrCcod}&jornCcod=${jornCcod}&nombreDelegado=${nombreDelegado}`);
+  }
+  getActividadesInscripcion(sedeCcod: any) {
+    return this.get(`${this.baseUrl}/v5/alumno/actividades-inscripcion?sedeCcod=${sedeCcod}`);
+  }
+  guardarInscripcionActividad(params: any) {
+    return this.post(`${this.baseUrl}/v3/alumno/guardar-inscripcion-actividad`, params);
+  }
 }

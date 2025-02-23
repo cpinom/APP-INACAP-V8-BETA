@@ -1,18 +1,4 @@
-.indicaciones {
-    margin-inline: 15px !important;
-    border-radius: 8px !important;
 
-    ul {
-        margin: 0;
-        padding-left: 25px;
-    }
-}
-
-.invalid {
-    margin: 5px 15px;
-    font-size: var(--FS12);
-    color: var(--ion-color-danger);
-}
 
 ion-card-subtitle {
     align-items: center;
@@ -21,10 +7,6 @@ ion-card-subtitle {
     ion-icon {
         margin-right: 5px;
     }
-}
-
-ion-item {
-    --padding-start: 15px;
 }
 
 .resolucion {

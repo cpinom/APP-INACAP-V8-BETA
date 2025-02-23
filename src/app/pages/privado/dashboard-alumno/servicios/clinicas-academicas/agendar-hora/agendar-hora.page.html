@@ -15,7 +15,7 @@
 
   @if (mostrarCargando) {
   <div class="loaderInacap">
-    <ion-spinner name="lines" color="info"></ion-spinner>
+    <ion-spinner name="lines" color="primary"></ion-spinner>
   </div>
   }
 
@@ -64,7 +64,7 @@
                 </ion-button>
               </ion-col>
               <ion-col>
-                <ion-button color="info" shape="round" expand="full" (click)="mostrarParticipantes()"
+                <ion-button color="primary" shape="round" expand="full" (click)="mostrarParticipantes()"
                   [disabled]="!horaForm.valid">
                   Siguiente
                 </ion-button>
@@ -82,7 +82,7 @@
           <section class="section-participante">
             <div class="section-header">
               <span>Asistentes ({{$index+1}}/{{participantes.controls.length}})</span>
-              <ion-button fill="outline" slot="end" size="small" color="info" *ngIf="$index > 0" (click)="eliminarParticipante($index)">Eliminar</ion-button>
+              <ion-button fill="outline" slot="end" size="small" color="primary" *ngIf="$index > 0" (click)="eliminarParticipante($index)">Eliminar</ion-button>
             </div>
             <div class="section-content" [formGroupName]="$index">
               <ion-item>
@@ -107,7 +107,7 @@
           }
         </ng-container>
         <section style="margin-inline: 15px">
-          <ion-button (click)="agregarParticipante()" color="info" shape="round" fill="outline" size="small">
+          <ion-button (click)="agregarParticipante()" color="primary" shape="round" fill="outline" size="small">
             <ion-icon slot="start" name="person-add"></ion-icon>
             <ion-label>Agregar Asistente</ion-label>
           </ion-button>
@@ -121,7 +121,7 @@
                 </ion-button>
               </ion-col>
               <ion-col>
-                <ion-button color="info" shape="round" expand="full" (click)="mostrarDetalleHora()" [disabled]="!participantesForm.valid">
+                <ion-button color="primary" shape="round" expand="full" (click)="mostrarDetalleHora()" [disabled]="!participantesForm.valid">
                   Siguiente
                 </ion-button>
               </ion-col>
@@ -198,7 +198,7 @@
               </ion-button>
             </ion-col>
             <ion-col>
-              <ion-button color="info" shape="round" expand="full" (click)="reservarHora()" [disabled]="!resumenForm.valid">
+              <ion-button color="primary" shape="round" expand="full" (click)="reservarHora()" [disabled]="!resumenForm.valid">
                 Reservar Hora
               </ion-button>
             </ion-col>
@@ -224,7 +224,7 @@
     <div>
       <ion-icon src="assets/icon/info.svg"></ion-icon>
       <p>Información no disponible en este momento.</p>
-      <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+      <ion-button color="primary" shape="round" (click)="recargar()">Recargar</ion-button>
     </div>
   </section>
   }

@@ -47,7 +47,7 @@
           <ion-icon slot="start" color="danger" *ngIf="destacado.tipo == 4" src="assets/icon/dangerous.svg"></ion-icon>
           <ion-icon slot="start" color="success" *ngIf="destacado.tipo == 3"
             src="assets/icon/check_circle.svg"></ion-icon>
-          <ion-icon slot="start" color="info" *ngIf="destacado.tipo == 2" src="assets/icon/info.svg"></ion-icon>
+          <ion-icon slot="start" color="primary" *ngIf="destacado.tipo == 2" src="assets/icon/info.svg"></ion-icon>
           <ion-icon slot="start" color="warning" *ngIf="destacado.tipo == 1" src="assets/icon/warning.svg"></ion-icon>
           <ion-label>
             <p delegate [innerHTML]="resolverDestacado"></p>
@@ -108,7 +108,7 @@
             </span>
           </ion-col>
         </ion-row>
-        <ion-button color="info" shape="round" expand="block" (click)="recargarEstacionamientos()"
+        <ion-button color="primary" shape="round" expand="block" (click)="recargarEstacionamientos()"
           [disabled]="cargandoEstados">Recargar</ion-button>
       </ion-content>
     </ng-template>
@@ -199,7 +199,7 @@
     <div>
       <ion-icon src="assets/icon/info.svg"></ion-icon>
       <p>Información no disponible en este momento.</p>
-      <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+      <ion-button color="primary" shape="round" (click)="recargar()">Recargar</ion-button>
     </div>
   </section>
 
@@ -223,7 +223,7 @@
           [agendaEmptyTemplate]="horarioEmptyTpl" (onEventClick)="onSeccionClick($event)">
           <ng-template #horarioEmptyTpl>
             <div class="mbsc-align-center mbsc-padding">
-              <ion-spinner name="lines" color="info" *ngIf="cargandoClases"></ion-spinner>
+              <ion-spinner name="lines" color="primary" *ngIf="cargandoClases"></ion-spinner>
               <span *ngIf="!cargandoClases && eventosHorario">Sin Clases</span>
               <span *ngIf="!cargandoClases && !eventosHorario">Información no disponible</span>
             </div>

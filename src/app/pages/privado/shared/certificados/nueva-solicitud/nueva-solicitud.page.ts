@@ -1,13 +1,12 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActionSheetController, IonRouterOutlet, Platform } from '@ionic/angular';
+import { ActionSheetController, Platform } from '@ionic/angular';
 import { UtilsService } from 'src/app/core/services/utils.service';
 import { Router } from '@angular/router';
 import { CertificadosService } from 'src/app/core/services/http/certificados.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { Directory, Filesystem } from '@capacitor/filesystem';
 import { FileOpener } from '@capacitor-community/file-opener';
-import { DetallePagoPage } from '../../portal-pagos/detalle-pago/detalle-pago.page';
 import { EventsService } from 'src/app/core/services/events.service';
 import * as $ from 'jquery';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
@@ -36,7 +35,6 @@ export class NuevaSolicitudPage implements OnInit {
   private utils = inject(UtilsService);
   private router = inject(Router);
   private error = inject(ErrorHandlerService);
-  private routerOutlet = inject(IonRouterOutlet);
   private events = inject(EventsService);
   private action = inject(ActionSheetController);
   private pt = inject(Platform);
@@ -71,9 +69,11 @@ export class NuevaSolicitudPage implements OnInit {
   }
   async ngOnInit() {
     this.data = this.router.getCurrentNavigation()?.extras.state;
+    // this.data.cemeTtipo=0;
 
     if (!this.data) {
       await this.router.navigate([this.backUrl], { replaceUrl: true });
+      return;
     }
   }
   async ionViewWillLeave() { }
@@ -138,25 +138,6 @@ export class NuevaSolicitudPage implements OnInit {
       });
 
       await actionSheet.present();
-
-      // let alert = await this.alert.create({
-      //   header: 'Solicitud de Certificado',
-      //   message: message,
-      //   cssClass: 'danger',
-      //   buttons: [
-      //     {
-      //       text: 'Cancelar',
-      //       role: 'cancel',
-      //       cssClass: 'secondary',
-      //       handler: () => resolve(false)
-      //     }, {
-      //       text: 'Continuar',
-      //       handler: () => resolve(true)
-      //     }
-      //   ]
-      // });
-
-      // await alert.present();
     })
 
   }
@@ -212,107 +193,7 @@ export class NuevaSolicitudPage implements OnInit {
     finally {
       await loading.dismiss();
     }
-
-    // if (this.global.Integration) {
-    //   let urlAdjunto = `${this.global.Api}/api/v3/certificados/descargar?mcerNcorr=${mcerNcorr}&tdetCcod=${tdetCcod}&codVerif=${codVerif}`;
-
-    //   this.utils.openLink(urlAdjunto);
-    // } else {
-    //   let params = {
-    //     mcerNcorr: mcerNcorr,
-    //     tdetCcod: tdetCcod,
-    //     codVerif: codVerif
-    //   };
-
-    //   await loading.present();
-
-    //   try {
-    //     let result = await this.api.descargarCertificado(params);
-    //     let fileName = 'certificado_' + mcerNcorr + '.pdf';
-
-    //     if (result.success) {
-    //       const file = await Filesystem.writeFile({
-    //         path: fileName,
-    //         data: result.data,
-    //         directory: Directory.Cache
-    //       });
-
-    //       await FileOpener.open({
-    //         filePath: file.uri,
-    //         contentType: 'application/pdf'
-    //       });
-
-    //       // this.opener.open(file.uri, 'application/pdf');
-    //     }
-    //   }
-    //   catch (error: any) {
-    //     await this.error.handle(error);
-    //   }
-    //   finally {
-    //     await loading.dismiss();
-    //   }
-    // }
   }
-  // async pagar() {
-  //   let loading = await this.loading.create({ message: 'Procesando...' });
-  //   let result;
-
-  //   await loading.present();
-
-  //   try {
-  //     result = await this.api.generaCarro({ resoNcorr: this.data.resoNcorr });
-  //   }
-  //   catch (error: any) {
-  //     await this.error.handle(error);
-  //   }
-  //   finally {
-  //     await loading.dismiss();
-  //   }
-
-  //   if (result.success) {
-  //     try {
-  //       let pagoResult = await this.pagos.procesarPago(result.formasPago, result.pagoId, result.montoCarro);
-  //       let detalleResult;
-
-  //       if (pagoResult.success) {
-  //         detalleResult = await this.pagosApi.getPagoExito({ paonNcorr: pagoResult.paonNcorr, tpaoCcod: pagoResult.tpaoCcod });
-  //       }
-  //       else {
-  //         detalleResult = await this.pagosApi.getPagoFracaso({ paonNcorr: pagoResult.paonNcorr, tpaoCcod: pagoResult.tpaoCcod });
-  //       }
-
-  //       if (detalleResult) {
-  //         detalleResult = Object.assign(detalleResult, { paonNcorr: pagoResult.paonNcorr, tpaoCcod: pagoResult.tpaoCcod });
-  //         await this.mostrarDetallePago(detalleResult, pagoResult.success);
-  //       }
-  //     }
-  //     catch (error: any) {
-  //       if (error && error.code == 0) return;
-  //       await this.error.handle(error);
-  //     }
-  //   }
-  // }
-  // async mostrarDetallePago(detallePago: any, pagoExito: boolean) {
-  //   const modal = await this.modalCtrl.create({
-  //     component: DetallePagoPage,
-  //     handle: false,
-  //     componentProps: {
-  //       pagoExito: pagoExito,
-  //       data: detallePago
-  //     },
-  //     canDismiss: true,
-  //     presentingElement: this.routerOutlet.nativeEl
-  //   });
-
-  //   await modal.present();
-
-  //   const modalResult = await modal.onWillDismiss();
-
-  //   if (modalResult.data) {
-  //     this.events.app.next({ action: 'app:certificados-recargar' });
-  //     await this.router.navigate([this.backUrl], { replaceUrl: true });
-  //   }
-  // }
   get tipo() { return this.certificadoForm.get('ceppCcod'); }
   get detalle() { return this.certificadoForm.get('resoTdetalle'); }
   get backUrl() { return this.router.url.replace('/nueva-solicitud', ''); }

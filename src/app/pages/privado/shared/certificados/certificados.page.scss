@@ -5,35 +5,6 @@ ion-header {
     }
 }
 
-ion-toolbar.tabs {
-    --background: #fff;
-    --min-height: 70px !important;
-    --padding-top: 0;
-    --padding-bottom: 0;
-    --padding-start: 0;
-    --padding-end: 0;
-
-    nav {
-        border-bottom: 0 !important;
-
-        .mat-tab-link {
-            height: 70px;
-            display: inline-flex;
-        }
-    }
-
-    ion-searchbar {
-        padding: 10px;
-    }
-}
-
-.certificados ::ng-deep mat-tab-header {
-    .mat-tab-label {
-        height: 70px !important;
-        flex: 1;
-    }
-}
-
 .certificados {
     ion-label {
         white-space: normal;
@@ -42,7 +13,7 @@ ion-toolbar.tabs {
 
 .carreras {
     ion-select::part(text) {
-        font-size: var(--FS16);
+        font-size: var(--FS14);
         white-space: normal;
         margin-top: 8px;
         margin-bottom: 8px;
@@ -56,45 +27,30 @@ ion-toolbar.tabs {
     .section-content {
         background: transparent !important;
         overflow-x: scroll;
-        padding: 5px 10px 10px 15px;
+        padding: 10px 0 0 0;
         white-space: nowrap;
         border: none !important;
         margin-bottom: 0;
+        box-shadow: none;
 
         ion-card {
-            background-color: var(--bg-color-card2);
             display: inline-block;
             margin: 0 10px 0 0;
-            width: 158px;
-            height: 86px;
+            width: 140px;
+            height: 60px;
             white-space: normal;
-            border-left: 4px solid var(--indicator-color);
-
-            ion-card-header {
-                --background: var(--ion-color-primary);
-                padding: 8px 10px;
-
-                ion-card-title {
-                    font-size: var(--FS12);
-                    font-weight: 400;
-                    color: var(--ion-color-white);
-                    white-space: nowrap;
-                    text-overflow: ellipsis;
-                    overflow: hidden;
-                }
-            }
+            box-shadow: none;
 
             ion-card-content {
                 padding: 6px 10px;
-                font-size: var(--FS14);
-                font-weight: 700;
+                font-size: var(--FS13);
+                font-weight: 400;
                 display: flex;
                 align-items: center;
-                height: 86px;
+                height: 100%;
 
                 ion-icon {
                     flex: 0 0 24px;
-                    color: var(--ion-color-medium);
                     margin-right: 6px;
                     font-size: 24px;
                 }
@@ -102,28 +58,81 @@ ion-toolbar.tabs {
                 span {
                     line-height: 1.2;
                 }
+            }
 
-                ion-list {
-                    ion-item {
-                        --min-height: 22px;
-                        background-color: var(--bg-color-card2);
-                        color: var(--bg-contrast-color);
-                        ion-label {
-                            white-space: normal;
-                            margin: 0;
-                            font-size: var(--FS12);
+            &.color-1,
+            &.color-8 {
+                background: var(--ion-color-1-background);
 
-                            .nota-number,
-                            .asistencia-number {
-                                font-weight: 600;
-                            }
-                            .text {
-                                padding-right: 8px;
-                            }
-                            .rojo {
-                                color: var(--ion-color-danger) !important;
-                            }
-                        }
+                ion-card-content {
+                    ion-icon {
+                        color: var(--ion-color-1-foreground);
+                    }
+                }
+            }
+
+            &.color-2,
+            &.color-9 {
+                background: var(--ion-color-2-background);
+
+                ion-card-content {
+                    ion-icon {
+                        color: var(--ion-color-2-foreground);
+                    }
+                }
+            }
+
+            &.color-3,
+            &.color-10 {
+                background: var(--ion-color-3-background);
+
+                ion-card-content {
+                    ion-icon {
+                        color: var(--ion-color-3-foreground);
+                    }
+                }
+            }
+
+            &.color-4,
+            &.color-11 {
+                background: var(--ion-color-4-background);
+
+                ion-card-content {
+                    ion-icon {
+                        color: var(--ion-color-4-foreground);
+                    }
+                }
+            }
+
+            &.color-5,
+            &.color-12 {
+                background: var(--ion-color-5-background);
+
+                ion-card-content {
+                    ion-icon {
+                        color: var(--ion-color-5-foreground);
+                    }
+                }
+            }
+
+            &.color-6,
+            &.color-13 {
+                background: var(--ion-color-6-background);
+
+                ion-card-content {
+                    ion-icon {
+                        color: var(--ion-color-6-foreground);
+                    }
+                }
+            }
+
+            &.color-7,
+            &.color-14 {
+                background: var(--ion-color-7-background);
+
+                ion-card-content {
+                    ion-icon {
+                        color: var(--ion-color-7-foreground);
                     }
                 }
             }
@@ -143,10 +152,20 @@ section.disponibles {
             //--ion-item-background: #666;
             // --color: white;
             --padding-start: 15px;
+            font-size: var(--FS14);
 
             // ::ng-deep ion-icon {
             //     color: white;
             // }
+        }
+
+        p.estado-actividad {
+            margin-top: 12px;
+            margin-right: 10px;
+            min-width: 30px;
+            border-color: #1565c0;
+            color: #1565c0;
+            background-color: #e1edfa;
         }
     }
 }

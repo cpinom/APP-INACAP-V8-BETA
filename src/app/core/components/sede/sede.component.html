@@ -10,14 +10,14 @@
       </div>
     </ion-card-header>
     <ion-card-content class="botones-sede">
-      <ion-button fill="outline" color="info" shape="round" (click)="mostrarRuta()">
+      <ion-button fill="outline" color="primary" shape="round" (click)="mostrarRuta()">
         <ion-icon src="assets/icon/directions.svg"></ion-icon> Ver Mapa
       </ion-button>
-      <ion-button fill="outline" color="info" shape="round" class="round" *ngIf="sede.sedeTfono"
+      <ion-button fill="outline" color="primary" shape="round" class="round" *ngIf="sede.sedeTfono"
         href="tel:{{sede.sedeTfono}}" role="button" aria-label="Llamar a la sede">
         <ion-icon slot="icon-only" src="assets/icon/phone.svg"></ion-icon>
       </ion-button>
-      <ion-button fill="outline" color="info" shape="round" class="round" *ngIf="sede.sedeTemail"
+      <ion-button fill="outline" color="primary" shape="round" class="round" *ngIf="sede.sedeTemail"
         (click)="nuevoCorreo(sede.sedeTemail)" role="button" aria-label="Enviar un correo a la sede">
         <ion-icon slot="icon-only" src="assets/icon/mail.svg"></ion-icon>
       </ion-button>

@@ -96,11 +96,15 @@
     <div class="section-header">Servicios Administrativos</div>
     <div class="section-content">
       <ion-list>
-        <ion-item detail="true" routerLink="solicitud-soporte" *ngIf="mostrarCentroAyuda">
+        <ion-item detail="false" routerLink="solicitud-soporte" *ngIf="mostrarCentroAyuda">
+          <ion-icon slot="start" src="assets/icon/report.svg"></ion-icon>
           <ion-label>Centro de Atención</ion-label>
+          <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
         </ion-item>
-        <ion-item detail="true" routerLink="certificados" *ngIf="mostrarCertificados">
+        <ion-item detail="false" routerLink="certificados" *ngIf="mostrarCertificados">
+          <ion-icon slot="start" src="assets/icon/description.svg"></ion-icon>
           <ion-label>Certificados</ion-label>
+          <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
         </ion-item>
         <ion-item detail="true" routerLink="consulta-bip" *ngIf="mostrarBip">
           <ion-label>Consulta bip!</ion-label>

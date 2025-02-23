@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertController, IonModal, IonRouterOutlet, LoadingController } from '@ionic/angular';
 import { VISTAS_ALUMNO } from 'src/app/core/constants/alumno';
@@ -7,6 +7,7 @@ import { ErrorHandlerService } from 'src/app/core/services/error-handler.service
 import { EventsService } from 'src/app/core/services/events.service';
 import { ProfileService } from 'src/app/core/services/profile.service';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
+import { DialogService } from 'src/app/core/services/dialog.service';
 
 @Component({
   selector: 'app-solicitud-soporte',
@@ -27,15 +28,16 @@ export class SolicitudSoportePage implements OnInit {
   mostrarSubmotivo = false;
   mostrarCentroAyuda = false;
 
-  constructor(private api: CentroAyudaService,
-    private fb: FormBuilder,
-    private loading: LoadingController,
-    private error: ErrorHandlerService,
-    private snackbar: SnackbarService,
-    private alert: AlertController,
-    private routerOutlet: IonRouterOutlet,
-    private profile: ProfileService,
-    private events: EventsService) {
+  private api = inject(CentroAyudaService);
+  private fb = inject(FormBuilder);
+  private dialog = inject(DialogService);
+  private error = inject(ErrorHandlerService);
+  private snackbar = inject(SnackbarService);
+  private routerOutlet = inject(IonRouterOutlet);
+  private profile = inject(ProfileService);
+  private events = inject(EventsService);
+
+  constructor() {
 
     this.form = this.fb.group({
       ambito: [, Validators.required],
@@ -83,7 +85,7 @@ export class SolicitudSoportePage implements OnInit {
       }
 
       if (this.mostrarCentroAyuda) {
-        this.cargar();
+        await this.cargar();
       }
       else {
         this.mostrarCargando = false;
@@ -94,7 +96,7 @@ export class SolicitudSoportePage implements OnInit {
   }
   async cargar() {
     try {
-      let result = await this.api.getPrincipal();
+      const result = await this.api.getPrincipal();
 
       if (result.success) {
         const { data } = result;
@@ -116,22 +118,19 @@ export class SolicitudSoportePage implements OnInit {
       this.mostrarData = true;
     }
   }
-  recargar() {
+  async recargar() {
     this.mostrarCargando = true;
     this.mostrarData = false;
-
-    setTimeout(() => {
-      this.cargar()
-    }, 500);
+    await this.cargar();
   }
   async mostrarDetalle(caso: any, modal: IonModal) {
-    const loading = await this.loading.create({ message: 'Cargando...' });
+    const loading = await this.dialog.showLoading({ message: 'Cargando...' });
     const params = { numero: caso.caseNumber };
-
-    loading.present();
 
     try {
       const response = await this.api.getCaso(params);
+
+      await loading.dismiss();
 
       if (response.success) {
         this.caso = response.data;
@@ -145,7 +144,7 @@ export class SolicitudSoportePage implements OnInit {
       await this.error.handle(error);
     }
     finally {
-      loading.dismiss();
+      await loading.dismiss();
     }
   }
   onDetalleDismiss(e?: any) {
@@ -155,24 +154,24 @@ export class SolicitudSoportePage implements OnInit {
     this.submitted = true;
 
     if (this.form.valid) {
-      let loading = await this.loading.create({ message: 'Procesando...' });
-      let params = {
+      const loading = await this.dialog.showLoading({ message: 'Procesando...' });
+      const params = {
         submotivo: this.submotivo?.value,
         descripcion: this.descripcion?.value
       };
 
-      await loading.present();
-
       try {
-        let result = await this.api.crearCaso(params);
+        const result = await this.api.crearCaso(params);
+
+        await loading.dismiss();
 
         if (result.success) {
-          this.presentSuccess('Su caso ha sido recibido correctamente.');
+          await this.presentSuccess('Su caso ha sido recibido correctamente.');
           this.procesarCasos(result.data.casos || []);
           this.resetForm();
         }
         else {
-          this.presentError(result.message);
+          await this.presentError(result.message);
         }
       }
       catch (error: any) {
@@ -180,50 +179,42 @@ export class SolicitudSoportePage implements OnInit {
           await this.error.handle(error);
           return;
         }
+
+        await this.presentError();
       }
       finally {
-        loading.dismiss();
+        await loading.dismiss();
       }
     }
     else {
-      this.snackbar.showToast('Existen errores en la información.')
+      await this.snackbar.showToast('Existen errores en la información.')
     }
   }
   async presentSuccess(text: string) {
-    let alert = await this.alert.create({
+
+    await this.dialog.showAlert({
       keyboardClose: false,
       backdropDismiss: false,
       header: 'Nueva Caso',
       cssClass: 'success-alert',
-      message: `<div class="image"><img src = "./assets/images/icon_check_circle.svg" width="35px" height="35px"></div>${text}`,
-      buttons: [
-        {
-          text: 'Aceptar',
-          handler: async () => { }
-        }
-      ]
+      message: `<div class="image"><ion-icon src = "./assets/icon/check_circle.svg"></ion-icon></div>${text}`,
+      buttons: [{
+        text: 'Aceptar'
+      }]
     });
-
-    await alert.present();
   }
   async presentError(text?: string) {
     const message = text ? text : 'Hubo un error enviando su solicitud. Comuníquese con la asistencia telefónica.';
-
-    let alert = await this.alert.create({
+    const alert = await this.dialog.showAlert({
       backdropDismiss: false,
       keyboardClose: false,
-      header: 'Error',
-      message: message,
-      buttons: [
-        {
-          text: 'Cerrar',
-          role: 'ok',
-          handler: () => { }
-        }
-      ]
+      cssClass: 'alert-message',
+      message: `<img src="./assets/images/warning.svg" /><br />${message}`,
+      header: 'Nueva Caso',
+      buttons: ['Aceptar']
     });
 
-    await alert.present();
+    return alert;
   }
   procesarCasos(casos: any[]) {
     this.casos = casos.sort((a, b) => {
@@ -239,7 +230,13 @@ export class SolicitudSoportePage implements OnInit {
     this.form.markAsUntouched();
     this.form.reset()
   }
-
+  resolverEstado(estado: string) {
+    if (estado.toLocaleLowerCase() == 'resuelto') return 'success';
+    if (estado.toLocaleLowerCase() == 'recibido' || estado.toLocaleLowerCase() == 'en proceso') return 'warning';
+    if (estado.toLocaleLowerCase() == 'cancelado') return 'danger';
+    if (estado.toLocaleLowerCase() == 'escalado') return 'info';
+    return '';
+  }
   get ambitos() {
     if (this.categorias) {
       let ambitos = [];

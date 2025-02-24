@@ -24,6 +24,14 @@ import { VISTAS_ALUMNO } from 'src/app/core/constants/alumno';
 
 declare const confetti: any;
 
+interface AccesosDirectos {
+  key: string;
+  icon: string;
+  label: string;
+  visible: boolean;
+  count?: number;
+}
+
 @Component({
   selector: 'app-inicio',
   templateUrl: './inicio.page.html',
@@ -73,26 +81,102 @@ export class InicioPage implements OnInit, AfterViewInit {
   theme: string;
   themeVariant: any;
   eventosHorario: any;
-  accesosDirectos = [
+  accesosDirectos: AccesosDirectos[] = [
     {
       key: 'MOODLE',
       icon: 'assets/icon/cast.svg',
-      label: 'Ambiente de Aprendizaje'
+      label: 'Ambiente de Aprendizaje',
+      visible: true
     },
     {
       key: 'INACAPMAIL',
       icon: 'assets/icon/outlook.svg',
-      label: 'INACAPMail'
+      label: 'INACAPMail',
+      visible: true
     },
     {
       key: 'HORARIO',
-      icon: 'assets/icon/access_time.svg',
-      label: 'Horario'
+      icon: 'assets/icon/date_range.svg',
+      label: 'Horario',
+      visible: true
     },
     {
       key: 'CREDENCIAL',
-      icon: 'assets/icon/account_circle.svg',
-      label: 'Credencial Virtual'
+      icon: 'assets/icon/qr_code_2.svg',
+      label: 'Credencial Virtual',
+      visible: true
+    },
+    {
+      key: 'CERTIFICADOS',
+      icon: 'assets/icon/description.svg',
+      label: 'Certificados',
+      visible: true
+    },
+    {
+      key: 'MALLA_CURRICULAR',
+      icon: 'assets/icon/table_chart.svg',
+      label: 'Malla Curricular',
+      visible: true
+    },
+    {
+      key: 'PROGRESION',
+      icon: 'assets/icon/trending_up.svg',
+      label: 'Mi Progresión',
+      visible: true
+    },
+    {
+      key: 'PRACTICA_PROFESIONAL',
+      icon: 'assets/icon/work.svg',
+      label: 'Practica Profesional',
+      visible: true
+    },
+    {
+      key: 'SEGURO_ACCIDENTES',
+      icon: 'assets/icon/healing.svg',
+      label: 'Seguro de Accidentes',
+      visible: true
+    },
+    {
+      key: 'SOLICITUDES',
+      icon: 'assets/icon/task.svg',
+      label: 'Solicitudes',
+      visible: true
+    },
+    {
+      key: 'TEAMS',
+      icon: 'assets/icon/teams.svg',
+      label: 'Acceso Teams',
+      visible: true
+    },
+    {
+      key: 'SEDE',
+      icon: 'assets/icon/business.svg',
+      label: 'Mi Sede',
+      visible: true
+    },
+    {
+      key: 'ONEDRIVE',
+      icon: 'assets/icon/cloud.svg',
+      label: 'OneDrive',
+      visible: true
+    },
+    {
+      key: 'RESERVAS_ESPACIOS',
+      icon: 'assets/icon/workspaces.svg',
+      label: 'Reserva de Espacios',
+      visible: true
+    },
+    {
+      key: 'PORTAL_PAGOS',
+      icon: 'assets/icon/account_balance_wallet.svg',
+      label: 'Portal de Pagos',
+      visible: true
+    },
+    {
+      key: 'VISUALIZACION_PAGOS',
+      icon: 'assets/icon/assignment_ind.svg',
+      label: 'Visualización de Pagos',
+      visible: true
     }
   ];
 
@@ -115,7 +199,6 @@ export class InicioPage implements OnInit, AfterViewInit {
   private nav = inject(NavController);
   private pt = inject(Platform);
   private modal = inject(ModalController);
-
 
   constructor() {
 
@@ -350,12 +433,16 @@ export class InicioPage implements OnInit, AfterViewInit {
   }
   async cargarCorreos() {
     try {
-      let folderId = await this.mailApi.getStorage('inboxId');
-      let result = await this.mailApi.getMailSummary(folderId || '');
+      const accesoDirecto = this.accesosDirectos.find(t => t.key == 'INACAPMAIL' && t.visible);
+
+      if (!accesoDirecto) return;
+
+      const folderId = await this.mailApi.getStorage('inboxId');
+      const result = await this.mailApi.getMailSummary(folderId || '');
 
       if (result.success) {
-        this.inacapMail = result.inbox;
-        this.mailApi.setStorage('inboxId', result.inbox.id);
+        accesoDirecto.count = result.inbox.unReadTotal;
+        await this.mailApi.setStorage('inboxId', result.inbox.id);
       }
     }
     catch (error: any) {
@@ -363,6 +450,47 @@ export class InicioPage implements OnInit, AfterViewInit {
         await this.error.handle(error);
       }
     }
+  }
+  async accesoDirectoTap(item: any) {
+
+    switch (item.key) {
+      case 'MOODLE':
+        break;
+      case 'INACAPMAIL':
+        await this.nav.navigateForward('/dashboard-alumno/inicio/inacapmail');
+        break;
+      case 'HORARIO':
+        break;
+      case 'CREDENCIAL':
+        break;
+      case 'CERTIFICADOS':
+        break;
+      case 'MALLA_CURRICULAR':
+        break;
+      case 'PROGRESION':
+        break;
+      case 'PRACTICA_PROFESIONAL':
+        break;
+      case 'SEGURO_ACCIDENTES':
+        break;
+      case 'SOLICITUDES':
+        break;
+      case 'TEAMS':
+        break;
+      case 'SEDE':
+        break;
+      case 'ONEDRIVE':
+        break;
+      case 'RESERVAS_ESPACIOS':
+        break;
+      case 'PORTAL_PAGOS':
+        break;
+      case 'VISUALIZACION_PAGOS':
+        break;
+    }
+  }
+  get AccesosDirectos() {
+    return this.accesosDirectos.filter(t => t.visible);
   }
   async verificarSuscripciones() {
     const preferencias = await this.profile.getPreferencias();
@@ -487,8 +615,30 @@ export class InicioPage implements OnInit, AfterViewInit {
 
     modal.onDidDismiss().then(async (result) => {
       if (result.data) {
+        this.accesosDirectos = result.data;
+        this.sincronizarPreferencias();
       }
     });
+  }
+  async sincronizarPreferencias(){
+    let preferencias = await this.profile.getPreferencias();
+
+    preferencias.movil['accesosDirectos'] = this.accesosDirectos;
+    debugger
+    // const loading = await this.dialog.showLoading({ message: 'Guardando...' });
+
+    // try {
+    //   await this.api.guardarPreferencias(preferencias);
+    //   await this.profile.setStorage('preferencias', preferencias);
+    // }
+    // catch {
+    //   return Promise.resolve(false);
+    // }
+    // finally {
+    //   await loading.dismiss();
+    // }
+
+    // return Promise.resolve(true);
   }
   proximasEvaluaciones() {
     if (this.global.Environment == 'Desarrollo') {

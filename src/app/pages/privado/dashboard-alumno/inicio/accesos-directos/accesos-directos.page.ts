@@ -15,14 +15,33 @@ export class AccesosDirectosPage implements OnInit {
 
   ngOnInit() {
   }
-  handleReorder (ev: CustomEvent<ItemReorderEventDetail>) {
+  handleReorder(ev: CustomEvent<ItemReorderEventDetail>) {
+
+    this.data = ev.detail.complete(this.data);
+
     ev.detail.complete();
   }
-  guardar() {
-    this.dialog.dismissModal({});
+  handleVisibility(item: any) {
+    this.data = this.data.map((_item: any) => {
+      return {
+        ..._item,
+        visible: _item.key == item.key ? !item.visible : _item.visible
+      };
+    });
   }
-  cerrar() {
-    this.dialog.dismissModal();
+  resolverIcono(item: any) {
+    if (item.visible) {
+      return 'visibility';
+    }
+    else {
+      return 'visibility_off';
+    }
+  }
+  async guardar() {
+    await this.dialog.dismissModal(this.data);
+  }
+  async cerrar() {
+    await this.dialog.dismissModal();
   }
 
 }

@@ -289,192 +289,28 @@
       </ion-col>
     </ion-row>
     <ion-row>
+      @for (item of AccesosDirectos; track $index) {
+      @if (item.visible) {
       <ion-col size="6">
-        <ion-button class="color-1">
+        <ion-button class="color-{{$index + 1}}" (click)="accesoDirectoTap(item)">
           <div class="btn-inner">
-            <ion-icon src="assets/icon/cast.svg" class="rounded"></ion-icon>
+            <ion-icon [src]="item.icon" class="rounded"></ion-icon>
             <ion-label>
-              <h2>Ambiente de Aprendizaje</h2>
+              <h2>{{item.label}}</h2>
+              <i *ngIf="item.count && (item.count > 0)">{{item?.count}}</i>
             </ion-label>
             <ion-icon src="assets/icon/arrow_forward.svg" class="launch"></ion-icon>
           </div>
         </ion-button>
       </ion-col>
-      <ion-col size="6">
-        <ion-button class="color-2">
-          <div class="btn-inner">
-            <ion-icon src="assets/icon/outlook.svg" class="rounded"></ion-icon>
-            <ion-label>
-              <h2>INACAPMail</h2>
-            </ion-label>
-            <ion-icon src="assets/icon/arrow_forward.svg" class="launch"></ion-icon>
-          </div>
-        </ion-button>
-      </ion-col>
+      }
+      }
     </ion-row>
   </section>
 
-  <ion-grid class="botones">
-    <ion-row class="directos">
-      <ion-col>Accesos Directos</ion-col>
-      <ion-col>
-        <!-- <ion-icon name="options-outline" (click)="mostrarAccesosDirectos()"></ion-icon> -->
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col size="6" class="ion-no-padding">
-        <ion-button color="white" expand="block" (click)="moodleTap()">
-          <div>
-            <ion-icon slot="start" src="assets/icon/cast.svg" color="medium"></ion-icon>
-            <span>Ambiente de Aprendizaje</span>
-          </div>
-        </ion-button>
-      </ion-col>
-      <ion-col size="6" class="ion-no-padding">
-        <ion-button color="white" expand="block" routerLink="inacapmail">
-          <div>
-            <ion-icon slot="start" src="assets/icon/outlook.svg" color="medium"></ion-icon>
-            <span>INACAPMail</span>
-          </div>
-          <!-- <div [matBadge]="'-'" matBadgePosition="after" matBadgeColor="accent"
-            [matBadgeHidden]="!(inacapMail && inacapMail.unReadTotal > 0)">
-            <ion-icon slot="start" src="assets/icon/outlook.svg" color="medium"></ion-icon>
-            <span>INACAPMail</span>
-          </div> -->
-        </ion-button>
-      </ion-col>
-      <ion-col size="6" class="ion-no-padding" *ngIf="mostrarOnline">
-        <ion-button color="white" expand="block" (click)="moodleOnlineTap()" style="--padding-end: 0;">
-          <div>
-            <ion-icon slot="start" src="assets/icon/devices.svg" color="medium"></ion-icon>
-            <span>Ambiente de Aprendizaje Online</span>
-          </div>
-        </ion-button>
-      </ion-col>
-      <ion-col size="6" class="ion-no-padding">
-        <ion-button color="white" expand="block" routerLink="horario">
-          <div>
-            <ion-icon slot="start" src="assets/icon/access_time.svg" color="medium"></ion-icon>
-            <span>Horario</span>
-          </div>
-        </ion-button>
-      </ion-col>
-      <ion-col size="6" class="ion-no-padding">
-        <ion-button color="white" expand="block" (click)="credencialVirtualTap()">
-          <div>
-            <ion-icon slot="start" src="assets/icon/account_circle.svg" color="medium"></ion-icon>
-            <span>Credencial Virtual</span>
-          </div>
-        </ion-button>
-      </ion-col>
-      <ion-col size="6" class="ion-no-padding">
-        <ion-button color="white" expand="block" routerLink="certificados">
-          <div>
-            <ion-icon slot="start" src="assets/icon/file_copy.svg" color="medium"></ion-icon>
-            <span>Certificados</span>
-          </div>
-        </ion-button>
-      </ion-col>
-      <ion-col size="6" class="ion-no-padding">
-        <ion-button color="white" expand="block" routerLink="malla-curricular">
-          <div>
-            <ion-icon slot="start" src="assets/icon/class.svg" color="medium"></ion-icon>
-            <span>Malla Curricular</span>
-          </div>
-        </ion-button>
-      </ion-col>
-      <ion-col size="6" class="ion-no-padding">
-        <ion-button color="white" expand="block" routerLink="progresion">
-          <div>
-            <ion-icon slot="start" src="assets/icon/trending_up.svg" color="medium"></ion-icon>
-            <span>Mi Progresión</span>
-            <ion-badge color="danger" style="position: absolute; right: 0;"
-              *ngIf="status && status.acuerdoTutorial == 0">1</ion-badge>
-          </div>
-        </ion-button>
-      </ion-col>
-      <ion-col class="ion-no-padding" size="6" (click)="alertaPracticaProfesional()">
-        <ion-button color="white" expand="block" [disabled]="!habilitarPracticas" routerLink="ofertas-practica">
-          <div>
-            <ion-icon slot="start" src="assets/icon/work.svg" color="medium"></ion-icon>
-            <span>Práctica Profesional</span>
-          </div>
-        </ion-button>
-      </ion-col>
-      <ion-col class="ion-no-padding" size="6">
-        <ion-button color="white" expand="block" routerLink="seguro-accidentes">
-          <div>
-            <ion-icon slot="start" src="assets/icon/local_hospital.svg" color="medium"></ion-icon>
-            <span>Seguro de Accidentes</span>
-          </div>
-        </ion-button>
-      </ion-col>
-      <ion-col class="ion-no-padding" size="6">
-        <ion-button color="white" expand="block" routerLink="solicitudes-academicas">
-          <div>
-            <ion-icon slot="start" src="assets/icon/list_alt.svg" color="medium"></ion-icon>
-            <span>Solicitudes</span>
-          </div>
-        </ion-button>
-      </ion-col>
-      <!-- <ion-col size="6" class="ion-no-padding">
-        <ion-button color="white" expand="block" routerLink="microsoft-teams">
-          <div [matBadge]="'-'" matBadgePosition="after" matBadgeColor="accent" [matBadgeHidden]="!(inacapTeams && inacapTeams.todayCount > 0)">
-            <ion-icon slot="start" src="assets/icon/teams.svg"></ion-icon>
-            <span>Teams</span>
-          </div>
-        </ion-button>
-      </ion-col> -->
-      <ion-col size="6" class="ion-no-padding">
-        <ion-button color="white" expand="block" routerLink="sede">
-          <div>
-            <ion-icon slot="start" name="business" color="medium"></ion-icon>
-            <span>Mi Sede</span>
-          </div>
-        </ion-button>
-      </ion-col>
-      <ion-col size="6" class="ion-no-padding">
-        <ion-button color="white" expand="block" routerLink="onedrive">
-          <div>
-            <ion-icon slot="start" src="assets/icon/cloud.svg" color="medium"></ion-icon>
-            <span>OneDrive</span>
-          </div>
-        </ion-button>
-      </ion-col>
-      <ion-col size="6" class="ion-no-padding" *ngIf="mostrarReservaEspacios">
-        <ion-button color="white" expand="block" routerLink="reserva-espacios">
-          <div>
-            <ion-icon slot="start" src="assets/icon/today.svg" color="medium"></ion-icon>
-            <span>Reserva de Espacios</span>
-          </div>
-        </ion-button>
-      </ion-col>
-      <ion-col size="6" class="ion-no-padding" *ngIf="!mostrarReservaEspacios">
-        <ion-button color="white" expand="block" routerLink="portal-pagos">
-          <div>
-            <ion-icon slot="start" src="assets/icon/account_balance_wallet.svg" color="medium"></ion-icon>
-            <span>Portal de Pagos</span>
-          </div>
-        </ion-button>
-      </ion-col>
-      <ion-col size="6" class="ion-no-padding" *ngIf="!mostrarOnline">
-        <ion-button color="white" expand="block" routerLink="cuenta-corriente">
-          <div>
-            <ion-icon slot="start" src="assets/icon/assignment_ind.svg" color="medium"></ion-icon>
-            <span>Visualización de Pagos</span>
-          </div>
-        </ion-button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-
-  <ion-grid class="botones cerrar-sesion">
-    <ion-row>
-      <ion-col size="12">
-        <ion-button color="white" (click)="logout()">Cerrar Sesión</ion-button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <section class="cerrar-sesion">
+    <ion-button shape="round" expand="block" color="white" (click)="logout()">Cerrar Sesión</ion-button>
+  </section>
 
   <p class="version">Versión - {{version}}</p>
 

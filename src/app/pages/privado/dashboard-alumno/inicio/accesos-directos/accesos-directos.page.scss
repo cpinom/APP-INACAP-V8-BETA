@@ -6,3 +6,15 @@
     font-weight: 500;
   }
 }
+
+ion-list.accesos-listado {
+  ion-item.invisible {
+    ion-icon[slot="start"],
+    ion-label {
+      color: #999;
+    }
+  }
+  ion-icon.visible {
+    margin-right: 5px;
+  }
+}

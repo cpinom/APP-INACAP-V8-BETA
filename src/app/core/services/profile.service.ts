@@ -35,7 +35,8 @@ export class ProfileService {
             "inacapmail": 0,
             "sede": 0,
             "academicas": 0
-          }
+          },
+          "accesos_directos": []
         }
       };
     }
@@ -54,7 +55,8 @@ export class ProfileService {
             "inacapmail": 0,
             "sede": 0,
             "academicas": 0
-          }
+          },
+          "accesos_directos": []
         }
       };
     }

@@ -517,10 +517,19 @@ body {
         p {
           font-size: var(--FS14) !important;
           color: var(--ion-color-step-700) !important;
-          margin-bottom: 6px;
+          margin-bottom: 0;
+        }
+
+        p + p {
+          margin-top: 6px;
         }
       }
     }
+  }
+
+  .mbsc-font {
+    font-family: var(--ion-font-family);
+    font-size: var(--FS14) !important;
   }
 
   p.estado-actividad {

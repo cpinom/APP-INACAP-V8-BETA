@@ -1,0 +1,201 @@
+@import "../dashboard-alumno.page.scss";
+
+ion-content {
+  .card-list {
+    ion-item {
+      avatar-comp {
+        height: 56px;
+        width: 56px;
+        margin-top: 0;
+        margin-right: 11px;
+      }
+      ion-icon {
+        background: var(--ion-color-primary);
+        color: #fff;
+        font-size: 20px;
+        border-radius: 50%;
+        padding: 5px;
+        margin: 0;
+      }
+    }
+  }
+
+  section.actividad {
+    margin: 15px;
+
+    h2 {
+      font-size: var(--FS18);
+      font-family: 700;
+    }
+  }
+
+  section.actividades-items {
+    margin-inline: 10px;
+
+    ion-row {
+      ion-col {
+        ion-button {
+          width: 100%;
+          height: 150px;
+          --border-radius: 8px;
+          --padding-bottom: 11px;
+          --padding-end: 11px;
+          --padding-start: 11px;
+          --padding-top: 11px;
+
+          .btn-inner {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+            text-align: left;
+            position: relative;
+            justify-content: space-between;
+
+            .rounded {
+              padding: 8px;
+              margin: 0 0 10px;
+            }
+
+            .launch {
+              position: absolute;
+              right: 0;
+              top: 0;
+              font-size: 18px;
+            }
+
+            ion-label {
+              color: #040b15;
+              flex: 1;
+
+              h1 {
+                font-size: 24px;
+                font-weight: 700;
+                margin: 0;
+              }
+              h2 {
+                font-size: 16px;
+                font-weight: 700;
+              }
+              p {
+                font-size: 14px;
+              }
+            }
+
+            ion-progress-bar {
+              --background: #fff;
+              height: 8px;
+            }
+          }
+
+          &.color-1 {
+            --background: var(--ion-color-1-background);
+            --background-activated: var(--ion-color-1-background);
+
+            ion-icon {
+              &.rounded {
+                background-color: var(--ion-color-1-primary);
+              }
+              &.launch {
+                color: var(--ion-color-1-foreground);
+              }
+            }
+
+            ion-progress-bar {
+              --progress-background:var(--ion-color-1-foreground);
+            }
+          }
+          &.color-2 {
+            --background: var(--ion-color-2-background);
+            --background-activated: var(--ion-color-2-background);
+
+            ion-icon {
+              &.rounded {
+                background-color: var(--ion-color-2-primary);
+              }
+              &.launch {
+                color: var(--ion-color-2-foreground);
+              }
+            }
+
+            ion-progress-bar {
+              --progress-background:var(--ion-color-2-foreground);
+            }
+          }
+          &.color-3 {
+            --background: var(--ion-color-3-background);
+            --background-activated: var(--ion-color-3-background);
+
+            ion-icon {
+              &.rounded {
+                background-color: var(--ion-color-3-primary);
+              }
+              &.launch {
+                color: var(--ion-color-3-foreground);
+              }
+            }
+
+            ion-progress-bar {
+              --progress-background:var(--ion-color-3-foreground);
+            }
+          }
+          &.color-4 {
+            --background: var(--ion-color-4-background);
+            --background-activated: var(--ion-color-4-background);
+
+            ion-icon {
+              &.rounded {
+                background-color: var(--ion-color-4-primary);
+              }
+              &.launch {
+                color: var(--ion-color-4-foreground);
+              }
+            }
+
+            ion-progress-bar {
+              --progress-background:var(--ion-color-4-foreground);
+            }
+          }
+          &.color-5 {
+            --background: var(--ion-color-5-background);
+            --background-activated: var(--ion-color-5-background);
+
+            ion-icon {
+              &.rounded {
+                background-color: var(--ion-color-5-primary);
+              }
+              &.launch {
+                color: var(--ion-color-5-foreground);
+              }
+            }
+
+            ion-progress-bar {
+              --progress-background:var(--ion-color-5-foreground);
+            }
+          }
+          &.color-6 {
+            --background: var(--ion-color-6-background);
+            --background-activated: var(--ion-color-6-background);
+
+            ion-icon {
+              &.rounded {
+                background-color: var(--ion-color-6-primary);
+              }
+              &.launch {
+                color: var(--ion-color-6-foreground);
+              }
+            }
+
+            ion-progress-bar {
+              --progress-background:var(--ion-color-6-foreground);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  section.descargar {
+    margin: 15px;
+  }
+}

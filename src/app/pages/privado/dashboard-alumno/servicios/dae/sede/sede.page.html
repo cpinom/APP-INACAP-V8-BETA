@@ -1,13 +1,19 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>sede</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button text="DAE" defaultHref="/dashboard-alumno/servicios/dae"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">sede</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+
+  @if (mostrarCargando) {
+  <div class="loaderInacap">
+    <ion-spinner name="lines" color="primary"></ion-spinner>
+  </div>
+  }
+
+  <sede-comp rol="alumno" (onLoadCompleted)="sedeCargada($event)"></sede-comp>
+
 </ion-content>

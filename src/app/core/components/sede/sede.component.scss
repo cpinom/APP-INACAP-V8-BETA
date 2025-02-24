@@ -1,74 +1,105 @@
 // @import "src/theme/horario-section.scss";
 
-ion-card.primary-card {
-    ion-card-header {
-        // padding-bottom: 10px;
-        ion-select {
-            padding: 0;
-            padding-right: 5px;
-            font-size: var(--FS22);
-            font-weight: 600;
-            flex: 1;
-            max-width: 100%;
-            color: var(--bg-contrast-color) !important;
-            opacity: 1 !important;
+.sede-titulo {
+    position: relative;
+    img {
+        height: 110px;
+        object-fit: cover;
+    }
+    div.avatar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        top: 0;
+        position: absolute;
+        height: 204px;
+        right: 0;
+        left: 0;
+
+        ion-avatar {
+            height: 150px;
+            width: 150px;
+            background-color: red;
         }
     }
-    ion-card-content {
-        padding-top: 0 !important;
+
+    h2 {
+        font-size: 20px;
+    font-weight: 700;
+    margin-top: 80px;
+    text-align: center;
     }
 }
 
-.select-container {
-    display: flex;
-    
-    ion-select {
-        min-height: auto !important;
-    }
-}
+// ion-card.primary-card {
+//     ion-card-header {
+//         // padding-bottom: 10px;
+//         ion-select {
+//             padding: 0;
+//             padding-right: 5px;
+//             font-size: var(--FS22);
+//             font-weight: 600;
+//             flex: 1;
+//             max-width: 100%;
+//             color: var(--bg-contrast-color) !important;
+//             opacity: 1 !important;
+//         }
+//     }
+//     ion-card-content {
+//         padding-top: 0 !important;
+//     }
+// }
 
-.eventos {
-    ion-card-content {
-        padding: 0;
+// .select-container {
+//     display: flex;
 
-        ion-item {
-            [slot="start"] {
-                flex: 0 0 40px;
-                margin: 0 15px 0 0;
-                text-align: center;
-                color: var(--ion-color-medium);
+//     ion-select {
+//         min-height: auto !important;
+//     }
+// }
 
-                ::ng-deep b {
-                    display: block;
-                    font-size: var(--FS26);
-                    font-weight: normal;
-                    line-height: 22px;
-                }
-            }
+// .eventos {
+//     ion-card-content {
+//         padding: 0;
 
-            ion-label:not(.ion-text-center) {
-                // padding-top: 15px;
-                // padding-bottom: 15px;
-            }
-        }
-    }
-}
+//         ion-item {
+//             [slot="start"] {
+//                 flex: 0 0 40px;
+//                 margin: 0 15px 0 0;
+//                 text-align: center;
+//                 color: var(--ion-color-medium);
 
-.horario-container {
-    padding-left: 15px;
+//                 ::ng-deep b {
+//                     display: block;
+//                     font-size: var(--FS26);
+//                     font-weight: normal;
+//                     line-height: 22px;
+//                 }
+//             }
 
-    h3 {
-        font-size: var(--FS16);
-        font-weight: 400;
-    }
+//             ion-label:not(.ion-text-center) {
+//                 // padding-top: 15px;
+//                 // padding-bottom: 15px;
+//             }
+//         }
+//     }
+// }
 
-    .scroll-item .content {
-        padding: 0 10px;
-        min-height: 40px;
+// .horario-container {
+//     padding-left: 15px;
 
-        p.classroom {
-            font-weight: bold;
-            color: #888;
-        }
-    }
-}
+//     h3 {
+//         font-size: var(--FS16);
+//         font-weight: 400;
+//     }
+
+//     .scroll-item .content {
+//         padding: 0 10px;
+//         min-height: 40px;
+
+//         p.classroom {
+//             font-weight: bold;
+//             color: #888;
+//         }
+//     }
+// }

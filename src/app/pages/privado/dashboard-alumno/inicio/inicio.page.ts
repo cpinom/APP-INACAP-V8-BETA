@@ -47,7 +47,7 @@ export class InicioPage implements OnInit, AfterViewInit {
   cargandoClases = false;
   mostrarData!: boolean;
   descatadoFn: any;
-  tabsModel = '0';
+  tabsModel = 0;
   practica!: boolean;
   numeroEvalInicial = 3;
   numeroEvalMostrando = this.numeroEvalInicial;
@@ -126,9 +126,9 @@ export class InicioPage implements OnInit, AfterViewInit {
     });
 
     this.scrollObs = this.events.app.subscribe((event: any) => {
-      if (event.action == 'scrollTop' && event.index == 0 && this.router.url == '/alumno/inicio') {
+      if (event.action == 'scrollTop' && event.index == 0 && this.router.url == '/dashboard-alumno/inicio') {
         this.content?.scrollToTop(500);
-        this.tabsModel = '0';
+        this.tabsModel = 0;
         this.ramosContent && this.ramosContent.nativeElement.scrollTo({ left: 0, behavior: 'smooth' });
       }
     });
@@ -147,7 +147,7 @@ export class InicioPage implements OnInit, AfterViewInit {
       this.guardarPeriodo(value);
     });
 
-    this.theme = this.pt.is('ios') ? 'ios' : 'material';
+    this.theme = 'ios'; //this.pt.is('ios') ? 'ios' : 'material';
     this.themeVariant = this.profile.isDarkMode() ? 'dark' : 'light';
   }
   ngAfterViewInit() { }
@@ -158,7 +158,7 @@ export class InicioPage implements OnInit, AfterViewInit {
   }
   async ionViewWillEnter() {
     this.mostrarData = false;
-    this.theme = this.pt.is('ios') ? 'ios' : 'material';
+    this.theme = 'ios'; //this.pt.is('ios') ? 'ios' : 'material';
     this.themeVariant = this.profile.isDarkMode() ? 'dark' : 'light';
 
     await this.cargar();

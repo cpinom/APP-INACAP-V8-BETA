@@ -1,4 +1,4 @@
-// @import "../alumno.page.scss";
+@import "../dashboard-alumno.page.scss";
 
 // ion-toolbar.periodos {
 //     // border-top: 1px solid #666; //var(--border-color);
@@ -70,28 +70,27 @@ section.ramos {
     overflow-x: scroll;
     padding: 10px;
     white-space: nowrap;
+    margin-top: 0;
 
     ion-card {
-        background-color: var(--bg-color-card2);
         display: inline-block;
         margin: 0 10px 0 0;
         width: 158px;
         height: 86px;
         white-space: normal;
-        box-shadow: 0px 1px 3px #00000033 !important;
+        box-shadow: none;
 
         ion-card-header {
-            --background: var(--ion-color-info);
-            padding: 8px 10px;
+            padding: 8px;
 
-            &.green {
-                --background: var(--ion-color-success) !important;
-            }
+            // &.green {
+            //     --background: var(--ion-color-success) !important;
+            // }
 
             ion-card-title {
-                font-size: var(--FS12);
-                font-weight: 400;
-                color: var(--ion-color-info-contrast);
+                font-size: var(--FS14);
+                font-weight: 700;
+                color: #040b15;
                 white-space: nowrap;
                 text-overflow: ellipsis;
                 overflow: hidden;
@@ -99,17 +98,23 @@ section.ramos {
         }
 
         ion-card-content {
-            padding: 6px 10px;
+            padding: 0 8px 8px 8px;
 
             ion-list {
+                background: transparent;
+
                 ion-item {
                     --min-height: 22px;
-                    --background: var(--bg-color-card2);
-                    color: var(--bg-contrast-color);
+                    --background: transparent;
+                    color: #41424d;
+
                     ion-label {
                         white-space: normal;
                         margin: 0;
                         font-size: var(--FS14);
+                        border-left: 3px solid;
+                        padding-left: 5px;
+                        line-height: 16px;
 
                         .nota-number,
                         .asistencia-number {
@@ -125,10 +130,80 @@ section.ramos {
                 }
             }
         }
+
+        &.curso-1,
+        &.curso-8 {
+            background-color: var(--ion-color-1-background);
+
+            ion-label {
+                border-left-color: var(--ion-color-1-foreground) !important;
+            }
+        }
+        &.curso-2,
+        &.curso-9 {
+            background-color: var(--ion-color-2-background);
+
+            ion-label {
+                border-left-color: var(--ion-color-2-foreground) !important;
+            }
+        }
+        &.curso-3,
+        &.curso-10 {
+            background-color: var(--ion-color-3-background);
+
+            ion-label {
+                border-left-color: var(--ion-color-3-foreground) !important;
+            }
+        }
+        &.curso-4,
+        &.curso-11 {
+            background-color: var(--ion-color-4-background);
+
+            ion-label {
+                border-left-color: var(--ion-color-4-foreground) !important;
+            }
+        }
+        &.curso-5,
+        &.curso-12 {
+            background-color: var(--ion-color-5-background);
+
+            ion-label {
+                border-left-color: var(--ion-color-5-foreground) !important;
+            }
+        }
+        &.curso-6,
+        &.curso-13 {
+            background-color: var(--ion-color-6-background);
+
+            ion-label {
+                border-left-color: var(--ion-color-6-foreground) !important;
+            }
+        }
+        &.curso-7,
+        &.curso-14 {
+            background-color: var(--ion-color-7-background);
+
+            ion-label {
+                border-left-color: var(--ion-color-7-foreground) !important;
+            }
+        }
     }
 
     .card:first-child {
         margin-left: 0;
+    }
+}
+
+div.tabs {
+    margin: 0 10px 10px;
+}
+
+section.agenda {
+    margin: 0 10px 10px;
+    box-shadow: 0px 4px 8px rgba(74, 78, 110, 0.15);
+
+    .mbsc-calendar-header {
+
     }
 }
 
@@ -347,7 +422,7 @@ section.horario {
         }
         .more,
         .less {
-            color: var(--ion-color-info) !important;
+            color: var(--ion-color-primary) !important;
             text-align: center;
             padding: 6px;
             font-size: var(--FS14);
@@ -405,6 +480,174 @@ section.horario {
         }
     }
 }
+
+section.accesos-directos {
+    margin-inline: 3px;
+
+    ion-row {
+      ion-col {
+        ion-button {
+          width: 100%;
+          height: 120px;
+          --border-radius: 8px;
+          --padding-bottom: 11px;
+          --padding-end: 11px;
+          --padding-start: 11px;
+          --padding-top: 11px;
+
+          .btn-inner {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+            text-align: left;
+            position: relative;
+            justify-content: space-between;
+
+            .rounded {
+              padding: 10px;
+              margin: 0 0 10px;
+            }
+
+            .launch {
+              position: absolute;
+              right: 0;
+              top: 0;
+              font-size: 18px;
+            }
+
+            ion-label {
+              color: #040b15;
+              flex: 1;
+              display: flex;
+              align-items: center;
+
+              h1 {
+                font-size: 24px;
+                font-weight: 700;
+                margin: 0;
+              }
+              h2 {
+                font-size: 16px;
+                font-weight: 700;
+              }
+              p {
+                font-size: 14px;
+              }
+            }
+
+            ion-progress-bar {
+              --background: #fff;
+              height: 8px;
+            }
+          }
+
+          &.color-1 {
+            --background: var(--ion-color-1-background);
+            --background-activated: var(--ion-color-1-background);
+
+            ion-icon {
+              &.rounded {
+                background-color: var(--ion-color-1-primary);
+              }
+              &.launch {
+                color: var(--ion-color-1-foreground);
+              }
+            }
+
+            ion-progress-bar {
+              --progress-background:var(--ion-color-1-foreground);
+            }
+          }
+          &.color-2 {
+            --background: var(--ion-color-2-background);
+            --background-activated: var(--ion-color-2-background);
+
+            ion-icon {
+              &.rounded {
+                background-color: var(--ion-color-2-primary);
+              }
+              &.launch {
+                color: var(--ion-color-2-foreground);
+              }
+            }
+
+            ion-progress-bar {
+              --progress-background:var(--ion-color-2-foreground);
+            }
+          }
+          &.color-3 {
+            --background: var(--ion-color-3-background);
+            --background-activated: var(--ion-color-3-background);
+
+            ion-icon {
+              &.rounded {
+                background-color: var(--ion-color-3-primary);
+              }
+              &.launch {
+                color: var(--ion-color-3-foreground);
+              }
+            }
+
+            ion-progress-bar {
+              --progress-background:var(--ion-color-3-foreground);
+            }
+          }
+          &.color-4 {
+            --background: var(--ion-color-4-background);
+            --background-activated: var(--ion-color-4-background);
+
+            ion-icon {
+              &.rounded {
+                background-color: var(--ion-color-4-primary);
+              }
+              &.launch {
+                color: var(--ion-color-4-foreground);
+              }
+            }
+
+            ion-progress-bar {
+              --progress-background:var(--ion-color-4-foreground);
+            }
+          }
+          &.color-5 {
+            --background: var(--ion-color-5-background);
+            --background-activated: var(--ion-color-5-background);
+
+            ion-icon {
+              &.rounded {
+                background-color: var(--ion-color-5-primary);
+              }
+              &.launch {
+                color: var(--ion-color-5-foreground);
+              }
+            }
+
+            ion-progress-bar {
+              --progress-background:var(--ion-color-5-foreground);
+            }
+          }
+          &.color-6 {
+            --background: var(--ion-color-6-background);
+            --background-activated: var(--ion-color-6-background);
+
+            ion-icon {
+              &.rounded {
+                background-color: var(--ion-color-6-primary);
+              }
+              &.launch {
+                color: var(--ion-color-6-foreground);
+              }
+            }
+
+            ion-progress-bar {
+              --progress-background:var(--ion-color-6-foreground);
+            }
+          }
+        }
+      }
+    }
+  }
 
 ion-row.directos {
     margin-inline: 10px;
@@ -522,7 +765,7 @@ p.last-update {
 mbsc-eventcalendar {
     ::ng-deep .mbsc-calendar-header {
         //display: none;
-        background: var(--bg-color-card2);
+        background: #fff !important;
 
         .mbsc-calendar-controls {
             padding: 0 5px;
@@ -537,6 +780,9 @@ mbsc-eventcalendar {
             }
         }
     }
+    ::ng-deep mbsc-calendar-weekdays {
+        background: #fff !important;
+    }
     ::ng-deep .mbsc-calendar-body {
         .mbsc-ios.mbsc-selected .mbsc-calendar-cell-text {
             background: var(--ion-color-primary);
@@ -548,7 +794,7 @@ mbsc-eventcalendar {
         font-size: var(--FS14);
     }
     ::ng-deep .mbsc-schedule-event {
-        color: var(--ion-color-info) !important;
+        color: var(--ion-color-primary) !important;
 
         .progreso {
             color: var(--ion-color-success) !important;
@@ -559,10 +805,10 @@ mbsc-eventcalendar {
         }
     }
     // ::ng-deep .mbsc-ios-dark.mbsc-schedule-event {
-    //     color: var(--ion-color-info) !important;
+    //     color: var(--ion-color-primary) !important;
     // }
     ::ng-deep .mbsc-material.mbsc-colored-event.mbsc-list-item {
-        background-color: var(--ion-color-info) !important;
+        background-color: var(--ion-color-primary) !important;
         // color: var(--ion-color-step-950) !important;
 
         .progreso {
@@ -574,25 +820,25 @@ mbsc-eventcalendar {
         }
     }
     ::ng-deep .mbsc-material.mbsc-selected .mbsc-calendar-cell-text {
-        background-color: var(--ion-color-info) !important;
-        border-color: var(--ion-color-info) !important;
+        background-color: var(--ion-color-primary) !important;
+        border-color: var(--ion-color-primary) !important;
     }
 
     ::ng-deep .mbsc-ios-dark.mbsc-selected .mbsc-calendar-cell-text,
     ::ng-deep .mbsc-material.mbsc-selected .mbsc-calendar-cell-text {
-        background-color: var(--ion-color-info) !important;
-        border-color: var(--ion-color-info) !important;
+        background-color: var(--ion-color-primary) !important;
+        border-color: var(--ion-color-primary) !important;
         // color: var(--ion-text-color) !important;
         color: var(--ion-color-primary-contrast) !important;
     }
 
     ::ng-deep .mbsc-ios.mbsc-event-color {
-        background-color: var(--ion-color-info) !important;
+        background-color: var(--ion-color-primary) !important;
     }
 
     ::ng-deep .mbsc-ios.mbsc-event.mbsc-list-item {
         .mbsc-ios.mbsc-event-color {
-            background: var(--ion-color-info) !important;
+            background: var(--ion-color-primary) !important;
         }
         &.suspendida {
             .mbsc-ios.mbsc-event-color {
@@ -614,7 +860,7 @@ mbsc-eventcalendar {
         }
     }
     ::ng-deep .mbsc-material.mbsc-colored-event.mbsc-list-item {
-        background: var(--ion-color-info) !important;
+        background: var(--ion-color-primary) !important;
 
         &.suspendida {
             background: var(--ion-color-danger) !important;
@@ -671,13 +917,13 @@ ion-modal.estacionamiento-modal {
                 .circulo {
                     height: 8px;
                     width: 8px;
-                    background-color: #DCDFFC;
+                    background-color: #dcdffc;
                     border-radius: 50%;
                     padding: 0px;
                     margin: 0px 8px 0 0;
 
                     &.selected {
-                        background-color: var(--ion-color-info);
+                        background-color: var(--ion-color-primary);
                     }
                 }
             }

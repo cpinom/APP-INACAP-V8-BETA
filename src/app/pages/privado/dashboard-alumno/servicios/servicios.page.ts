@@ -33,7 +33,7 @@ export class ServiciosPage implements OnInit {
 
   constructor() {
     this.scrollObs = this.events.app.subscribe((event: any) => {
-      if (event.action == 'scrollTop' && event.index == 4) {
+      if (event.action == 'scrollTop' && event.index == 3) {
         this.content?.scrollToTop(500);
       }
     });

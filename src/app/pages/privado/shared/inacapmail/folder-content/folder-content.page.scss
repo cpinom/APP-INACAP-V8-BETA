@@ -2,7 +2,6 @@ ion-title.md {
   text-align: left;
 }
 ion-list {
-
   p.no-read {
     position: absolute;
     height: 10px;
@@ -63,7 +62,7 @@ ion-list {
 
   &.search {
     transform: none;
-    top: 10%
+    top: 10%;
   }
 
   ion-icon {
@@ -77,25 +76,30 @@ ion-menu-button {
   --color: #ffffff !important;
 }
 
-ion-toolbar.buscador {
-  --padding-start: 0;
-  --padding-end: 0;
+// ion-toolbar.buscador {
+//   --padding-start: 0;
+//   --padding-end: 0;
 
-  .searchbar-container {
-    display: flex;
-    background-color: white;
+.searchbar-container {
+  display: flex;
+  // background-color: white;
 
-    ion-searchbar {
-      padding: 0 0 0 12px;
-      height: 44px;
+
+  ion-searchbar {
+    ::ng-deep input {
+      border: 1px solid #D5D6DD;
+      padding-inline-start: 16px
     }
-    ion-button {
-      --ion-color-base: transparent !important;
-      --ion-color-shade: transparent !important;
-      --padding-end: 10px;
-      --padding-start: 10px;
-      height: 44px;
-      margin: 0;
-    }
+    // padding: 0 0 0 12px;
+    // height: 44px;
+  }
+  ion-button {
+    // --ion-color-base: transparent !important;
+    // --ion-color-shade: transparent !important;
+    // --padding-end: 10px;
+    // --padding-start: 10px;
+    // height: 44px;
+    // margin: 0;
   }
 }
+// }

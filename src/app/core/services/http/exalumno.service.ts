@@ -10,7 +10,6 @@ export class ExalumnoService extends PrivateService {
 
   constructor() {
     super();
-    this.baseUrl = `${this.global.Api}/api`;
   }
 
   getPrincipal() {

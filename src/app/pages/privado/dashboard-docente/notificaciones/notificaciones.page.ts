@@ -56,7 +56,7 @@ export class NotificacionesPage implements OnInit, OnDestroy {
   async cargar() {
     try {
       const info = await Device.getId();
-      const npreTuuid = info.uuid || 'web';
+      const npreTuuid = info.identifier || 'web';
       const principal = await this.profile.getStorage('principal');
       const result = await this.api.getNotificacionesV6(principal.sedeCcod, npreTuuid);
 
@@ -150,7 +150,7 @@ export class NotificacionesPage implements OnInit, OnDestroy {
   }
   async eliminarNotificacion(item: any) {
     const info = await Device.getId();
-    const npreTuuid = info.uuid || 'web';
+    const npreTuuid = info.identifier || 'web';
     const principal = await this.profile.getStorage('principal');
     const message = await this.snackbar.create('Eliminando...', false);
 
@@ -181,7 +181,7 @@ export class NotificacionesPage implements OnInit, OnDestroy {
   }
   async eliminarTodasNotificaciones() {
     const info = await Device.getId();
-    const npreTuuid = info.uuid || 'web';
+    const npreTuuid = info.identifier || 'web';
     const principal = await this.profile.getStorage('principal');
     const message = await this.snackbar.create('Eliminando...', false);
 

@@ -104,6 +104,9 @@ export class PublicService {
     }
     catch (error: any) { }
   }
+  getAppVersion() {
+    return this.get(`${this.baseUrl}/api/app-version`);
+  }
   getContacto() {
     return this.get(`${this.baseUrl}/api/v3/contacto`);
   }

@@ -8,11 +8,10 @@ import { Preferences } from '@capacitor/preferences';
 export class OneDriveService extends PrivateService {
 
   public override storagePrefix: string = 'OveDrive-MOVIL';
-  private apiPrefix = 'api/onedrive';
 
   constructor() {
     super();
-    this.baseUrl = `${this.global.Api}/${this.apiPrefix}`;
+    this.baseUrl = `${this.global.Api}/onedrive`;
   }
   getPrincipal() {
     return this.get(`${this.baseUrl}/v3/principal`);

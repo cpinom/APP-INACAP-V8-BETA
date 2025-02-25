@@ -23,7 +23,7 @@ export class ErrorHandlerService {
     }
 
     if (error && error.status == 401) {
-      await this.authService.clearAuth(true);
+      await this.authService.clearAuth();
       await this.nav.navigateRoot('publico');
       const alert = await this.alertCtrl.create({
         keyboardClose: false,

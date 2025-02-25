@@ -8,6 +8,8 @@ import { AppGlobal } from 'src/app/app.global';
 import { ActionSheetController, NavController } from '@ionic/angular';
 import { Auth } from '../interfaces/auth.interfaces';
 import { EventsService } from './events.service';
+import { Device } from '@capacitor/device';
+import { Directory, Filesystem } from '@capacitor/filesystem';
 
 @Injectable({
   providedIn: 'root'
@@ -37,7 +39,7 @@ export class AuthService {
         return true;
       }
       else {
-        await this.clearAuth(true);
+        await this.clearAuth();
       }
     }
 
@@ -107,7 +109,6 @@ export class AuthService {
       }
     }
 
-
     await Preferences.set({ key: this.storageAuth, value: JSON.stringify(auth) });
     await Preferences.set({ key: `${this.storageAuth}-cache`, value: JSON.stringify(auth.user.data) });
   }
@@ -130,7 +131,7 @@ export class AuthService {
   async getProfile() {
     let auth = await this.getAuth();
 
-    if (auth) {
+    if (auth && auth.user.perfil) {
       return auth.user.perfil;
     }
     else {
@@ -175,7 +176,7 @@ export class AuthService {
       text: 'Salir',
       role: 'destructive',
       handler: async () => {
-        await this.clearAuth(true);
+        await this.clearAuth();
         await this.nav.navigateRoot('publico');
       }
     });
@@ -210,9 +211,25 @@ export class AuthService {
       return result.value ? JSON.parse(result.value) : null;
     });
   }
-  async clearAuth(clearStorage: boolean) {
-    if (clearStorage) {
-      await Preferences.remove({ key: this.storageAuth });
+  async clearAuth() {
+    const auth = await this.getAuth();
+
+    if (auth) {
+      const user = auth.user;
+
+      try {
+        Filesystem.deleteFile({
+          path: `CACHED-IMG/${user.data.persNcorr}`,
+          directory: Directory.Cache
+        })
+      }
+      catch (ex) { }
+    }
+
+    await Preferences.remove({ key: this.storageAuth });
+
+    const device = await Device.getId(); {
+      this.events.onLogout.next({ uuid: device.identifier });
     }
   }
   async clearUserCache() {

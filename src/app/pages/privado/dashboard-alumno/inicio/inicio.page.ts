@@ -623,22 +623,22 @@ export class InicioPage implements OnInit, AfterViewInit {
   async sincronizarPreferencias(){
     let preferencias = await this.profile.getPreferencias();
 
-    preferencias.movil['accesosDirectos'] = this.accesosDirectos;
+    preferencias.movil['accesos_directos'] = this.accesosDirectos;
     debugger
-    // const loading = await this.dialog.showLoading({ message: 'Guardando...' });
+    const loading = await this.dialog.showLoading({ message: 'Guardando...' });
 
-    // try {
-    //   await this.api.guardarPreferencias(preferencias);
-    //   await this.profile.setStorage('preferencias', preferencias);
-    // }
-    // catch {
-    //   return Promise.resolve(false);
-    // }
-    // finally {
-    //   await loading.dismiss();
-    // }
+    try {
+      await this.api.guardarPreferencias(preferencias);
+      await this.profile.setStorage('preferencias', preferencias);
+    }
+    catch {
+      return Promise.resolve(false);
+    }
+    finally {
+      await loading.dismiss();
+    }
 
-    // return Promise.resolve(true);
+    return Promise.resolve(true);
   }
   proximasEvaluaciones() {
     if (this.global.Environment == 'Desarrollo') {

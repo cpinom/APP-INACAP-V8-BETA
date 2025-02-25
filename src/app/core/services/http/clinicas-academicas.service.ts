@@ -10,7 +10,6 @@ export class ClinicasAcademicasService extends PrivateService {
 
   constructor() {
     super();
-    this.baseUrl = `${this.global.Api}/api`;
   }
 
   getDocentePrincipal(sedeCcod: any) {

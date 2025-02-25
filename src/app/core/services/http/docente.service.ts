@@ -11,7 +11,6 @@ export class DocenteService extends PrivateService {
 
   constructor() {
     super();
-    this.baseUrl += '/api';
   }
 
   getPrincipalV6() {

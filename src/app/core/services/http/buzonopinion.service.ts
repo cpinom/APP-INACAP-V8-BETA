@@ -11,7 +11,6 @@ export class BuzonOpinionService extends PrivateService {
 
   constructor() {
     super();
-    this.baseUrl = `${this.global.Api}/api`;
   }
   getPrincipalV6() {
     return this.get(`${this.baseUrl}/v6/buzon-opinion/principal`);

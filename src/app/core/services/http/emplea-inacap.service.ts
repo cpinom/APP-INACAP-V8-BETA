@@ -8,11 +8,10 @@ import { Preferences } from "@capacitor/preferences";
 export class EmpleaInacapService extends PrivateService {
 
   public override storagePrefix: string = 'EmpleaInacap-MOVIL';
-  private apiPrefix = 'api/emplea-inacap';
 
   constructor() {
     super();
-    this.baseUrl = `${this.global.Api}/${this.apiPrefix}`;
+    this.baseUrl = `${this.global.Api}/emplea-inacap`;
   }
 
   getFiltrosExalumno() {

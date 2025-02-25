@@ -7,11 +7,10 @@ import { PrivateService } from './private.service';
 export class ReservasEspacioService extends PrivateService {
 
   public override storagePrefix: string = 'Reservas-MOVIL';
-  private apiPrefix = 'api/reservas-espacio';
 
   constructor() {
     super();
-    this.baseUrl = `${this.global.Api}/${this.apiPrefix}`;
+    this.baseUrl = `${this.global.Api}/reservas-espacio`;
   }
   getPrincipal(params: any) {
     return this.post(`${this.baseUrl}/v1/principal`, params);

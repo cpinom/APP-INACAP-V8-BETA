@@ -10,10 +10,10 @@
     </ion-buttons>
     <ion-title>{{folderName}}</ion-title>
   </ion-toolbar>
-  <div class="searchbar-container">
+  <!-- <div class="searchbar-container">
     <ion-searchbar color="white" placeholder="Buscar en correos" [(ngModel)]="filtro" (ionInput)="filtrarMensajes()" (ionClear)="resetMensajes()"></ion-searchbar>
-  </div>
-  <ion-progress-bar *ngIf="!hideLoadingSpinner" type="indeterminate"></ion-progress-bar>
+  </div> -->
+  <!-- <ion-progress-bar *ngIf="!hideLoadingSpinner" type="indeterminate"></ion-progress-bar> -->
 </ion-header>
 
 <ion-content>
@@ -27,6 +27,10 @@
       <ion-icon src="assets/icon/create.svg"></ion-icon>
     </ion-fab-button>
   </ion-fab>
+
+  <div class="searchbar-container">
+    <ion-searchbar color="white" placeholder="Buscar en correos" [(ngModel)]="filtro" (ionInput)="filtrarMensajes()" (ionClear)="resetMensajes()"></ion-searchbar>
+  </div>
 
   <ng-container *ngIf="mostrarBusqueda && hideLoadingSpinner">
     <ion-list *ngIf="mensajesFiltrados && mensajesFiltrados.length">
@@ -53,7 +57,7 @@
 
   <ng-container *ngIf="!mostrarBusqueda && mostrarData && messages.length">
     
-    <ion-list>
+    <ion-list inset="true">
       <ion-item-sliding *ngFor="let m of messages">
         <ion-item (click)="messageTap(m)" class="ion-activatable">
           <p class="no-read" *ngIf="!m.isRead"></p>

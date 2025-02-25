@@ -7,11 +7,10 @@ import { PrivateService } from './private.service';
 export class CuentaCorrienteService extends PrivateService {
 
   public override storagePrefix: string = 'CtaCte-MOVIL';
-  private apiPrefix = 'api/v3/cuenta-corriente';
 
   constructor() {
     super();
-    this.baseUrl = `${this.global.Api}/${this.apiPrefix}`;
+    this.baseUrl = `${this.global.Api}/v3/cuenta-corriente`;
   }
 
   getPrincipal() {

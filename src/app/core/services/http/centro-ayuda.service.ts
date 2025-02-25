@@ -7,11 +7,10 @@ import { PrivateService } from './private.service';
 export class CentroAyudaService extends PrivateService {
 
   public override storagePrefix: string = 'CentroAyuda-MOVIL';
-  private apiPrefix = 'api/centro-ayuda';
 
   constructor() {
     super();
-    this.baseUrl = `${this.global.Api}/${this.apiPrefix}`;
+    this.baseUrl = `${this.global.Api}/centro-ayuda`;
   }
   getPrincipal() {
     return this.get(`${this.baseUrl}/v1/principal`);

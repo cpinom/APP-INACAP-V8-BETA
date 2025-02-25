@@ -11,7 +11,6 @@ export class CertificadosService extends PrivateService {
 
   constructor() {
     super();
-    this.baseUrl = `${this.global.Api}/api`;
   }
   generaCarro(params: any) {
     return this.post(`${this.baseUrl}/v3/certificados/genera-carro`, params);

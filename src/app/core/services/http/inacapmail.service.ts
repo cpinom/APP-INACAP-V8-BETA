@@ -11,7 +11,6 @@ export class InacapMailService extends PrivateService {
 
   constructor() {
     super();
-    this.baseUrl = `${this.global.Api}/api`;
   }
   getMailSummary(folderId?: string) {
     return this.get(`${this.baseUrl}/v4/inacapmail/summary?folderId=${folderId}`);

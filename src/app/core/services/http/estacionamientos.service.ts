@@ -8,11 +8,10 @@ import { AppGlobal } from 'src/app/app.global';
 export class EstacionamientosService extends PrivateService {
 
   public override storagePrefix: string = 'Estacionamientos-MOVIL';
-  private apiPrefix = 'api/v2/estacionamientos';
 
   constructor() {
     super();
-    this.baseUrl = `${this.global.Api}/${this.apiPrefix}`;
+    this.baseUrl = `${this.global.Api}/v2/estacionamientos`;
   }
   getPrincipalV6(sedeCcod: any, aepeNcorr: any) {
     return this.get(`${this.baseUrl}/principal?sedeCcod=${sedeCcod}&aepeNcorr=${aepeNcorr}`);

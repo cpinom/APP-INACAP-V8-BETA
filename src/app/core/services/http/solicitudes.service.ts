@@ -11,7 +11,6 @@ export class SolicitudesService extends PrivateService {
 
   constructor() {
     super();
-    this.baseUrl = `${this.global.Api}/api`;
   }
   getPrincipal(params: any) {
     return this.post(`${this.baseUrl}/v4/solicitudes/principal`, params);

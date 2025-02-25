@@ -7,7 +7,6 @@ import { PrivateService } from '../http/private.service';
 export class AlumnoService extends PrivateService {
 
   public override storagePrefix: string = 'Alumno-MOVIL';
-  public override baseUrl = `${this.global.Api}/api`;
 
   constructor() {
     super();
@@ -113,5 +112,10 @@ export class AlumnoService extends PrivateService {
   }
   guardarInscripcionActividad(params: any) {
     return this.post(`${this.baseUrl}/v3/alumno/guardar-inscripcion-actividad`, params);
+  }
+
+  // Perfil
+  getEstadoFotoPerfil() {
+    return this.get(`${this.baseUrl}/v5/alumno/estado-foto-perfil`);
   }
 }

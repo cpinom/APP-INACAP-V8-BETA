@@ -12,7 +12,7 @@ export class PrivateService {
   private auth = inject(AuthService);
   global = inject(AppGlobal);
   storagePrefix: string = 'Private-MOVIL';
-  baseUrl = inject(AppGlobal).Api;
+  baseUrl = `${inject(AppGlobal).Api}/api`;
 
   constructor() { }
 
@@ -131,12 +131,44 @@ export class PrivateService {
   async removeStorage(key: string) {
     await Preferences.remove({ key: `${this.storagePrefix}-${key}` });
   }
-  async clearStorage() { }
+  async clearStorage() {
+    await Preferences.remove({ key: `${this.storagePrefix}-seccion` });
+    await Preferences.remove({ key: `${this.storagePrefix}-cursos` });
+    await Preferences.remove({ key: `${this.storagePrefix}-users` });
+    await Preferences.remove({ key: `${this.storagePrefix}-filtros-practicas` });
+  }
+
+  registrarAcceso(params: any): Promise<any> {
+    return this.post(`${this.baseUrl}/v3/acceso`, params);
+  }
+  async registrarSalida(direTuuid: string): Promise<any> {
+    const options: HttpOptions = {
+      url: `${this.baseUrl}/v5/salida?direTuuid=${direTuuid}`,
+      method: 'patch',
+      responseType: 'json',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    };
+
+    try {
+      const response = await CapacitorHttp.patch(options);
+
+      if (response.status == 200) {
+        return response.data;
+      }
+      else {
+        return Promise.reject(response);
+      }
+    }
+    catch { }
+  }
+
   getPreferencias(): Promise<any> {
-    return this.get(`${this.baseUrl}/api/v3/persona/preferencias`);
+    return this.get(`${this.baseUrl}/v3/persona/preferencias`);
   }
   guardarPreferencias(params: any): Promise<any> {
-    return this.post(`${this.baseUrl}/api/v3/persona/preferencias`, params);
+    return this.post(`${this.baseUrl}/v3/persona/preferencias`, params);
   }
   confirmarTelefono(params: any): Promise<any> {
     return this.post(`${this.baseUrl}/v4/persona/confirmar-telefono`, params);
@@ -151,10 +183,10 @@ export class PrivateService {
     return this.post(`${this.baseUrl}/v4/persona/actualizar-correo-secundario`, params);
   }
   getDetalleSedeV5(sedeCcod: any) {
-    return this.get(`${this.baseUrl}/api/v5/detalle-sede?sedeCcod=${sedeCcod}`);
+    return this.get(`${this.baseUrl}/v5/detalle-sede?sedeCcod=${sedeCcod}`);
   }
   descargarMenuCafeteria(params: any) {
-    return this.post(`${this.baseUrl}/api/v4/detalle-sede/menu-cafeteria`, params);
+    return this.post(`${this.baseUrl}/v4/detalle-sede/menu-cafeteria`, params);
   }
   marcarVista(apesTevento: string, apesTdescripcion?: string, apesTvalor?: string) {
     if (!this.global.Integration) {
@@ -168,7 +200,7 @@ export class PrivateService {
           apesTdispositivoLatLng: '',
           audiTusuario: 'MOVIL'
         };
-        this.post(`${this.global.Api}/api/v3/marcar-vista-cuenta`, params);
+        this.post(`${this.global.Api}/v3/marcar-vista-cuenta`, params);
       }
       catch { }
     }

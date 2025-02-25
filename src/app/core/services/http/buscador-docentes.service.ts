@@ -6,11 +6,9 @@ import { PrivateService } from './private.service';
 })
 export class BuscadorDocentesService extends PrivateService {
 
-  private apiPrefix = 'api/buscador-docentes';
-
   constructor() {
     super();
-    this.baseUrl = `${this.global.Api}/${this.apiPrefix}`;
+    this.baseUrl = `${this.global.Api}/buscador-docentes`;
   }
   getPrincipal(sedeCcod: any): Promise<any> {
     return this.get(`${this.baseUrl}/v5/principal?sedeCcod=${sedeCcod}`);

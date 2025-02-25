@@ -8,11 +8,10 @@ import { Preferences } from '@capacitor/preferences';
 export class MicrosoftTeamsService extends PrivateService {
 
   public override storagePrefix: string = 'MicrosoftTeams-MOVIL';
-  private apiPrefix = 'api/v3/microsoftteams';
 
   constructor() {
     super();
-    this.baseUrl = `${this.global.Api}/${this.apiPrefix}`;
+    this.baseUrl = `${this.global.Api}/v3/microsoftteams`;
   }
   getEventos() {
     return this.get(`${this.baseUrl}/eventos`);

@@ -7,11 +7,10 @@ import { PrivateService } from './private.service';
 export class PortalPagosService extends PrivateService {
 
   public override storagePrefix: string = 'PortalPagos-MOVIL';
-  private apiPrefix = 'api/v3/portalpagos';
 
   constructor() {
     super();
-    this.baseUrl = `${this.global.Api}/${this.apiPrefix}`;
+    this.baseUrl = `${this.global.Api}/v3/portalpagos`;
   }
 
   getPrincipal() {

@@ -35,12 +35,14 @@
     <div class="section-header">Horario de Atención</div>
     <div class="section-content">
       @for (item of data.horario.items; track $index) {
+      @if (item.dahoNvisibleDia) {
       <ion-card>
         <ion-card-content>
           <h2>{{item.diasTdesc}}</h2>
           <span>{{item.dahoThorario}}</span>
         </ion-card-content>
       </ion-card>
+      }
       }
     </div>
   </section>

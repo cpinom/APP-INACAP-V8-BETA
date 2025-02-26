@@ -35,7 +35,7 @@
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
-// @import "@ionic/angular/css/palettes/dark.system.css";
+ @import "@ionic/angular/css/palettes/dark.system.css";
 
 :root {
   /*Colores */
@@ -581,12 +581,31 @@ body {
     --width: 100%;
   }
 
+  &.paleta-1 {
+    --ion-color-primary: #b13274;
+    --ion-color-primary-rgb: 177, 50, 116;
+    --ion-color-primary-contrast: #ffffff;
+    --ion-color-primary-contrast-rgb: 255, 255, 255;
+    --ion-color-primary-shade: #9c2c66;
+    --ion-color-primary-tint: #b94782;
+  }
+  &.paleta-2 {
+    --ion-color-primary: #3f0b53;
+    --ion-color-primary-rgb: 63, 11, 83;
+    --ion-color-primary-contrast: #ffffff;
+    --ion-color-primary-contrast-rgb: 255, 255, 255;
+    --ion-color-primary-shade: #370a49;
+    --ion-color-primary-tint: #522364;
+  }
+
   &.dark {
     --color: #ffffff;
     --ion-text-color: #ffffff;
     --ion-background-color: #161619;
 
-    --ion-color-step-400: #828599;
+    --ion-color-step-100: #fff;
+    --ion-color-step-400: #FFF;
+    // --ion-color-step-400: #828599;
 
     // tabbar
     --ion-tab-bar-background: #2b2c33;
@@ -612,6 +631,10 @@ body {
       &.list-inset {
         box-shadow: 0px 4px 8px rgba(74, 78, 110, 0.15);
       }
+    }
+
+    ion-segment {
+      background: #2b2c33;
     }
   }
 }

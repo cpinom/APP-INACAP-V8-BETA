@@ -12,6 +12,15 @@ export class AlumnoService extends PrivateService {
     super();
   }
 
+  getNotificaciones(sedeCcod: string, npreTuuid: string): Promise<any> {
+    return this.get(`${this.baseUrl}/v5/alumno/notificaciones?sedeCcod=${sedeCcod}&npreTuuid=${npreTuuid}`);
+  }
+  eliminarNotificacion(params: any): Promise<any> {
+    return this.delete(`${this.baseUrl}/v5/alumno/eliminar-notificacion`, params);
+  }
+  eliminarTodasNotificaciones(params: any): Promise<any> {
+    return this.delete(`${this.baseUrl}/v5/alumno/eliminar-todas-notificaciones`, params);
+  }
   getPrincipalV5() {
     return this.get(`${this.baseUrl}/v5/alumno/principal`);
   }

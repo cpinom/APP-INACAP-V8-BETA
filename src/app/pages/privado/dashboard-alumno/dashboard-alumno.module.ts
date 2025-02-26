@@ -5,6 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { DashboardAlumnoPageRoutingModule } from './dashboard-alumno-routing.module';
 import { DashboardAlumnoPage } from './dashboard-alumno.page';
 import { ComponentsModule } from 'src/app/core/components/components.module';
+import { NotificacionesPageModule } from './notificaciones/notificaciones.module';
 
 @NgModule({
   imports: [
@@ -12,7 +13,8 @@ import { ComponentsModule } from 'src/app/core/components/components.module';
     FormsModule,
     IonicModule,
     DashboardAlumnoPageRoutingModule,
-    ComponentsModule
+    ComponentsModule,
+    NotificacionesPageModule
   ],
   declarations: [DashboardAlumnoPage]
 })

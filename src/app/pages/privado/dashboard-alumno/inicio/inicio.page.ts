@@ -234,7 +234,16 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.themeVariant = this.profile.isDarkMode() ? 'dark' : 'light';
   }
   ngAfterViewInit() { }
-  ngOnInit() { }
+  async ngOnInit() {
+    try {
+      const preferencias = await this.profile.getStorage('preferencias');
+
+      if (preferencias?.movil) {
+        this.accesosDirectos = preferencias.movil.accesos_directos;
+      }
+    }
+    catch { }
+  }
   ngOnDestroy() {
     this.scrollObs.unsubscribe();
     this.reloadObs.unsubscribe();
@@ -620,7 +629,7 @@ export class InicioPage implements OnInit, AfterViewInit {
       }
     });
   }
-  async sincronizarPreferencias(){
+  async sincronizarPreferencias() {
     let preferencias = await this.profile.getPreferencias();
 
     preferencias.movil['accesos_directos'] = this.accesosDirectos;

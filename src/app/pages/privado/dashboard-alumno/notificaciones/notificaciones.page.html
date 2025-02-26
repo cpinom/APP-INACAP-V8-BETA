@@ -1,0 +1,127 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Notificaciones</ion-title>
+    <ion-buttons slot="start" *ngIf="mostrarData && !mostrarEmpty">
+      <ion-button (click)="eliminarTodasNotificaciones()">
+        Eliminar Todo
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrar()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  @if (mostrarCargando) {
+  <div class="loaderInacap">
+    <ion-spinner name="lines" color="primary"></ion-spinner>
+  </div>
+  }
+
+  @if (mostrarData && notificaciones) {
+
+  @if (notificaciones[0].length) {
+  <section>
+    <div class="section-header">Nuevas</div>
+    <div class="section-content">
+      <ion-list>
+        <ion-item *ngFor="let item of notificaciones[0]" class="{{resolverCss(item.aptnCcod)}}">
+          <ion-icon slot="start" src="assets/icon/{{resolverIcon(item.aptnCcod)}}.svg"></ion-icon>
+          <ion-label>
+            <h2>{{item.aptnTnombre}}</h2>
+            <p [innerHTML]="item.apnaThtml" style="white-space: normal"></p>
+            <p class="fecha">{{item.apnaFcreacion}}</p>
+          </ion-label>
+          <ion-icon color="medium" slot="end" src="assets/icon/delete.svg"
+            (click)="eliminarNotificacion(item)"></ion-icon>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+  }
+  @if (notificaciones[1].length) {
+  <section>
+    <div class="section-header">Esta semana</div>
+    <div class="section-content">
+      <ion-list>
+        <ion-item *ngFor="let item of notificaciones[1]" class="{{resolverCss(item.aptnCcod)}}">
+          <ion-icon slot="start" src="assets/icon/{{resolverIcon(item.aptnCcod)}}.svg"></ion-icon>
+          <ion-label>
+            <h2>{{item.aptnTnombre}}</h2>
+            <p [innerHTML]="item.apnaThtml" style="white-space: normal"></p>
+            <p class="fecha">{{item.apnaFcreacion}}</p>
+          </ion-label>
+          <ion-icon color="medium" slot="end" src="assets/icon/delete.svg"
+            (click)="eliminarNotificacion(item)"></ion-icon>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+  }
+  @if (notificaciones[2].length) {
+  <section>
+    <div class="section-header">Este mes</div>
+    <div class="section-content">
+      <ion-list>
+        <ion-item *ngFor="let item of notificaciones[2]" class="{{resolverCss(item.aptnCcod)}}">
+          <ion-icon slot="start" src="assets/icon/{{resolverIcon(item.aptnCcod)}}.svg"></ion-icon>
+          <ion-label>
+            <h2>{{item.aptnTnombre}}</h2>
+            <p [innerHTML]="item.apnaThtml" style="white-space: normal"></p>
+            <p class="fecha">{{item.apnaFcreacion}}</p>
+          </ion-label>
+          <ion-icon color="medium" slot="end" src="assets/icon/delete.svg"
+            (click)="eliminarNotificacion(item)"></ion-icon>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+  }
+  @if (notificaciones[3].length) {
+  <section>
+    <div class="section-header">Anteriores</div>
+    <div class="section-content">
+      <ion-list>
+        <ion-item *ngFor="let item of notificaciones[3]" class="{{resolverCss(item.aptnCcod)}}">
+          <ion-icon slot="start" src="assets/icon/{{resolverIcon(item.aptnCcod)}}.svg"></ion-icon>
+          <ion-label>
+            <h2>{{item.aptnTnombre}}</h2>
+            <p [innerHTML]="item.apnaThtml" style="white-space: normal"></p>
+            <p class="fecha">{{item.apnaFcreacion}}</p>
+          </ion-label>
+          <ion-icon color="medium" slot="end" src="assets/icon/delete.svg"
+            (click)="eliminarNotificacion(item)"></ion-icon>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+  }
+  @if (mostrarEmpty) {
+  <section class="first">
+    <div class="section-content">
+      <div class="empty-state">
+        <div>
+          <ion-icon src="assets/icon/notifications_none.svg"></ion-icon>
+          <p>Sin notificaciones destacadas en este momento.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  }
+
+  }
+  @if (mostrarData && !notificaciones) {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Información no disponible en este momento.</p>
+      <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+    </div>
+  </section>
+  }
+
+</ion-content>

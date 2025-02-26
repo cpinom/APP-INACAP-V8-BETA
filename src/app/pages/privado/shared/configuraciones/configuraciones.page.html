@@ -9,11 +9,22 @@
 
 <ion-content>
 
+  <ion-list inset="true" class="card-list">
+    <ion-item detail="false">
+      <ion-icon slot="start" src="assets/icon/settings.svg" class="rounded variant-1"></ion-icon>
+      <ion-label>
+        <h2>Configuraciones</h2>
+        <p>Modifica el aspecto visual de la aplicación.</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
   <section>
     <div class="section-header">Accesibilidad</div>
     <div class="section-content">
       <ion-list>
         <ion-item>
+          <ion-icon slot="start" src="assets/icon/text_increase.svg"></ion-icon>
           <ion-toggle [(ngModel)]="fontSizeMode" (ngModelChange)="toggleFontSizeSize()" color="success">
             Tamaño Letra
           </ion-toggle>
@@ -25,6 +36,7 @@
           <ion-icon slot="end" src="assets/icon/text_increase.svg"></ion-icon>
         </ion-item>
         <ion-item [disabled]="darkMode">
+          <ion-icon slot="start" src="assets/icon/contrast.svg"></ion-icon>
           <ion-toggle [(ngModel)]="contrastMode" (ngModelChange)="toggleContrastMode()" color="success">
             Aumentar Contraste
           </ion-toggle>
@@ -78,10 +90,19 @@
 
   <section>
     <div class="section-header">Colores</div>
-    <div class="section-content" style="padding: 15px;">
-      <ion-radio-group class="colores" [(ngModel)]="color" mode="md" (ionChange)="colorChanged($event)">
-        <ion-radio [class]="color" [value]="color" *ngFor="let color of colores"></ion-radio>
-      </ion-radio-group>
+    <div class="section-content">
+      <ion-list>
+        <ion-radio-group [(ngModel)]="color" (ionChange)="colorChanged($event)">
+          @for (item of colores; track $index) {
+          <ion-item>
+            <ion-icon slot="start" src="assets/icon/palette.svg"></ion-icon>
+            <ion-radio [value]="item">
+              Paleta {{$index + 1}}
+            </ion-radio>
+          </ion-item>
+          }
+        </ion-radio-group>
+      </ion-list>
     </div>
   </section>
 

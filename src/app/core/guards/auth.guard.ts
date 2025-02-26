@@ -12,9 +12,11 @@ export const authGuard: CanMatchFn = async () => {
   const events = inject(EventsService);
 
   let loginResult = false;
+  let loginPrevious = false;
 
   if (await authService.isAuthenticated()) {
     loginResult = true;
+    loginPrevious = true;
   }
   else {
     loginResult = await authService.presentLoginModal();
@@ -28,24 +30,29 @@ export const authGuard: CanMatchFn = async () => {
   const hasProfile = profile !== null;
 
   if (hasProfile) {
-    const auth = await authService.getAuth();
-    const user = auth.user;
-    const loading = await dialog.showLoading({ message: 'Cargando preferencias...' });
-    const id = await Device.getId();
-    const diacTtipo = profile.replace('/', '');
-    const data: Ingreso = {
-      uuid: id.identifier,
-      sedeCcod: user.sedeUsuario,
-      carrCcod: '',
-      diacTtipo: diacTtipo,
-      time: (new Date()).getTime(),
-      callback: async () => {
-        await authService.handleProfileSelection(profile);
-        await loading.dismiss();
-      }
-    };
+    if (!loginPrevious) {
+      const auth = await authService.getAuth();
+      const user = auth.user;
+      const loading = await dialog.showLoading({ message: 'Cargando preferencias...' });
+      const id = await Device.getId();
+      const diacTtipo = profile.replace('/', '');
+      const data: Ingreso = {
+        uuid: id.identifier,
+        sedeCcod: user.sedeUsuario,
+        carrCcod: '',
+        diacTtipo: diacTtipo,
+        time: (new Date()).getTime(),
+        callback: async () => {
+          await authService.handleProfileSelection(profile);
+          await loading.dismiss();
+        }
+      };
 
-    events.onLogin.next(data);
+      events.onLogin.next(data);
+    }
+    else {
+      await authService.handleProfileSelection(profile);
+    }
   }
 
   return loginResult;

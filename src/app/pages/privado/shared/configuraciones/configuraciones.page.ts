@@ -294,23 +294,23 @@ export class ConfiguracionesPage implements OnInit {
     if (this.color) {
       bodyElement.classList.toggle(this.color, true);
 
-      if (this.pt.is('mobileweb')) {
-        if (this.color == 'blue') {
-          this.snackbar.showToast('Blue CuraÇao', 300,)
-        }
-        if (this.color == 'purple') {
-          this.snackbar.showToast('Ramazzoti Violetto', 300)
-        }
-        if (this.color == 'violet') {
-          this.snackbar.showToast('Ron Coquette', 300)
-        }
-        if (this.color == 'orange') {
-          this.snackbar.showToast('Tequila Sunries', 300)
-        }
-        if (this.color == 'green') {
-          this.snackbar.showToast('Mojito menta', 300)
-        }
-      }
+      // if (this.pt.is('mobileweb')) {
+      //   if (this.color == 'blue') {
+      //     this.snackbar.showToast('Blue CuraÇao', 300,)
+      //   }
+      //   if (this.color == 'purple') {
+      //     this.snackbar.showToast('Ramazzoti Violetto', 300)
+      //   }
+      //   if (this.color == 'violet') {
+      //     this.snackbar.showToast('Ron Coquette', 300)
+      //   }
+      //   if (this.color == 'orange') {
+      //     this.snackbar.showToast('Tequila Sunries', 300)
+      //   }
+      //   if (this.color == 'green') {
+      //     this.snackbar.showToast('Mojito menta', 300)
+      //   }
+      // }
     }
 
     await this.saveColor();

@@ -10,11 +10,6 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-  <ion-card color="white" class="primary-card">
-    <ion-card-header>
-      <ion-card-title>Mis Eventos</ion-card-title>
-    </ion-card-header>
-  </ion-card>
 </ion-header>
 
 <ion-content>
@@ -23,13 +18,70 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
+  <ion-list inset="true" class="card-list">
+    <ion-item detail="false">
+      <ion-icon slot="start" src="assets/icon/teams.svg" class="rounded variant-5"></ion-icon>
+      <ion-label>
+        <h2>Microsoft Teams</h2>
+        <p>Plataforma para clases y reuniones online.</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  @if (mostrarCargando) {
+  <div class="loaderInacap">
+    <ion-spinner name="lines" color="primary"></ion-spinner>
+  </div>
+  }
+
+  @if (mostrarData && eventos) {
+
+  @if (eventos.length) {
+  <ion-list inset="true">
+    @for (item of eventos; track $index) {
+    <ion-item>
+      <ion-label (click)="detalleEvento(item)">
+        <h2>{{item.titulo}}</h2>
+        <p>{{resolverFecha(item.fecha)}}</p>
+      </ion-label>
+      <ion-button fill="outline" color="primary" size="small" slot="end" (click)="unirseTap(item)">Unirse</ion-button>
+    </ion-item>
+    }
+  </ion-list>
+  }
+  @else {
+  <section class="empty-state">
+    <div>
+      <ion-icon class="folder" src="assets/images/folder.svg"></ion-icon>
+      <p>No hay eventos en este momento.</p>
+    </div>
+  </section>
+  }
+
+  <ion-infinite-scroll #infinite threshold="100px" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles"
+      loadingText="Cargando eventos..."></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+  }
+
+  @if (mostrarData && !eventos) {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Información no disponible en este momento.</p>
+      <ion-button color="primary" shape="round" (click)="recargar()">Recargar</ion-button>
+    </div>
+  </section>
+  }
+
   <!-- <section style="margin-top: 15px" *ngIf="mostrarData">
     <ion-button color="primary" shape="round" expand="block" (click)="nuevoEvento()">
       Nuevo Evento
     </ion-button>
   </section> -->
 
-  <div class="loaderInacap" *ngIf="!hideLoadingSpinner">
+  <!-- <div class="loaderInacap" *ngIf="!hideLoadingSpinner">
     <ion-spinner name="lines" color="primary"></ion-spinner>
   </div>
 
@@ -52,6 +104,6 @@
       <ion-icon src="assets/icon/search.svg"></ion-icon>
       <p>No tienes eventos en este momento.</p>
     </div>
-  </section>
+  </section> -->
 
 </ion-content>

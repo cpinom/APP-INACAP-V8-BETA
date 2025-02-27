@@ -65,7 +65,7 @@ export class AcuerdoTutorialPage implements OnInit {
   }
   async enviar() {
     if (this.form.valid) {
-      const confirmar = await this.confirmarSolicitud('¿Esta seguro que desea enviar el Acuerdo Atención Tutorial?');
+      const confirmar = await this.confirmarSolicitud('¿Estás seguro de que deseas enviar el Acuerdo de Atención Tutorial?');
       const loading = await this.dialog.showLoading({ message: 'Procesando...' });
 
       if (!confirmar) return;

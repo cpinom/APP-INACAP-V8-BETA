@@ -250,7 +250,7 @@ export class AgendarHoraPage implements OnInit {
     this.submitted = true;
 
     if (this.resumenForm.valid) {
-      const confirmar = await this.confirmar('¿Estas seguro de reservar la Clínica seleccionada?');
+      const confirmar = await this.confirmar('¿Estás seguro de que deseas reservar la clínica seleccionada?');
 
       if (confirmar) {
         this.submitted = false;

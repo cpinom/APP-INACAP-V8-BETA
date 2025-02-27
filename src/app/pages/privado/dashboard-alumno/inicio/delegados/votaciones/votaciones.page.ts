@@ -85,7 +85,7 @@ export class VotacionesPage implements OnInit, AfterViewInit {
   }
   async votar() {
     if (this.votoPersona) {
-      const confirmar = await this.confirmar('¿Esta seguro que desea emitir su voto?')
+      const confirmar = await this.confirmar('¿Estás seguro de que deseas emitir tu voto?')
       const loading = await this.dialog.showLoading({ message: 'Enviando Voto...' });
 
       if (!confirmar) return;
@@ -106,12 +106,12 @@ export class VotacionesPage implements OnInit, AfterViewInit {
 
         if (result.success) {
           if (result.code == 1) {
-            this.presentarOk('Su voto ha sido enviado existosamente.');
+            this.presentarOk('Tu voto ha sido enviado existosamente.');
             return;
           }
         }
 
-        this.snackbar.showToast('No se pudo procesar su solicitud. Vuelva a intentar.');
+        this.snackbar.showToast('No se pudo procesar tu solicitud. Vuelve a intentar.');
       }
       catch (error: any) {
         await this.error.handle(error);

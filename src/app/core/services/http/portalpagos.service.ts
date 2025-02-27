@@ -10,7 +10,7 @@ export class PortalPagosService extends PrivateService {
 
   constructor() {
     super();
-    this.baseUrl = `${this.global.Api}/v3/portalpagos`;
+    this.baseUrl += `/v3/portalpagos`;
   }
 
   getPrincipal() {

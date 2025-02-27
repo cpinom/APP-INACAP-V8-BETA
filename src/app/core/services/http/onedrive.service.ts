@@ -11,7 +11,7 @@ export class OneDriveService extends PrivateService {
 
   constructor() {
     super();
-    this.baseUrl = `${this.global.Api}/onedrive`;
+    this.baseUrl += `/onedrive`;
   }
   getPrincipal() {
     return this.get(`${this.baseUrl}/v3/principal`);

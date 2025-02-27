@@ -4,15 +4,31 @@
       <ion-back-button text="Servicios" defaultHref="/dashboard-alumno/servicios"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
-  <ion-card class="primary-card" color="white">
+  <!-- <ion-card class="primary-card" color="white">
     <ion-card-header>
       <ion-card-title>Situaciones Pendientes</ion-card-title>
     </ion-card-header>
     <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar>
-  </ion-card>
+  </ion-card> -->
 </ion-header>
 
 <ion-content>
+
+  <ion-list inset="true" class="card-list">
+    <ion-item detail="false">
+      <ion-icon slot="start" src="assets/icon/alarm.svg" class="rounded variant-1"></ion-icon>
+      <ion-label>
+        <h2>Situaciones Pendientes</h2>
+        <p>Restricciones que limitan el acceso a servicios académicos por incumplimientos o deudas.</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  @if (mostrarCargando) {
+  <div class="loaderInacap">
+    <ion-spinner name="lines" color="primary"></ion-spinner>
+  </div>
+  }
 
   <ng-container *ngIf="mostrarData">
     <ion-list inset="true" *ngIf="bloqueos && bloqueos.length > 0">
@@ -21,6 +37,7 @@
           <h2>{{item.tbloTdesc}}</h2>
           <p>{{item.bloqFbloqueo}}</p>
           <p>{{item.bloqTobservacion}}</p>
+          <p class="estado-actividad {{item.ebloCcod == 1 ? 'danger' : 'primary'}}">{{item.ebloTdesc}}</p>
         </ion-label>
       </ion-item>
     </ion-list>

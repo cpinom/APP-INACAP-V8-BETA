@@ -7,81 +7,81 @@
   <ion-card class="primary-card" color="white">
     <ion-card-header>
       <ion-card-title>Detalle Reserva</ion-card-title>
-      <ion-card-subtitle style="display: flex; align-items: center;" *ngIf="mostrarSuccess">
-        <ion-icon name="checkmark-circle-outline" color="success" style="margin-right: 5px;"></ion-icon>
-        <ion-label>Agendado</ion-label>
-      </ion-card-subtitle>
+      @if (mostrarSuccess) {
+      <p class="estado-actividad success">Agendado</p>
+      }
     </ion-card-header>
-    <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar>
   </ion-card>
 </ion-header>
 
 <ion-content>
 
+  @if (mostrarCargando) {
+  <div class="loaderInacap">
+    <ion-spinner name="lines" color="primary"></ion-spinner>
+  </div>
+  }
+
   <div class="qr-code" [class.hide]="data && !data.ticket_code">
     <div #qrcode></div>
   </div>
 
-  <ng-container *ngIf="mostrarData && data">
-
-    <section>
-      <div class="section-header">Información de reserva</div>
-      <div class="section-content">
-        <ion-list>
-          <ion-item>
-            <ion-label>
-              <p class="label">Tipo de espacio</p>
-              <p class="detail">{{data?.category?.name||'N/A'}}</p>
-            </ion-label>
-          </ion-item>
-          <ion-item>
-            <ion-label>
-              <p class="label">Tipo de reserva</p>
-              <p class="detail">{{data?.service?.name||'N/A'}}</p>
-            </ion-label>
-          </ion-item>
-          <ion-item>
-            <ion-label>
-              <p class="label">Espacio</p>
-              <p class="detail">{{data?.provider?.name||'N/A'}}</p>
-            </ion-label>
-          </ion-item>
-          <ion-item>
-            <ion-label>
-              <p class="label">Fecha</p>
-              <p class="detail">{{resolverFecha(data?.start_datetime)}}</p>
-            </ion-label>
-          </ion-item>
-          <ion-item>
-            <ion-label>
-              <p class="label">Hora</p>
-              <p class="detail">{{resolverHora(data?.start_datetime)}}</p>
-            </ion-label>
-          </ion-item>
-          <ion-item *ngFor="let item of data?.additional_fields">
-            <ion-label>
-              <p class="label">{{item?.field_name}}</p>
-              <p class="detail">{{item?.value||'N/A'}}</p>
-            </ion-label>
-          </ion-item>
-        </ion-list>
-      </div>
-    </section>
-
-    <div class="ion-text-center" style="margin-bottom: 20px;">
-      <ion-button (click)="cancelar()" color="primary" expand="block" shape="round" style="margin-top: 10px;">
-        Cancelar Reserva
-      </ion-button>
+  @if (mostrarData && data) {
+  <section>
+    <div class="section-header">Información de reserva</div>
+    <div class="section-content">
+      <ion-list class="detalle">
+        <ion-item>
+          <ion-label>
+            <h2>Tipo de espacio: <span>{{data?.category?.name||'N/A'}}</span></h2>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h2>Tipo de reserva: <span>{{data?.service?.name||'N/A'}}</span></h2>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h2>Espacio: <span>{{data?.provider?.name||'N/A'}}</span></h2>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h2>Fecha: <span>{{resolverFecha(data?.start_datetime)}}</span></h2>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h2>Hora: <span>{{resolverHora(data?.start_datetime)}}</span></h2>
+          </ion-label>
+        </ion-item>
+        @for (item of data?.additional_fields; track $index) {
+        <ion-item>
+          <ion-label>
+            <h2>{{item?.field_name}}: <span>{{item?.value||'N/A'}}</span></h2>
+          </ion-label>
+        </ion-item>
+        }
+      </ion-list>
     </div>
+  </section>
+  <div class="ion-text-center" style="margin: 15px;">
+    <ion-button (click)="cancelar()" fill="outline" color="danger" expand="block" shape="round"
+      style="margin-top: 10px;">
+      Cancelar Reserva
+    </ion-button>
+  </div>
+  }
 
-  </ng-container>
-
-  <section *ngIf="mostrarData && !data" class="empty-state">
+  @if (mostrarData && !data) {
+  <section class="empty-state">
     <div>
       <ion-icon src="assets/icon/info.svg"></ion-icon>
       <p>Información no disponible en este momento.</p>
       <ion-button color="primary" shape="round" (click)="cargar()">Recargar</ion-button>
     </div>
   </section>
+  }
 
 </ion-content>

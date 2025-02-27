@@ -4,14 +4,24 @@
       <ion-back-button text="Inicio" [defaultHref]="backUrl"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
-  <ion-card class="primary-card" color="white">
+  <!-- <ion-card class="primary-card" color="white">
     <ion-card-header>
       <ion-card-title>OneDrive</ion-card-title>
     </ion-card-header>
-  </ion-card>
+  </ion-card> -->
 </ion-header>
 
 <ion-content>
+
+  <ion-list inset="true" class="card-list">
+    <ion-item detail="false">
+      <ion-icon slot="start" src="assets/icon/cloud.svg" class="rounded variant-2"></ion-icon>
+      <ion-label>
+        <h2>OneDrive</h2>
+        <p>Almacenamiento en la nube para guardar y compartir archivos tus archivos.</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
 
   @if (mostrarCargando) {
   <div class="loaderInacap">

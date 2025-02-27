@@ -26,7 +26,7 @@ export class DisponibilidadPage implements OnInit {
 
   async solicitar(data: any) {
     const actionSheet = await this.action.create({
-      header: '¿Está seguro de enviar esta solicitud?',
+      header: '¿Estás seguro de que deseas enviar esta solicitud?',
       buttons: [
         {
           text: 'Continuar',
@@ -52,14 +52,14 @@ export class DisponibilidadPage implements OnInit {
       const result = await this.api.solicitarRecuperacionV6(params);
 
       if (result.success) {
-        this.snackbar.showToast('Solicitud registrada correctamente.', 3000, 'success');
+        this.snackbar.showToast('Tu solicitud ha sido registrada correctamente.', 3000, 'success');
         this.modalCtrl.dismiss({ action: 'reload' });
       }
       else if (result.message) {
         this.snackbar.showToast(result.message, 2000, 'danger');
       }
       else {
-        this.snackbar.showToast('Su solicutud no pudo ser procesada.', 2000, 'danger');
+        this.snackbar.showToast('Tu solicitud no pudo ser procesada.', 2000, 'danger');
       }
     }
     catch (error: any) {

@@ -151,6 +151,7 @@ export class NuevaReservaPage implements OnInit {
     }
   }
   seleccionarEspacio(hora: string) {
+    debugger
     this.hora?.setValue(hora);
     this.myStepper?.next();
   }
@@ -284,7 +285,7 @@ export class NuevaReservaPage implements OnInit {
         await this.presentError(result.message);
       }
       else {
-        await this.presentError('No pudimos crear la reserva, vuelva a intentar.');
+        throw Error();
       }
     }
     catch (error: any) {
@@ -293,7 +294,7 @@ export class NuevaReservaPage implements OnInit {
         return;
       }
 
-      await this.presentError('No pudimos crear la reserva, vuelva a intentar.');
+      await this.presentError('No pudimos crear la reserva. Vuelve a intentarlo.');
     }
     finally {
       await loading.dismiss();

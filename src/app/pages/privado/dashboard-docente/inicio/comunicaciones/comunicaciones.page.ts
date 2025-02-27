@@ -87,7 +87,7 @@ export class ComunicacionesPage implements OnInit {
   async enviar() {
     debugger
     if (this.form.valid) {
-      const confirmar = await this.confirmar('¿Estas seguro que deseas enviar el Mensaje?');
+      const confirmar = await this.confirmar('¿Estás seguro de que deseas enviar el mensaje?');
       debugger
     }
     else {

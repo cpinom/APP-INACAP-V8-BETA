@@ -48,7 +48,7 @@ export class ModalInscripcionPage implements OnInit {
   async confirmarInscripcion() {
     return new Promise((resolve) => {
       this.action.create({
-        subHeader: '¿Estás seguro que deseas inscribirte en la Actividad seleccionada?',
+        subHeader: '¿Estás seguro de que deseas inscribirte en la actividad seleccionada?',
         header: 'Inscripción Actividad',
         buttons: [
           {

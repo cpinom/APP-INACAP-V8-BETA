@@ -12,12 +12,21 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ion-card class="primary-card" color="white">
-    <ion-card-header>
-      <ion-card-title>Visualización de Pagos</ion-card-title>
-    </ion-card-header>
-    <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar>
-  </ion-card>
+  <ion-list inset="true" class="card-list">
+    <ion-item detail="false">
+      <ion-icon slot="start" src="assets/icon/credit_card.svg" class="rounded variant-2"></ion-icon>
+      <ion-label>
+        <h2>Visualización de Pagos</h2>
+        <p>Mantente actualizado sobre tu información cada semestre.</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  @if (mostrarCargando) {
+  <div class="loaderInacap">
+    <ion-spinner name="lines" color="primary"></ion-spinner>
+  </div>
+  }
 
   <ng-container *ngIf="mostrarData && info">
 
@@ -25,8 +34,8 @@
       <div class="section-content">
         <ion-list>
           <ion-item>
-            <!-- <ion-label position="stacked">Institución</ion-label> -->
-            <ion-input label="Institución" labelPlacement="stacked" type="text" [value]="info.institucion" [readonly]="true"></ion-input>
+            <ion-input label="Institución" labelPlacement="stacked" type="text" [value]="info.institucion"
+              [readonly]="true"></ion-input>
           </ion-item>
         </ion-list>
       </div>

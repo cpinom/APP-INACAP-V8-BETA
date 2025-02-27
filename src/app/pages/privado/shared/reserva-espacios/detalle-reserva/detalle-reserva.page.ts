@@ -1,6 +1,6 @@
 import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { ActionSheetController, AlertController, LoadingController } from '@ionic/angular';
+import { ActionSheetController } from '@ionic/angular';
 import * as moment from 'moment';
 import { DialogService } from 'src/app/core/services/dialog.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
@@ -30,16 +30,15 @@ export class DetalleReservaPage implements OnInit {
   private events = inject(EventsService);
   private error = inject(ErrorHandlerService);
 
-
   constructor() { }
 
-  ngOnInit() {
+  async ngOnInit() {
     const params = this.router.getCurrentNavigation()?.extras.state;
 
     if (params) {
       this.id = params['id'];
       this.mostrarSuccess = params['mostrarSuccess'] === true;
-      this.cargar();
+      await this.cargar();
     }
   }
   generarCodigoQR() {
@@ -115,7 +114,7 @@ export class DetalleReservaPage implements OnInit {
     return new Promise((resolve) => {
       this.action.create({
         header: 'Cancelar Reserva',
-        subHeader: '¿Esta seguro que desea cancelar la reserva?',
+        subHeader: '¿Estás seguro de que deseas cancelar la reserva?',
         buttons: [
           {
             text: 'Cancelar',

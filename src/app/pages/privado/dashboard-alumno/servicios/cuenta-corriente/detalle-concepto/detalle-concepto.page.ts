@@ -26,7 +26,8 @@ export class DetalleConceptoPage implements OnInit {
   async cerrar() {
     await this.dialog.dismissModal();
   }
-  async descargar(item:any) {
+  async descargar(item: any) {
+    debugger
     const loading = await this.dialog.showLoading({ message: 'Descargando...' });
     const params = {
       ingrNcorr: item.ingreso,
@@ -35,9 +36,12 @@ export class DetalleConceptoPage implements OnInit {
 
     try {
       const result = await this.api.descargarDocumento(params);
-      const fileName = 'documento_' + item.ingreso + '.pdf';
+
+      await loading.dismiss();
 
       if (result.success) {
+        const fileName = 'documento_' + item.ingreso + '.pdf';
+
         if (this.pt.is('mobileweb')) {
           const linkSource = `data:application/pdf;base64,${result.data}`;
           const downloadLink = document.createElement('a');
@@ -58,14 +62,17 @@ export class DetalleConceptoPage implements OnInit {
           });
         }
       }
+      else {
+        throw Error();
+      }
     }
     catch (error: any) {
-      if (error.status == 404) {
-        await this.snackbar.showToast('Documento no disponible', 2000);
-      }
-      else {
+      if (error && error.status == 401) {
         await this.error.handle(error);
+        return;
       }
+
+      await this.snackbar.showToast('Documento no disponible', 2000);
     }
     finally {
       await loading.dismiss();

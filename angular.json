@@ -46,7 +46,10 @@
               "src/theme/variables.scss",
               "./node_modules/@mobiscroll/angular/dist/css/mobiscroll.min.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/scripts/qrcode.js",
+              "src/scripts/face-api.js"
+            ]
           },
           "configurations": {
             "production": {

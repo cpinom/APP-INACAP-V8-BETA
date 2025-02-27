@@ -1,8 +1,8 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { UtilsService } from 'src/app/core/services/utils.service';
 import { Router } from '@angular/router';
 import { AppLauncher } from '@capacitor/app-launcher';
-import { IonRouterOutlet, NavController } from '@ionic/angular';
+import { IonInfiniteScroll, IonRouterOutlet } from '@ionic/angular';
 import { DetalleEventoPage } from './detalle-evento/detalle-evento.page';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import * as moment from 'moment';
@@ -11,11 +11,6 @@ import { MicrosoftTeamsService } from 'src/app/core/services/http/mteams.service
 import { VISTAS_ALUMNO } from 'src/app/core/constants/alumno';
 import { VISTAS_DOCENTE } from 'src/app/core/constants/docente';
 
-enum Tab {
-  equipos = '1',
-  eventos = '0'
-}
-
 @Component({
   selector: 'app-microsoft-teams',
   templateUrl: './microsoft-teams.page.html',
@@ -23,18 +18,18 @@ enum Tab {
 })
 export class MicrosoftTeamsPage implements OnInit {
 
+  @ViewChild(IonInfiniteScroll) infiniteItem!: IonInfiniteScroll;
   eventos!: any[];
-  equipos!: any[];
-  tabModel = Tab.eventos;
   mostrarData = false;
-  hideLoadingSpinner = false;
+  mostrarCargando = true;
+  pageSize = 30;
+  skip = 0;
 
   private api = inject(MicrosoftTeamsService);
   private utils = inject(UtilsService);
   private router = inject(Router);
   private dialog = inject(DialogService);
   private routerOutlet = inject(IonRouterOutlet);
-  private nav = inject(NavController);
   private error = inject(ErrorHandlerService);
 
   constructor() { }
@@ -43,33 +38,52 @@ export class MicrosoftTeamsPage implements OnInit {
     await this.cargar();
     this.api.marcarVista(this.Vista);
   }
-  recargar(e: any) {
-    this.cargar(true).finally(() => {
+  recargar(e?: any) {
+    this.mostrarCargando = e ? false : true;
+    this.mostrarData = false;
+    this.skip = 0;
+    this.pageSize = 30;
+    this.eventos = [];
+    this.cargar().finally(() => {
       e && e.target.complete();
     });
   }
-  async cargar(forzar?: boolean) {
+  async cargar() {
     try {
-      let eventos = await this.api.getStorage('eventos');
+      const result = await this.api.getEventos(this.pageSize, this.skip);
 
-      if (eventos && !forzar) {
-        this.eventos = eventos;
+      if (result.success) {
+        if (!this.eventos) {
+          this.eventos = result.eventos;
+        }
+        else {
+          this.eventos = [...this.eventos, ...result.eventos];
+        }
+
+        if (this.infiniteItem) {
+          this.infiniteItem.disabled = !(result.eventos.length == this.pageSize);
+        }
       }
       else {
-        this.eventos = await this.api.getEventos();
+        throw Error();
       }
-
-      await this.api.setStorage('eventos', this.eventos);
     }
     catch (error: any) {
-      this.nav.navigateBack(this.backUrl)
-      await this.error.handle(error);
-      return;
+      if (error && error.status == 401) {
+        this.error.handle(error);
+        return;
+      }
     }
     finally {
-      this.hideLoadingSpinner = true;
+      this.mostrarCargando = false;
       this.mostrarData = true;
     }
+  }
+  loadData(e: any) {
+    this.skip = this.pageSize + this.skip;
+    this.cargar().finally(() => {
+      e.target.complete();
+    });
   }
   async detalleEvento(data: any) {
     const modal = await this.dialog.showModal({
@@ -82,11 +96,9 @@ export class MicrosoftTeamsPage implements OnInit {
 
     modal.onWillDismiss().then(async (result: any) => {
       if (result.data) {
-        await this.cargar(true);
+        this.recargar();
       }
     });
-
-    await modal.present();
   }
   async unirseTap(evento: any) {
     const appUrl = evento.url;
@@ -99,13 +111,12 @@ export class MicrosoftTeamsPage implements OnInit {
   }
   async appTap() {
     const appUrl = 'https://teams.microsoft.com/';
-    // const result = await AppLauncher.canOpenUrl({ url: appUrl });
 
     try {
       await AppLauncher.openUrl({ url: appUrl });
     }
     catch {
-      this.utils.openLink(appUrl);
+      await this.utils.openLink(appUrl);
     }
   }
   resolverFecha(fecha: any) {

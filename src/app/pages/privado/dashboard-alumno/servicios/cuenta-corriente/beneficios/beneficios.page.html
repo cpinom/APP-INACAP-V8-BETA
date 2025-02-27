@@ -1,7 +1,8 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button text="Cuenta Corriente" defaultHref="/dashboard-alumno/servicios/cuenta-corriente"></ion-back-button>
+      <ion-back-button text="Cuenta Corriente"
+        defaultHref="/dashboard-alumno/servicios/cuenta-corriente"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -12,12 +13,14 @@
     <ion-card-header>
       <ion-card-title>Detalle Beneficios</ion-card-title>
     </ion-card-header>
-    <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar>
   </ion-card>
 
-  <!-- <div class="loaderInacap" *ngIf="!hideLoadingSpinner">
+  @if (mostrarCargando) {
+  <div class="loaderInacap">
     <ion-spinner name="lines" color="primary"></ion-spinner>
-  </div> -->
+  </div>
+  }
+
 
   <ng-container *ngIf="mostrarData">
 
@@ -26,22 +29,24 @@
         <div class="section-content">
           <ion-list>
             <ion-item>
-              <!-- <ion-label position="stacked">Institución</ion-label> -->
-              <ion-select label="Institución" labelPlacement="stacked" formControlName="institucion" okText="Aceptar" cancelText="Cancelar">
+              <ion-select label="Institución" labelPlacement="stacked" formControlName="institucion" okText="Aceptar"
+                cancelText="Cancelar">
                 <ion-select-option [value]="item.instCcod" *ngFor="let item of instituciones">{{item.instTrazonSocial}}
                 </ion-select-option>
               </ion-select>
             </ion-item>
             <ion-item>
               <!-- <ion-label position="stacked">Semestre</ion-label> -->
-              <ion-select label="Semestre" labelPlacement="stacked" formControlName="semestre" okText="Aceptar" cancelText="Cancelar">
+              <ion-select label="Semestre" labelPlacement="stacked" formControlName="semestre" okText="Aceptar"
+                cancelText="Cancelar">
                 <ion-select-option [value]="1">Actual</ion-select-option>
                 <ion-select-option [value]="2">Todos</ion-select-option>
               </ion-select>
             </ion-item>
             <ion-item>
               <!-- <ion-label position="stacked">Beneficio</ion-label> -->
-              <ion-select label="Beneficio" labelPlacement="stacked" formControlName="beneficio" okText="Aceptar" cancelText="Cancelar" placeholder="Seleccione...">
+              <ion-select label="Beneficio" labelPlacement="stacked" formControlName="beneficio" okText="Aceptar"
+                cancelText="Cancelar" placeholder="Seleccione...">
                 <ion-select-option [value]="item.beneficio" *ngFor="let item of beneficios">{{item.filtro}}
                 </ion-select-option>
               </ion-select>

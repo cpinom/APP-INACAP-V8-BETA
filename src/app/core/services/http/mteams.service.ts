@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { PrivateService } from './private.service';
-import { Preferences } from '@capacitor/preferences';
 
 @Injectable({
   providedIn: 'root'
@@ -11,21 +10,13 @@ export class MicrosoftTeamsService extends PrivateService {
 
   constructor() {
     super();
-    this.baseUrl = `${this.global.Api}/v3/microsoftteams`;
+    this.baseUrl += `/microsoftteams/v4`;
   }
-  getEventos() {
-    return this.get(`${this.baseUrl}/eventos`);
+  getEventos(pageSize: any, skip: any) {
+    return this.get(`${this.baseUrl}/eventos?pageSize=${pageSize}&skip=${skip}`);
   }
-  agregarEvento(params: any) {
-    return this.post(`${this.baseUrl}/crear-evento`, params);
-  }
-  eliminarEvento(params: any) {
-    return this.post(`${this.baseUrl}/eliminar-evento`, params);
-  }
-  override async clearStorage() {
-    await Preferences.remove({ key: `${this.storagePrefix}-equipos` });
-    await Preferences.remove({ key: `${this.storagePrefix}-eventos` });
-    await Preferences.remove({ key: `${this.storagePrefix}-cursos` });
+  eliminarEvento(eventoId: any) {
+    return this.delete(`${this.baseUrl}/eliminar-evento?eventoId=${eventoId}`);
   }
 
 }

@@ -8,7 +8,7 @@ const routes: Routes = [
     component: OnedrivePage
   },
   {
-    path: 'folder-content',
+    path: ':folderId/:folderName',
     loadChildren: () => import('./folder-content/folder-content.module').then( m => m.FolderContentPageModule)
   }
 ];

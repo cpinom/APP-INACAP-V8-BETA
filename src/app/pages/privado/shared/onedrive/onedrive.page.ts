@@ -60,7 +60,7 @@ export class OnedrivePage implements OnInit {
       if (result.success) {
         const { data } = result;
         this.driveId = data.driveId;
-        this.items = data.items;
+        this.items = this.resolverItems(data.items);
         await this.api.setStorage('driveId', this.driveId)
       }
       else {
@@ -78,16 +78,22 @@ export class OnedrivePage implements OnInit {
       this.mostrarData = true;
     }
   }
-  recargar(e: any) {
+  async recargar(e: any) {
     this.mostrarCargando = false;
-    this.cargar(true).finally(() => {
+
+    try {
+      await this.cargar(true);
+    }
+    catch {
+      await this.snackbar.showToast('No se pudo recargar la lista.', 3000, 'danger');
+    }
+    finally {
       e && e.target.complete();
-    })
+    }
   }
   async itemTap(item: any) {
     if (item.folder) {
-      const params = { id: item.id, driveId: this.driveId, name: item.name }
-      await this.nav.navigateForward(`${this.router.url}/folder-content`, { state: params });
+      await this.nav.navigateForward(`${this.router.url}/${item.id}/${item.name}`);
     }
     else if (item.file) {
       await this.descargarTap(item);
@@ -157,7 +163,7 @@ export class OnedrivePage implements OnInit {
         const result = await this.api.crearCarpeta({ carpeta: nombreCarpeta });
 
         if (result.success) {
-          this.items = result.items;
+          this.items = this.resolverItems(result.items);
         }
         else {
           throw Error();
@@ -191,7 +197,7 @@ export class OnedrivePage implements OnInit {
         });
 
         if (result.success) {
-          this.items = result.items;
+          this.items = this.resolverItems(result.items);
         }
         else {
           throw Error();
@@ -293,7 +299,7 @@ export class OnedrivePage implements OnInit {
             loading.message = `(${progreso}%) procesando....`;
           }
           else if (response.code == 200) {
-            this.items = response.data.items;
+            this.items = this.resolverItems(response.data.items);
             this.snackbar.showToast('Archivo cargado correctamente.', 3000, 'success');
           }
         }
@@ -362,7 +368,7 @@ export class OnedrivePage implements OnInit {
       const result = await this.api.eliminarArchivo({ fileId: file.id, folderId: this.driveId });
 
       if (result.success) {
-        this.items = result.items;
+        this.items = this.resolverItems(result.items);
       }
       else {
         throw Error();
@@ -426,6 +432,15 @@ export class OnedrivePage implements OnInit {
         buttons: buttons
       }).then(alert => alert.present());
     });
+  }
+  resolverItems(items: any[]) {
+    return items.sort((a: any, b: any) => {
+      if (a.folder !== b.folder) {
+        return a.folder ? -1 : 1;
+      }
+
+      return 0;
+    })
   }
   resolverMiniatura(fileId: string) {
     return `${this.global.Api}/api/onedrive/v5/thumbnail?driveId=${this.driveId}&fileId=${fileId}`;

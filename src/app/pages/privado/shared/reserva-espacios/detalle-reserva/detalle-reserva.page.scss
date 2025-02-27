@@ -1,6 +1,10 @@
 ion-header {
   .primary-card {
     margin-bottom: 0 !important;
+
+    .estado-actividad {
+      width: 90px;
+    }
   }
 }
 ion-content {

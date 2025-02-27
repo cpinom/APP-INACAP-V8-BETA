@@ -77,6 +77,7 @@
   --color: #040b15;
   --ion-text-color: #040b15;
   --ion-color-dark: #040b15;
+  --ion-color-light: #f0f0f0;
   --ion-font-family: "Roboto", "sans-serif" !important;
   --ion-background-color: #fafafa;
   --ion-overlay-background-color: #fff;
@@ -178,18 +179,27 @@ body {
     }
   }
 
-  ion-content {
-    .primary-card {
-      border-radius: 0 !important;
-      margin: 0 0 15px 0 !important;
+  //ion-content {
+  .primary-card {
+    border-radius: 0 !important;
+    margin: 0 0 15px 0 !important;
 
-      ion-card-header > ion-card-title {
+    ion-card-header {
+      flex-direction: column;
+
+      ion-card-title {
         font-size: var(--FS20);
         font-weight: 600;
         margin-top: 0;
+
+        & + ion-card-subtitle {
+          margin-top: 10px;
+          margin-bottom: 0;
+        }
       }
     }
   }
+  //}
 
   ion-button {
     &[fill="outline"] {
@@ -233,7 +243,17 @@ body {
         color: #666666;
         margin-top: 5px;
       }
+      ion-icon.folder {
+        width: 300px;
+        height: 250px;
+      }
     }
+  }
+
+  ion-thumbnail {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   app-cached-image {
@@ -512,7 +532,8 @@ body {
 
       ion-icon.rounded {
         padding: 12px;
-        font-size: 32px;
+        font-size: 32px !important;
+        width: 32px !important;
         margin: 0 11px 0 0;
       }
 
@@ -613,6 +634,7 @@ body {
   &.dark {
     --color: #ffffff;
     --ion-text-color: #ffffff;
+    --ion-color-light: #2b2c33;
     --ion-background-color: #161619;
     --ion-color-dark: #ffffff;
     --ion-overlay-background-color: #2b2c33;

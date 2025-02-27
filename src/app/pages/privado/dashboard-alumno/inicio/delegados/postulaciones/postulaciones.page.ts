@@ -65,23 +65,23 @@ export class PostulacionesPage implements OnInit {
     const result = await this.guardarPostulacion(this.data.evento.postulaOk);
 
     if (result) {
-      this.presentSuccess('Su postulación ha sido enviada exitosamente.')
+      this.presentSuccess('Tu postulación ha sido enviada exitosamente.')
     }
     else {
-      this.presentError('Ha ocurrido un error mientras se procesaba su solicitud. Vuelva a intentarlo.')
+      this.presentError('Ha ocurrido un error mientras se procesaba tu solicitud. Vuelve a intentarlo.')
     }
   }
   async rechazar() {
-    const confirmar = await this.confirmar('¿Esta seguro que no desea participar en el proceso de postulantes a delegado/a?');
+    const confirmar = await this.confirmar('¿Estás seguro de que no deseas participar en el proceso de postulantes a delegado/a?');
 
     if (confirmar) {
       const result = await this.guardarPostulacion(this.data.evento.postulaRechaza);
 
       if (result) {
-        this.presentSuccess('Su preferencia se ha guardado correctamente.')
+        this.presentSuccess('Tu preferencia se ha guardado correctamente.')
       }
       else {
-        this.presentError('Ha ocurrido un error mientras se procesaba su solicitud. Vuelva a intentarlo.')
+        this.presentError('Ha ocurrido un error mientras se procesaba tu solicitud. Vuelva a intentarlo.')
       }
     }
   }
@@ -89,10 +89,10 @@ export class PostulacionesPage implements OnInit {
     const result = await this.guardarPostulacion(this.data.evento.postulaCancela);
 
     if (result) {
-      this.presentSuccess('Su postulación ha sido cancelada exitosamente.')
+      this.presentSuccess('Tu postulación ha sido cancelada exitosamente.')
     }
     else {
-      this.presentError('Ha ocurrido un error mientras se procesaba su solicitud. Vuelva a intentarlo.')
+      this.presentError('Ha ocurrido un error mientras se procesaba tu solicitud. Vuelve a intentarlo.')
     }
   }
   async guardarPostulacion(respuestaId: string) {

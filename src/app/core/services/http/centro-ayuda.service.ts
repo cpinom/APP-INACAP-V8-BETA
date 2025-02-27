@@ -10,7 +10,7 @@ export class CentroAyudaService extends PrivateService {
 
   constructor() {
     super();
-    this.baseUrl = `${this.global.Api}/centro-ayuda`;
+    this.baseUrl += `/centro-ayuda`;
   }
   getPrincipal() {
     return this.get(`${this.baseUrl}/v1/principal`);

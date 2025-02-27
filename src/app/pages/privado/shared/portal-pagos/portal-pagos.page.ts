@@ -42,7 +42,7 @@ export class PortalPagosPage implements OnInit {
     });
   }
   async ngOnInit() {
-    this.cargar();
+    await this.cargar();
     this.api.marcarVista(VISTAS_ALUMNO.PORTAL_PAGOS);
   }
   async cargar() {
@@ -50,8 +50,8 @@ export class PortalPagosPage implements OnInit {
     this.mostrarData = false;
 
     try {
-      let result = await this.api.getPrincipal();
-      let compromisos = result.compromisos;
+      const result = await this.api.getPrincipal();
+      const compromisos = result.compromisos;
 
       this.procesarCompromisos(compromisos);
       this.pagoId = result.pagoId;
@@ -61,6 +61,7 @@ export class PortalPagosPage implements OnInit {
     catch (error: any) {
       if (error && error.status == 401) {
         await this.error.handle(error);
+        return;
       }
     }
     finally {
@@ -88,6 +89,7 @@ export class PortalPagosPage implements OnInit {
     catch (error: any) {
       if (error && error.status == 401) {
         await this.error.handle(error);
+        return;
       }
     }
     finally {
@@ -158,8 +160,9 @@ export class PortalPagosPage implements OnInit {
     })
   }
   async pagar() {
+    debugger
     try {
-      let pagoResult = await this.pagos.procesarPago(this.formasPago, this.pagoId, this.montoCarro);
+      const pagoResult = await this.pagos.procesarPago(this.formasPago, this.pagoId, this.montoCarro);
       let detalleResult;
 
       if (!pagoResult.hasOwnProperty('paonNcorr'))

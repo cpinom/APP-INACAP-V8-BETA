@@ -1,8 +1,8 @@
 import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FileOpener } from '@capacitor-community/file-opener';
 import { Directory, Filesystem } from '@capacitor/filesystem';
-import { ActionSheetController, LoadingController, Platform } from '@ionic/angular';
+import { ActionSheetController, LoadingController, NavController, Platform } from '@ionic/angular';
 import { AppGlobal } from 'src/app/app.global';
 import { DialogService } from 'src/app/core/services/dialog.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
@@ -21,8 +21,10 @@ export class FolderContentPage implements OnInit {
   @ViewChild('adjuntosInput') adjuntarEl!: ElementRef;
   mostrarCargando = true;
   mostrarData = false;
-  data: any;
   items: any;
+  driveId: any;
+  driveItemId: any;
+  folderName!: string;
 
   private router = inject(Router);
   private pt = inject(Platform);
@@ -35,22 +37,25 @@ export class FolderContentPage implements OnInit {
   private dialog = inject(DialogService);
   private global = inject(AppGlobal);
   private utils = inject(UtilsService);
+  private route = inject(ActivatedRoute);
+  private nav = inject(NavController);
 
   constructor() { }
 
   async ngOnInit() {
-    this.data = this.router.getCurrentNavigation()?.extras.state;
+    const driveIdStoraged = await this.api.getStorage('driveId');
+    const folderId = this.route.snapshot.paramMap.get('folderId');
+    const folderName = this.route.snapshot.paramMap.get('folderName') || '';
 
-    if (!this.data) {
-      await this.router.navigate([this.backUrl], { replaceUrl: true });
-      return;
-    }
+    this.driveId = driveIdStoraged;
+    this.driveItemId = folderId;
+    this.folderName = folderName;
 
-    this.cargar();
+    await this.cargar();
   }
   async cargar() {
     try {
-      const result = await this.api.getArchivosV5(this.data.driveId, this.data.id);
+      const result = await this.api.getArchivosV5(this.driveId, this.driveItemId);
 
       if (result.success) {
         const { data } = result;
@@ -175,7 +180,7 @@ export class FolderContentPage implements OnInit {
           loading.message = '(100%) finalizando....';
         }
 
-        const response = await this.api.cargarArchivo(this.data.id, params);
+        const response = await this.api.cargarArchivo(this.driveItemId, params);
 
         if (response.success) {
           if (response.code == 202) {
@@ -201,7 +206,7 @@ export class FolderContentPage implements OnInit {
     }
   }
   resolverMiniatura(fileId: string) {
-    return `${this.global.Api}/api/onedrive/v5/thumbnail?driveId=${this.data.driveId}&fileId=${fileId}`;
+    return `${this.global.Api}/api/onedrive/v5/thumbnail?driveId=${this.driveId}&fileId=${fileId}`;
   }
   escanearTap() {
     alert('Falta implementar')
@@ -212,7 +217,7 @@ export class FolderContentPage implements OnInit {
     await loading.present();
 
     try {
-      const result = await this.api.descargarArchivo({ fileId: file.id, folderId: this.data.id });
+      const result = await this.api.descargarArchivo({ fileId: file.id, folderId: this.driveItemId });
 
       if (result.success) {
         if (this.pt.is('mobileweb')) {
@@ -257,7 +262,7 @@ export class FolderContentPage implements OnInit {
     await loading.present();
 
     try {
-      const result = await this.api.eliminarArchivo({ fileId: file.id, folderId: this.data.id });
+      const result = await this.api.eliminarArchivo({ fileId: file.id, folderId: this.driveItemId });
 
       if (result.success) {
         this.items = result.items;
@@ -279,7 +284,14 @@ export class FolderContentPage implements OnInit {
     }
   }
   async itemTap(item: any) {
-    this.descargarTap(item);
+    if (item.folder) {
+      const partes = this.router.url.split('/');
+      const base = partes.slice(0, 4).join('/');
+      await this.nav.navigateForward(`${base}/${item.id}/${item.name}`);
+    }
+    else {
+      await this.descargarTap(item);
+    }
   }
   resolverIcono(path: string) {
     return this.utils.resolverIcono(path);

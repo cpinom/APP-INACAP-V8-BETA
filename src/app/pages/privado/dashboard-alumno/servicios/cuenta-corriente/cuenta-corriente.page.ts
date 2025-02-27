@@ -76,14 +76,14 @@ export class CuentaCorrientePage implements OnInit {
           {
             text: 'Continuar',
             handler: async () => {
-              await this.router.navigate(['alumno/servicios/portal-pagos']);
+              await this.router.navigate(['dashboard-alumno/servicios/portal-pagos']);
             }
           }
         ]
       });
     }
     else {
-      await this.router.navigate(['alumno/servicios/portal-pagos']);
+      await this.router.navigate(['dashboard-alumno/servicios/portal-pagos']);
     }
   }
   get institucion() {

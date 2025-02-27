@@ -10,7 +10,7 @@ export class CuentaCorrienteService extends PrivateService {
 
   constructor() {
     super();
-    this.baseUrl = `${this.global.Api}/v3/cuenta-corriente`;
+    this.baseUrl += `/v3/cuenta-corriente`;
   }
 
   getPrincipal() {

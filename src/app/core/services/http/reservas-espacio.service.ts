@@ -10,7 +10,7 @@ export class ReservasEspacioService extends PrivateService {
 
   constructor() {
     super();
-    this.baseUrl = `${this.global.Api}/reservas-espacio`;
+    this.baseUrl += `/reservas-espacio`;
   }
   getPrincipal(params: any) {
     return this.post(`${this.baseUrl}/v1/principal`, params);

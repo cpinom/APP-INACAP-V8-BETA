@@ -13,7 +13,23 @@
 
 <ion-content>
 
-  <ion-card class="primary-card" color="white">
+  <ion-list inset="true" class="card-list">
+    <ion-item detail="false">
+      <ion-icon slot="start" src="assets/icon/directions_car.svg" class="rounded variant-1"></ion-icon>
+      <ion-label>
+        <h2>Solicitud de Estacionamiento</h2>
+        <p>Inscribe tu vehículo para utilizar el estacionamiento en sedes.</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  @if (mostrarCargando) {
+  <div class="loaderInacap">
+    <ion-spinner name="lines" color="primary"></ion-spinner>
+  </div>
+  }
+
+  <!--<ion-card class="primary-card" color="white">
     <ion-card-header>
       <ion-card-title>Solicitud de Estacionamiento</ion-card-title>
       <ion-card-subtitle *ngIf="mostrarEstadoPostulacion">
@@ -32,7 +48,7 @@
       </ion-card-subtitle>
     </ion-card-header>
     <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar>
-  </ion-card>
+  </ion-card>-->
 
   <ng-container *ngIf="mostrarData && data">
 

@@ -109,7 +109,7 @@ export class SolicitudDetallePage implements OnInit {
     return new Promise(async (resolve) => {
       await this.dialog.showAlert({
         header: 'Anular Solicitud',
-        message: '¿Estás seguro que deseas anular la Solicitud?',
+        message: '¿Estás seguro de que deseas anular la solicitud?',
         buttons: [
           {
             text: 'Cancelar',

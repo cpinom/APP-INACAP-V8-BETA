@@ -1,6 +1,6 @@
 {
     "/api": {
-        "target": "https://siga.inacap.cl/inacap.api.movil/",
+        "target": "http://localhost:49446/",
         "secure": false,
         "changeOrigin": true,
         "timeout": 3600000

@@ -1,10 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import { UtilsService } from 'src/app/core/services/utils.service';
-import { SnackbarService } from 'src/app/core/services/snackbar.service';
 import { AppLauncher } from '@capacitor/app-launcher';
 import { MicrosoftTeamsService } from 'src/app/core/services/http/mteams.service';
 import { DialogService } from 'src/app/core/services/dialog.service';
+import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
+import { SnackbarService } from 'src/app/core/services/snackbar.service';
 
 @Component({
   selector: 'app-detalle-evento',
@@ -14,12 +15,12 @@ import { DialogService } from 'src/app/core/services/dialog.service';
 export class DetalleEventoPage implements OnInit {
 
   data: any;
-  eliminandoEvento = false;
 
   private api = inject(MicrosoftTeamsService);
   private utils = inject(UtilsService);
-  private snackbar = inject(SnackbarService);
   private dialog = inject(DialogService);
+  private error = inject(ErrorHandlerService);
+  private snackbar = inject(SnackbarService);
 
   constructor() {
     moment.locale('es');
@@ -34,20 +35,56 @@ export class DetalleEventoPage implements OnInit {
     }
   }
   async eliminar() {
-    let snackbar = await this.snackbar.create('Eliminando...', false, 'secondary');
+    const confirmar = await this.confirmarEliminar();
 
-    this.eliminandoEvento = true;
-    await snackbar.present();
+    if (!confirmar) {
+      return;
+    }
+
+    const loading = await this.dialog.showLoading({ message: 'Eliminando evento...' });
 
     try {
-      await this.api.eliminarEvento({ id: this.data.id });
-      await this.dialog.dismissModal(true);
+      const result = await this.api.eliminarEvento(this.data.id);
+
+      if (result.success) {
+        await loading.dismiss();
+        await this.dialog.dismissModal(true);
+      }
+      else {
+        throw new Error();
+      }
     }
-    catch (error: any) { }
+    catch (error: any) {
+      if (error && error.status == 401) {
+        await this.error.handle(error);
+        return;
+      }
+
+      await this.snackbar.showToast('No se pudo eliminar el evento', 300, 'danger');
+    }
     finally {
-      this.eliminandoEvento = false;
-      await snackbar.dismiss();
+      await loading.dismiss();
     }
+  }
+  async confirmarEliminar() {
+    return new Promise(async (resolve) => {
+      await this.dialog.showAlert({
+        header: 'Eliminar evento',
+        message: '¿Estás seguro de que deseas eliminar este evento?',
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel',
+            handler: () => resolve(false)
+          },
+          {
+            text: 'Aceptar',
+            role: 'destructive',
+            handler: () => resolve(true)
+          }
+        ]
+      });
+    });
   }
   async cerrar() {
     await this.dialog.dismissModal();

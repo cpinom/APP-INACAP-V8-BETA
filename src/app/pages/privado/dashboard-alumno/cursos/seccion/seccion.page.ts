@@ -257,10 +257,10 @@ export class SeccionPage implements OnInit, OnDestroy {
     }
   }
   get backUrl() {
-    return this.router.url.startsWith('/alumno/cursos') ? '/alumno/cursos' : '/alumno/inicio';
+    return this.router.url.startsWith('/dashboard-alumno/cursos') ? '/dashboard-alumno/cursos' : '/dashboard-alumno/inicio';
   }
   get backText() {
-    return this.router.url.startsWith('/alumno/cursos') ? 'Cursos' : 'Inicio';
+    return this.router.url.startsWith('/dashboard-alumno/cursos') ? 'Cursos' : 'Inicio';
   }
 
 }

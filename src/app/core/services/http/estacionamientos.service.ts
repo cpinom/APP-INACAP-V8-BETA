@@ -11,7 +11,7 @@ export class EstacionamientosService extends PrivateService {
 
   constructor() {
     super();
-    this.baseUrl = `${this.global.Api}/v2/estacionamientos`;
+    this.baseUrl += `/v2/estacionamientos`;
   }
   getPrincipalV6(sedeCcod: any, aepeNcorr: any) {
     return this.get(`${this.baseUrl}/principal?sedeCcod=${sedeCcod}&aepeNcorr=${aepeNcorr}`);

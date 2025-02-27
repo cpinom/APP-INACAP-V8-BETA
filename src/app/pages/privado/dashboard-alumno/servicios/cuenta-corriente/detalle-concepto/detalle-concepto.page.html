@@ -22,7 +22,7 @@
             <p>Carrera: {{item.carrera}}</p>
             <p>Monto (*): {{item.montoFormato | numberSeparator}}</p>
           </ion-label>
-          <ion-button color="light" size="small" (click)="descargar(item)" *ngIf="item.btn == 'true'">
+          <ion-button slot="end" color="light" size="small" (click)="descargar(item)" *ngIf="item.btn == 'true'">
             <ion-icon slot="icon-only" src="assets/icon/picture_as_pdf.svg"></ion-icon>
           </ion-button>
         </ion-item>

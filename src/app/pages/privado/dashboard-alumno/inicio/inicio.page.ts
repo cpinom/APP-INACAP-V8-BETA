@@ -169,12 +169,11 @@ export class InicioPage implements OnInit, AfterViewInit {
     },
     {
       key: 'VISUALIZACION_PAGOS',
-      icon: 'assets/icon/assignment_ind.svg',
+      icon: 'assets/icon/credit_card.svg',
       label: 'Visualización de Pagos',
       visible: true
     }
   ];
-
   cargandoEstados = false;
 
   private api = inject(AlumnoService);
@@ -225,7 +224,7 @@ export class InicioPage implements OnInit, AfterViewInit {
       this.guardarPeriodo(value);
     });
 
-    this.theme = 'ios'; //this.pt.is('ios') ? 'ios' : 'material';
+    this.theme = 'ios';
     this.themeVariant = this.profile.isDarkMode() ? 'dark' : 'light';
   }
   ngAfterViewInit() { }
@@ -233,7 +232,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     try {
       const preferencias = await this.profile.getStorage('preferencias');
 
-      if (preferencias?.movil) {
+      if (preferencias?.movil && preferencias.movil.accesos_directos) {
         this.accesosDirectos = preferencias.movil.accesos_directos;
       }
     }

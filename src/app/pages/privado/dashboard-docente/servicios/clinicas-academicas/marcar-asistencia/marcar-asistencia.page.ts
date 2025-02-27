@@ -68,7 +68,7 @@ export class MarcarAsistenciaPage implements OnInit {
       return;
     }
 
-    const confirm = await this.confirmarMarcaje('¿Esta seguro de continuar con el marcaje de Asistencia?');
+    const confirm = await this.confirmarMarcaje('¿Estás seguro de que deseas continuar con el marcaje de asistencia?');
 
     if (confirm == true) {
       const params = { acofNcorr: this.data.acofNcorr, acesCcod: 4, participantes: participantes };

@@ -7,74 +7,91 @@
 </ion-header>
 
 <ion-content>
-  <ion-card class="primary-card" color="white">
-    <ion-card-header>
-      <ion-card-title>Portal de Pagos</ion-card-title>
-    </ion-card-header>
-    <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar>
-  </ion-card>
 
-  <ng-container *ngIf="mostrarData">
+  <ion-list inset="true" class="card-list">
+    <ion-item detail="false">
+      <ion-icon slot="start" src="assets/icon/account_balance_wallet.svg" class="rounded variant-2"></ion-icon>
+      <ion-label>
+        <h2>Portal de Pagos</h2>
+        <p>Mantente actualizado sobre tu información cada semestre.</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
 
-    <section *ngIf="compromisos && compromisos.length > 0">
-      <div class="section-header">Seleccione los Compromisos a pagar</div>
-      <div class="section-content">
-        <form [formGroup]="form">
-          <ion-list formArrayName="compromisos">
-            <ion-item-sliding #slidingItem *ngFor="let control of compromisosCtrl.controls; let i = index">
-              <ion-item [formGroupName]="i">
-                <ion-checkbox color="primary" formControlName="compromiso">
-                  <div class="compromiso" [ngClass]="compromisos[i].indicador == 1 ? 'verde' : ''">
-                    <div class="detalle">
-                      <h2>{{compromisos[i].concepto}}</h2>
-                      <p>Vencimiento: {{compromisos[i].vencimiento}}</p>
-                    </div>
-                    <div class="monto">${{compromisos[i].saldo}}</div>
+  @if (mostrarCargando) {
+  <div class="loaderInacap">
+    <ion-spinner name="lines" color="primary"></ion-spinner>
+  </div>
+  }
+
+  @if (mostrarData && compromisos) {
+
+  @if (compromisos.length > 0) {
+  <section>
+    <div class="section-header">Seleccione los Compromisos a pagar</div>
+    <div class="section-content">
+      <form [formGroup]="form">
+        <ion-list formArrayName="compromisos">
+          <ion-item-sliding #slidingItem *ngFor="let control of compromisosCtrl.controls; let i = index">
+            <ion-item [formGroupName]="i">
+              <ion-checkbox color="primary" formControlName="compromiso">
+                <div class="compromiso" [ngClass]="compromisos[i].indicador == 1 ? 'verde' : ''">
+                  <div class="detalle">
+                    <h2>{{compromisos[i].concepto}}</h2>
+                    <p>Vencimiento: {{compromisos[i].vencimiento}}</p>
                   </div>
-                </ion-checkbox>
-                
-              </ion-item>
-              <ion-item-options side="end">
-                <ion-item-option color="primary" (click)="detalleCompromiso(compromisos[i], $event, slidingItem)">
-                  <ion-icon src="assets/icon/info.svg"></ion-icon>
-                </ion-item-option>
-              </ion-item-options>
-            </ion-item-sliding>
-          </ion-list>
-        </form>
-      </div>
-    </section>
+                  <div class="monto">${{compromisos[i].saldo}}</div>
+                </div>
+              </ion-checkbox>
+            </ion-item>
+            <ion-item-options side="end">
+              <ion-item-option color="primary" (click)="detalleCompromiso(compromisos[i], $event, slidingItem)">
+                <ion-icon src="assets/icon/info.svg"></ion-icon>
+              </ion-item-option>
+            </ion-item-options>
+          </ion-item-sliding>
+        </ion-list>
+      </form>
+    </div>
+  </section>
+  }
+  @else {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/payment.svg"></ion-icon>
+      <p>Sin compromisos para pagar en este momento.</p>
+    </div>
+  </section>
+  }
 
-    <section *ngIf="compromisos && compromisos.length == 0" class="empty-state">
-      <div>
-        <ion-icon src="assets/icon/payment.svg"></ion-icon>
-        <p>Sin compromisos para pagar en este momento.</p>
-      </div>
-    </section>
+  }
 
-  </ng-container>
-
-  <section *ngIf="mostrarData && !compromisos" class="empty-state">
+  @if (mostrarData && !compromisos) {
+  <section class="empty-state">
     <div>
       <ion-icon src="assets/icon/info.svg"></ion-icon>
       <p>Información no disponible en este momento.</p>
       <ion-button color="primary" shape="round" (click)="recargar()">Recargar</ion-button>
     </div>
   </section>
+  }
 
 </ion-content>
 
-<ion-footer class="compromisos-footer" *ngIf="!mostrarCargando && mostrarCompromisos">
+@if (!mostrarCargando && mostrarCompromisos) {
+<ion-footer class="compromisos-footer">
   <ion-grid>
     <ion-row class="row-pay">
       <ion-col class="detail" style="align-items: center; display: flex;">
         <h2>Total a pagar</h2><strong>CLP ${{montoCarro}}</strong>
       </ion-col>
       <ion-col class="action">
-        <ion-button color="primary" shape="round" expand="block" (click)="pagar()" [disabled]="!compromisosSeleccionados">
+        <ion-button color="primary" shape="round" expand="block" (click)="pagar()"
+          [disabled]="!compromisosSeleccionados">
           Pagar
         </ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>
 </ion-footer>
+}

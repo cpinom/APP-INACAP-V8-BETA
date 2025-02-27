@@ -10,7 +10,7 @@ export class DelegadosService extends PrivateService {
 
   constructor() {
     super();
-    this.baseUrl = `${this.global.Api}/v4`;
+    this.baseUrl += `/v4`;
   }
 
   getPostulaciones() {

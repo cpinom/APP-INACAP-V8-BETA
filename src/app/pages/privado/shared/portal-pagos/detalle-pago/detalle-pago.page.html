@@ -26,23 +26,20 @@
     <section>
       <div class="section-header">Resumen de Pago</div>
       <div class="section-content">
-        <ion-list>
+        <ion-list class="detalle">
           <ion-item>
             <ion-label>
-              <p class="label">Nº de operación</p>
-              <h2>{{data.codigo}}</h2>
+              <h2>Nº de operación: <span>{{data.codigo}}</span></h2>
             </ion-label>
           </ion-item>
           <ion-item>
             <ion-label>
-              <p class="label">Tipo de pago</p>
-              <h2>{{data.pago}}</h2>
+              <h2>Tipo de pago: <span>{{data.pago}}</span></h2>
             </ion-label>
           </ion-item>
           <ion-item>
             <ion-label>
-              <p class="label">TOTAL</p>
-              <h2>CLP ${{data.total}}</h2>
+              <h2>TOTAL: <span>CLP ${{data.total}}</span></h2>
             </ion-label>
           </ion-item>
         </ion-list>
@@ -85,17 +82,15 @@
     <section>
       <div class="section-header">Resumen de Pago</div>
       <div class="section-content">
-        <ion-list>
+        <ion-list class="detalle">
           <ion-item>
             <ion-label>
-              <p class="label">Nº de operación</p>
-              <h2>{{data.codigo}}</h2>
+              <h2>Nº de operación: <span>{{data.codigo}}</span></h2>
             </ion-label>
           </ion-item>
           <ion-item>
             <ion-label>
-              <p class="label">Tipo de pago</p>
-              <h2>{{data.pago}}</h2>
+              <h2>Tipo de pago: <span>{{data.pago}}</span></h2>
             </ion-label>
           </ion-item>
         </ion-list>
@@ -121,6 +116,8 @@
 
   </ng-container>
 
-  <ion-button color="primary" shape="round" expand="block" (click)="cerrar(true)">Finalizar Pago</ion-button>
+  <section style="margin: 15px;">
+    <ion-button color="primary" shape="round" expand="block" (click)="cerrar(true)">Finalizar Pago</ion-button>
+  </section>
 
 </ion-content>

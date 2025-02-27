@@ -99,7 +99,7 @@ export class EditarTelefonoPage implements OnInit {
           await this.error.handle(error);
           return;
         }
-        this.snackbar.showToast('No pudimos procesar su solicitud. Vuelva a intentar.', 3000, 'danger');
+        this.snackbar.showToast('No pudimos procesar tu solicitud. Vuelve a intentarlo.', 3000, 'danger');
       }
       finally {
         await loading.dismiss();

@@ -4,15 +4,25 @@
       <ion-back-button text="Servicios" defaultHref="/dashboard-alumno/servicios"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
-  <ion-card class="primary-card" color="white">
-    <ion-card-header>
-      <ion-card-title>Asesor Pedagógico</ion-card-title>
-    </ion-card-header>
-    <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar>
-  </ion-card>
 </ion-header>
 
 <ion-content>
+
+  <ion-list inset="true" class="card-list">
+    <ion-item detail="false">
+      <ion-icon slot="start" src="assets/icon/groups.svg" class="rounded variant-3"></ion-icon>
+      <ion-label>
+        <h2>Asesor Pedagógico</h2>
+        <p>Conoce a tu Asesor Pedagógico que tendrás durante este período.</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  @if (mostrarCargando) {
+  <div class="loaderInacap">
+    <ion-spinner name="lines" color="primary"></ion-spinner>
+  </div>
+  }
 
   <ng-container *ngIf="mostrarData">
     <section class="first" *ngIf="personas && personas.length">

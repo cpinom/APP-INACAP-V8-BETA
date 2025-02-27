@@ -56,7 +56,7 @@ export class EvaluacionDocentePage implements OnInit {
         }
       }
       else {
-        throw Error('Algo salió mal. Vuelva a intentarlo.');
+        throw Error('Algo salió mal. Vuelve a intentarlo.');
       }
     }
     catch (error: any) {

@@ -66,7 +66,8 @@ export class CachedImageComponent implements OnInit {
       cssClass: 'transparent-modal',
       showBackdrop: true,
       keyboardClose: true,
-      enterAnimation: this.enterAnimation
+      animated: false
+      // enterAnimation: this.enterAnimation
     });
 
   }
@@ -91,28 +92,28 @@ export class CachedImageComponent implements OnInit {
 
     return savedFile;
   }
-  enterAnimation = (baseEl: HTMLElement) => {
-    const root = baseEl.shadowRoot;
+  // enterAnimation = (baseEl: HTMLElement) => {
+  //   const root = baseEl.shadowRoot;
 
-    const backdropAnimation = this.animationCtrl
-      .create()
-      .addElement(root?.querySelector('ion-backdrop')!)
-      .fromTo('opacity', '0.01', 'var(--backdrop-opacity)');
+  //   const backdropAnimation = this.animationCtrl
+  //     .create()
+  //     .addElement(root?.querySelector('ion-backdrop')!)
+  //     .fromTo('opacity', '0.01', 'var(--backdrop-opacity)');
 
-    const wrapperAnimation = this.animationCtrl
-      .create()
-      .addElement(root?.querySelector('.modal-wrapper')!)
-      .keyframes([
-        { offset: 0, opacity: '0', transform: 'scale(0)' },
-        { offset: 1, opacity: '0.99', transform: 'scale(1)' },
-      ]);
+  //   const wrapperAnimation = this.animationCtrl
+  //     .create()
+  //     .addElement(root?.querySelector('.modal-wrapper')!)
+  //     .keyframes([
+  //       { offset: 0, opacity: '0', transform: 'scale(0)' },
+  //       { offset: 1, opacity: '0.99', transform: 'scale(1)' },
+  //     ]);
 
-    return this.animationCtrl
-      .create()
-      .addElement(baseEl)
-      .easing('ease-out')
-      .duration(250)
-      .addAnimation([backdropAnimation, wrapperAnimation]);
-  };
+  //   return this.animationCtrl
+  //     .create()
+  //     .addElement(baseEl)
+  //     .easing('ease-out')
+  //     .duration(250)
+  //     .addAnimation([backdropAnimation, wrapperAnimation]);
+  // };
 
 }

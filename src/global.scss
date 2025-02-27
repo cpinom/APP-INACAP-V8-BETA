@@ -34,8 +34,8 @@
  */
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
-/* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import "@ionic/angular/css/palettes/dark.system.css";
+@import "@ionic/angular/css/palettes/dark.class.css";
+// @import "@ionic/angular/css/palettes/dark.system.css";
 
 :root {
   /*Colores */
@@ -615,6 +615,7 @@ body {
     --ion-text-color: #ffffff;
     --ion-background-color: #161619;
     --ion-color-dark: #ffffff;
+    --ion-overlay-background-color: #2b2c33;
 
     // --ion-color-white: #282a3b;
     // --ion-color-white-rgb: 40, 42, 59;

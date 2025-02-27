@@ -11,7 +11,7 @@ export class EmpleaInacapService extends PrivateService {
 
   constructor() {
     super();
-    this.baseUrl = `${this.global.Api}/emplea-inacap`;
+    this.baseUrl += `/emplea-inacap`;
   }
 
   getFiltrosExalumno() {

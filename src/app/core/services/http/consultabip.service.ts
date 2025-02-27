@@ -13,7 +13,7 @@ export class ConsultaBipService extends PublicService {
     super();
   }
   getSaldoBip(params: any) {
-    return this.post(`${this.baseUrl}/api/v3/saldo-bip`, params);
+    return this.post(`${this.baseUrl}/v3/saldo-bip`, params);
   }
   override async clearStorage() {
     await Preferences.remove({ key: `${this.storagePrefix}-alumno-tarjetas` });

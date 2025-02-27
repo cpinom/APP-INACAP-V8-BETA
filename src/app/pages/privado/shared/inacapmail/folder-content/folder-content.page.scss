@@ -87,7 +87,7 @@ ion-menu-button {
 
   ion-searchbar {
     ::ng-deep input {
-      border: 1px solid #D5D6DD;
+      border: 1px solid var(--ion-border-color);
       padding-inline-start: 16px
     }
     // padding: 0 0 0 12px;

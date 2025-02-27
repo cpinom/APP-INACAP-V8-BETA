@@ -35,7 +35,7 @@
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
- @import "@ionic/angular/css/palettes/dark.system.css";
+@import "@ionic/angular/css/palettes/dark.system.css";
 
 :root {
   /*Colores */
@@ -76,6 +76,7 @@
   // Variable app
   --color: #040b15;
   --ion-text-color: #040b15;
+  --ion-color-dark: #040b15;
   --ion-font-family: "Roboto", "sans-serif" !important;
   --ion-background-color: #fafafa;
   --ion-overlay-background-color: #fff;
@@ -91,9 +92,8 @@
   --ion-item-background: #ffffff;
   --ion-border-color: #d5d6dd;
   --inner-border-width: 0px 0px 0.5px 0px;
-
-  // Tamaños letras
-  --FS9: 9px;
+  --ion-box-shadow: 0px 4px 8px 0px rgba(194, 201, 252, 0.15) // Tamaños letras
+    --FS9: 9px;
   --FS10: 10px;
   --FS11: 11px;
   --FS12: 12px;
@@ -197,6 +197,18 @@ body {
     }
   }
 
+  ion-modal {
+    &.transparent-modal {
+      --background: transparent;
+      backdrop-filter: blur(10px);
+
+      &::part(content) {
+        box-shadow: none !important;
+        border-radius: 0px !important;
+      }
+    }
+  }
+
   .loaderInacap {
     width: 100%;
     display: block;
@@ -252,7 +264,7 @@ body {
       margin-inline: 15px;
       border-radius: 10px;
       overflow: hidden;
-      box-shadow: 0px 4px 8px 0px rgba(194, 201, 252, 0.15);
+      box-shadow: var(--ion-box-shadow);
 
       ion-list {
         padding: 0;
@@ -289,7 +301,7 @@ body {
 
   ion-list {
     &.list-inset {
-      box-shadow: 0px 4px 8px 0px rgba(194, 201, 252, 0.15);
+      box-shadow: var(--ion-box-shadow);
     }
     &.list-md {
       padding-top: 0;
@@ -424,7 +436,7 @@ body {
   }
 
   ion-accordion-group {
-    box-shadow: 0px 4px 8px 0px rgba(194, 201, 252, 0.15);
+    box-shadow: var(--ion-box-shadow);
 
     ion-accordion {
       ion-item {
@@ -602,9 +614,32 @@ body {
     --color: #ffffff;
     --ion-text-color: #ffffff;
     --ion-background-color: #161619;
+    --ion-color-dark: #ffffff;
+
+    // --ion-color-white: #282a3b;
+    // --ion-color-white-rgb: 40, 42, 59;
+    // --ion-color-white-contrast: #ffffff;
+    // --ion-color-white-contrast-rgb: 255, 255, 255;
+    // --ion-color-white-shade: #232534;
+    // --ion-color-white-tint: #3e3f4f;
+
+    --ion-color-white: #2b2c33;
+    --ion-color-white-rgb: 43, 44, 51;
+    --ion-color-white-contrast: #ffffff;
+    --ion-color-white-contrast-rgb: 255, 255, 255;
+    --ion-color-white-shade: #26272d;
+    --ion-color-white-tint: #404147;
+
+    --ion-color-danger: #e06666;
+    --ion-color-danger-rgb: 224, 102, 102;
+    --ion-color-danger-contrast: #000000;
+    --ion-color-danger-contrast-rgb: 0, 0, 0;
+    --ion-color-danger-shade: #c55a5a;
+    --ion-color-danger-tint: #e37575;
 
     --ion-color-step-100: #fff;
-    --ion-color-step-400: #FFF;
+    --ion-color-step-400: #fff;
+    --ion-color-step-700: #fff;
     // --ion-color-step-400: #828599;
 
     // tabbar
@@ -617,6 +652,7 @@ body {
 
     --ion-item-background: #2b2c33;
     --ion-border-color: #41424d;
+    --ion-box-shadow: 0px 4px 8px 0px rgba(56, 59, 83, 0.15);
 
     // Listado de colores
     --ion-color-1-background: #3b2b32;
@@ -629,12 +665,12 @@ body {
 
     ion-list {
       &.list-inset {
-        box-shadow: 0px 4px 8px rgba(74, 78, 110, 0.15);
+        box-shadow: var(--ion-box-shadow);
       }
     }
 
     ion-segment {
-      background: #2b2c33;
+      background: var(--ion-item-background);
     }
   }
 }

@@ -3,7 +3,7 @@
 ion-header {
     ion-card {
         margin-bottom: 0 !important;
-        box-shadow: 0px 4px 8px 0px rgba(194, 201, 252, 0.15);
+        box-shadow: var(--ion-box-shadow);
 
         ion-card-header {
             ion-card-title {

@@ -65,7 +65,7 @@ ion-content {
             }
 
             ion-label {
-              color: #040b15;
+              color: var(--ion-text-color);
               flex: 1;
 
               h1 {

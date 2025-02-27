@@ -3,7 +3,7 @@
 
 ion-card.destacado-list {
     margin: 10px 10px 5px;
-    box-shadow: 0px 1px 3px #00000033 !important;
+    box-shadow: var(--ion-box-shadow) !important;
 
     ion-card-content {
         padding: 0;
@@ -41,8 +41,8 @@ ion-card.destacado-list {
         width: 190px;
         min-height: 145px;
         white-space: normal;
-        box-shadow: 0px 1px 1px #00000033 !important;
-        color: #040B15;
+        box-shadow: var(--ion-box-shadow) !important;
+        color: var(--ion-text-color);
 
         &.loading {
             height: 145px;

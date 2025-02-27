@@ -65,11 +65,6 @@ export class InicioPage implements OnInit, AfterViewInit {
   perfilOk!: boolean;
   periodoForm: FormGroup;
   inacapMail: any;
-  inacapTeams: any;
-  alertPeriodo = {
-    header: 'Período Académico',
-    subHeader: 'Selecciona el período que deseas visualizar'
-  };
   horarioObservable!: Subscription;
   scrollObs: Subscription;
   reloadObs: Subscription;
@@ -469,32 +464,45 @@ export class InicioPage implements OnInit, AfterViewInit {
         await this.nav.navigateForward('/dashboard-alumno/inicio/inacapmail');
         break;
       case 'HORARIO':
+        await this.nav.navigateForward('/dashboard-alumno/inicio/horario');
         break;
       case 'CREDENCIAL':
         break;
       case 'CERTIFICADOS':
+        await this.nav.navigateForward('/dashboard-alumno/inicio/certificados');
         break;
       case 'MALLA_CURRICULAR':
+        await this.nav.navigateForward('/dashboard-alumno/inicio/malla-curricular');
         break;
       case 'PROGRESION':
+        await this.nav.navigateForward('/dashboard-alumno/inicio/progresion');
         break;
       case 'PRACTICA_PROFESIONAL':
+        await this.nav.navigateForward('/dashboard-alumno/inicio/ofertas-practica');
         break;
       case 'SEGURO_ACCIDENTES':
+        await this.nav.navigateForward('/dashboard-alumno/inicio/seguro-accidentes');
         break;
       case 'SOLICITUDES':
+        await this.nav.navigateForward('/dashboard-alumno/inicio/solicitudes-academicas');
         break;
       case 'TEAMS':
+        await this.nav.navigateForward('/dashboard-alumno/inicio/microsoft-teams');
         break;
       case 'SEDE':
+        await this.nav.navigateForward('/dashboard-alumno/inicio/sede');
         break;
       case 'ONEDRIVE':
+        await this.nav.navigateForward('/dashboard-alumno/inicio/onedrive');
         break;
       case 'RESERVAS_ESPACIOS':
+        await this.nav.navigateForward('/dashboard-alumno/inicio/reserva-espacios');
         break;
       case 'PORTAL_PAGOS':
+        await this.nav.navigateForward('/dashboard-alumno/inicio/portal-pagos');
         break;
       case 'VISUALIZACION_PAGOS':
+        await this.nav.navigateForward('/dashboard-alumno/inicio/cuenta-corriente');
         break;
     }
   }

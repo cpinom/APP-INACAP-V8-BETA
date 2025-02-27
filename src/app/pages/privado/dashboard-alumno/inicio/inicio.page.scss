@@ -90,7 +90,7 @@ section.ramos {
             ion-card-title {
                 font-size: var(--FS14);
                 font-weight: 700;
-                color: #040b15;
+                color: var(--ion-text-color);
                 white-space: nowrap;
                 text-overflow: ellipsis;
                 overflow: hidden;
@@ -106,7 +106,7 @@ section.ramos {
                 ion-item {
                     --min-height: 22px;
                     --background: transparent;
-                    color: #41424d;
+                    // color: #41424d;
 
                     ion-label {
                         white-space: normal;
@@ -200,7 +200,7 @@ div.tabs {
 
 section.agenda {
     margin: 0 10px 10px;
-    box-shadow: 0px 4px 8px rgba(74, 78, 110, 0.15);
+    box-shadow: var(--ion-box-shadow);
 }
 
 section.ramos + section.horario {
@@ -490,6 +490,8 @@ section.accesos-directos {
                 --padding-end: 11px;
                 --padding-start: 11px;
                 --padding-top: 11px;
+                margin-top: 0;
+                margin-bottom: 0;
 
                 .btn-inner {
                     display: flex;
@@ -513,7 +515,7 @@ section.accesos-directos {
                     }
 
                     ion-label {
-                        color: #040b15;
+                        color: var(--ion-text-color);
                         flex: 1;
                         display: flex;
                         align-items: center;
@@ -753,8 +755,9 @@ section.cerrar-sesion {
     margin: 10px;
 
     ion-button {
-        --box-shadow: 0px 4px 8px 0px rgba(56, 59, 83, 0.15);
-        --ion-color-contrast: #cc0000;
+        --box-shadow: var(--ion-box-shadow);
+        --ion-color-contrast: var(--ion-color-danger);
+        --ion-color-base: var(--ion-item-background);
         font-size: 16px;
         font-weight: 500;
     }
@@ -800,7 +803,7 @@ p.last-update {
 mbsc-eventcalendar {
     ::ng-deep .mbsc-calendar-header {
         //display: none;
-        background: #fff !important;
+        background: #fff;
 
         .mbsc-calendar-controls {
             padding: 0 5px;
@@ -816,7 +819,7 @@ mbsc-eventcalendar {
         }
     }
     ::ng-deep mbsc-calendar-weekdays {
-        background: #fff !important;
+        background: #fff;
     }
     ::ng-deep .mbsc-calendar-body {
         .mbsc-ios.mbsc-selected .mbsc-calendar-cell-text {

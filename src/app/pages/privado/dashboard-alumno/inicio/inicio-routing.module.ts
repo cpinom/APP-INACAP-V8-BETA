@@ -39,10 +39,10 @@ const routes: Routes = [
     path: 'horario',
     loadChildren: () => import('./horario/horario.module').then(m => m.HorarioPageModule)
   },
-  // {
-  //   path: 'seguro-accidentes',
-  //   loadChildren: () => import('src/app/pages/privado/dashboard-alumno/dae/seguro-accidentes/seguro-accidentes.module').then(m => m.SeguroAccidentesPageModule)
-  // },
+  {
+    path: 'seguro-accidentes',
+    loadChildren: () => import('src/app/pages/privado/dashboard-alumno/servicios/dae/seguro-accidentes/seguro-accidentes.module').then(m => m.SeguroAccidentesPageModule)
+  },
   {
     path: 'solicitudes-academicas',
     loadChildren: () => import('src/app/pages/privado/shared/solicitudes-academicas/solicitudes-academicas.module').then(m => m.SolicitudesAcademicasPageModule)

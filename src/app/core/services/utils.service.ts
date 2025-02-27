@@ -86,6 +86,15 @@ export class UtilsService {
       'txt': 'description',
 
       // Imágenes
+      'jpg': 'image',
+      'jpeg': 'image',
+      'png': 'image',
+      'gif': 'image',
+      'bmp': 'image', 
+      'webp': 'image',
+      'svg': 'image',
+      'tiff': 'image',
+      'ico': 'image',
 
       // Videos
       'mp4': 'video_library',

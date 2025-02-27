@@ -27,7 +27,6 @@ export class MensajeService {
   private exalumnoApi = inject(ExalumnoService);
   private error = inject(ErrorHandlerService);
 
-
   constructor() { }
 
   async crear(correo?: string, asunto?: string) {
@@ -103,6 +102,31 @@ export class MensajeService {
     finally {
       await message.dismiss();
     }
+  }
+  async borrador(message: any) {
+    let api;
+    let users;
+
+    if (this.esAlumno) api = this.alumnoApi;
+    else if (this.esDocente) api = this.docenteApi;
+    else if (this.esExalumno) api = this.exalumnoApi;
+
+    users = api && (await api.getStorage('users'));
+    users = users || [];
+
+    await this.dialog.showModal({
+      component: MensajeComponent,
+      componentProps: {
+        messageId: message.id,
+        users: users,
+        correo: message.toRecipients.map((x: any) => x.emailAddress.address).join(','),
+        asunto: message.subject,
+        cuerpo: message.bodyPreview,
+        hasAttachments: message.hasAttachments,
+        isDraft: true
+      },
+      presentingElement: getRouterOutlet() || undefined
+    });
   }
   async responder(message: any) {
     let params = {

@@ -79,6 +79,8 @@
   --ion-color-dark: #040b15;
   --ion-color-light: #f0f0f0;
   --ion-font-family: "Roboto", "sans-serif" !important;
+  --mat-option-label-text-font: "Roboto", "sans-serif";
+  --mat-option-label-text-size: var(--FS14);
   --ion-background-color: #fafafa;
   --ion-overlay-background-color: #fff;
   // tabbar
@@ -557,6 +559,15 @@ body {
           margin-top: 6px;
         }
       }
+    }
+  }
+
+  div.searchbar-container {
+    display: flex;
+
+    ion-searchbar {
+      padding-inline-start: 15px;
+      padding-inline-end: 15px;
     }
   }
 

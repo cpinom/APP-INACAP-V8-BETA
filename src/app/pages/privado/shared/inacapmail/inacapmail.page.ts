@@ -57,8 +57,8 @@ export class InacapmailPage implements OnInit, OnDestroy {
       this.returnPath = '/dashboard-exalumno/inicio';
     }
   }
-  ngOnInit() {
-    this.init();
+  async ngOnInit() {
+    await this.init();
   }
   ngOnDestroy(): void {
     this.errorObs.unsubscribe();
@@ -101,15 +101,15 @@ export class InacapmailPage implements OnInit, OnDestroy {
       await this.nav.setRoot(FolderContentPage, { folder: this.selectedFolder });
     }
 
-    this.api.setStorage('folders', this.folders);
-    this.resolverCorreos();
+    await this.api.setStorage('folders', this.folders);
+    await this.resolverCorreos();
     this.api.marcarVista(this.Vista);
   }
   async folderTap(folder: any) {
     this.selectedFolder = folder;
     this.folders.forEach((folder: any) => folder.selected = folder.id == this.selectedFolder.id);
-    this.api.setStorage('folders', this.folders);
-    this.nav.setRoot(FolderContentPage, { folder: folder });
+    await this.api.setStorage('folders', this.folders);
+    await this.nav.setRoot(FolderContentPage, { folder: folder });
   }
   async recargar() {
     this.cargando = true;
@@ -132,7 +132,7 @@ export class InacapmailPage implements OnInit, OnDestroy {
       });
 
       this.folders = folders;
-      this.api.setStorage('folders', this.folders);
+      await this.api.setStorage('folders', this.folders);
     }
     catch (error: any) {
       if (error && error.status == 401) {

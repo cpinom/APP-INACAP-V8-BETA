@@ -46,6 +46,9 @@ export class InacapMailService extends PrivateService {
   getMessageV5(messageId: string) {
     return this.get(`${this.baseUrl}/v5/inacapmail/message?messageId=${messageId}`);
   }
+  getMessageAttachments(messageId: string) {
+    return this.get(`${this.baseUrl}/v5/inacapmail/message-attachments?messageId=${messageId}`);
+  }
   // markRead(messageId) {
   //   return this.get(`${this.baseUrl}/v3/inacapmail/mark-read/${messageId}`);
   // }
@@ -71,6 +74,9 @@ export class InacapMailService extends PrivateService {
   addAttachment(filepath: string, filename: string, params: any): Promise<any> {
     return Promise.resolve({})
     // return this.upload(`${this.baseUrl}/v4/inacapmail/add-attachment`, filepath, filename, params);
+  }
+  addAttachmentV5(messageId: string, params: any) {
+    return this.post(`${this.baseUrl}/v5/inacapmail/add-attachment?messageId=${messageId}`, params);
   }
   removeAttachment(params: any) {
     return this.post(`${this.baseUrl}/v4/inacapmail/remove-attachment`, params);

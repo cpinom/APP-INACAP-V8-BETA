@@ -31,6 +31,7 @@ export class MensajeComponent implements OnInit, OnDestroy {
   @ViewChild('asunto') asuntoEl!: IonInput;
   @ViewChild('cuerpo') cuerpoEl!: IonTextarea;
   @ViewChild('contenido') messageEl!: ElementRef;
+  @ViewChild('adjuntosInput') adjuntarEl!: ElementRef;
   mensajeForm: FormGroup;
   asunto!: string;
   cuerpo!: string;
@@ -42,6 +43,8 @@ export class MensajeComponent implements OnInit, OnDestroy {
   message: any;
   mostrarAsunto = true;
   isReply = false;
+  isDraft = false;
+  hasAttachments = false;
   messageId!: string;
   updatingMessage!: boolean;
   toSubscr!: Subscription;
@@ -52,19 +55,19 @@ export class MensajeComponent implements OnInit, OnDestroy {
   correos: string[] = [];
   mostrarCargando = false;
 
-  // private formBuilder = inject()
+  private formBuilder = inject(FormBuilder);
+  private dialog = inject(DialogService);
+  private api = inject(InacapMailService);
+  private utils = inject(UtilsService);
+  private domSanitizer = inject(DomSanitizer);
+  private snackbar = inject(SnackbarService);
+  private error = inject(ErrorHandlerService);
+  private renderer = inject(Renderer2);
+  private pt = inject(Platform);
+  private media = inject(MediaService);
+  private router = inject(Router);
 
-  constructor(private formBuilder: FormBuilder,
-    private dialog: DialogService,
-    private api: InacapMailService,
-    private utils: UtilsService,
-    private domSanitizer: DomSanitizer,
-    private snackbar: SnackbarService,
-    private error: ErrorHandlerService,
-    private renderer: Renderer2,
-    private pt: Platform,
-    private media: MediaService,
-    private router: Router) {
+  constructor() {
 
     this.mensajeForm = this.formBuilder.group({
       para: [''],
@@ -149,7 +152,7 @@ export class MensajeComponent implements OnInit, OnDestroy {
   async ngOnDestroy() {
     this.deshabilitarEventos();
 
-    if (this.messageId) {
+    if (this.messageId && !this.isDraft) {
       try {
         await this.api.deleteMessageV5(this.messageId);
       }
@@ -182,11 +185,19 @@ export class MensajeComponent implements OnInit, OnDestroy {
         );
 
         if (this.correo) {
-          this.emailInitial = true;
-          this.correos = [this.correo];
+          if (!this.isDraft) {
+            this.emailInitial = true;
+          }
+
+          if (this.correo.indexOf(',') > -1) {
+            this.correos = this.correo.split(',');
+          }
+          else {
+            this.correos = [this.correo];
+          }
         }
 
-        if (!this.emailInitial) {
+        if (!this.emailInitial && this.correos.length == 0) {
           setTimeout(() => {
             this.correoInput.nativeElement.focus();
           }, 700);
@@ -203,6 +214,11 @@ export class MensajeComponent implements OnInit, OnDestroy {
       else {
         this.body?.setValue('\n\n\n\n\n\n\n\n\nEnviado desde APP INACAP', { emitEvent: false });
       }
+
+      if (this.isDraft && this.hasAttachments) {
+        await this.procesarAdjuntos();
+      }
+
     }
     catch (error: any) { }
   }
@@ -221,26 +237,61 @@ export class MensajeComponent implements OnInit, OnDestroy {
       }
     }
   }
+  async procesarAdjuntos() {
+    try {
+      const result = await this.api.getMessageAttachments(this.messageId);
+
+      if (result.success) {
+        const { attachments } = result.data;
+
+        attachments.forEach((item: any) => {
+          this.adjuntos.push({
+            id: item.id,
+            name: item.name,
+            type: item.contentType,
+            size: item.size,
+            content: ''
+          });
+        });
+      }
+      else {
+        throw Error();
+      }
+    }
+    catch (error: any) {
+      if (error && error.status == 401) {
+        await this.error.handle(error);
+        return;
+      }
+
+      await this.snackbar.showToast('No fue posible cargar los adjuntos.', 3000, 'danger');
+    }
+  }
   async updateMessage() {
     this.updatingMessage = true;
     this.mostrarCargando = true;
 
-    let params = {
+    const params = {
       messageId: this.messageId,
       destinatarios: this.correos.join(','),
       asunto: this.subject?.value || '',
       cuerpo: this.body?.value || ''
     };
-    let message = await this.snackbar.create('Guardando...', false, 'secondary');
+    const message = await this.snackbar.create('Guardando...', false, 'medium');
 
-    message.present();
+    await message.present();
 
     try {
       await this.api.updateMessageV5(params);
-    } catch (error: any) {
+      await message.dismiss();
+    }
+    catch (error: any) {
       if (error && error.status == 401) {
         await this.error.handle(error);
+        return;
       }
+
+      await this.snackbar.showToast('No fue posible guardar el mensaje.', 3000, 'danger');
     }
     finally {
       this.updatingMessage = false;
@@ -253,80 +304,183 @@ export class MensajeComponent implements OnInit, OnDestroy {
       inputEl.click();
     }
     else {
-      let file = await this.media.getMedia();
+      const media = await this.media.getMedia();
 
-      if (file) {
-        let fileSize = file.size / 1024 / 1024;
-        let index = this.adjuntos.length;
+      if (media) {
+        const fileSize = media?.size! / 1024 / 1024;
+        const base64String = media.data;
 
-        if (fileSize <= 3) {
-          this.adjuntos.push({});
-          this.updatingMessage = true;
-          this.mostrarCargando = true;
-
-          try {
-            let response: any = await this.api.addAttachment(file.path, file.name, { messageId: this.messageId });
-            let result = response.data;
-            let base64 = await this.media.getBase64String(file.path);
-
-            this.adjuntos[index] = {
-              id: result.id,
-              name: file.name,
-              type: result.type,
-              size: result.size,
-              content: base64.replace(/^data:(.*,)?/, '')
-            };
-          }
-          catch (error: any) {
-            this.adjuntos.splice(index, 1);
-            this.snackbar.showToast('No fue posible cargar el archivo.', 2000);
-          }
-          finally {
-            this.updatingMessage = false;
-            this.mostrarCargando = false;
-          }
+        if (fileSize >= 25) {
+          this.presentError('Cargar Archivos', 'Los documentos no pueden exceder los 25 MB.');
+          return;
         }
-        else {
-          this.snackbar.showToast('Los documentos no pueden exceder los 3 MB.', 2000);
+
+        try {
+          await this.uploadBase64Fragmented(base64String, media.name);
+        }
+        catch (error: any) {
+          if (error && error.status == 401) {
+            this.error.handle(error);
+            return
+          }
+
+          await this.presentError('Cargar Archivos', 'No se pudo procesar el archivo. Vuelve a intentarlo.');
         }
       }
+      // let file = await this.media.getMedia();
+
+      // if (file) {
+      //   let fileSize = file.size / 1024 / 1024;
+      //   let index = this.adjuntos.length;
+
+      //   if (fileSize <= 3) {
+      //     this.adjuntos.push({});
+      //     this.updatingMessage = true;
+      //     this.mostrarCargando = true;
+
+      //     try {
+      //       let response: any = await this.api.addAttachment(file.path, file.name, { messageId: this.messageId });
+      //       let result = response.data;
+      //       let base64 = await this.media.getBase64String(file.path);
+
+      //       this.adjuntos[index] = {
+      //         id: result.id,
+      //         name: file.name,
+      //         type: result.type,
+      //         size: result.size,
+      //         content: base64.replace(/^data:(.*,)?/, '')
+      //       };
+      //     }
+      //     catch (error: any) {
+      //       this.adjuntos.splice(index, 1);
+      //       this.snackbar.showToast('No fue posible cargar el archivo.', 2000);
+      //     }
+      //     finally {
+      //       this.updatingMessage = false;
+      //       this.mostrarCargando = false;
+      //     }
+      //   }
+      //   else {
+      //     this.snackbar.showToast('Los documentos no pueden exceder los 3 MB.', 2000);
+      //   }
+      // }
     }
   }
   async adjuntar(event: any) {
-    let formData = new FormData();
-    let file = event.target.files[0];
-    var fileSize = file.size / 1024 / 1024;
-    let index = this.adjuntos.length;
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      const fileSize = file.size / 1024 / 1024;
 
-    if (fileSize <= 3) {
-      formData.append('file', file);
-      this.adjuntos.push({});
-      this.updatingMessage = true;
-      this.mostrarCargando = true;
+      if (fileSize >= 25) {
+        this.adjuntarEl.nativeElement.value = '';
+        await this.presentError('Cargar Archivos', 'Los documentos no pueden exceder los 25 MB.');
+        return;
+      }
 
       try {
-        let result = await this.api.addAttachmentWeb(formData, { messageId: this.messageId });
-        let base64 = await this.utils.createImageFromFile(file);
-
-        this.adjuntos[index] = {
-          id: result.id,
-          name: file.name,
-          type: file.type,
-          size: result.size,
-          content: base64.replace(/^data:(.*,)?/, '')
-        };
+        const base64 = await this.utils.fileToBase64(file);
+        await this.uploadBase64Fragmented(base64, file.name);
       }
       catch (error: any) {
-        this.adjuntos.splice(index, 1);
-        this.snackbar.showToast('No fue posible cargar el archivo.', 2000);
+        if (error && error.status == 401) {
+          this.error.handle(error);
+          return;
+        }
+
+        await this.presentError('Cargar Archivos', 'No se pudo procesar el archivo. Vuelve a intentarlo.');
       }
       finally {
-        this.updatingMessage = false;
-        this.mostrarCargando = false;
+        this.adjuntarEl.nativeElement.value = '';
       }
     }
-    else {
-      this.snackbar.showToast('Los documentos no pueden exceder los 3 MB.', 2000);
+    // let formData = new FormData();
+    // let file = event.target.files[0];
+    // var fileSize = file.size / 1024 / 1024;
+    // let index = this.adjuntos.length;
+
+    // if (fileSize <= 3) {
+    //   formData.append('file', file);
+    //   this.adjuntos.push({});
+    //   this.updatingMessage = true;
+    //   this.mostrarCargando = true;
+
+    //   try {
+    //     let result = await this.api.addAttachmentWeb(formData, { messageId: this.messageId });
+    //     let base64 = await this.utils.createImageFromFile(file);
+
+    //     this.adjuntos[index] = {
+    //       id: result.id,
+    //       name: file.name,
+    //       type: file.type,
+    //       size: result.size,
+    //       content: base64.replace(/^data:(.*,)?/, '')
+    //     };
+    //   }
+    //   catch (error: any) {
+    //     this.adjuntos.splice(index, 1);
+    //     this.snackbar.showToast('No fue posible cargar el archivo.', 2000);
+    //   }
+    //   finally {
+    //     this.updatingMessage = false;
+    //     this.mostrarCargando = false;
+    //   }
+    // }
+    // else {
+    //   this.snackbar.showToast('Los documentos no pueden exceder los 3 MB.', 2000);
+    // }
+  }
+  async uploadBase64Fragmented(base64String: string, fileName: string): Promise<void> {
+    const fragments = this.utils.divideBase64(base64String);
+    const totalParts = fragments.length;
+    const loading = await this.dialog.showLoading({ message: 'Cargando archivo...' });
+
+    try {
+      for (let i = 0; i < fragments.length; i++) {
+        const base64Fragment = fragments[i];
+        const partNumber = i + 1;
+        const params = {
+          file: base64Fragment,
+          fileName: encodeURIComponent(fileName),
+          partNumber: partNumber,
+          totalParts: totalParts
+        };
+
+        if (totalParts > 1 && partNumber == totalParts) {
+          loading.message = '(100%) finalizando....';
+        }
+
+        const result = await this.api.addAttachmentV5(this.messageId, params);
+
+        if (result.success) {
+          if (result.code == 202) {
+            const progreso = Math.round(result.progress);
+            loading.message = `(${progreso}%) procesando....`;
+          }
+          else if (result.code == 200) {
+            const index = this.adjuntos.length;
+
+            this.adjuntos[index] = {
+              id: result.data.id,
+              name: fileName,
+              type: result.data.type,
+              size: result.data.size,
+              content: base64String
+            };
+
+            await this.snackbar.showToast('Archivo cargado correctamente.', 3000, 'success');
+          }
+        }
+        else {
+          throw Error(result);
+        }
+
+      }
+    }
+    catch (error) {
+      return Promise.reject(error);
+    }
+    finally {
+      await loading.dismiss();
     }
   }
   async enviar() {
@@ -409,8 +563,18 @@ export class MensajeComponent implements OnInit, OnDestroy {
       if (item === deleteItem) this.adjuntos.splice(index, 1);
     });
   }
-  mostrarMiniatura(type: string) {
-    return type.indexOf('image/') > -1;
+  async presentError(title: string, message: string) {
+    const alert = await this.dialog.showAlert({
+      cssClass: 'alert-message',
+      message: `<img src="./assets/images/warning.svg" /><br />${message}`,
+      header: title,
+      buttons: ['Aceptar']
+    });
+
+    return alert;
+  }
+  mostrarMiniatura(item: any) {
+    return item.type.indexOf('image/') > -1 && item.content;
   }
   mostrarPdf(type: string) {
     return type == 'application/pdf';
@@ -421,15 +585,16 @@ export class MensajeComponent implements OnInit, OnDestroy {
   mostrarDefecto(type: string) {
     return !this.mostrarPdf(type) && !this.mostrarExcel(type) && !this.mostrarMiniatura(type);
   }
-  resolverMiniatura(data: any) {
-    if (data.type == 'image/jpeg')
-      return 'data:image/jpeg;base64,' + data.content;
-    if (data.type == 'image/png')
-      return 'data:image/png;base64,' + data.content;
-    if (data.type = 'image/svg+xml')
-      return this.domSanitizer.bypassSecurityTrustUrl('data:image/svg+xml;base64,' + data.content);
-
+  resolverMiniatura(item: any) {
+    if (item.content) {
+      if (item.content.indexOf('data:image') > -1)
+        return item.content;
+      return 'data:image/png;base64,' + item.content;
+    }
     return '';
+  }
+  resolverIcono(path: string) {
+    return this.utils.resolverIcono(path);
   }
   formatearFecha(fecha: string) {
     return moment(fecha).format('ddd DD/MM/YYYY HH:mm')

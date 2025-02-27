@@ -1,6 +1,6 @@
-import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonInfiniteScroll, IonItemSliding, IonNav } from '@ionic/angular';
+import { GestureController, IonInfiniteScroll, IonItemSliding, IonNav } from '@ionic/angular';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { InacapMailService } from 'src/app/core/services/http/inacapmail.service';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
@@ -15,13 +15,14 @@ import { Subject, Subscription, debounceTime } from 'rxjs';
   styleUrls: ['./folder-content.page.scss'],
 })
 export class FolderContentPage implements OnInit, OnDestroy {
-
+  
+  @ViewChildren('longPressItem') itemList!: QueryList<ElementRef>;
   @ViewChild(IonItemSliding) slidingItem!: IonItemSliding;
   @ViewChild(IonInfiniteScroll) infiniteItem!: IonInfiniteScroll;
   messages: any[] = [];
   folderId!: string;
   returnPath!: string;
-  hideLoadingSpinner = false;
+  mostrarCargando = true;
   params = { pageSize: 30, skip: -1 };
   folderName = 'INACAPMail';
   folder: any;
@@ -44,6 +45,7 @@ export class FolderContentPage implements OnInit, OnDestroy {
   private nav = inject(IonNav);
   private snackbar = inject(SnackbarService);
   private events = inject(EventsService);
+  private gesture = inject(GestureController);
 
   constructor() {
 
@@ -107,21 +109,30 @@ export class FolderContentPage implements OnInit, OnDestroy {
   resetMensajes() { }
   async filtrar() {
     if (this.filtro) {
-      this.hideLoadingSpinner = false;
+      this.mostrarCargando = true;
       this.mostrarBusqueda = true;
 
       try {
-        let result = await this.api.sarchMessagesV5(this.folderId, this.filtro);
+        const result = await this.api.sarchMessagesV5(this.folderId, this.filtro);
 
         if (result.success) {
           this.mensajesFiltrados = result.messages;
         }
-        else { }
+        else {
+          throw Error();
+        }
       }
-      catch { }
+      catch (error: any) {
+        if (error && error.status == 401) {
+          await this.error.handle(error);
+          return;
+        }
+
+        await this.snackbar.showToast('No fue posible realizar la búsqueda.', 2000);
+      }
       finally {
         this.mostrarBusqueda = true;
-        this.hideLoadingSpinner = true;
+        this.mostrarCargando = false;
       }
     }
     else {
@@ -151,7 +162,7 @@ export class FolderContentPage implements OnInit, OnDestroy {
     this.mostrarData = this.messages.length ? true : (data === true);
 
     try {
-      event && (this.hideLoadingSpinner = false);
+      event && (this.mostrarCargando = true);
       this.folderId = folderId;
       this.params.skip = this.params.skip == -1 ? 0 : this.params.pageSize + this.params.skip;
 
@@ -164,6 +175,21 @@ export class FolderContentPage implements OnInit, OnDestroy {
         else {
           this.messages = this.messages.concat(result.messages);
         }
+
+        // debugger
+        // this.itemList && this.itemList.forEach((item: any, index: number) => {
+        //   //debugger
+        //   const gesture = this.gesture.create({
+        //     el: item.el,
+        //     gestureName: `long-press-${index}`,
+        //     threshold: 0,
+        //     onStart: (ev: any) => {
+        //       console.log('long-press', ev);
+        //     }
+        //   });
+
+        //   gesture.enable();
+        // });
 
         if (this.folder.isInbox) {
           this.api.getStorage('folders').then((folders: any[]) => {
@@ -194,15 +220,20 @@ export class FolderContentPage implements OnInit, OnDestroy {
     }
     finally {
       event && event.target.complete();
-      this.hideLoadingSpinner = true;
+      this.mostrarCargando = false;
       this.mostrarData = true;
     }
   }
   async messageTap(message: any) {
-    await this.nav.push(MessageContentPage, {
-      message: message,
-      messages: this.mostrarBusqueda ? this.mensajesFiltrados : this.messages
-    });
+    if (message.isDraft) {
+      await this.mensaje.borrador(message);
+    }
+    else {
+      await this.nav.push(MessageContentPage, {
+        message: message,
+        messages: this.mostrarBusqueda ? this.mensajesFiltrados : this.messages
+      });
+    }
   }
   async mailTap() {
     try {
@@ -210,7 +241,7 @@ export class FolderContentPage implements OnInit, OnDestroy {
       await this.mensaje.crear();
     }
     catch (error: any) {
-      this.snackbar.showToast('Mensaje no disponible', 2000);
+      await this.snackbar.showToast('Mensaje no disponible', 2000);
     }
     finally {
       this.deshabilitarNuevo = false;

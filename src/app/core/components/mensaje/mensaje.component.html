@@ -17,7 +17,7 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-  <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar>
+  <!-- <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar> -->
 </ion-header>
 
 <ion-content>
@@ -43,8 +43,8 @@
           <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
             <mat-option *ngFor="let item of correosFiltrados | async" [value]="item">
               <ion-label>
-                <h2>{{ item.nombre }}</h2>
-                <p>{{ item.correo }}</p>
+                <h2 style="font-size: var(--FS14);">{{ item.nombre }}</h2>
+                <p style="font-size: var(--FS12);">{{ item.correo }}</p>
               </ion-label>
             </mat-option>
           </mat-autocomplete>
@@ -74,12 +74,17 @@
             </ion-label>
           </ng-container>
           <ng-container *ngIf="item.name">
-            <ion-avatar slot="start" *ngIf="mostrarMiniatura(item.type)">
+            @if (mostrarMiniatura(item)) {
+            <ion-avatar slot="start">
               <img [src]="resolverMiniatura(item)" />
             </ion-avatar>
-            <ion-icon slot="start" color="nedium" *ngIf="mostrarPdf(item.type)" src="assets/icon/picture_as_pdf.svg"></ion-icon>
+            }
+            @else {
+            <ion-icon [src]="resolverIcono(item.name)" slot="start" color="medium"></ion-icon>
+            }
+            <!-- <ion-icon slot="start" color="nedium" *ngIf="mostrarPdf(item.type)" src="assets/icon/picture_as_pdf.svg"></ion-icon>
             <ion-icon slot="start" color="nedium" *ngIf="mostrarExcel(item.type)" src="assets/icon/microsoft-excel.svg"></ion-icon>
-            <ion-icon slot="start" color="nedium" *ngIf="mostrarDefecto(item.type)" src="assets/icon/description.svg"></ion-icon>
+            <ion-icon slot="start" color="nedium" *ngIf="mostrarDefecto(item.type)" src="assets/icon/description.svg"></ion-icon> -->
             <ion-label>
               <h2>{{item.name}}</h2>
               <p>{{item.size | formatBytes}}</p>

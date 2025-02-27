@@ -82,8 +82,8 @@ export class MessageContentPage implements OnInit, AfterViewInit {
       message.data._fecha = moment(message.data.sentDateTime).format('ddd DD/MM/YYYY HH:mm');
     }
     catch (error: any) {
-      this.snackbar.showToast('Error cargando mensaje. Intente de nuevo.', 2000);
-      this.nav.pop();
+      await this.snackbar.showToast('Error cargando mensaje. Intente de nuevo.', 2000);
+      await this.nav.pop();
     }
   }
   messageData() {
@@ -121,7 +121,7 @@ export class MessageContentPage implements OnInit, AfterViewInit {
       }
     }
     catch (error: any) {
-      this.snackbar.showToast('El archivo no se encuentra disponible.', 3000, 'danger')
+      await this.snackbar.showToast('El archivo no se encuentra disponible.', 3000, 'danger')
     }
     finally {
       await loading.dismiss();
@@ -156,15 +156,15 @@ export class MessageContentPage implements OnInit, AfterViewInit {
     if (contentType == 'application/pdf') return 'picture_as_pdf';
     else return 'insert_drive_file';
   }
-  resolverDestinatarios(message: any) {
-    let result: any[] = [];
+  // resolverDestinatarios(message: any) {
+  //   let result: any[] = [];
 
-    message.data.toRecipients.forEach((element: any) => {
-      result.push(element.emailAddress.address);
-    });
+  //   message.data.toRecipients.forEach((element: any) => {
+  //     result.push(element.emailAddress.address);
+  //   });
 
-    return result.join('<br />');
-  }
+  //   return result.join('<br />');
+  // }
   bytesToSize(bytes: number) {
     var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
     if (bytes == 0) return '0 Byte';

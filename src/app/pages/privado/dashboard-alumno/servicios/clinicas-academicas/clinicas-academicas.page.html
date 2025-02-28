@@ -20,28 +20,24 @@
   }
 
   @if (mostrarData && data) {
-  <section class="btn-agendar">
-    <ion-button color="primary" shape="round" expand="block" [disabled]="!permiteAgendar" routerLink="agendar-hora">
-      Inscribir Hora Clínica Académica
-    </ion-button>
-  </section>
-  <section class="first">
-    <div class="section-content">
+  
+  <!-- <section class="first">
+    <div class="section-content"> -->
       <div class="tabs">
-        <ion-segment [(ngModel)]="tabModel" mode="md" [swipeGesture]="false">
+        <ion-segment [(ngModel)]="tabModel" mode="ios" [swipeGesture]="false">
           <ion-segment-button [value]="0">
-            <ion-icon src="assets/icon/event_available.svg"></ion-icon>
+            <!-- <ion-icon src="assets/icon/event_available.svg"></ion-icon> -->
             <ion-label>Horas inscritas</ion-label>
           </ion-segment-button>
           <ion-segment-button [value]="1">
-            <ion-icon src="assets/icon/date_range.svg"></ion-icon>
+            <!-- <ion-icon src="assets/icon/date_range.svg"></ion-icon> -->
             <ion-label>Historial de reservas</ion-label>
           </ion-segment-button>
         </ion-segment>
       </div>
       @if (tabModel == 0) {
       @if (data.reservadas.length > 0) {
-      <ion-list>
+      <ion-list inset="true">
         @for (item of data.reservadas; track $index) {
         <ion-item detail="true" (click)="detalleAgenda(item)" class="ion-activatable">
           <ion-icon slot="start" src="assets/icon/check_circle_outline.svg" color="success"></ion-icon>
@@ -67,7 +63,7 @@
       }
       @if (tabModel == 1) {
       @if (data.historial.length > 0) {
-      <ion-list>
+      <ion-list inset="true">
         @for (item of data.historial; track $index) {
         <ion-item detail="true" (click)="detalleAgenda(item)" class="ion-activatable">          
           @if (item.acesCcod == 3) {
@@ -99,8 +95,14 @@
       </div>
       }
       }
-    </div>
-  </section>
+
+      <section class="btn-agendar">
+        <ion-button color="primary" shape="round" expand="block" [disabled]="!permiteAgendar" routerLink="agendar-hora">
+          Inscribir Hora Clínica Académica
+        </ion-button>
+      </section>
+    <!-- </div>
+  </section> -->
   }
   @if (mostrarData && !data) {
   <section class="empty-state">

@@ -80,7 +80,7 @@ export class SnackbarService {
       message: message,
       color: color || 'dark',
       buttons: buttons,
-      duration: 3000
+      //duration: 3000
     });
 
     return toast;

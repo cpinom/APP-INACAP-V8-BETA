@@ -82,26 +82,35 @@
           <section class="section-participante">
             <div class="section-header">
               <span>Asistentes ({{$index+1}}/{{participantes.controls.length}})</span>
-              <ion-button fill="outline" slot="end" size="small" color="primary" *ngIf="$index > 0" (click)="eliminarParticipante($index)">Eliminar</ion-button>
+              <ion-button fill="outline" slot="end" size="small" color="primary" *ngIf="$index > 0"
+                (click)="eliminarParticipante($index)">Eliminar</ion-button>
             </div>
             <div class="section-content" [formGroupName]="$index">
               <ion-item>
-                <ion-input label="RUT (*)" labelPlacement="stacked" formControlName="rut" placeholder="Ingrese el rut" clearInput></ion-input>
+                <ion-input label="RUT (*)" labelPlacement="stacked" formControlName="rut" placeholder="Ingrese el rut"
+                  clearInput></ion-input>
               </ion-item>
-              <div class="invalid" *ngIf="submitted && item.get('rut').hasError('required')">Campo obligatorio.</div>
-              <div class="invalid" *ngIf="submitted && item.get('rut').hasError('rut')">Rut inválido.</div>
-              <div class="invalid" *ngIf="submitted && item.get('rut').hasError('noEsAlumno')">Rut no pertenece a un estudiante INACAP.</div>
+              <div class="invalid" *ngIf="submitted && item.get('rut')?.hasError('required')">Campo obligatorio.</div>
+              <div class="invalid" *ngIf="submitted && item.get('rut')?.hasError('rut')">Rut inválido.</div>
+              <div class="invalid" *ngIf="submitted && item.get('rut')?.hasError('noEsAlumno')">Rut no pertenece a un
+                estudiante INACAP.</div>
               <ion-item>
-                <ion-input label="Correo electrónico (*)" labelPlacement="stacked" formControlName="correo" placeholder="Ingrese el correo" type="email" clearInput></ion-input>
+                <ion-input label="Correo electrónico (*)" labelPlacement="stacked" formControlName="correo"
+                  placeholder="Ingrese el correo" type="email" clearInput></ion-input>
               </ion-item>
-              <div class="invalid" *ngIf="submitted && item.get('correo').hasError('required')">Campo obligatorio.</div>
-              <div class="invalid" *ngIf="submitted && item.get('correo').hasError('email')">Correo inválido.</div>
+              <div class="invalid" *ngIf="submitted && item.get('correo')?.hasError('required')">Campo obligatorio.
+              </div>
+              <div class="invalid" *ngIf="submitted && item.get('correo')?.hasError('email')">Correo inválido.</div>
               <ion-item>
-                <ion-input label="Nombre Completo" labelPlacement="stacked" formControlName="nombre" placeholder="Ingrese el nombre completo" clearInput></ion-input>
+                <ion-input label="Nombre Completo" labelPlacement="stacked" formControlName="nombre"
+                  placeholder="Ingrese el nombre completo" clearInput></ion-input>
               </ion-item>
-              <div class="invalid" *ngIf="submitted && item.get('nombre').hasError('required')">Campo obligatorio.</div>
-              <div class="invalid" *ngIf="submitted && item.get('nombre').hasError('maxlength')">Máximo de 500 caracteres permitidos.</div>
-              <div class="invalid" *ngIf="submitted && item.get('nombre').hasError('pattern')">Campo con caracteres no permitidos.</div>
+              <div class="invalid" *ngIf="submitted && item.get('nombre')?.hasError('required')">Campo obligatorio.
+              </div>
+              <div class="invalid" *ngIf="submitted && item.get('nombre')?.hasError('maxlength')">Máximo de 500
+                caracteres permitidos.</div>
+              <div class="invalid" *ngIf="submitted && item.get('nombre')?.hasError('pattern')">Campo con caracteres no
+                permitidos.</div>
             </div>
           </section>
           }
@@ -121,7 +130,8 @@
                 </ion-button>
               </ion-col>
               <ion-col>
-                <ion-button color="primary" shape="round" expand="full" (click)="mostrarDetalleHora()" [disabled]="!participantesForm.valid">
+                <ion-button color="primary" shape="round" expand="full" (click)="mostrarDetalleHora()"
+                  [disabled]="!participantesForm.valid">
                   Siguiente
                 </ion-button>
               </ion-col>
@@ -144,23 +154,23 @@
                 }
               </ion-select>
             </ion-item>
-            <div class="invalid" *ngIf="asigCcod.hasError('required')">Campo obligatorio.</div>
+            <div class="invalid" *ngIf="asigCcod?.hasError('required')">Campo obligatorio.</div>
             <ion-item>
               <ion-label>
                 <p class="label">Clínica Académica</p>
-                <p class="detail">{{oferta.value?.acacTnombre}}</p>
+                <p class="detail">{{oferta?.value.acacTnombre}}</p>
               </ion-label>
             </ion-item>
             <ion-item>
               <ion-label>
                 <p class="label">Fecha seleccionada</p>
-                <p class="detail">{{oferta.value?.acofFmodulo}}</p>
+                <p class="detail">{{oferta?.value.acofFmodulo}}</p>
               </ion-label>
             </ion-item>
             <ion-item>
               <ion-label>
                 <p class="label">Hora seleccionada</p>
-                <p class="detail">{{oferta.value?.horaHinicio}} - {{oferta.value?.horaHtermino}}</p>
+                <p class="detail">{{oferta?.value.horaHinicio}} - {{oferta?.value.horaHtermino}}</p>
               </ion-label>
             </ion-item>
             <ion-item>
@@ -198,7 +208,8 @@
               </ion-button>
             </ion-col>
             <ion-col>
-              <ion-button color="primary" shape="round" expand="full" (click)="reservarHora()" [disabled]="!resumenForm.valid">
+              <ion-button color="primary" shape="round" expand="full" (click)="reservarHora()"
+                [disabled]="!resumenForm.valid">
                 Reservar Hora
               </ion-button>
             </ion-col>

@@ -63,17 +63,7 @@
     <div class="section-header">Adjuntos</div>
     <div class="section-content">
       <ion-list>
-        <ion-item *ngFor="let item of adjuntos; let i = index;" (click)="eliminarAlert(item, i)">
-          <ng-container *ngIf="!item.name">
-            <ion-avatar slot="start">
-              <ion-skeleton-text animated style="width: 100%; border-radius: 0"></ion-skeleton-text>
-            </ion-avatar>
-            <ion-label>
-              <h2><ion-skeleton-text animated style="width: 90%;"></ion-skeleton-text></h2>
-              <p><ion-skeleton-text animated style="width: 40%;"></ion-skeleton-text></p>
-            </ion-label>
-          </ng-container>
-          <ng-container *ngIf="item.name">
+        <ion-item *ngFor="let item of adjuntos; let i = index;">
             @if (mostrarMiniatura(item)) {
             <ion-avatar slot="start">
               <img [src]="resolverMiniatura(item)" />
@@ -82,14 +72,11 @@
             @else {
             <ion-icon [src]="resolverIcono(item.name)" slot="start" color="medium"></ion-icon>
             }
-            <!-- <ion-icon slot="start" color="nedium" *ngIf="mostrarPdf(item.type)" src="assets/icon/picture_as_pdf.svg"></ion-icon>
-            <ion-icon slot="start" color="nedium" *ngIf="mostrarExcel(item.type)" src="assets/icon/microsoft-excel.svg"></ion-icon>
-            <ion-icon slot="start" color="nedium" *ngIf="mostrarDefecto(item.type)" src="assets/icon/description.svg"></ion-icon> -->
             <ion-label>
               <h2>{{item.name}}</h2>
               <p>{{item.size | formatBytes}}</p>
             </ion-label>
-          </ng-container>
+            <ion-button fill="outline" slot="end" size="small" color="danger" (click)="eliminarAdjunto(item, i)">Eliminar</ion-button>
         </ion-item>
       </ion-list>
     </div>

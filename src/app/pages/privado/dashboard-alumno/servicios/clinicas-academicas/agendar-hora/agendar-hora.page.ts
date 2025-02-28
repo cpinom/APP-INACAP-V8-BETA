@@ -11,7 +11,6 @@ import { DialogService } from 'src/app/core/services/dialog.service';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
 import { EventsService } from 'src/app/core/services/events.service';
 import { ActionSheetController, NavController } from '@ionic/angular';
-import { debounceTime, Observable, of, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-agendar-hora',

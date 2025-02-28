@@ -16,6 +16,10 @@ const routes: Routes = [
     loadChildren: () => import('src/app/pages/privado/shared/buscador-docente/buscador-docente.module').then(m => m.BuscadorDocentePageModule)
   },
   {
+    path: 'clinicas-academicas',
+    loadChildren: () => import('./clinicas-academicas/clinicas-academicas.module').then(m => m.ClinicasAcademicasPageModule)
+  },
+  {
     path: 'solicitudes-academicas',
     loadChildren: () => import('src/app/pages/privado/shared/solicitudes-academicas/solicitudes-academicas.module').then(m => m.SolicitudesAcademicasPageModule)
   },
@@ -78,9 +82,10 @@ const routes: Routes = [
   {
     path: 'emplea-inacap',
     loadChildren: () => import('src/app/pages/privado/shared/emplea-inacap/emplea-inacap.module').then(m => m.EmpleaInacapPageModule)
-  },  {
+  },
+  {
     path: 'dae',
-    loadChildren: () => import('./dae/dae.module').then( m => m.DaePageModule)
+    loadChildren: () => import('./dae/dae.module').then(m => m.DaePageModule)
   },
 
   // {

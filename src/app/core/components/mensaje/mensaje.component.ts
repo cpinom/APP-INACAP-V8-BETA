@@ -250,6 +250,7 @@ export class MensajeComponent implements OnInit, OnDestroy {
             name: item.name,
             type: item.contentType,
             size: item.size,
+            userId: item.userId,
             content: ''
           });
         });
@@ -464,7 +465,8 @@ export class MensajeComponent implements OnInit, OnDestroy {
               name: fileName,
               type: result.data.type,
               size: result.data.size,
-              content: base64String
+              content: base64String,
+              userId: result.data.userId
             };
 
             await this.snackbar.showToast('Archivo cargado correctamente.', 3000, 'success');
@@ -520,30 +522,13 @@ export class MensajeComponent implements OnInit, OnDestroy {
       }
     }
   }
-  async eliminarAlert(item: any, index: number) {
-    await this.dialog.showActionSheet({
-      buttons: [
-        {
-          text: 'Eliminar',
-          handler: () => {
-            this.eliminarAdjunto(item, index);
-          }
-        },
-        {
-          text: 'Cancelar',
-          role: 'cancel'
-        }
-      ]
-    });
-  }
   async eliminarAdjunto(deleteItem: any, index: number) {
-    let attachmentId = this.adjuntos[index].id;
-    let params = { messageId: this.messageId, attachmentId: attachmentId };
-    let message = await this.snackbar.create('Eliminando adjunto...', false);
+    const loading = await this.dialog.showLoading({ message: 'Eliminando adjunto...' });
+    const attachmentId = this.adjuntos[index].id;
+    const params = { messageId: this.messageId, attachmentId: attachmentId };
+    
     this.updatingMessage = true;
     this.mostrarCargando = true;
-
-    message.present();
 
     try {
       await this.api.removeAttachment(params);
@@ -551,12 +536,16 @@ export class MensajeComponent implements OnInit, OnDestroy {
     catch (error: any) {
       if (error.status = 401) {
         await this.error.handle(error);
+        return;
       }
+
+      await this.snackbar.showToast('No fue posible eliminar el adjunto.', 3000, 'danger');
     }
     finally {
       this.updatingMessage = false;
       this.mostrarCargando = false;
-      message.dismiss();
+      
+      await loading.dismiss();
     }
 
     this.adjuntos.forEach((item, index) => {
@@ -574,7 +563,7 @@ export class MensajeComponent implements OnInit, OnDestroy {
     return alert;
   }
   mostrarMiniatura(item: any) {
-    return item.type.indexOf('image/') > -1 && item.content;
+    return item.type.indexOf('image/') > -1;
   }
   mostrarPdf(type: string) {
     return type == 'application/pdf';
@@ -586,12 +575,7 @@ export class MensajeComponent implements OnInit, OnDestroy {
     return !this.mostrarPdf(type) && !this.mostrarExcel(type) && !this.mostrarMiniatura(type);
   }
   resolverMiniatura(item: any) {
-    if (item.content) {
-      if (item.content.indexOf('data:image') > -1)
-        return item.content;
-      return 'data:image/png;base64,' + item.content;
-    }
-    return '';
+    return `${this.api.baseUrl}/v5/inacapmail/thumbnail?userId=${item.userId}&messageId=${this.messageId}&attachmentId=${item.id}`;
   }
   resolverIcono(path: string) {
     return this.utils.resolverIcono(path);

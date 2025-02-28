@@ -68,11 +68,11 @@ export class InacapMailService extends PrivateService {
     return this.post(`${this.baseUrl}/v4/inacapmail/create-reply`, params);
   }
   addAttachmentWeb(data: FormData, params: any): Promise<any> {
-    return Promise.resolve({})
+    return Promise.reject({})
     // return this.uploadWeb(`${this.baseUrl}/v4/inacapmail/add-attachment`, data, params);
   }
   addAttachment(filepath: string, filename: string, params: any): Promise<any> {
-    return Promise.resolve({})
+    return Promise.reject({})
     // return this.upload(`${this.baseUrl}/v4/inacapmail/add-attachment`, filepath, filename, params);
   }
   addAttachmentV5(messageId: string, params: any) {

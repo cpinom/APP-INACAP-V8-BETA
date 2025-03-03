@@ -1,13 +1,30 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>perfil</ion-title>
+    <ion-title>Perfil</ion-title>
+    <ion-buttons slot="start">
+      <ion-button icon-only routerLink="configuraciones" role="button" aria-label="Ver notificaciones">
+        <ion-icon src="assets/icon/settings.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button icon-only (click)="notificacionesTap()" role="button" aria-label="Ver notificaciones">
+        <ion-icon src="assets/icon/notifications.svg"></ion-icon>
+        <ion-badge *ngIf="mostrarNotificaciones">1</ion-badge>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">perfil</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+
+  <section class="avatar-container">
+    <img src="assets/images/bg-sede.png" />
+    <div class="avatar">
+      <ion-avatar>
+        <avatar-comp></avatar-comp>
+      </ion-avatar>
+    </div>
+    <h2>Información Personal</h2>
+  </section>
+
 </ion-content>

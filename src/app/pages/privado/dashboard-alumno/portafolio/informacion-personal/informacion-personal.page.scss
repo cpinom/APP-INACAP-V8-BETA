@@ -1,0 +1,32 @@
+.avatar-container {
+  position: relative;
+  margin: 0;
+
+  img {
+    height: 110px;
+    object-fit: cover;
+  }
+  div.avatar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    position: absolute;
+    height: 100%;
+    right: 0;
+    left: 0;
+
+    ion-avatar {
+      height: 100px;
+      width: 100px;
+      border: 2px solid #fff;
+    }
+  }
+
+  h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-top: 50px;
+    text-align: center;
+  }
+}

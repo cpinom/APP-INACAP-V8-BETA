@@ -29,16 +29,6 @@
     </ion-item>
   </ion-list>
 
-  <ion-list inset="true" class="card-list">
-    <ion-item detail="false" routerLink="carta-presentacion">
-      <ion-label>
-        <h2>Carta Presentación</h2>
-        <p>Estudiante o Profesional contador público, con experiencia en.... sus principales logros...</p>
-      </ion-label>
-      <ion-icon slot="end" src="assets/icon/mingcute_ai-line.svg"></ion-icon>
-    </ion-item>
-  </ion-list>
-
   <section class="actividad">
     <h2>Actividad</h2>
   </section>
@@ -59,7 +49,7 @@
     @if (activeTab == 0) {
     <ion-row>
       <ion-col size="6">
-        <ion-button class="color-1">
+        <ion-button class="color-1" routerLink="progresion">
           <div class="btn-inner">
             <ion-icon src="assets/icon/school.svg" class="rounded"></ion-icon>
             <ion-label>
@@ -73,7 +63,7 @@
       </ion-col>
       <ion-col size="6">
         <ion-button class="color-2">
-          <div class="btn-inner">
+          <div class="btn-inner" routerLink="progresion">
             <ion-icon src="assets/icon/report_gmailerrorred.svg" class="rounded"></ion-icon>
             <ion-label>
               <h1>67%</h1>
@@ -114,26 +104,24 @@
     }
     @else if (activeTab == 1) {
     <ion-row>
-      <ion-col size="6">
+      <!-- <ion-col size="6">
         <ion-button class="color-5">
           <div class="btn-inner">
             <ion-icon src="assets/icon/rocket_launch.svg" class="rounded"></ion-icon>
             <ion-label>
               <h2>Evidencias de aprendizaje</h2>
             </ion-label>
-            <!-- <ion-progress-bar [value]="30"></ion-progress-bar> -->
             <ion-icon src="assets/icon/arrow_forward.svg" class="launch"></ion-icon>
           </div>
         </ion-button>
-      </ion-col>
+      </ion-col> -->
       <ion-col size="6">
-        <ion-button class="color-6">
+        <ion-button class="color-6" routerLink="reconocimientos">
           <div class="btn-inner">
             <ion-icon src="assets/icon/star.svg" class="rounded"></ion-icon>
             <ion-label>
               <h2>Logros y Reconocimientos</h2>
             </ion-label>
-            <!-- <ion-progress-bar [value]="30"></ion-progress-bar> -->
             <ion-icon src="assets/icon/arrow_forward.svg" class="launch"></ion-icon>
           </div>
         </ion-button>

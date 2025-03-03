@@ -6,13 +6,14 @@ const routes: Routes = [
   {
     path: '',
     component: PortafolioPage
-  },  {
-    path: 'informacion-personal',
-    loadChildren: () => import('./informacion-personal/informacion-personal.module').then( m => m.InformacionPersonalPageModule)
   },
   {
-    path: 'carta-presentacion',
-    loadChildren: () => import('./carta-presentacion/carta-presentacion.module').then( m => m.CartaPresentacionPageModule)
+    path: 'configuraciones',
+    loadChildren: () => import('src/app/pages/privado/shared/configuraciones/configuraciones.module').then(m => m.ConfiguracionesPageModule)
+  },
+  {
+    path: 'informacion-personal',
+    loadChildren: () => import('./informacion-personal/informacion-personal.module').then( m => m.InformacionPersonalPageModule)
   },
   {
     path: 'practica-profesional',
@@ -25,6 +26,10 @@ const routes: Routes = [
   {
     path: 'progresion',
     loadChildren: () => import('./progresion/progresion.module').then( m => m.ProgresionPageModule)
+  },
+  {
+    path: 'reconocimientos',
+    loadChildren: () => import('./reconocimientos/reconocimientos.module').then( m => m.ReconocimientosPageModule)
   }
 
 ];

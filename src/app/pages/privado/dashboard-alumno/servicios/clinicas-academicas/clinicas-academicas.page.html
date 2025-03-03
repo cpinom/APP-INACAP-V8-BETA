@@ -4,14 +4,19 @@
       <ion-back-button text="Servicios" defaultHref="/dashboard-alumno/servicios"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
-  <ion-card class="primary-card" color="white">
-    <ion-card-header>
-      <ion-card-title>Clínicas Académicas</ion-card-title>
-    </ion-card-header>
-  </ion-card>
 </ion-header>
 
 <ion-content>
+
+  <ion-list inset="true" class="card-list">
+    <ion-item detail="false">
+      <ion-icon slot="start" src="assets/icon/co_present.svg" class="rounded variant-2"></ion-icon>
+      <ion-label>
+        <h2>Clínicas Académicas</h2>
+        <p>Espacio de refuerzo académico para mejorar tu aprendizaje.</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
 
   @if (mostrarCargando) {
   <div class="loaderInacap">
@@ -20,89 +25,86 @@
   }
 
   @if (mostrarData && data) {
-  
-  <!-- <section class="first">
-    <div class="section-content"> -->
-      <div class="tabs">
-        <ion-segment [(ngModel)]="tabModel" mode="ios" [swipeGesture]="false">
-          <ion-segment-button [value]="0">
-            <!-- <ion-icon src="assets/icon/event_available.svg"></ion-icon> -->
-            <ion-label>Horas inscritas</ion-label>
-          </ion-segment-button>
-          <ion-segment-button [value]="1">
-            <!-- <ion-icon src="assets/icon/date_range.svg"></ion-icon> -->
-            <ion-label>Historial de reservas</ion-label>
-          </ion-segment-button>
-        </ion-segment>
-      </div>
-      @if (tabModel == 0) {
-      @if (data.reservadas.length > 0) {
-      <ion-list inset="true">
-        @for (item of data.reservadas; track $index) {
-        <ion-item detail="true" (click)="detalleAgenda(item)" class="ion-activatable">
-          <ion-icon slot="start" src="assets/icon/check_circle_outline.svg" color="success"></ion-icon>
-          <ion-label>
-            <h2>Solicitud #{{item.acagNcorr}}</h2>
-            <p>Estado: {{item.acesTdesc}}</p>
-            <p>Número de asistentes: {{item.acagNparticipantes}}</p>
-            <p>Fecha: {{item.acofFmodulo}}</p>
-            <p>Hora: {{item.horaHinicio}}-{{item.horaHtermino}}</p>
-          </ion-label>
-        </ion-item>
-        }
-      </ion-list>
-      }
-      @else {
-      <div class="empty-state">
-        <div>
-          <ion-icon src="assets/icon/today.svg"></ion-icon>
-          <p>No has agendado ninguna hora en nuestras clínicas académicas. Solicita una desde aquí.</p>
-        </div>
-      </div>
-      }
-      }
-      @if (tabModel == 1) {
-      @if (data.historial.length > 0) {
-      <ion-list inset="true">
-        @for (item of data.historial; track $index) {
-        <ion-item detail="true" (click)="detalleAgenda(item)" class="ion-activatable">          
-          @if (item.acesCcod == 3) {
-          <ion-icon slot="start" src="assets/icon/highlight_off.svg" color="danger"></ion-icon>
-          }          
-          @else if (item.acesCcod == 4) {
-          <ion-icon slot="start" src="assets/icon/edit_document.svg" color="success"></ion-icon>
-          }          
-          @else if (item.acesCcod == 5) {
-          <ion-icon slot="start" src="assets/icon/edit_document.svg" color="danger"></ion-icon>
-          }
-          <ion-label>
-            <h2>{{item.acacTdesc}}</h2>
-            <p>Estado: {{item.acesTdesc}}</p>
-            <p>Número de asistentes: {{item.acagNparticipantes}}</p>
-            <p>Fecha: {{item.acofFmodulo}}</p>
-            <p>Hora: {{item.horaHinicio}} - {{item.horaHtermino}}</p>
-          </ion-label>
-        </ion-item>
-        }
-      </ion-list>
-      }
-      @else {
-      <div class="empty-state">
-        <div>
-          <ion-icon src="assets/icon/search.svg"></ion-icon>
-          <p>Sin reservas historicas en este momento.</p>
-        </div>
-      </div>
-      }
-      }
 
-      <section class="btn-agendar">
-        <ion-button color="primary" shape="round" expand="block" [disabled]="!permiteAgendar" routerLink="agendar-hora">
-          Inscribir Hora Clínica Académica
-        </ion-button>
-      </section>
-    <!-- </div>
-  </section> -->
+  <div class="tabs">
+    <ion-segment [(ngModel)]="tabModel" mode="ios" [swipeGesture]="false">
+      <ion-segment-button [value]="0">
+        <!-- <ion-icon src="assets/icon/event_available.svg"></ion-icon> -->
+        <ion-label>Horas inscritas</ion-label>
+      </ion-segment-button>
+      <ion-segment-button [value]="1">
+        <!-- <ion-icon src="assets/icon/date_range.svg"></ion-icon> -->
+        <ion-label>Historial de reservas</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
+  @if (tabModel == 0) {
+  @if (data.reservadas.length > 0) {
+  <ion-list inset="true">
+    @for (item of data.reservadas; track $index) {
+    <ion-item detail="true" (click)="detalleAgenda(item)" class="ion-activatable">
+      <ion-icon slot="start" src="assets/icon/check_circle_outline.svg" color="success"></ion-icon>
+      <ion-label>
+        <h2>Solicitud #{{item.acagNcorr}}</h2>
+        <p>Estado: {{item.acesTdesc}}</p>
+        <p>Número de asistentes: {{item.acagNparticipantes}}</p>
+        <p>Fecha: {{item.acofFmodulo}}</p>
+        <p>Hora: {{item.horaHinicio}}-{{item.horaHtermino}}</p>
+      </ion-label>
+    </ion-item>
+    }
+  </ion-list>
+  }
+  @else {
+  <div class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/today.svg"></ion-icon>
+      <p>No has agendado ninguna hora en nuestras clínicas académicas. Solicita una desde aquí.</p>
+    </div>
+  </div>
+  }
+  }
+  @if (tabModel == 1) {
+  @if (data.historial.length > 0) {
+  <ion-list inset="true">
+    @for (item of data.historial; track $index) {
+    <ion-item detail="true" (click)="detalleAgenda(item)" class="ion-activatable">
+      @if (item.acesCcod == 3) {
+      <ion-icon slot="start" src="assets/icon/highlight_off.svg" color="danger"></ion-icon>
+      }
+      @else if (item.acesCcod == 4) {
+      <ion-icon slot="start" src="assets/icon/edit_document.svg" color="success"></ion-icon>
+      }
+      @else if (item.acesCcod == 5) {
+      <ion-icon slot="start" src="assets/icon/edit_document.svg" color="danger"></ion-icon>
+      }
+      <ion-label>
+        <h2>{{item.acacTdesc}}</h2>
+        <p>Estado: {{item.acesTdesc}}</p>
+        <p>Número de asistentes: {{item.acagNparticipantes}}</p>
+        <p>Fecha: {{item.acofFmodulo}}</p>
+        <p>Hora: {{item.horaHinicio}} - {{item.horaHtermino}}</p>
+      </ion-label>
+    </ion-item>
+    }
+  </ion-list>
+  }
+  @else {
+  <div class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/search.svg"></ion-icon>
+      <p>Sin reservas historicas en este momento.</p>
+    </div>
+  </div>
+  }
+  }
+
+  <section class="btn-agendar">
+    <ion-button color="primary" shape="round" expand="block" [disabled]="!permiteAgendar" routerLink="agendar-hora">
+      Inscribir Hora Clínica Académica
+    </ion-button>
+  </section>
   }
   @if (mostrarData && !data) {
   <section class="empty-state">

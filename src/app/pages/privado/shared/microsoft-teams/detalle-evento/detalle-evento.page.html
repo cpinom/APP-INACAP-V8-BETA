@@ -31,7 +31,8 @@
     <div class="section-content">
       <ion-list class="ion-no-margin">
         <ion-item>
-          <ion-label [innerHTML]="data.cuerpo">
+          <ion-label>
+            <span [innerHTML]="data.cuerpo | replaceLineBreaks"></span>
           </ion-label>
         </ion-item>
       </ion-list>

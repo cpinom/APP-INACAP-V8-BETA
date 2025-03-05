@@ -57,7 +57,7 @@ const routes: Routes = [
   },
   {
     path: 'progresion',
-    loadChildren: () => import('./progresion/progresion.module').then(m => m.ProgresionPageModule)
+    loadChildren: () => import('src/app/pages/privado/dashboard-alumno/portafolio/progresion/progresion.module').then(m => m.ProgresionPageModule)
   },
   {
     path: 'postulaciones',

@@ -52,27 +52,59 @@ section {
     }
   }
 
+  &.table {
+    .section-content {
+      padding: 10px;
+    }
+  }
+
   .table-content {
     display: block;
     overflow-x: auto;
-    padding: 15px;
+    // padding: 15px;
+    box-shadow: 0 0 0 1px #dadce0;
+    border-radius: 8px;
   }
 
   .table {
     width: 100%;
     background-color: #fff;
     font-size: var(--FS14);
-  }
-  .table td,
-  .table th {
-    padding: 0.5rem;
-    vertical-align: middle;
-    border: var(--border);
-    text-align: center;
-    white-space: nowrap;
-  }
-  .table tbody tr:nth-of-type(odd) {
-    background-color: rgba(0, 0, 0, 0.05);
+
+    th,
+    td {
+      padding: 0.5rem;
+      vertical-align: middle;
+      border-top: var(--border);
+      border-right: var(--border);
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    tr:first-child th {
+      border-top-width: 0 !important;
+    }
+
+    th:last-child,
+    td:last-child {
+      border-right-width: 0 !important;
+
+      &.br {
+        border-right-width: 1px;
+      }
+    }
+
+    tbody {
+      tr:nth-of-type(odd) {
+        background-color: rgba(0, 0, 0, 0.05);
+      }
+
+      td {
+        ion-icon {
+          font-size: 18px;
+        }
+      }
+    }
   }
 }
 
@@ -301,5 +333,11 @@ section.accesos-directos {
         }
       }
     }
+  }
+}
+
+ion-icon ::ng-deep {
+  .icon-inner {
+    color: red;
   }
 }

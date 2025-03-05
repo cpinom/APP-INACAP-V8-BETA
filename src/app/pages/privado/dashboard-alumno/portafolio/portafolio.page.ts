@@ -23,6 +23,7 @@ scrollObs: Subscription;
     this.scrollObs = this.events.app.subscribe((event: any) => {
       if (event.action == 'scrollTop' && event.index == 2) {
         this.content?.scrollToTop(500);
+        this.activeTab = 0;
       }
     });
 

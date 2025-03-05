@@ -3,12 +3,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { DetalleEventoPage } from './detalle-evento.page';
+import { PipesModule } from 'src/app/core/pipes/pipes.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    IonicModule
+    IonicModule,
+    PipesModule
   ],
   declarations: [DetalleEventoPage]
 })

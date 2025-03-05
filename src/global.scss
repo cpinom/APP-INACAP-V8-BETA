@@ -355,6 +355,9 @@ body {
           color: var(--ion-color-step-700);
         }
       }
+      ion-icon[slot="start"] {
+        font-size: 24px;
+      }
       ion-icon + ion-icon {
         margin-left: 5px;
       }
@@ -587,6 +590,11 @@ body {
     font-size: 12px !important;
     font-weight: 400;
 
+    &.badge {
+      margin: 0 5px 0 0;
+      min-width: 30px;
+    }
+
     &.success {
       color: var(--ion-color-success) !important;
       border-color: var(--ion-color-success);
@@ -609,6 +617,12 @@ body {
       color: var(--ion-color-primary) !important;
       border-color: var(--ion-color-primary);
       background-color: #e1edfa;
+    }
+
+    &.common {
+      color: #717FE8 !important;
+      border-color: #717FE8;
+      background-color: #DCDFF9;
     }
   }
 

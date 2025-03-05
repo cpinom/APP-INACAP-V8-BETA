@@ -9,6 +9,7 @@ import { SnackbarService } from 'src/app/core/services/snackbar.service';
 import { AlumnoService } from 'src/app/core/services/http/alumno.service';
 import { AppGlobal } from 'src/app/app.global';
 import { VISTAS_ALUMNO } from 'src/app/core/constants/alumno';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-progresion',
@@ -35,13 +36,14 @@ export class ProgresionPage implements AfterViewInit {
   private utils = inject(UtilsService);
   private mensaje = inject(MensajeService);
   private snackbar = inject(SnackbarService);
+  private router = inject(Router);
 
   constructor() { }
 
   ngAfterViewInit() { }
   async ngOnInit() {
     this.status = await this.profile.getStorage('status');
-    this.cargar();
+    await this.cargar();
     this.api.marcarVista(VISTAS_ALUMNO.PROGRESION);
   }
   recargar() {
@@ -90,6 +92,17 @@ export class ProgresionPage implements AfterViewInit {
   resolverFoto(persNcorr: any) {
     return `${this.global.Api}/api/v3/imagen-persona/${persNcorr}`;
   }
+  resolverIconoPlataforma(nombre: string) {
+    if (nombre) {
+      if (nombre.toLocaleLowerCase().includes('matemáticas')) {
+        return 'calculate';
+      }
+      if (nombre.toLocaleLowerCase().includes('química')) {
+        return 'science';
+      }
+    }
+    return 'file_copy';
+  }
   async abrirPlataforma(url: string) {
     if (url.startsWith('//')) {
       url = `https:${url}`
@@ -103,6 +116,12 @@ export class ProgresionPage implements AfterViewInit {
     catch (error: any) {
       this.snackbar.showToast(error, 2000, 'danger');
     }
+  }
+  get backText() {
+    return this.router.url.startsWith('/dashboard-alumno/portafolio') ? 'Portafolio' : 'Inicio';
+  }
+  get backUrl() {
+    return this.router.url.startsWith('/dashboard-alumno/portafolio') ? '/dashboard-alumno/portafolio' : '/dashboard-alumno/inicio';
   }
 
 }

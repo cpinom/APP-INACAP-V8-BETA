@@ -1,0 +1,21 @@
+ion-header {
+  ion-card {
+    margin-bottom: 0 !important;
+  }
+}
+ion-content {
+  .texto-glosa {
+    hyphens: auto;
+    text-align: justify;
+
+    ::ng-deep {
+      p {
+        margin-bottom: 10px;
+        font-size: var(--FS14) !important;
+      }
+      .font-weight-bold {
+        font-weight: bold !important;
+      }
+    }
+  }
+}

@@ -72,6 +72,12 @@ section.ramos {
     white-space: nowrap;
     margin-top: 0;
 
+    .section-header {
+        padding-left: 8px;
+        margin-bottom: 10px;
+        padding-bottom: 0;
+    }
+
     ion-card {
         display: inline-block;
         margin: 0 10px 0 0;
@@ -199,8 +205,55 @@ div.tabs {
 }
 
 section.agenda {
-    margin: 0 10px 10px;
+    // margin: 0 10px 10px;
     box-shadow: var(--ion-box-shadow);
+
+    .section-header {
+        padding-left: 20px;
+    }
+    .section-content {
+        margin-inline: 10px;
+
+        .fecha {
+            margin: 10px;
+            background: var(--ion-color-1-background);
+            border-radius: 7px;
+            padding: 5px 10px;
+            position: relative;
+
+            h3 {
+                margin: 0 0 3px;
+                color: var(--ion-color-1-foreground);
+                font-size: 12px;
+            }
+
+            h2 {
+                margin: 0;
+                color: var(--ion-text-color);
+                font-size: 18px;
+                font-weight: 500;
+            }
+
+            ion-icon {
+                position: absolute;
+                right: 10px;
+                top: 5px;
+                font-size: 20px;
+                color: var(--ion-color-1-foreground);
+            }
+        }
+
+        .cargando {
+            text-align: center;
+            padding: 15px;
+
+            span {
+                display: block;
+                line-height: 32px;
+                font-size: var(--FS14);
+            }
+        }
+    }
 }
 
 section.ramos + section.horario {
@@ -692,8 +745,8 @@ ion-row.directos {
     ion-col {
         display: flex;
         align-items: center;
-        font-size: 14px;
-        font-weight: 600;
+        font-size: var(--FS13);
+        font-weight: 400;
 
         &:last-child {
             justify-content: end;

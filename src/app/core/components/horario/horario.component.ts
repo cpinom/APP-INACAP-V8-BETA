@@ -34,8 +34,8 @@ export class HorarioComponent implements OnInit {
   cargando = false;
   // myView: MbscEventcalendarView = { agenda: { type: 'week' } };
   myView: MbscEventcalendarView = {
-    calendar: { type: 'week' },
-    agenda: { type: 'day' },
+    calendar: { type: 'week',popover:false,count:false },
+    agenda: { type: 'day', }//https://demo.mobiscroll.com/angular/agenda/full-event-customization#
   };
   pickerLocale = localeEs;
 
@@ -71,7 +71,7 @@ export class HorarioComponent implements OnInit {
   }
   async ngOnInit() {
     if (this.pt.is('mobileweb')) {
-      this.fecha = moment('11/03/2024', 'DD/MM/YYYY').toDate();
+      this.fecha = moment('09/09/2024', 'DD/MM/YYYY').toDate();
 
       if (this.rol == Rol.Docente) {
         const principal = await this.profile.getStorage('principal');
@@ -93,25 +93,50 @@ export class HorarioComponent implements OnInit {
     let fechaInicio = fecha.inicio.format('DD/MM/YYYY');
     let fechaTermino = fecha.termino.format('DD/MM/YYYY');
     let horario = [];
-    let asignaturasVirtuales = [];
+    let asignaturasVirtuales: any[] = [];
 
     try {
       this.onAfterLoad.emit();
       this.cargando = true;
 
       if (this.rol == Rol.Alumno) {
-        let principal = await this.profile.getStorage('principal');
-        let programa = principal.programas[principal.programaIndex];
-        let params = { sedeCcod: programa.sedeCcod, carrCcod: programa.carrCcod, fechaInicio: fechaInicio, fechaTermino: fechaTermino };
-        let result = await this.alumnoApi.getHorario(params);
+        const principal = await this.profile.getStorage('principal');
+        const programa = principal.programas[principal.programaIndex];
+        const sedeCcod = programa.sedeCcod;
+        const periCcod = programa.periCcod;
 
-        if (result) {
-          horario = result.planificacion;
-          asignaturasVirtuales = result.asignaturasVirtuales;
+        const result = await this.alumnoApi.getAgenda(sedeCcod, periCcod, fechaInicio, fechaTermino);
+        debugger
+
+        if (result.success) {
+          const { eventos } = result.data;
+          let listado: any[] = [];
+
+          eventos.forEach((item: any) => {
+            listado.push({
+              title: '',
+              start: moment(`${item.bloqFmodulo} ${item.horaHinicio}`, 'DD/MM/YYYY HH:mi').toDate(),
+              end: moment(`${item.bloqFmodulo} ${item.horaHtermino}`, 'DD/MM/YYYY HH:mi').toDate(),
+              // cssClass: cssClass,
+              data: item
+            })
+          });
+
+          this.eventos = listado;
+
+
         }
-        else {
-          throw Error();
-        }
+
+        // let params = { sedeCcod: programa.sedeCcod, carrCcod: programa.carrCcod, fechaInicio: fechaInicio, fechaTermino: fechaTermino };
+        // let result = await this.alumnoApi.getHorario(params);
+
+        // if (result) {
+        //   horario = result.planificacion;
+        //   asignaturasVirtuales = result.asignaturasVirtuales;
+        // }
+        // else {
+        //   throw Error();
+        // }
       }
       else if (this.rol == Rol.Docente) {
         const fechaLunes = moment(this.fecha).clone().startOf('week');
@@ -128,7 +153,7 @@ export class HorarioComponent implements OnInit {
         throw Error();
       }
 
-      var eventos: any[] = [];
+      /*var eventos: any[] = [];
 
       if (horario && horario.length) {
         horario.forEach((dia: any) => {
@@ -159,7 +184,7 @@ export class HorarioComponent implements OnInit {
 
       this.eventos = eventos;
       this.asignaturasVirtuales = asignaturasVirtuales;
-      this.planificacion = true;
+      this.planificacion = true;*/
       this.onCompleteLoad.emit();
     }
     catch (error: any) {
@@ -171,6 +196,7 @@ export class HorarioComponent implements OnInit {
     }
   }
   onSelectedDateChange(args: MbscPageChangeEvent) {
+    debugger
     this.fecha = args.firstDay;
     this.cargar();
   }

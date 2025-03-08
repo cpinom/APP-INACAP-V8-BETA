@@ -5,21 +5,27 @@
     </ion-buttons>
     <ion-title>Horario</ion-title>
   </ion-toolbar>
-  <!-- <ion-card class="primary-card" color="white" *ngIf="mostrarTitulo">
-    <ion-card-header>
-      <ion-card-title>Horario</ion-card-title>
-    </ion-card-header>
-    <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar>
-  </ion-card> -->
 </ion-header>
 
 <ion-content>
 
-  <ng-container *ngIf="mostrarData">
+  <ion-card class="primary-card" color="white" >
+    <ion-card-header>
+      <ion-card-title>Horario</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+
+  <section class="agenda">
     <horario-comp rol="alumno" (onEventoTap)="onEventoTap($event)" (onAfterLoad)="onAfterLoad($event)"
       (onCompleteLoad)="onCompleteLoad($event)" (onError)="onError($event)"
       (onChangeOrientation)="onChangeOrientation($event)"></horario-comp>
-  </ng-container>
+  </section>
+
+  <!-- <ng-container *ngIf="mostrarData">
+    <horario-comp rol="alumno" (onEventoTap)="onEventoTap($event)" (onAfterLoad)="onAfterLoad($event)"
+      (onCompleteLoad)="onCompleteLoad($event)" (onError)="onError($event)"
+      (onChangeOrientation)="onChangeOrientation($event)"></horario-comp>
+  </ng-container> -->
 
   <section *ngIf="mostrarError" class="empty-state">
     <div>

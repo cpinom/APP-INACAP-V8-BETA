@@ -83,7 +83,15 @@ ion-card.titulo {
 }
 
 ::ng-deep .mbsc-calendar-controls {
-    background: var(--ion-color-light) !important;
+    background: var(--ion-color-white) !important;
+}
+
+::ng-deep .mbsc-calendar-week-days {
+    background: var(--ion-color-white) !important;
+}
+
+::ng-deep .mbsc-calendar-cell {
+    border: 0 none !important;
 }
 
 ::ng-deep .mbsc-material.mbsc-calendar-title {

@@ -39,6 +39,9 @@ export class AlumnoService extends PrivateService {
   getHorarioV5(params: any): Promise<any> {
     return this.post(`${this.baseUrl}/v5/alumno/horario`, params);
   }
+  getAgenda(sedeCcod: any, periCcod: any, fechaInicio: any, fechaTermino: any): Promise<any> {
+    return this.get(`${this.baseUrl}/v5/alumno/agenda?sedeCcod=${sedeCcod}&periCcod=${periCcod}&fechaInicio=${fechaInicio}&fechaTermino=${fechaTermino}`);
+  }
   getAlumnos(): Promise<any> {
     return this.get(`${this.baseUrl}/v4/alumno/alumnos`);
   }

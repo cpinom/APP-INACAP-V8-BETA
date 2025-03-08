@@ -11,7 +11,6 @@ import { Haptics } from '@capacitor/haptics';
 import { Subscription } from 'rxjs';
 import { EventsService } from 'src/app/core/services/events.service';
 import { DialogService } from 'src/app/core/services/dialog.service';
-import { MbscEventClickEvent, MbscEventcalendarView, MbscPageChangeEvent, localeEs } from '@mobiscroll/angular';
 import * as moment from 'moment';
 import { FCM } from '@capacitor-community/fcm';
 import { DatosContactoPage } from './datos-contacto/datos-contacto.page';
@@ -52,10 +51,9 @@ export class InicioPage implements OnInit, AfterViewInit {
   programa: any;
   cursos!: any[];
   clases: any;
-  cargandoClases = false;
+  cargandoClases = true;
   mostrarData!: boolean;
   descatadoFn: any;
-  tabsModel = 0;
   practica!: boolean;
   numeroEvalInicial = 3;
   numeroEvalMostrando = this.numeroEvalInicial;
@@ -68,14 +66,7 @@ export class InicioPage implements OnInit, AfterViewInit {
   horarioObservable!: Subscription;
   scrollObs: Subscription;
   reloadObs: Subscription;
-  myView: MbscEventcalendarView = {
-    calendar: { type: 'week' },
-    agenda: { type: 'day' }
-  };
-  pickerLocale = localeEs;
-  theme: string;
-  themeVariant: any;
-  eventosHorario: any;
+  eventos: any;
   accesosDirectos: AccesosDirectos[] = [
     {
       key: 'MOODLE',
@@ -205,7 +196,6 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.scrollObs = this.events.app.subscribe((event: any) => {
       if (event.action == 'scrollTop' && event.index == 0 && this.router.url == '/dashboard-alumno/inicio') {
         this.content?.scrollToTop(500);
-        this.tabsModel = 0;
         this.ramosContent && this.ramosContent.nativeElement.scrollTo({ left: 0, behavior: 'smooth' });
       }
     });
@@ -224,8 +214,9 @@ export class InicioPage implements OnInit, AfterViewInit {
       this.guardarPeriodo(value);
     });
 
-    this.theme = 'ios';
-    this.themeVariant = this.profile.isDarkMode() ? 'dark' : 'light';
+    if(this.pt.is('mobileweb')) {
+      this.fechaHorario = moment('29/09/2024', 'DD/MM/YYYY').toDate();
+    }
   }
   ngAfterViewInit() { }
   async ngOnInit() {
@@ -244,8 +235,6 @@ export class InicioPage implements OnInit, AfterViewInit {
   }
   async ionViewWillEnter() {
     this.mostrarData = false;
-    this.theme = 'ios'; //this.pt.is('ios') ? 'ios' : 'material';
-    this.themeVariant = this.profile.isDarkMode() ? 'dark' : 'light';
 
     await this.cargar();
     await this.verificarSaludo();
@@ -309,7 +298,7 @@ export class InicioPage implements OnInit, AfterViewInit {
       this.events.app.next({ action: 'app:alumno-principal' });
 
       await this.profile.setStorage('principal', principal);
-      await this.cargarHorario();
+      await this.cargarHorarioV2();
       await this.cargarStatus();
       this.cargarCorreos();
       this.verificarSuscripciones();
@@ -319,44 +308,74 @@ export class InicioPage implements OnInit, AfterViewInit {
       this.mostrarData = true;
     }
   }
-  async cargarHorario() {
-    const fechaLunes = moment(this.fechaHorario).clone().startOf('week');
-    const fechaInicio = fechaLunes.clone().startOf('week').format('DD/MM/YYYY');
-    const fechaTermino = fechaLunes.clone().add(5, 'day').format('DD/MM/YYYY');
-    let periCcod = this.programa.periCcod;
-    let sedeCcod = this.programa.sedeCcod;
-    let params = {
-      periCcod: periCcod,
-      sedeCcod: sedeCcod,
-      fechaInicio: fechaInicio,
-      fechaTermino: fechaTermino
-    };
+  async cargarHorarioV2() {
     this.cargandoClases = true;
 
+    const periCcod = this.programa.periCcod;
+    const sedeCcod = this.programa.sedeCcod;
+    const fechaInicio = moment(this.fechaHorario).format('DD/MM/YYYY');
+    // const fechaTermino = '28/09/2024';
+
     try {
-      let result = await this.api.getHorarioV5(params);
+      const result = await this.api.getAgenda(sedeCcod, periCcod, fechaInicio, fechaInicio);
 
       if (result.success) {
-        this.procesarHorario(result.horario.clasesProgramadas);
+        this.eventos = result.data.eventos;
       }
       else {
-        throw Error();
+        this.eventos = undefined;
       }
     }
-    catch {
-      this.eventosHorario = undefined;
+    catch (error: any) {
+      if (error && error.status == 401) {
+        await this.error.handle(error);
+      }
     }
     finally {
       this.cargandoClases = false;
     }
+
   }
-  async onHorarioChange(args: MbscPageChangeEvent) {
-    this.fechaHorario = moment(args.firstDay);
-    this.cargarHorario();
+  resolverFechaAgenda(index: number) {
+    if (index == 0) {
+      const agendaDia = moment(this.fechaHorario).format('dddd')
+      return agendaDia.charAt(0).toUpperCase() + agendaDia.slice(1);
+    }
+    else if (index == 1) {
+      const agendaFecha = moment(this.fechaHorario).format('D MMM');
+      return agendaFecha;
+    }
+
+    return '';
   }
-  async onSeccionClick(args: MbscEventClickEvent) {
-    let seccion = args.event['data'];
-    this.seccionTap(seccion);
+  resolverIconoAgenda(item: any, type: number) {
+    if (type == 0) {
+      if (item.bloqTipo == 'evaluacion')
+        return 'notas';
+      if (item.bloqTipo == 'seccion')
+        return 'school';
+      if (item.bloqTipo == 'recuperacion')
+        return 'clock';
+    }
+    else if (type == 1) {
+      if (item.bloqTipo == 'evaluacion')
+        return 'variant-4';
+      if (item.bloqTipo == 'seccion')
+        return 'variant-3';
+      if (item.bloqTipo == 'recuperacion')
+        return 'variant-5';
+    }
+
+    return '';
+  }
+  resolverTipoAgenda(item: any) {
+    if (item.bloqTipo == 'evaluacion')
+      return 'Evaluación';
+    if (item.bloqTipo == 'seccion')
+      return 'Clases';
+    if (item.bloqTipo == 'recuperacion')
+      return 'Recuperación de Clases';
+    return 'Clases';
   }
   procesarCursos(cursos: any[]) {
     if (cursos.length) {
@@ -372,36 +391,6 @@ export class InicioPage implements OnInit, AfterViewInit {
     }
 
     return cursos;
-  }
-  procesarHorario(clases: any) {
-    const fechaLunes = moment(this.fechaHorario).clone().startOf('week');
-    let dias = this.groupBy(clases, 'diasCcod');
-    let eventos = [];
-
-    for (let dia in dias) {
-      let fecha = fechaLunes.clone().add(Number(dia) - 1, 'day');
-      let secciones = this.groupBy(dias[dia], 'seccCcod');
-
-      for (let seccion in secciones) {
-        let inicio = secciones[seccion][0];
-        let termino = secciones[seccion][secciones[seccion].length - 1];
-        let cssClass = '';
-
-        if (inicio.estadoBloque == 1) cssClass = 'suspendida';
-        if (inicio.estadoBloque == 2 || inicio.estadoBloque == 4) cssClass = 'progreso';
-        if (inicio.estadoBloque == 3) cssClass = 'realizada';
-
-        eventos.push({
-          title: `${inicio['asigTdesc']} - <b>${inicio['asigCcod']}</b><br/>Sala : ${inicio['salaEjecucion'] || inicio['salaProgramada']}`,
-          start: moment(`${fecha.format('DD/MM/YYYY')} ${inicio.horaHinicio}`, 'DD/MM/YYYY HH:mi').toDate(),
-          end: moment(`${fecha.format('DD/MM/YYYY')} ${termino.horaHtermino}`, 'DD/MM/YYYY HH:mi').toDate(),
-          cssClass: cssClass,
-          data: inicio
-        })
-      }
-    }
-
-    this.eventosHorario = eventos;
   }
   async cargarStatus() {
     this.mostrarStatus = true;
@@ -656,28 +645,6 @@ export class InicioPage implements OnInit, AfterViewInit {
 
     return Promise.resolve(true);
   }
-  proximasEvaluaciones() {
-    if (this.global.Environment == 'Desarrollo') {
-      return this.evaluaciones;
-    }
-    let evaluaciones: any[] = [];
-
-    if (this.evaluaciones) {
-      this.evaluaciones.forEach(item => {
-        let fechaActual = moment();
-        let fechaEvaluacion = moment(item.caliFevaluacion, 'DD/MM/YYYY');
-
-        if (fechaActual.isSameOrBefore(fechaEvaluacion, 'D')) {
-          evaluaciones.push(item);
-        }
-      })
-    }
-
-    return evaluaciones;
-  }
-  resolverFechaEvaluacion(data: any) {
-    return moment(data.caliFevaluacion, 'DD/MM/YYYY').format('[<span class="dia">]DD[</span> ]MMM').replace('.', '');
-  }
   async mostrarDetalleEstacionamiento(e: Event, modal: IonModal) {
     e.preventDefault();
 
@@ -898,9 +865,6 @@ export class InicioPage implements OnInit, AfterViewInit {
   }
   async moodleOnlineTap() {
     await this.utils.openLink('https://spcv.eclass.com/sso/spinitsso-redirect-cv?id=19&portal=811&campus=1104');
-  }
-  async mostrarEvaluaciones() {
-    await this.evaluacionesMdl.present();
   }
   notificacionesTap() {
     this.events.app.next({ action: 'app:alumno-notificaciones' });

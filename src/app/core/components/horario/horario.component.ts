@@ -34,7 +34,7 @@ export class HorarioComponent implements OnInit {
   cargando = false;
   // myView: MbscEventcalendarView = { agenda: { type: 'week' } };
   myView: MbscEventcalendarView = {
-    calendar: { type: 'week',popover:false,count:false },
+    calendar: { type: 'week', popover: false, count: false },
     agenda: { type: 'day', }//https://demo.mobiscroll.com/angular/agenda/full-event-customization#
   };
   pickerLocale = localeEs;
@@ -106,7 +106,7 @@ export class HorarioComponent implements OnInit {
         const periCcod = programa.periCcod;
 
         const result = await this.alumnoApi.getAgenda(sedeCcod, periCcod, fechaInicio, fechaTermino);
-        debugger
+        //debugger
 
         if (result.success) {
           const { eventos } = result.data;
@@ -114,7 +114,7 @@ export class HorarioComponent implements OnInit {
 
           eventos.forEach((item: any) => {
             listado.push({
-              title: '',
+              title: 'test',
               start: moment(`${item.bloqFmodulo} ${item.horaHinicio}`, 'DD/MM/YYYY HH:mi').toDate(),
               end: moment(`${item.bloqFmodulo} ${item.horaHtermino}`, 'DD/MM/YYYY HH:mi').toDate(),
               // cssClass: cssClass,
@@ -123,7 +123,7 @@ export class HorarioComponent implements OnInit {
           });
 
           this.eventos = listado;
-
+          console.log(listado);
 
         }
 
@@ -194,6 +194,34 @@ export class HorarioComponent implements OnInit {
     finally {
       this.cargando = false;
     }
+  }
+  resolverDuracion(evento: any) {
+    // debugger
+    // Convertir las horas a objetos Date
+    const [horaInicioHoras, horaInicioMinutos] = evento.horaHinicio.split(':').map(Number);
+    const [horaTerminoHoras, horaTerminoMinutos] = evento.horaHtermino.split(':').map(Number);
+
+    // Crear las fechas con las horas establecidas
+    const fechaInicio = new Date();
+    fechaInicio.setHours(horaInicioHoras, horaInicioMinutos, 0, 0);
+
+    const fechaTermino = new Date();
+    fechaTermino.setHours(horaTerminoHoras, horaTerminoMinutos, 0, 0);
+
+    // Calcular la diferencia en milisegundos
+    let diferenciaMs = fechaTermino.getTime() - fechaInicio.getTime();
+
+    // Si la diferencia es negativa, significa que el término es al día siguiente
+    if (diferenciaMs < 0) {
+      diferenciaMs += 24 * 60 * 60 * 1000; // Agregar un día completo en milisegundos
+    }
+
+    // Convertir la diferencia a horas y minutos
+    const horas = Math.floor(diferenciaMs / (1000 * 60 * 60));
+    const minutos = Math.floor((diferenciaMs % (1000 * 60 * 60)) / (1000 * 60));
+
+    // Construir el resultado en el formato "3 h 15 m"
+    return `${horas} h ${minutos} m`;
   }
   onSelectedDateChange(args: MbscPageChangeEvent) {
     debugger

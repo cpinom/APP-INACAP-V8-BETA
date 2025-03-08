@@ -37,7 +37,26 @@
 </section> -->
 
 <mbsc-eventcalendar [theme]="theme" [themeVariant]="themeVariant" [(selectedDate)]="fecha" [data]="eventos"
-  [view]="myView" (onEventClick)="onEventClick($event)" (onPageChange)="onSelectedDateChange($event)" [locale]="pickerLocale" [agendaEmptyTemplate]="horarioEmptyTpl">
+  [view]="myView" (onEventClick)="onEventClick($event)" (onPageChange)="onSelectedDateChange($event)"
+  [locale]="pickerLocale" [agendaEmptyTemplate]="horarioEmptyTpl" [eventTemplate]="eventTemplate">
+  <ng-template #eventTemplate let-data>
+    <ion-item>
+      <div slot="start">
+        <ion-icon></ion-icon>
+        <h2>{{data.original.data.horaHinicio}} - {{data.original.data.horaHtermino}}</h2>
+        <p>{{resolverDuracion(data.original.data)}}</p>
+      </div>
+      <ion-label>
+        <h2>{{data.original.data.asigTdesc}}</h2>
+        <p>Docente: {{data.original.data.persTnombre}}</p>
+        <p>Sala: {{data.original.data['salaEjecucion'] || data.original.data['salaProgramada']}}</p>
+      </ion-label>
+    </ion-item>
+    <!-- <div class="mbsc-event-content">
+      <div class="mbsc-event-title">{{data.title}}</div>
+      <div class="mbsc-event-desc">{{data.desc}}</div>
+    </div> -->
+  </ng-template>
   <ng-template #horarioEmptyTpl>
     <div class="mbsc-align-center mbsc-padding">
       <!-- <ion-spinner name="lines" color="primary" *ngIf="item.cargando"></ion-spinner>

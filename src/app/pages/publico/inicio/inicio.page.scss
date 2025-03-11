@@ -1,0 +1,139 @@
+ion-content {
+  --background: transparent !important;
+
+  .principal {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    div.destacado {
+      flex: 1;
+      ion-card {
+        --background: rgb(255 255 255 / 70%);
+      }
+      ion-card-content {
+        padding: 0;
+
+        ion-item {
+          --background: transparent;
+          ion-icon {
+            margin-left: 10px;
+            background: #a7b0f1;
+            border-radius: 50%;
+            padding: 6px;
+          }
+          ion-label {
+            font-size: var(--FS14);
+            white-space: normal;
+            margin: 0;
+            margin-top: 16px;
+            margin-bottom: 16px;
+
+            h2 {
+              color: #040b15;
+            }
+
+            p {
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+          }
+        }
+      }
+    }
+
+    div.noticias {
+      .section-header {
+        color: white;
+        font-weight: 600;
+        padding-bottom: 5px;
+      }
+
+      ion-card {
+        --background: rgb(255 255 255 / 70%);
+        margin: 0 15px 8px;
+
+        ion-card-content {
+          padding: 0;
+
+          ion-item {
+            --background: transparent;
+            --padding-start: 10px;
+            --padding-top: 10px;
+            --padding-bottom: 10px;
+
+            ion-avatar {
+              height: 55px;
+              width: 55px;
+              margin-right: 14px;
+
+              &.md {
+                margin: 0 15px 0 5px;
+              }
+
+              img {
+                border-radius: 4px;
+              }
+            }
+
+            ion-label {
+              h2 {
+                font-size: var(--FS15);
+                font-weight: 700;
+                color: #040b15;
+              }
+              p {
+                font-size: var(--FS11);
+              }
+            }
+
+            ion-icon[slot="end"] {
+              font-size: 18px;
+            }
+          }
+        }
+      }
+
+      ion-card:last-child {
+        margin-bottom: 18px;
+      }
+    }
+  }
+
+  .no-internet {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    flex-direction: column;
+
+    ion-icon {
+      color: #888;
+      font-size: 70px;
+      height: 70px;
+      width: 70px;
+    }
+
+    p.title {
+      font-weight: 500;
+    }
+
+    p.legend {
+      text-align: center;
+      margin: 0 40px 20px;
+      font-size: var(--FS14);
+    }
+  }
+}
+
+::ng-deep body.dark {
+  .principal {
+    div.destacado,
+    div.noticias {
+      ion-card {
+        --background: var(--ion-item-background) !important;
+      }
+    }
+  }
+}

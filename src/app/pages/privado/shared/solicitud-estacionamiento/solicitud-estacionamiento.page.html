@@ -60,29 +60,35 @@
           <div class="section-content">
             <ion-list>
               <ion-item>
-                <ion-select label="Tipo Vehículo" labelPlacement="stacked" placeholder="Seleccionar Tipo..." formControlName="aeveNcorr" interface="alert"
-                  okText="Aceptar" cancelText="Cancelar">
-                  <ion-select-option [value]="item.aeveNcorr" *ngFor="let item of data.vehiculos">{{item.aeveTnombre}}</ion-select-option>
+                <ion-select label="Tipo Vehículo" labelPlacement="stacked" placeholder="Seleccionar Tipo..."
+                  formControlName="aeveNcorr" interface="alert" okText="Aceptar" cancelText="Cancelar">
+                  <ion-select-option [value]="item.aeveNcorr"
+                    *ngFor="let item of data.vehiculos">{{item.aeveTnombre}}</ion-select-option>
                 </ion-select>
               </ion-item>
               <div class="invalid" *ngIf="submitted && tipoVehiculo?.hasError('required')">Campo obligatorio.</div>
               <ng-container *ngIf="tipoVehiculo?.valid">
                 <ion-item>
-                  <ion-input label="Patente Vehículo" labelPlacement="stacked" formControlName="aepoTpatente" placeholder="Ingresar Patente..." clearInput></ion-input>
+                  <ion-input label="Patente Vehículo" labelPlacement="stacked" formControlName="aepoTpatente"
+                    placeholder="Ingresar Patente..." clearInput></ion-input>
                 </ion-item>
                 <div class="invalid" *ngIf="submitted && patente?.hasError('required')">Campo obligatorio.</div>
                 <div class="invalid" *ngIf="submitted && patente?.hasError('patente')">Patente inválida.</div>
               </ng-container>
               <ion-item>
                 <ion-checkbox formControlName="acuerdo" color="danger" labelPlacement="end">
-                  <span class="ion-text-wrap">Tomo conocimiento de las condiciones para la Postulación de Estacionamiento.</span>
+                  <span class="ion-text-wrap">Tomo conocimiento de las condiciones para la Postulación de
+                    Estacionamiento.</span>
                 </ion-checkbox>
               </ion-item>
               <div class="invalid" *ngIf="submitted && acuerdo?.hasError('required')">Campo obligatorio.</div>
               <ion-item>
                 <ion-icon slot="start" src="assets/icon/info.svg"></ion-icon>
                 <ion-label style="font-size: 14px !important; text-align: left;">
-                  <span>Solicito acceso al estacionamiento de INACAP de la sede {{nombreSede}}. Para estos efectos entrego voluntariamente y acepto el uso del número de la placa patente del vehículo, por parte de INACAP, sólo para efectos de administrar correctamente la asignación del estacionamiento, el ingreso y la salida del vehículo hacia/desde el estacionamiento.
+                  <span>Solicito acceso al estacionamiento de INACAP de la sede {{nombreSede}}. Para estos efectos
+                    entrego voluntariamente y acepto el uso del número de la placa patente del vehículo, por parte de
+                    INACAP, sólo para efectos de administrar correctamente la asignación del estacionamiento, el ingreso
+                    y la salida del vehículo hacia/desde el estacionamiento.
                     Este proceso no garantiza la disponibilidad de un estacionamiento.</span>
                   <!-- <h2>Ésta autorización es un requisito para el Proceso de Postulación.</h2>
                   <span>Al proporcionar su número de patente, usted acepta y autoriza el uso de estos datos por parte de INACAP para fines administrativos.
@@ -92,10 +98,14 @@
             </ion-list>
           </div>
         </section>
-        <ion-button type="submit" color="primary" shape="round" expand="block">Guardar</ion-button>
-        <ion-button color="secondary" shape="round" expand="block" *ngIf="permiteEditar && editarPostulacion && data.postulacion" (click)="editarPostulacion = false" style="margin-top: 15px;">
-          Cancelar
-        </ion-button>
+        <section style="margin-inline: 15px;">
+          <ion-button type="submit" color="primary" shape="round" expand="block">Guardar</ion-button>
+          <ion-button color="secondary" shape="round" expand="block"
+            *ngIf="permiteEditar && editarPostulacion && data.postulacion" (click)="editarPostulacion = false"
+            style="margin-top: 15px;">
+            Cancelar
+          </ion-button>
+        </section>
       </form>
 
     </div>
@@ -104,27 +114,43 @@
       <section>
         <div class="section-header">Detalle Postulación</div>
         <div class="section-content">
-          <ion-list>
+          <ion-list class="detalle">
             <ion-item>
-              <ion-label class="label" style="flex: 0 0 180px;">Tipo Vehículo</ion-label>
-              <ion-label class="right">{{data.postulacion.aeveTnombre}}</ion-label>
-            </ion-item>
-            <ion-item>
-              <ion-label class="label" position="fixed" style="flex: 0 0 180px;">Patente Vehículo</ion-label>
-              <ion-label class="right">{{data.postulacion.aepoTpatente}}</ion-label>
+              <ion-label>
+                <h2>Tipo Vehículo: <span>{{data.postulacion.aeveTnombre}}</span></h2>
+              </ion-label>
             </ion-item>
             <ion-item>
-              <ion-label class="label" position="fixed" style="flex: 0 0 180px;">Fecha Postulación</ion-label>
-              <ion-label class="right">{{data.postulacion.aepoFsolicitud}}</ion-label>
+              <ion-label>
+                <h2>Patente Vehículo: <span>{{data.postulacion.aepoTpatente}}</span></h2>
+              </ion-label>
             </ion-item>
             <ion-item>
-              <ion-label class="label" position="fixed" style="flex: 0 0 180px;">Estado</ion-label>
-              <ion-label class="right">{{data.postulacion.aepeTnombre}}</ion-label>
+              <ion-label>
+                <h2>Fecha Postulación: <span>{{data.postulacion.aepoFsolicitud}}</span></h2>
+              </ion-label>
             </ion-item>
-            <ion-item *ngIf="data.postulacion.aepoTobservacion">
-              <ion-label class="label" position="fixed" style="flex: 0 0 180px;">Observaciones</ion-label>
-              <ion-label class="right">{{data.postulacion.aepoTobservacion}}</ion-label>
+            @if (data.postulacion.aepoFresolucion) {
+            <ion-item>
+              <ion-label>
+                <h2>Fecha Resolución: <span>{{data.postulacion.aepoFresolucion}}</span></h2>
+              </ion-label>
             </ion-item>
+            }
+            <ion-item>
+              <ion-label>
+                <h2>Estado: <p class="estado-actividad {{resolverEstado(data.postulacion.aepeCcod)}}">
+                    {{data.postulacion.aepeTnombre}}</p>
+                </h2>
+              </ion-label>
+            </ion-item>
+            @if (data.postulacion.aepoTobservacion) {
+            <ion-item>
+              <ion-label>
+                <h2>Observaciones: <span>{{data.postulacion.aepoTobservacion}}</span></h2>
+              </ion-label>
+            </ion-item>
+            }
           </ion-list>
         </div>
       </section>

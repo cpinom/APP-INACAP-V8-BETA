@@ -104,6 +104,9 @@ export class PublicService {
     }
     catch (error: any) { }
   }
+  getPrincipal() {
+    return this.get(`${this.baseUrl}/api/v5/principal`);
+  }
   getAppVersion() {
     return this.get(`${this.baseUrl}/api/app-version`);
   }

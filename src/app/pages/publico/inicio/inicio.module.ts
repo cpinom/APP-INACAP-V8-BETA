@@ -5,6 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { InicioPageRoutingModule } from './inicio-routing.module';
 import { InicioPage } from './inicio.page';
 import { ComponentsModule } from 'src/app/core/components/components.module';
+import { DirectivesModule } from 'src/app/core/directives/directives.module';
 
 @NgModule({
   imports: [
@@ -12,7 +13,8 @@ import { ComponentsModule } from 'src/app/core/components/components.module';
     FormsModule,
     IonicModule,
     InicioPageRoutingModule,
-    ComponentsModule
+    ComponentsModule,
+    DirectivesModule
   ],
   declarations: [InicioPage]
 })

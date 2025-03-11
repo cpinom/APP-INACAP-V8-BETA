@@ -725,4 +725,8 @@ body {
       background: var(--ion-item-background);
     }
   }
+
+  app-publico {
+    background: url("assets/images/publico/inicio-publico.jpg") no-repeat 100% center/cover;
+  }
 }

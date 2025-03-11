@@ -1,0 +1,43 @@
+ion-accordion-group {
+  ion-accordion {
+    ion-item[slot="header"] {
+      ion-label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        p.estado-actividad {
+          margin: 0;
+        }
+      }
+    }
+    div[slot="content"] {
+      ion-label {
+        h2 {
+          font-size: var(--FS14) !important;
+        }
+      }
+    }
+  }
+}
+
+ion-footer {
+  background: var(--ion-color-light);
+}
+
+ion-footer > div {
+  display: flex;
+  padding: 10px 15px;
+  text-align: center;
+  font-size: var(--FS12);
+  color: var(--ion-color-dark);
+
+  span {
+    flex: 1;
+  }
+
+  strong {
+    font-size: var(--FS22);
+    display: block;
+  }
+}

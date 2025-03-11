@@ -249,6 +249,19 @@ export class SolicitudEstacionamientoPage implements OnInit {
       this.cargar();
     }, 100);
   }
+  resolverEstado(aepeCcod: any) {
+    if (aepeCcod == 1) {
+      return 'warning';
+    }
+    if (aepeCcod == 2) {
+      return 'success';
+    }
+    if (aepeCcod == 3) {
+      return 'danger';
+    }
+
+    return '';
+  }
 
   get backUrl() { return this.router.url.replace('/solicitud-estacionamiento', ''); }
   get esAlumno() { return this.router.url.startsWith('/dashboard-alumno') }

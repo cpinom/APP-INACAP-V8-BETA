@@ -6,7 +6,6 @@ import { SeccionPageRoutingModule } from './seccion-routing.module';
 import { SeccionPage } from './seccion.page';
 import { DirectivesModule } from 'src/app/core/directives/directives.module';
 import { ComponentsModule } from 'src/app/core/components/components.module';
-import { MbscModule } from '@mobiscroll/angular';
 
 @NgModule({
   imports: [
@@ -15,8 +14,7 @@ import { MbscModule } from '@mobiscroll/angular';
     IonicModule,
     SeccionPageRoutingModule,
     DirectivesModule,
-    ComponentsModule,
-    MbscModule
+    ComponentsModule
   ],
   declarations: [SeccionPage]
 })

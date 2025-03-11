@@ -32,7 +32,6 @@ export class HorarioComponent implements OnInit {
   fecha: any;
   eventos: any;
   cargando = false;
-  // myView: MbscEventcalendarView = { agenda: { type: 'week' } };
   myView: MbscEventcalendarView = {
     calendar: { type: 'week', popover: false, count: false },
     agenda: { type: 'day', }//https://demo.mobiscroll.com/angular/agenda/full-event-customization#
@@ -43,13 +42,12 @@ export class HorarioComponent implements OnInit {
   private docenteApi = inject(DocenteService);
   private profile = inject(ProfileService);
   private pt = inject(Platform);
-  private global = inject(AppGlobal);
 
   constructor() {
 
     moment.locale('es');
 
-    this.theme = 'ios'; //this.pt.is('ios') ? 'ios' : 'material';
+    this.theme = 'ios';
     this.themeVariant = this.profile.isDarkMode() ? 'dark' : 'light';
 
     screen.orientation.addEventListener("change", () => {
@@ -58,7 +56,8 @@ export class HorarioComponent implements OnInit {
       }
       else {
         this.myView = {
-          agenda: { type: 'week' },
+          calendar: { type: 'week', popover: false, count: false },
+          agenda: { type: 'day', }
         }
       }
 
@@ -70,8 +69,10 @@ export class HorarioComponent implements OnInit {
     return type.startsWith("portrait") ? "landscape" : "portrait";
   }
   async ngOnInit() {
+    this.fecha = moment().startOf('week').toDate();
+
     if (this.pt.is('mobileweb')) {
-      this.fecha = moment('09/09/2024', 'DD/MM/YYYY').toDate();
+      // this.fecha = moment('30/09/2024', 'DD/MM/YYYY').toDate();
 
       if (this.rol == Rol.Docente) {
         const principal = await this.profile.getStorage('principal');
@@ -83,15 +84,13 @@ export class HorarioComponent implements OnInit {
       }
 
     }
-    else {
-      this.fecha = moment().toDate();
-    }
-    this.cargar();
+
+    await this.cargar();
   }
   async cargar() {
-    let fecha = this.getRango();
-    let fechaInicio = fecha.inicio.format('DD/MM/YYYY');
-    let fechaTermino = fecha.termino.format('DD/MM/YYYY');
+    const fecha = this.getRango();
+    const fechaInicio = fecha.inicio.format('DD/MM/YYYY');
+    const fechaTermino = fecha.termino.format('DD/MM/YYYY');
     let horario = [];
     let asignaturasVirtuales: any[] = [];
 
@@ -102,28 +101,25 @@ export class HorarioComponent implements OnInit {
       if (this.rol == Rol.Alumno) {
         const principal = await this.profile.getStorage('principal');
         const programa = principal.programas[principal.programaIndex];
-        const sedeCcod = programa.sedeCcod;
-        const periCcod = programa.periCcod;
+        const { sedeCcod, periCcod } = programa;
 
-        const result = await this.alumnoApi.getAgenda(sedeCcod, periCcod, fechaInicio, fechaTermino);
-        //debugger
+        const result = await this.alumnoApi.getAgenda(sedeCcod, periCcod, fechaInicio, fechaTermino, 1);
 
         if (result.success) {
-          const { eventos } = result.data;
+          const { eventos, clasesVirtuales } = result.data;
           let listado: any[] = [];
 
           eventos.forEach((item: any) => {
             listado.push({
-              title: 'test',
+              title: item.asigTdesc,
               start: moment(`${item.bloqFmodulo} ${item.horaHinicio}`, 'DD/MM/YYYY HH:mi').toDate(),
               end: moment(`${item.bloqFmodulo} ${item.horaHtermino}`, 'DD/MM/YYYY HH:mi').toDate(),
-              // cssClass: cssClass,
               data: item
             })
           });
 
           this.eventos = listado;
-          console.log(listado);
+          this.asignaturasVirtuales = clasesVirtuales;
 
         }
 
@@ -223,8 +219,34 @@ export class HorarioComponent implements OnInit {
     // Construir el resultado en el formato "3 h 15 m"
     return `${horas} h ${minutos} m`;
   }
+  resolverIconoAgenda(item: any, type: number) {
+    if (type == 0) {
+      if (item.bloqTipo == 'evaluacion')
+        return 'notas';
+      if (item.bloqTipo == 'seccion' || item.bloqTipo == 'subseccion')
+        return 'school';
+      if (item.bloqTipo == 'recuperacion')
+        return 'schedule';
+    }
+    else if (type == 1) {
+      if (item.bloqTipo == 'evaluacion')
+        return 'evaluacion';
+      if (item.bloqTipo == 'seccion' || item.bloqTipo == 'subseccion')
+        return 'seccion';
+      if (item.bloqTipo == 'recuperacion')
+        return 'recuperacion';
+    }
+
+    return '';
+  }
+  resolverTipoAgenda(item: any) {
+    if (item.bloqTipo == 'evaluacion')
+      return `Evaluación - ${item.asigTdesc}`;
+    if (item.bloqTipo == 'seccion' || item.bloqTipo == 'subseccion')
+      return `Clases - ${item.asigTdesc}`;
+    return item.asigTdesc;
+  }
   onSelectedDateChange(args: MbscPageChangeEvent) {
-    debugger
     this.fecha = args.firstDay;
     this.cargar();
   }

@@ -39,8 +39,8 @@ export class AlumnoService extends PrivateService {
   getHorarioV5(params: any): Promise<any> {
     return this.post(`${this.baseUrl}/v5/alumno/horario`, params);
   }
-  getAgenda(sedeCcod: any, periCcod: any, fechaInicio: any, fechaTermino: any): Promise<any> {
-    return this.get(`${this.baseUrl}/v5/alumno/agenda?sedeCcod=${sedeCcod}&periCcod=${periCcod}&fechaInicio=${fechaInicio}&fechaTermino=${fechaTermino}`);
+  getAgenda(sedeCcod: any, periCcod: any, fechaInicio: any, fechaTermino: any, virtuales?: any): Promise<any> {
+    return this.get(`${this.baseUrl}/v5/alumno/agenda?sedeCcod=${sedeCcod}&periCcod=${periCcod}&fechaInicio=${fechaInicio}&fechaTermino=${fechaTermino}&virtuales=${virtuales || 0}`);
   }
   getAlumnos(): Promise<any> {
     return this.get(`${this.baseUrl}/v4/alumno/alumnos`);
@@ -65,6 +65,11 @@ export class AlumnoService extends PrivateService {
     fechaInicio = encodeURIComponent(fechaInicio);
     fechaTermino = encodeURIComponent(fechaTermino);
     return this.get(`${this.baseUrl}/v5/alumno/detalle-curso/horario?sedeCcod=${sedeCcod}&periCcod=${periCcod}&ssecNcorr=${ssecNcorr}&fechaInicio=${fechaInicio}&fechaTermino=${fechaTermino}`);
+  }
+  getAgendaSeccion(sedeCcod: any, periCcod: string, seccCcod: any, fechaInicio: string, fechaTermino: string) {
+    fechaInicio = encodeURIComponent(fechaInicio);
+    fechaTermino = encodeURIComponent(fechaTermino);
+    return this.get(`${this.baseUrl}/v5/alumno/detalle-curso/agenda?sedeCcod=${sedeCcod}&periCcod=${periCcod}&seccCcod=${seccCcod}&fechaInicio=${fechaInicio}&fechaTermino=${fechaTermino}`);
   }
   getAsistencia(seccCcod: any, ssecNcorr: any, periCcod: any) {
     return this.get(`${this.baseUrl}/v5/alumno/detalle-curso/asistencia?seccCcod=${seccCcod}&ssecNcorr=${ssecNcorr}&periCcod=${periCcod}`);
@@ -115,7 +120,7 @@ export class AlumnoService extends PrivateService {
   }
   getDAEV5(sedeCcod: any) {
     return this.get(`${this.baseUrl}/v5/alumno/dae?sedeCcod=${sedeCcod}`);
-  }  
+  }
   getDelegadosV5(sedeCcod: any, carrCcod: any, jornCcod: any, nombreDelegado: any) {
     return this.get(`${this.baseUrl}/v5/alumno/delegados?sedeCcod=${sedeCcod}&carrCcod=${carrCcod}&jornCcod=${jornCcod}&nombreDelegado=${nombreDelegado}`);
   }

@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Curso" [defaultHref]="backUrl"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list inset="true" class="card-list">
+    <ion-item detail="false">
+      <ion-icon slot="start" src="assets/icon/mingcute_ai-line.svg" class="rounded variant-1"></ion-icon>
+      <ion-label>
+        <h2>Tutor IA</h2>
+        <p>Refuerza tu conocimiento, aprende mejor y prepárate con confianza.</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <section class="bienvenida">
+
+    <ion-button class="color-1" routerLink="agente">
+      <div class="btn-inner">
+        <div class="title">
+          <ion-icon src="assets/icon/checkbook.svg" class="rounded"></ion-icon>
+          <ion-label>Ayúdame a Estudiar</ion-label>
+        </div>
+        <div class="desc">Obtendrás ayuda para estudiar, resolver dudas y mejorar en todas tus materias.</div>
+        <ion-icon src="assets/icon/arrow_forward.svg" class="launch"></ion-icon>
+      </div>
+    </ion-button>
+
+    <ion-button class="color-2" routerLink="agente">
+      <div class="btn-inner">
+        <div class="title">
+          <ion-icon src="assets/icon/view_timeline.svg" class="rounded"></ion-icon>
+          <ion-label>Planes paso a paso</ion-label>
+        </div>
+        <div class="desc">Sigue planes paso a paso, quien te guiarán hacia la solución correcta.</div>
+        <ion-icon src="assets/icon/arrow_forward.svg" class="launch"></ion-icon>
+      </div>
+    </ion-button>
+
+    <ion-button class="color-3" routerLink="agente">
+      <div class="btn-inner">
+        <div class="title">
+          <ion-icon src="assets/icon/stars.svg" class="rounded"></ion-icon>
+          <ion-label>Ponme a Prueba</ion-label>
+        </div>
+        <div class="desc">Póntelo a prueba con preguntas del curso y mide tu progreso con la ayuda del tutor.</div>
+        <ion-icon src="assets/icon/arrow_forward.svg" class="launch"></ion-icon>
+      </div>
+    </ion-button>
+
+  </section>
+
+</ion-content>

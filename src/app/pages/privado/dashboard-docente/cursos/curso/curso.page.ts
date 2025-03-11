@@ -67,59 +67,6 @@ export class CursoPage implements OnInit {
     }
 
 
-    /*let dias = [];
-
-    try {
-      const seccCcod = this.route.snapshot.paramMap.get('seccCcod');
-      const ssecNcorr = this.route.snapshot.paramMap.get('ssecNcorr');
-      const asigCcod = this.route.snapshot.paramMap.get('asigCcod');
-      this.seccion = {
-        seccCcod: seccCcod,
-        ssecNcorr: ssecNcorr,
-        asigCcod: asigCcod
-      };
-      let result = await this.api.getDetalleCursoV5(seccCcod, ssecNcorr);
-
-      if (result.success) {
-        let detalleCurso = result.data;
-        this.data = detalleCurso;
-        this.promedios = detalleCurso.notas;
-        this.asistencia = detalleCurso.asistencia;
-
-        let re = /\PM|AM/gi;
-        detalleCurso.horarioSeccion.forEach(dia => {
-          dia.bloques.forEach(item => {
-            item.horaInicio = item.horaInicio.replace(re, '');
-            item.horaTermino = item.horaTermino.replace(re, '');
-          });
-
-          let bloques = this.groupBy(dia.bloques, 'sala');
-
-          dias.push({ diasTdesc: dia.diasTdesc, bloques: bloques });
-        });
-
-        detalleCurso.horarioSeccion = dias;
-
-        this.resolverTipoAlumnos(detalleCurso.tiposAlumnos);
-        this.oportunidades = detalleCurso.repeticiones;
-        this.evalDocente = detalleCurso.evalDocente;
-
-        // Gráficos
-        setTimeout(() => {
-          // this.drawChartAvanceClases();
-          this.drawChartAsistencia();
-        }, 100);
-
-      }
-    }
-    catch (error: any) {
-      if (error && error.status == 401) {
-        await this.error.handle(error);
-      }
-    } finally {
-      this.mostrarData = true;
-      this.mostrarCargando = false;
-    }*/
   }
   async recargar() {
     this.mostrarCargando = true;
@@ -221,12 +168,6 @@ export class CursoPage implements OnInit {
     //     }
     //   });
     // });
-  }
-  groupBy(xs: any[], key: string | number) {
-    return xs.reduce(function (rv, x) {
-      (rv[x[key]] = rv[x[key]] || []).push(x);
-      return rv;
-    }, {});
   }
   resolverFechaAsistencia(fecha: string) {
     if (fecha) {

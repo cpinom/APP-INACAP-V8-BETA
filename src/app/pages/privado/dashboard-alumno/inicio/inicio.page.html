@@ -32,8 +32,7 @@
       <ion-list>
         <ion-item lines="none" style="--inner-padding-end: 14px">
           <ion-icon slot="start" color="danger" *ngIf="destacado.tipo == 4" src="assets/icon/dangerous.svg"></ion-icon>
-          <ion-icon slot="start" color="success" *ngIf="destacado.tipo == 3"
-            src="assets/icon/check_circle.svg"></ion-icon>
+          <ion-icon slot="start" color="success" *ngIf="destacado.tipo == 3" src="assets/icon/check_circle.svg"></ion-icon>
           <ion-icon slot="start" color="primary" *ngIf="destacado.tipo == 2" src="assets/icon/info.svg"></ion-icon>
           <ion-icon slot="start" color="warning" *ngIf="destacado.tipo == 1" src="assets/icon/warning.svg"></ion-icon>
           <ion-label>
@@ -132,12 +131,12 @@
     *ngIf="mostrarJustificaEvaluacion">
     <ion-card-content>
       <ion-list>
-        <ion-item detail="true" lines="none" class="ion-activatable">
-          <ion-icon slot="start" src="assets/icon/info.svg"></ion-icon>
+        <ion-item detail="false" lines="none" class="ion-activatable">
           <ion-label>
             <h2>Tienes una evaluación pendiente.</h2>
             <p>Si la entrega fue a través de una plataforma de INACAP, puedes ignorar este aviso.</p>
           </ion-label>
+          <ion-icon slot="end" class="rounded" src="assets/icon/notas.svg"></ion-icon>
         </ion-item>
       </ion-list>
     </ion-card-content>
@@ -161,7 +160,12 @@
     @for (item of cursos; track $index) {
     <ion-card class="curso-{{$index + 1}}" (click)="seccionTap(item)">
       <ion-card-header [ngClass]="resolverEstado(item.estadoClase)">
-        <ion-card-title>{{item.asigTdesc}}</ion-card-title>
+        <ion-card-title>
+          @if (item.estadoClase == 1) {
+          <i></i>
+          }
+          <span>{{item.asigTdesc}}</span>
+        </ion-card-title>
       </ion-card-header>
       <ion-card-content>
         <ion-list class="ion-no-margin ion-no-padding">
@@ -217,11 +221,20 @@
       @if (!cargandoClases && eventos?.length) {
       <ion-list>
         @for (item of eventos; track $index) {
-        <ion-item>
+        <ion-item class="ion-activatable" (click)="seccionTap(item)">
           <ion-icon slot="start" src="assets/icon/{{resolverIconoAgenda(item, 0)}}.svg"
             class="rounded {{resolverIconoAgenda(item, 1)}}"></ion-icon>
           <ion-label>
-            <h2>{{resolverTipoAgenda(item)}} - {{item.asigTdesc}}</h2>
+            @if (item.bloqNestado == 1) {
+            <p class="danger estado-actividad">Clase Suspendida</p>
+            }
+            @if (item.bloqNestado == 2 || item.bloqNestado == 4) {
+            <p class="success estado-actividad">Clase en Progreso</p>
+            }
+            @if (item.bloqNestado == 3) {
+            <p class="info estado-actividad">Clase Realizada</p>
+            }
+            <h2>{{resolverTipoAgenda(item)}}</h2>
             <p>{{item.horaHinicio}} - {{item.horaHtermino}} | Sala: {{item['salaEjecucion'] || item['salaProgramada']}}
             </p>
           </ion-label>

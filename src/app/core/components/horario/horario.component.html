@@ -40,28 +40,52 @@
   [view]="myView" (onEventClick)="onEventClick($event)" (onPageChange)="onSelectedDateChange($event)"
   [locale]="pickerLocale" [agendaEmptyTemplate]="horarioEmptyTpl" [eventTemplate]="eventTemplate">
   <ng-template #eventTemplate let-data>
-    <ion-item>
-      <div slot="start">
-        <ion-icon></ion-icon>
-        <h2>{{data.original.data.horaHinicio}} - {{data.original.data.horaHtermino}}</h2>
-        <p>{{resolverDuracion(data.original.data)}}</p>
+    <ion-item lines="none" *ngIf="data.original.data as item">
+      <div slot="start" [class]="resolverIconoAgenda(item, 1)">
+        <ion-icon src="assets/icon/{{resolverIconoAgenda(item, 0)}}.svg"></ion-icon>
+        <h2>{{item.horaHinicio}} - {{item.horaHtermino}}</h2>
+        <p>{{resolverDuracion(item)}}</p>
       </div>
       <ion-label>
-        <h2>{{data.original.data.asigTdesc}}</h2>
-        <p>Docente: {{data.original.data.persTnombre}}</p>
-        <p>Sala: {{data.original.data['salaEjecucion'] || data.original.data['salaProgramada']}}</p>
+        @if (item.bloqNestado == 1) {
+        <p class="danger estado-actividad">Clase Suspendida</p>
+        }
+        @if (item.bloqNestado == 2 || item.bloqNestado == 4) {
+        <p class="success estado-actividad">Clase en Progreso</p>
+        }
+        @if (item.bloqNestado == 3) {
+        <p class="info estado-actividad">Clase Realizada</p>
+        }
+        <h2>{{resolverTipoAgenda(item)}}</h2>
+        <p class="desc">Docente: {{item.persTnombre}}</p>
+        <p class="desc">Sala: {{item['salaEjecucion'] || item['salaProgramada']}}</p>
       </ion-label>
     </ion-item>
-    <!-- <div class="mbsc-event-content">
-      <div class="mbsc-event-title">{{data.title}}</div>
-      <div class="mbsc-event-desc">{{data.desc}}</div>
-    </div> -->
   </ng-template>
   <ng-template #horarioEmptyTpl>
     <div class="mbsc-align-center mbsc-padding">
-      <!-- <ion-spinner name="lines" color="primary" *ngIf="item.cargando"></ion-spinner>
-              <span *ngIf="!item.cargando && item.eventos">Sin Clases</span>
-              <span *ngIf="!item.cargando && !item.eventos">Información no disponible</span> -->
+      <ion-spinner name="lines" color="primary" *ngIf="cargando"></ion-spinner>
+      <span *ngIf="!cargando && eventos">Sin Clases</span>
+      <span *ngIf="!cargando && !eventos">Información no disponible</span>
     </div>
   </ng-template>
 </mbsc-eventcalendar>
+
+@if (asignaturasVirtuales?.length && !cargando) {
+<section class="classic schedule portrait virtuales">
+  <div class="section-content">
+    <article>
+      <div class="schedule-header">
+        <h2>Asignaturas Virtuales</h2>
+      </div>
+      <div class="schedule-item-list">
+        @for (item of asignaturasVirtuales; track $index) {
+        <div class="schedule-item">
+          <b>{{item.asigTdesc}}</b> {{item.asigHoras}}
+        </div>
+        }
+      </div>
+    </article>
+  </div>
+</section>
+}

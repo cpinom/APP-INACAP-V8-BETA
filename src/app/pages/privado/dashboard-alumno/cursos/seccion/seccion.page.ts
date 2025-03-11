@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlumnoService } from 'src/app/core/services/http/alumno.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
@@ -12,7 +12,6 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import 'jquery-knob';
 import * as desconocido from 'src/scripts/foto.desconocido';
 import * as moment from 'moment';
-import { MbscEventcalendarView, MbscPageChangeEvent, localeEs } from '@mobiscroll/angular';
 
 @Component({
   selector: 'app-seccion',
@@ -30,28 +29,22 @@ export class SeccionPage implements OnInit, OnDestroy {
   mostrarCargando = true;
   mostrarData = false;
   userId!: number;
-
-  myView: MbscEventcalendarView = {
-    calendar: { type: 'week' },
-    agenda: { type: 'day' }
-  };
-  pickerLocale = localeEs;
-  theme!: string;
-  themeVariant: any;
-  eventosHorario: any;
-  fechaHorario: any = moment('09032020', 'DDMMYYYY').toDate();
+  eventos: any;
+  fechaHorario: any = moment().toDate();
   cargandoClases = false;
 
-  constructor(private router: Router,
-    private api: AlumnoService,
-    private error: ErrorHandlerService,
-    private mensaje: MensajeService,
-    private profile: ProfileService,
-    private global: AppGlobal,
-    private snackbar: SnackbarService,
-    private nav: NavController,
-    private auth: AuthService,
-    private pt: Platform) {
+  private router = inject(Router);
+  private api = inject(AlumnoService);
+  private error = inject(ErrorHandlerService);
+  private mensaje = inject(MensajeService);
+  private profile = inject(ProfileService);
+  private global = inject(AppGlobal);
+  private snackbar = inject(SnackbarService);
+  private nav = inject(NavController);
+  private auth = inject(AuthService);
+  private pt = inject(Platform);
+
+  constructor() {
     moment.locale('es');
 
     this.seccion = this.router.getCurrentNavigation()?.extras.state;
@@ -70,27 +63,26 @@ export class SeccionPage implements OnInit, OnDestroy {
       return;
     }
 
-    this.theme = this.pt.is('ios') ? 'ios' : 'material';
-    this.themeVariant = this.profile.isDarkMode() ? 'dark' : 'light';
-
     await this.cargar();
     await this.cargarHorario();
     this.api.marcarVista(VISTAS_ALUMNO.DETALLE_CURSO);
   }
   async cargar() {
     try {
-      let params = await this.parametros();
-      let result = await this.api.getSeccionV5(params.matrNcorr, params.seccCcod, params.ssecNcorr, params.periCcod);
+      const { matrNcorr, seccCcod, ssecNcorr, periCcod } = await this.parametros();
+      const result = await this.api.getSeccionV5(matrNcorr, seccCcod, ssecNcorr, periCcod);
 
       if (result.success) {
-        let seccion = result.data;
+        const seccion = result.data;
 
         if (seccion.notas.length) {
-          let evaluaciones = seccion.notas.filter((t: any) => {
-            let fecha = moment(t.caliFevaluacion, 'DD/MM/YYYY');
+          const evaluaciones = seccion.notas.filter((t: any) => {
+            const fecha = moment(t.caliFevaluacion, 'DD/MM/YYYY');
+
             if (fecha.isAfter(moment())) {
               return true;
             }
+
             return false
           });
 
@@ -123,62 +115,69 @@ export class SeccionPage implements OnInit, OnDestroy {
     await this.cargarHorario();
   }
   async cargarHorario() {
-    const fechaLunes = moment(this.fechaHorario).clone().startOf('week');
-    const fechaInicio = fechaLunes.clone().startOf('week').format('DD/MM/YYYY');
-    const fechaTermino = fechaLunes.clone().add(5, 'day').format('DD/MM/YYYY');
+    const fechaInicio = moment(this.fechaHorario).format('DD/MM/YYYY');
+    const fechaTermino = fechaInicio;
 
     this.cargandoClases = true;
 
     try {
-      let params = await this.parametros();
-      let result = await this.api.getHorarioSeccion(params.sedeCcod, params.periCcod, params.ssecNcorr, fechaInicio, fechaTermino);
+      const { sedeCcod, periCcod, seccCcod } = await this.parametros();
+      const result = await this.api.getAgendaSeccion(sedeCcod, periCcod, seccCcod, fechaInicio, fechaTermino);
 
       if (result.success) {
-        this.procesarHorario(result.data.clases);
+        this.eventos = result.data.eventos;
       }
       else {
         throw Error();
       }
     }
     catch {
-      this.eventosHorario = undefined;
+      this.eventos = undefined;
     }
     finally {
       this.cargandoClases = false;
     }
   }
-  async onHorarioChange(args: MbscPageChangeEvent) {
-    this.fechaHorario = moment(args.firstDay);
-    this.cargarHorario();
-  }
-  procesarHorario(clases: any) {
-    const fechaLunes = moment(this.fechaHorario).clone().startOf('week');
-    let dias = this.groupBy(clases, 'diasCcod');
-    let eventos = [];
-
-    for (let dia in dias) {
-      let fecha = fechaLunes.clone().add(Number(dia) - 1, 'day');
-      let secciones = dias[dia];
-      let inicio = secciones[0];
-      let termino = secciones[secciones.length - 1];
-      let cssClass = '';
-
-      if (inicio.estadoBloque == 1) cssClass = 'suspendida';
-      if (inicio.estadoBloque == 2 || inicio.estadoBloque == 4) cssClass = 'progreso';
-      if (inicio.estadoBloque == 3) cssClass = 'realizada';
-
-      eventos.push({
-        title: inicio['asigTdesc'] + ' - <b>' + inicio['asigCcod'] + '</b><br/>Sala : ' + inicio['salaEjecucion'],
-        start: moment(`${fecha.format('DD/MM/YYYY')} ${inicio.horaHinicio}`, 'DD/MM/YYYY HH:mi').toDate(),
-        end: moment(`${fecha.format('DD/MM/YYYY')} ${termino.horaHtermino}`, 'DD/MM/YYYY HH:mi').toDate(),
-        cssClass: cssClass,
-        data: inicio
-      })
+  resolverFechaAgenda(index: number) {
+    if (index == 0) {
+      const agendaDia = moment(this.fechaHorario).format('dddd')
+      return agendaDia.charAt(0).toUpperCase() + agendaDia.slice(1);
+    }
+    else if (index == 1) {
+      const agendaFecha = moment(this.fechaHorario).format('D MMM');
+      return agendaFecha;
     }
 
-    this.eventosHorario = eventos;
+    return '';
   }
-  async correo(persTemail: string) {
+  resolverIconoAgenda(item: any, type: number) {
+    if (type == 0) {
+      if (item.bloqTipo == 'evaluacion')
+        return 'notas';
+      if (item.bloqTipo == 'seccion')
+        return 'school';
+      if (item.bloqTipo == 'recuperacion')
+        return 'schedule';
+    }
+    else if (type == 1) {
+      if (item.bloqTipo == 'evaluacion')
+        return 'variant-4';
+      if (item.bloqTipo == 'seccion')
+        return 'variant-3';
+      if (item.bloqTipo == 'recuperacion')
+        return 'variant-5';
+    }
+
+    return '';
+  }
+  resolverTipoAgenda(item: any) {
+    if (item.bloqTipo == 'evaluacion')
+      return `Evaluación - ${item.asigTdesc}`;
+    if (item.bloqTipo == 'seccion')
+      return `Clases - ${item.asigTdesc}`;
+    return item.asigTdesc;
+  }
+  async correoTap(persTemail: string) {
     try {
       await this.mensaje.crear(persTemail);
     }
@@ -186,75 +185,54 @@ export class SeccionPage implements OnInit, OnDestroy {
       this.snackbar.showToast(error, 2000, 'danger');
     }
   }
-  async mostrarEvaluaciones() {
+  async evaluacionesTap() {
     await this.nav.navigateForward(`${this.router.url}/evaluaciones`, { state: this.data });
   }
-  async mostrarAsistencia() {
+  async asistenciaTap() {
     let params = await this.parametros();
     await this.nav.navigateForward(`${this.router.url}/asistencia`, { state: params });
   }
-  async mostrarAlumnos() {
+  async alumnosTap() {
     let params = await this.parametros();
     await this.nav.navigateForward(`${this.router.url}/estudiantes`, { state: params });
   }
-  async mostrarBibliografia() {
+  async bibliografiaTap() {
     let params = await this.parametros();
     await this.nav.navigateForward(`${this.router.url}/bibliografia`, { state: params });
   }
   resolverFechaEvaluacion(caliFevaluacion: string) {
-    return moment(caliFevaluacion, 'DD/MM/YYYY').locale('es').format('<b>DD</b> MMM').replace('.', '');
+    return moment(caliFevaluacion, "DD/MM/YYYY").format("DD MMM");
   }
-  resolverNotaRojo(nota: string) {
-    if (!nota)
-      return 'gris';
-    if (parseInt(nota) < 4) {
-      return 'rojo';
+  resolverEvaluacionesRealizadas() {
+    if (this.data.notas.length) {
+      const totalEvaluaciones = this.data.notas.length;
+      const evaluacionesRealizadas = this.data.notas.filter((evaluacion: any) => evaluacion.calaNnota !== null).length;
+      return `${evaluacionesRealizadas} de ${totalEvaluaciones} eval. realizadas`;
     }
+
     return '';
   }
   resolverFoto(persNcorr: any) {
     return `${this.global.Api}/api/v3/imagen-persona/${persNcorr}`;
   }
-  groupBy(xs: any[], key: string) {
-    return xs.reduce(function (rv, x) {
-      (rv[x[key]] = rv[x[key]] || []).push(x);
-      return rv;
-    }, {});
-  }
   async parametros() {
-    let principal = await this.profile.getStorage('principal');
-    let programa = principal.programas[principal.programaIndex];
-    let periodos = principal.periodos as any[];
-    let seccCcod = this.seccion.seccCcod;
-    let asignaturas = programa.asignaturas as any[];
-    let seccion = asignaturas.find(item => item.seccCcod == seccCcod);
-    let periodo = periodos.find(item => item.periSeleccionado == true);
+    const principal = await this.profile.getStorage('principal');
+    const programa = principal.programas[principal.programaIndex];
+    const periodos = principal.periodos as any[];
+    const { seccCcod, ssecNcorr } = this.seccion;
+    const asignaturas = programa.asignaturas as any[];
+    const seccion = asignaturas.find(item => item.seccCcod == seccCcod);
+    const periodo = periodos.find(item => item.periSeleccionado == true);
 
     return {
       asigCcod: seccion.asigCcod,
       asigTdesc: seccion.asigTdesc,
       seccCcod: seccCcod,
-      ssecNcorr: seccion.ssecNcorr,
+      ssecNcorr: ssecNcorr,
       matrNcorr: programa.matrNcorr,
       periCcod: periodo.periCcod,
       sedeCcod: programa.sedeCcod
     };
-  }
-  get colorAzul() {
-    if (document.body.classList.contains('dark')) {
-      return "#508DFD";
-    }
-    else {
-      return "#1565C0";
-    }
-  }
-  get colorGris() {
-    if (document.body.classList.contains('dark')) {
-      return "#666";
-    }
-    else {
-      return "#eee";
-    }
   }
   get backUrl() {
     return this.router.url.startsWith('/dashboard-alumno/cursos') ? '/dashboard-alumno/cursos' : '/dashboard-alumno/inicio';

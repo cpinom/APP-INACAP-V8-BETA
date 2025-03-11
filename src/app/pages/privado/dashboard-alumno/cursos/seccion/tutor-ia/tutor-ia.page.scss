@@ -1,0 +1,99 @@
+ion-content {
+  .bienvenida {
+    margin-inline: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    ion-button {
+      width: 100%;
+      height: 120px;
+      --border-radius: 8px;
+      --padding-bottom: 11px;
+      --padding-end: 11px;
+      --padding-start: 11px;
+      --padding-top: 11px;
+      margin: 0;
+
+      .btn-inner {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        width: 100%;
+        text-align: left;
+        position: relative;
+        justify-content: space-evenly;
+
+        .launch {
+          position: absolute;
+          right: 0;
+          top: 0;
+          font-size: 18px;
+        }
+
+        .title {
+          display: flex;
+          align-items: center;
+
+          .rounded {
+            flex: 0 0 24px;
+            padding: 10px;
+            margin: 0 15px 5px 0;
+          }
+
+          ion-label {
+            color: var(--ion-text-color);
+            font-size: var(--FS16);
+          }
+        }
+
+        .desc {
+          color: var(--ion-text-color);
+          font-size: var(--FS16);
+          line-height: 20px;
+          font-weight: 400;
+        }
+      }
+
+      &.color-1 {
+        --background: var(--ion-color-1-background);
+        --background-activated: var(--ion-color-1-background);
+
+        ion-icon {
+          &.rounded {
+            background-color: var(--ion-color-1-primary);
+          }
+          &.launch {
+            color: var(--ion-color-1-foreground);
+          }
+        }
+      }
+      &.color-2 {
+        --background: var(--ion-color-3-background);
+        --background-activated: var(--ion-color-3-background);
+
+        ion-icon {
+          &.rounded {
+            background-color: var(--ion-color-3-primary);
+          }
+          &.launch {
+            color: var(--ion-color-3-foreground);
+          }
+        }
+      }
+      &.color-3 {
+        --background: var(--ion-color-7-background);
+        --background-activated: var(--ion-color-7-background);
+
+        ion-icon {
+          &.rounded {
+            background-color: var(--ion-color-7-primary);
+          }
+          &.launch {
+            color: var(--ion-color-7-foreground);
+          }
+        }
+      }
+    }
+  }
+}

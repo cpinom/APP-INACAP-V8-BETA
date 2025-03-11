@@ -1,0 +1,172 @@
+// @import "src/theme/formulario.scss";
+
+ion-card {
+    margin-bottom: 6px !important;
+}
+mat-horizontal-stepper {
+    background-color: transparent !important;
+}
+:host ::ng-deep .mat-horizontal-content-container {
+    padding: 0 !important;
+}
+:host ::ng-deep .mat-stepper-label-position-bottom .mat-horizontal-stepper-header {
+    padding-top: 12px;
+    padding-bottom: 0;
+}
+
+:host ::ng-deep .mat-stepper-label-position-bottom .mat-stepper-horizontal-line,
+:host ::ng-deep .mat-stepper-label-position-bottom .mat-horizontal-stepper-header:not(:first-child)::before,
+:host ::ng-deep .mat-stepper-label-position-bottom .mat-horizontal-stepper-header:not(:last-child)::after,
+:host ::ng-deep [dir="rtl"] .mat-stepper-label-position-bottom .mat-horizontal-stepper-header:not(:first-child)::after,
+:host ::ng-deep [dir="rtl"] .mat-stepper-label-position-bottom .mat-horizontal-stepper-header:not(:last-child)::before {
+    top: 24px;
+}
+::ng-deep .mat-horizontal-stepper-header {
+    pointer-events: none !important;
+}
+
+// :host ::ng-deep .mat-step-header .mat-step-icon {
+//     background-color: transparent;
+//     color: #333333;
+// }
+
+:host ::ng-deep .mat-step-header .mat-step-icon-state-edit,
+:host ::ng-deep .mat-step-header .mat-step-icon-state-done {
+    background-color: var(--ion-color-success) !important;
+    color: #fff;
+}
+
+:host ::ng-deep .mat-step-header .mat-step-icon-selected {
+    background-color: var(--ion-color-primary) !important;
+    color: #fff;
+}
+
+section:first-child .section-header {
+    padding-top: 8px;
+}
+
+::ng-deep ion-alert.success-alert {
+    div.image {
+        text-align: center;
+        img {
+            width: 60px;
+            margin: 0 auto 10px;
+        }
+    }
+}
+
+::ng-deep ion-loading ion-spinner {
+    color: var(--ion-color-info) !important;
+}
+
+section.thumbnail-section {
+    margin-bottom: 15px;
+
+    .section-content {
+        margin-bottom: 0;
+        ion-list {
+            ion-thumbnail.ios {
+                margin-top: 15px;
+                margin-bottom: 15px;
+            }
+            // ion-label.ios {
+            //     padding-top: 0;
+            // }
+            ion-item.adjuntar {
+                padding-top: 8px !important;
+                padding-bottom: 6px !important;
+                p.sublabel {
+                    font-size: 12px;
+                    color: var(--ion-color-medium);
+                    font-style: italic;
+                }
+            }
+        }
+        ion-button.eliminarFoto {
+            border-top: 1px solid #ccc;
+            --box-shadow: none !important;
+        }
+    }
+}
+
+::ng-deep ion-button.eliminarFoto {
+    border-top-color: var(--ion-color-dark-tint) !important;
+}
+
+.invalid {
+    font-size: var(--FS12);
+    color: var(--ion-color-danger);
+    margin: 5px 15px;
+}
+
+form {
+    ion-item {
+        ion-label.md {
+            padding: 0;
+            min-height: auto;
+
+            &.fono {
+                margin-bottom: 8px;
+            }
+        }
+    }
+}
+
+// ngx-intl-tel-input {
+//     width: 100%;
+//     padding-bottom: 8px;
+
+//     ::ng-deep .iti {
+//         width: 100%;
+
+//         input {
+//             border: 0;
+//             padding-left: 75px !important;
+//         }
+
+//         .dropdown-toggle {
+//             padding-left: 0;
+//             width: 70px !important;
+//         }
+
+//         .country-dropdown {
+//             display: none !important;
+//         }
+//     }
+// }
+
+::ng-deep body.dark {
+    .iti {
+        input {
+            background-color: transparent;
+        }
+    }
+}
+
+section.botones {
+    display: flex;
+    margin: 15px;
+    justify-content: space-between;
+    gap: 15px;
+
+    ion-button {
+        flex: 1;
+        margin: 0;
+    }
+}
+
+section.archivos {
+    ion-item {
+        ion-icon {
+            font-size: 24px;
+            width: 48px;
+        }
+        ion-thumbnail {
+            --size: 48px;
+            --border-radius: 6px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+}

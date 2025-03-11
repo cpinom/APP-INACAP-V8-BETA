@@ -22,7 +22,11 @@ const routes: Routes = [
   {
     path: 'bibliografia',
     loadChildren: () => import('./bibliografia/bibliografia.module').then( m => m.BibliografiaPageModule)
+  },  {
+    path: 'tutor-ia',
+    loadChildren: () => import('./tutor-ia/tutor-ia.module').then( m => m.TutorIaPageModule)
   }
+
 ];
 
 @NgModule({

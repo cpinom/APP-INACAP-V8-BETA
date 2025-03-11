@@ -1,9 +1,8 @@
-//@import "src/theme/horario-section.scss";
+//@import "src/theme/horario-section.scss"
 
-ion-header {
-    ion-card {
-        margin-bottom: 0 !important;
-        box-shadow: var(--ion-box-shadow);
+ion-content.detalle-seccion {
+    ion-card.primary-card {
+        box-shadow: 0px 4px 8px 0px rgba(194, 201, 252, 0.15);
 
         ion-card-header {
             ion-card-title {
@@ -13,237 +12,206 @@ ion-header {
                     font-weight: 700;
                 }
                 p {
-                    margin: 0;
+                    margin: 5px 0 0;
                     font-size: var(--FS14);
                     font-weight: 400;
                 }
             }
         }
     }
-}
 
-ion-card-content.detalle-seccion {
-    &.has-chart {
-        ul {
-            li {
-                display: flex;
-                align-items: center;
-                margin-bottom: 4px;
-                span.circle {
-                    width: 5px;
-                    height: 5px;
-                    border-radius: 3px;
-                    display: inline-block;
-                    background-color: var(--ion-color-secondary);
-                    margin-right: 5px;
-
-                    &.blue {
-                        background-color: var(--ion-color-primary);
-                    }
-                    &.green {
-                        background-color: var(--ion-color-success);
-                    }
-                    &.yellow {
-                        background-color: var(--ion-color-warning);
-                    }
-                }
-            }
-        }
-
-        ion-col:last-child {
-            text-align: center;
-        }
-    }
-
-    div.bottom-link {
-        border-top: var(--border-light);
-        ion-list {
-            ion-item {
-                height: 40px;
-                display: flex;
-                align-items: center;
-                ion-label {
-                    font-size: var(--FS16);
-                    text-transform: uppercase;
-                    font-weight: 500;
-                    color: #666;
-                }
-                i {
-                    color: var(--arrow-color);
-                }
-            }
-        }
-    }
-}
-
-ul {
-    font-weight: 600;
-
-    ::ng-deep li.empty {
-        min-width: 60px !important;
-
-        .title {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            /* text-align: center; */
-            padding-inline: 8px !important;
-        }
-    }
-}
-
-ion-card#horario {
-    ion-card-header {
-        padding-bottom: 0;
-
-        ion-card-title {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-
-            span.normal {
-                font-size: 14px;
-                font-weight: 500;
-            }
-        }
-    }
-    ion-card-content {
-        padding-top: 0;
-    }
-
-    mbsc-eventcalendar {
-        ::ng-deep .mbsc-calendar-header {
-            //display: none;
-            // background: var(--bg-color-card2);
-
-            .mbsc-calendar-controls {
-                padding: 0 5px;
-                min-height: 25px;
-
-                .mbsc-ios.mbsc-button {
-                    color: var(--ion-color-primary);
-                }
-
-                .mbsc-material.mbsc-button {
-                    font-size: 10px;
-                }
-            }
-        }
-        ::ng-deep .mbsc-calendar-body {
-            // .mbsc-ios.mbsc-calendar-today,
-            // .mbsc-ios.mbsc-calendar-week-nr {
-            //     // color: var(--ion-color-primary);
-            // }
-            .mbsc-ios.mbsc-selected .mbsc-calendar-cell-text {
-                background: var(--ion-color-primary);
-                border-color: var(--ion-color-primary);
-            }
-        }
-        ::ng-deep .mbsc-event-list-empty {
-            margin: 15px;
-            font-size: var(--FS14);
-        }
-        ::ng-deep .mbsc-schedule-event {
-            color: var(--ion-color-primary) !important;
-
-            .progreso {
-                color: var(--ion-color-success) !important;
-            }
-
-            .suspendida {
-                color: var(--ion-color-danger) !important;
-            }
-        }
-        // ::ng-deep .mbsc-ios-dark.mbsc-schedule-event {
-        //     color: var(--ion-color-primary) !important;
-        // }
-        ::ng-deep .mbsc-material.mbsc-colored-event.mbsc-list-item {
-            background-color: var(--ion-color-primary) !important;
-            // color: var(--ion-color-step-950) !important;
-
-            .progreso {
-                background-color: var(--ion-color-success) !important;
-            }
-
-            .suspendida {
-                background-color: var(--ion-color-danger) !important;
-            }
-        }
-        ::ng-deep .mbsc-material.mbsc-selected .mbsc-calendar-cell-text {
-            background-color: var(--ion-color-primary) !important;
-            border-color: var(--ion-color-primary) !important;
-        }
-
-        ::ng-deep .mbsc-ios-dark.mbsc-selected .mbsc-calendar-cell-text,
-        ::ng-deep .mbsc-material.mbsc-selected .mbsc-calendar-cell-text {
-            background-color: var(--ion-color-primary) !important;
-            border-color: var(--ion-color-primary) !important;
-            // color: var(--ion-text-color) !important;
-            color: var(--ion-color-primary-contrast) !important;
-        }
-
-        ::ng-deep .mbsc-ios.mbsc-event-color {
-            background-color: var(--ion-color-primary) !important;
-        }
-
-        ::ng-deep .mbsc-ios.mbsc-event.mbsc-list-item {
-            .mbsc-ios.mbsc-event-color {
-                background: var(--ion-color-primary) !important;
-            }
-            &.suspendida {
-                .mbsc-ios.mbsc-event-color {
-                    background: var(--ion-color-danger) !important;
-                }
-            }
-            &.progreso {
-                .mbsc-ios.mbsc-event-color {
-                    background: var(--ion-color-success) !important;
-                }
-            }
-            &.realizada {
-                .mbsc-ios.mbsc-event-color {
-                    background: var(--ion-color-medium) !important;
-                }
-                .mbsc-ios.mbsc-event-text {
-                    color: var(--ion-color-medium);
-                }
-            }
-        }
-        ::ng-deep .mbsc-material.mbsc-colored-event.mbsc-list-item {
-            background: var(--ion-color-primary) !important;
-
-            &.suspendida {
-                background: var(--ion-color-danger) !important;
-            }
-            &.progreso {
-                background: var(--ion-color-success) !important;
-            }
-            &.realizada {
-                background: var(--ion-color-medium) !important;
+    ion-list {
+        ion-item {
+            app-cached-image {
+                height: 55px;
+                width: 55px;
             }
         }
     }
 
-    ::ng-deep body.dark {
-        .mbsc-material.mbsc-colored-event.mbsc-list-item {
-            color: var(--ion-color-step-950) !important;
-        }
-
-        .mbsc-material.mbsc-schedule-event-inner {
-            color: var(--ion-color-step-900) !important;
-        }
-    }
-}
-
-ion-card.riesgo {
-    ion-card-content {
+    section.accesos-directos {
         display: flex;
-        align-items: center;
-        padding: 12px !important;
-        font-size: var(--FS14);
+        gap: 10px;
+        margin-inline: 16px;
 
-        span {
-            padding-left: 10px;
+        ion-button {
+            width: 100%;
+            height: 150px;
+            --border-radius: 8px;
+            --padding-bottom: 11px;
+            --padding-end: 11px;
+            --padding-start: 11px;
+            --padding-top: 11px;
+            margin: 0;
+
+            .btn-inner {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+                width: 100%;
+                text-align: left;
+                position: relative;
+                justify-content: space-between;
+
+                .rounded {
+                    flex: 0 0 24px;
+                    padding: 8px;
+                    margin: 0 0 5px;
+                }
+
+                .launch {
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                    font-size: 18px;
+                }
+
+                ion-label {
+                    color: var(--ion-text-color);
+                    flex: 1;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 4px;
+
+                    h2 {
+                        font-size: var(--FS20);
+                        font-weight: 700;
+                    }
+                    p {
+                        font-size: var(--FS14);
+                    }
+                    i {
+                        font-size: 12px;
+                        font-style: normal;
+                        line-height: 14px;
+                        padding: 7px 3px;
+                        background: #1d78bf;
+                        color: #fff;
+                        border-radius: 50%;
+                        width: 27px;
+                        height: 27px;
+                        text-align: center;
+                    }
+                }
+
+                ion-progress-bar {
+                    --background: #fff;
+                    height: 6px;
+                }
+
+                .evaluaciones {
+                    height: 6px;
+                    display: flex;
+                    gap: 2px;
+
+                    div {
+                        flex: 1;
+                        background-color: var(--ion-color-7-primary);
+                        border-radius: 3px;
+                    }
+                }
+            }
+
+            &.color-1 {
+                --background: var(--ion-color-2-background);
+                --background-activated: var(--ion-color-2-background);
+
+                ion-icon {
+                    &.rounded {
+                        background-color: var(--ion-color-2-primary);
+                    }
+                    &.launch {
+                        color: var(--ion-color-2-foreground);
+                    }
+                }
+
+                ion-progress-bar {
+                    --progress-background: var(--ion-color-2-foreground);
+                }
+            }
+            &.color-2 {
+                --background: var(--ion-color-7-background);
+                --background-activated: var(--ion-color-7-background);
+
+                ion-icon {
+                    &.rounded {
+                        background-color: var(--ion-color-7-primary);
+                    }
+                    &.launch {
+                        color: var(--ion-color-7-foreground);
+                    }
+                }
+
+                ion-progress-bar {
+                    --progress-background: var(--ion-color-7-foreground);
+                }
+            }
+        }
+    }
+
+    section.agenda {
+        // margin: 0 10px 10px;
+        box-shadow: var(--ion-box-shadow);
+
+        .section-header {
+            padding-left: 20px;
+        }
+        .section-content {
+            margin-inline: 10px;
+
+            .fecha {
+                margin: 10px 10px 0;
+                background: var(--ion-color-1-background);
+                border-radius: 7px;
+                padding: 5px 10px;
+                position: relative;
+
+                h3 {
+                    margin: 0 0 3px;
+                    color: var(--ion-color-1-foreground);
+                    font-size: 12px;
+                }
+
+                h2 {
+                    margin: 0;
+                    color: var(--ion-text-color);
+                    font-size: 18px;
+                    font-weight: 500;
+                }
+
+                ion-icon {
+                    position: absolute;
+                    right: 10px;
+                    top: 5px;
+                    font-size: 20px;
+                    color: var(--ion-color-1-foreground);
+                }
+            }
+
+            .cargando {
+                text-align: center;
+                padding: 15px;
+
+                span {
+                    display: block;
+                    line-height: 32px;
+                    font-size: var(--FS14);
+                }
+            }
+
+            ion-item {
+                ion-label {
+                    margin: 5px 0;
+
+                    p.estado-actividad {
+                        padding: 2px 6px;
+                        margin-top: 0;
+                        margin-bottom: 10px;
+                        font-size: var(--FS11) !important;
+                        font-weight: 700;
+                    }
+                }
+            }
         }
     }
 }
@@ -260,196 +228,5 @@ ion-card.notificacion {
         span {
             padding-left: 10px;
         }
-    }
-}
-
-.horario .start-time {
-    font-size: var(--FS12) !important;
-}
-
-ion-card#asistencia,
-ion-card#notas {
-    ion-card-title {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-}
-
-ion-card#notas {
-    ion-card-content {
-        padding: 0;
-    }
-}
-
-ion-item.evaluacion {
-    --padding-start: 15px;
-
-    [slot="start"] {
-        flex: 0 0 40px;
-        margin: 0 15px 0 0;
-        text-align: center;
-        color: var(--ion-color-medium);
-
-        ::ng-deep b {
-            display: block;
-            font-size: var(--FS26);
-            font-weight: normal;
-            line-height: 26px;
-        }
-    }
-
-    ion-label {
-        h2 {
-            white-space: normal;
-            font-weight: 500;
-        }
-    }
-
-    .ponderacion {
-        height: 30px;
-        width: 30px;
-        border: 1px solid;
-        border-radius: 50%;
-        text-align: center;
-        line-height: 30px;
-        font-size: var(--FS14);
-        font-weight: 600;
-        color: var(--ion-color-success);
-
-        &.rojo {
-            color: var(--ion-color-primary) !important;
-        }
-        &.gris {
-            color: var(--ion-color-medium) !important;
-        }
-    }
-}
-
-ion-card#docente ion-card-content {
-    display: flex;
-    align-items: center;
-
-    app-cached-image {
-        margin-right: 10px;
-        height: 45px;
-        width: 45px;
-    }
-
-    p {
-        font-size: var(--FS16);
-    }
-    h3 {
-        font-size: var(--FS14);
-    }
-}
-
-#notas {
-    ion-card-content {
-        padding-right: 0;
-        padding-bottom: 10px;
-
-        ul {
-            display: flex;
-            margin-left: -10px;
-            // width: 400px;
-            margin-top: 0;
-
-            li {
-                width: 60px;
-                text-align: center;
-                margin: 0 10px;
-
-                div.nota {
-                    background-color: var(--ion-color-light);
-                    color: var(--ion-color-dark);
-                    border-radius: 4px;
-                    margin-bottom: 2px;
-                    font-size: var(--FS16);
-                    padding: 2px 0;
-                    &.rojo {
-                        color: var(--ion-color-danger) !important;
-                    }
-                }
-
-                div.nombre-eval {
-                    font-size: var(--FS11);
-                }
-                div.porcent-eval {
-                    font-size: var(--FS12);
-                    color: var(--ion-color-medium);
-                    margin-top: -2px;
-                }
-                // @media (prefers-color-scheme: dark) {
-                //     div.nombre-eval {color: white}
-                //     div.porcent-eval {color: var(--ion-color-light);}
-                // }
-            }
-        }
-        .notas-finales {
-            display: flex;
-            justify-content: flex-end;
-            padding-bottom: 5px;
-
-            div.item {
-                width: 120px;
-                text-align: center;
-
-                div {
-                    width: 80px;
-                    margin: 0 auto;
-                    border: 3px solid var(--ion-color-light);
-                    height: 45px;
-                    border-radius: 4px;
-                    font-size: var(--FS20);
-                    font-weight: bold;
-                    line-height: 40px;
-                }
-                span {
-                    margin: 5px -5px 0 -5px;
-                    white-space: normal;
-                    font-size: var(--FS12);
-                    line-height: 14px;
-                    display: block;
-                }
-            }
-        }
-    }
-}
-
-#horario {
-    // ion-card-content {
-    //     padding-right: 0 !important;
-    // }
-    .scroll-item {
-        min-height: 100px;
-    }
-}
-
-body.dark {
-    #notas {
-        div.nota {
-            background-color: transparent !important;
-            border: 1px solid var(--ion-color-light);
-        }
-    }
-}
-
-.avatares {
-    display: flex;
-    padding: 10px 0;
-
-    app-cached-image {
-        height: 30px;
-        width: 30px;
-    }
-    ion-avatar {
-        height: 30px;
-        width: 30px;
-        background: var(--ion-color-medium);
-        margin-right: 4px;
-        font-size: var(--FS12);
-        color: white;
-        text-align: center;
     }
 }

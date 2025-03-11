@@ -8,11 +8,21 @@
 
 <ion-content>
 
-  <ion-card class="primary-card" color="white">
+  <!-- <ion-card class="primary-card" color="white">
     <ion-card-header>
       <ion-card-title>Mesa de Servicios TI</ion-card-title>
     </ion-card-header>
-  </ion-card>
+  </ion-card> -->
+
+  <ion-list inset="true" class="card-list">
+    <ion-item detail="false">
+      <ion-icon slot="start" src="assets/icon/feedback.svg" class="rounded variant-2"></ion-icon>
+      <ion-label>
+        <h2>Mesa de Servicios TI</h2>
+        <p>Soporte técnico y atención a incidentes tecnológicos para la comunidad educativa.</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
 
   <section>
     <div class="section-content">
@@ -20,10 +30,12 @@
         <ion-item detail="false" href="tel:+56224305700" role="button">
           <ion-icon slot="start" src="assets/icon/local_phone.svg"></ion-icon>
           <ion-label>+562 24305700</ion-label>
+          <ion-icon slot="end" src="assets/icon/launch.svg"></ion-icon>
         </ion-item>
         <ion-item detail="false" (click)="correo()">
           <ion-icon slot="start" src="assets/icon/email.svg"></ion-icon>
           <ion-label>ayuda&#64;inacap.cl</ion-label>
+          <ion-icon slot="end" src="assets/icon/launch.svg"></ion-icon>
         </ion-item>
       </ion-list>
     </div>

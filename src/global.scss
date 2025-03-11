@@ -95,8 +95,10 @@
   --ion-item-background: #ffffff;
   --ion-border-color: #d5d6dd;
   --inner-border-width: 0px 0px 0.5px 0px;
-  --ion-box-shadow: 0px 4px 8px 0px rgba(194, 201, 252, 0.15) // Tamaños letras
-    --FS9: 9px;
+  --ion-box-shadow: 0px 4px 8px 0px rgba(194, 201, 252, 0.15);
+  
+  // Tamaños letras
+  --FS9: 9px;
   --FS10: 10px;
   --FS11: 11px;
   --FS12: 12px;
@@ -622,9 +624,9 @@ body {
     }
 
     &.common {
-      color: #717FE8 !important;
-      border-color: #717FE8;
-      background-color: #DCDFF9;
+      color: #717fe8 !important;
+      border-color: #717fe8;
+      background-color: #dcdff9;
     }
   }
 

@@ -10,7 +10,11 @@ const routes: Routes = [
   {
     path: 'configuraciones',
     loadChildren: () => import('src/app/pages/privado/shared/configuraciones/configuraciones.module').then(m => m.ConfiguracionesPageModule)
+  },  {
+    path: 'credencial-virtual',
+    loadChildren: () => import('./credencial-virtual/credencial-virtual.module').then( m => m.CredencialVirtualPageModule)
   }
+
 ];
 
 @NgModule({

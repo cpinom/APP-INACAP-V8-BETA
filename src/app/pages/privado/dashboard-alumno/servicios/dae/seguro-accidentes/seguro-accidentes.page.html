@@ -7,5 +7,70 @@
 </ion-header>
 
 <ion-content>
-  
+
+  <ion-list inset="true" class="card-list">
+    <ion-item detail="false">
+      <ion-icon slot="start" src="assets/icon/healing.svg" class="rounded variant-3"></ion-icon>
+      <ion-label>
+        <h2>Seguro de Accidentes</h2>
+        <p>Solicita el reembolso por gastos médicos en accidentes estudiantiles.</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+
+  @if (mostrarCargando) {
+  <div class="loaderInacap">
+    <ion-spinner name="lines" color="primary"></ion-spinner>
+  </div>
+  }
+
+  @if (mostrarData && data) {
+  <section class="solicitar">
+    <ion-button color="primary" shape="round" expand="block" routerLink="nueva-solicitud">
+      Solicitar Reembolso
+    </ion-button>
+  </section>
+
+  @if (solicitudes) {
+  @if (solicitudes.length) {
+  <section>
+    <div class="section-header">Historial</div>
+    <div class="section-content">
+      <ion-list>
+        @for (item of solicitudes; track $index) {
+        <ion-item>
+          <ion-label>
+            <h2>Solicitud #{{item.solicitud}}</h2>
+            <p>{{formatearFecha(item.fecha_recepcion)}}</p>
+            <p class="estado-actividad {{resolverEstado(item.status)}}">{{item.status||'Pendiente'}}</p>
+          </ion-label>
+        </ion-item>
+        }
+      </ion-list>
+    </div>
+  </section>
+  }
+  @else {
+  <section class="empty-state">
+    <div>
+      <ion-icon class="folder" src="assets/images/folder.svg"></ion-icon>
+      <p>No hay solicitudesistóricas en este momento.</p>
+    </div>
+  </section>
+  }
+  }
+  @else {
+
+  }
+  }
+  @if (mostrarData && !data) {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Funcionalidad no disponible en este momento.</p>
+    </div>
+  </section>
+  }
+
 </ion-content>

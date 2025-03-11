@@ -21,12 +21,6 @@
       (onChangeOrientation)="onChangeOrientation($event)"></horario-comp>
   </section>
 
-  <!-- <ng-container *ngIf="mostrarData">
-    <horario-comp rol="alumno" (onEventoTap)="onEventoTap($event)" (onAfterLoad)="onAfterLoad($event)"
-      (onCompleteLoad)="onCompleteLoad($event)" (onError)="onError($event)"
-      (onChangeOrientation)="onChangeOrientation($event)"></horario-comp>
-  </ng-container> -->
-
   <section *ngIf="mostrarError" class="empty-state">
     <div>
       <ion-icon src="assets/icon/info.svg"></ion-icon>

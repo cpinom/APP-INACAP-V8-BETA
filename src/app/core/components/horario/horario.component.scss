@@ -102,6 +102,64 @@ ion-card.titulo {
 }
 ::ng-deep .mbsc-list-item {
     display: block;
+    padding: 0 !important;
+
+    ion-item {
+        --padding-start: 15px;
+        --padding-top: 10px;
+        --padding-bottom: 10px;
+
+        div[slot="start"] {
+            width: 105px;
+            background: #eee;
+            border-radius: 4px;
+            padding: 5px 10px;
+            display: flex;
+            flex-direction: column;
+            margin: 0 16px 0 0;
+
+            &.evaluacion {
+                background: var(--ion-color-7-background);
+            }
+            &.recuperacion {
+                background: var(--ion-color-2-background);
+            }
+            &.seccion {
+                background: var(--ion-color-1-background);
+            }
+
+            ion-icon {
+                font-size: 20px;
+            }
+
+            h2 {
+                font-size: var(--FS14);
+                font-weight: 700;
+                margin: 5px 0;
+            }
+
+            p {
+                margin: 5px 0 0 0;
+                font-size: var(--FS12);
+            }
+        }
+
+        ion-label {
+            p.estado-actividad {
+                padding: 2px 6px;
+                margin-bottom: 10px;
+                font-size: var(--FS11) !important;
+                font-weight: 700;
+            }
+            h2 {
+                font-size: var(--FS14);
+                font-weight: 700;
+            }
+            p.desc {
+                font-size: var(--FS12);
+            }
+        }
+    }
 }
 
 ::ng-deep .mbsc-selected .mbsc-calendar-cell-text {
@@ -350,8 +408,12 @@ ion-item {
 }
 
 ::ng-deep body.dark {
-    .horario-cabecera swiper {
-        background-color: #000;
+    // .horario-cabecera swiper {
+    //     background-color: #000;
+    // }
+
+    .mbsc-list-item {
+        background: var(--ion-item-background);
     }
 }
 
@@ -412,12 +474,15 @@ ion-card.primary-card {
     }
     &.portrait {
         .section-content {
-            border: 0;
-            // padding-left: 10px;
+            margin: 0;
+            border-radius: 0;
+
             article {
                 .schedule-header {
-                    background-color: var(--ion-color-light);
-                    padding: 13px 15px;
+                    background-color: #f7f7f7;
+                    padding: 10px 15px;
+                    border-top: 1px solid #ccc;
+                    border-bottom: 1px solid #ccc;
 
                     h2 {
                         text-transform: capitalize;

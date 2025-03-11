@@ -20,8 +20,8 @@ import { InacapMailService } from 'src/app/core/services/http/inacapmail.service
 import { EstacionamientosService } from 'src/app/core/services/http/estacionamientos.service';
 import { AppGlobal } from 'src/app/app.global';
 import { VISTAS_ALUMNO } from 'src/app/core/constants/alumno';
-
-declare const confetti: any;
+import { CredencialVirtualPage } from '../perfil/credencial-virtual/credencial-virtual.page';
+import { ConfettiService } from 'src/app/core/services/confetti.service';
 
 interface AccesosDirectos {
   key: string;
@@ -184,6 +184,7 @@ export class InicioPage implements OnInit, AfterViewInit {
   private nav = inject(NavController);
   private pt = inject(Platform);
   private modal = inject(ModalController);
+  private confetti = inject(ConfettiService);
 
   constructor() {
 
@@ -214,9 +215,9 @@ export class InicioPage implements OnInit, AfterViewInit {
       this.guardarPeriodo(value);
     });
 
-    if(this.pt.is('mobileweb')) {
-      this.fechaHorario = moment('29/09/2024', 'DD/MM/YYYY').toDate();
-    }
+    // if (this.pt.is('mobileweb')) {
+    //   this.fechaHorario = moment('05/10/2024', 'DD/MM/YYYY').toDate();
+    // }
   }
   ngAfterViewInit() { }
   async ngOnInit() {
@@ -314,7 +315,6 @@ export class InicioPage implements OnInit, AfterViewInit {
     const periCcod = this.programa.periCcod;
     const sedeCcod = this.programa.sedeCcod;
     const fechaInicio = moment(this.fechaHorario).format('DD/MM/YYYY');
-    // const fechaTermino = '28/09/2024';
 
     try {
       const result = await this.api.getAgenda(sedeCcod, periCcod, fechaInicio, fechaInicio);
@@ -355,7 +355,7 @@ export class InicioPage implements OnInit, AfterViewInit {
       if (item.bloqTipo == 'seccion')
         return 'school';
       if (item.bloqTipo == 'recuperacion')
-        return 'clock';
+        return 'schedule';
     }
     else if (type == 1) {
       if (item.bloqTipo == 'evaluacion')
@@ -370,12 +370,10 @@ export class InicioPage implements OnInit, AfterViewInit {
   }
   resolverTipoAgenda(item: any) {
     if (item.bloqTipo == 'evaluacion')
-      return 'Evaluación';
+      return `Evaluación - ${item.asigTdesc}`;
     if (item.bloqTipo == 'seccion')
-      return 'Clases';
-    if (item.bloqTipo == 'recuperacion')
-      return 'Recuperación de Clases';
-    return 'Clases';
+      return `Clases - ${item.asigTdesc}`;
+    return item.asigTdesc;
   }
   procesarCursos(cursos: any[]) {
     if (cursos.length) {
@@ -397,16 +395,17 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.errorStatus = false;
 
     try {
-      let sedeCcod = this.programa.sedeCcod;
-      let planCcod = this.programa.planCcod;
-      let result = await this.api.getStatusV5(sedeCcod, planCcod);
+      const sedeCcod = this.programa.sedeCcod;
+      const planCcod = this.programa.planCcod;
+      const result = await this.api.getStatusV5(sedeCcod, planCcod);
 
       if (result.success) {
         this.status = result.data;
+        //this.status.destacado = { tipo: 2, titulo: '¡Bienvenido a INACAP!', descripcion: 'Estamos muy contentos de tenerte con nosotros. En esta sección encontrarás información relevante para tu vida académica y estudiantil. ¡Éxito en tu semestre!', link: null };
 
         Object.assign(result.data, { loaded: moment().format('DDMMYYYYHHmmss') });
 
-        this.profile.setStorage('status', result.data);
+        await this.profile.setStorage('status', result.data);
       }
     }
     catch (error: any) {
@@ -447,6 +446,7 @@ export class InicioPage implements OnInit, AfterViewInit {
 
     switch (item.key) {
       case 'MOODLE':
+        await this.moodleTap();
         break;
       case 'INACAPMAIL':
         await this.nav.navigateForward('/dashboard-alumno/inicio/inacapmail');
@@ -455,6 +455,7 @@ export class InicioPage implements OnInit, AfterViewInit {
         await this.nav.navigateForward('/dashboard-alumno/inicio/horario');
         break;
       case 'CREDENCIAL':
+        await this.credencialVirtualTap();
         break;
       case 'CERTIFICADOS':
         await this.nav.navigateForward('/dashboard-alumno/inicio/certificados');
@@ -574,7 +575,7 @@ export class InicioPage implements OnInit, AfterViewInit {
         return;
       }
       revertirCambios = true;
-      this.snackbar.showToast('No fue posible completar la solicitud.', 3000, 'danger');
+      await this.snackbar.showToast('No fue posible completar la solicitud.', 3000, 'danger');
     }
     finally {
       await loading.dismiss();
@@ -591,18 +592,18 @@ export class InicioPage implements OnInit, AfterViewInit {
     }
   }
   async seccionTap(data: any) {
-    let seccCcod = data.seccCcod;
-    let principal = await this.profile.getStorage('principal');
-    let programa = principal.programas[principal.programaIndex];
-    let asignaturas = programa.asignaturas as any[];
-    let seccion = asignaturas.find(item => item.seccCcod == seccCcod);
-    let params = {
+    const { seccCcod, ssecNcorr } = data;
+    const principal = await this.profile.getStorage('principal');
+    const programa = principal.programas[principal.programaIndex];
+    const asignaturas = programa.asignaturas as any[];
+    const seccion = asignaturas.find(item => item.seccCcod == seccCcod);
+    const params = {
       asigCcod: seccion.asigCcod,
       asigTdesc: seccion.asigTdesc,
       tasgTdesc: seccion.tasgTdesc,
       modaTdesc: seccion.modaTdesc,
-      seccCcod: seccion.seccCcod,
-      ssecNcorr: seccion.ssecNcorr,
+      seccCcod: seccCcod,
+      ssecNcorr: ssecNcorr,
       asistencia: seccion.asistencia,
       matrNcorr: programa.matrNcorr,
       periCcod: programa.periCcod
@@ -629,7 +630,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     let preferencias = await this.profile.getPreferencias();
 
     preferencias.movil['accesos_directos'] = this.accesosDirectos;
-    debugger
+
     const loading = await this.dialog.showLoading({ message: 'Guardando...' });
 
     try {
@@ -721,10 +722,18 @@ export class InicioPage implements OnInit, AfterViewInit {
     }
   }
   async verificarSaludo() {
-    let principal = await this.profile.getStorage('principal');
+    const principal = await this.profile.getStorage('principal');
     let perfil;
 
     if (!principal) return;
+
+    // if (this.pt.is('mobileweb')) {
+    //   principal.mostrarSaludo = true;
+    // }
+    // else {
+    //   if (principal.mostrarSaludo === false) return;
+    // }
+
     if (principal.mostrarSaludo === false) return;
 
     try {
@@ -742,63 +751,25 @@ export class InicioPage implements OnInit, AfterViewInit {
     }
     catch { }
 
-    // if (this.pt.is('mobileweb')) {
-    //   perfil.estadoCumpleanos = 1;
-    // }
-
     if (perfil && perfil.estadoCumpleanos == 1) {
-      var duration = 10 * 1000;
-      var animationEnd = Date.now() + duration;
-      var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
 
-      function randomInRange(min: number, max: number) {
-        return Math.random() * (max - min) + min;
-      }
+      const saludo = `Hola ${(perfil.persTnombreSocial || perfil.persTnombre)}.<br/>¡Te deseamos un muy feliz cumpleaños! <br/>Gracias por ser parte de INACAP.`;
 
-      var interval = setInterval(function () {
-        var timeLeft = animationEnd - Date.now();
-
-        if (timeLeft <= 0) {
-          return clearInterval(interval);
-        }
-
-        var particleCount = 50 * (timeLeft / duration);
-        confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
-        confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
-      }, 250);
-
+      await this.confetti.showConfettiAlert('¡¡¡Feliz Cumpleaños!!!', saludo, 10);
       await Haptics.vibrate({ duration: 5000 });
-      await this.presentarSaludo(perfil, principal);
+
+      principal.mostrarSaludo = false;
+
+      await this.profile.setStorage('principal', principal);
     }
-  }
-  async presentarSaludo(perfil: any, principal: any) {
-    const message = `Hola ${(perfil.persTnombreSocial || perfil.persTnombre)}.<br/>¡Te deseamos un muy feliz cumpleaños! <br/>Gracias por ser parte de INACAP.`
-
-    await this.dialog.showAlert({
-      keyboardClose: false,
-      backdropDismiss: false,
-      cssClass: 'success-alert',
-      header: '¡¡¡Felicidades!!!',
-      message: `<div class="image"><img src = "./assets/images/birthday.svg" width="35px" height="35px"></div>${message}`,
-      buttons: [
-        {
-          text: 'Cerrar',
-          handler: async () => { }
-        }
-      ]
-    });
-
-    principal.mostrarSaludo = false;
-
-    await this.profile.setStorage('principal', principal);
   }
   async credencialVirtualTap() {
 
-    // await this.dialog.showModal({
-    //   component: CredencialVirtualPage,
-    //   canDismiss: true,
-    //   presentingElement: this.routerOutlet.nativeEl
-    // })
+    await this.dialog.showModal({
+      component: CredencialVirtualPage,
+      canDismiss: true,
+      presentingElement: this.routerOutlet.nativeEl
+    })
 
   }
   async justificacionInasistenciaTap() {
@@ -828,31 +799,11 @@ export class InicioPage implements OnInit, AfterViewInit {
     }
 
   }
-  // async perfilTap() {
-  //   const modal = await this.dialog.showModal({
-  //     component: PerfilPage,
-  //     componentProps: {
-  //       rootPage: PrincipalPage
-  //     },
-  //     canDismiss: true,
-  //     presentingElement: this.routerOutlet.nativeEl
-  //   });
-
-  //   modal.onDidDismiss().then(async (result) => {
-  //     if (result.data) {
-  //       if (result.data.cuentaCorriente === true) {
-  //         await this.router.navigate(['alumno/servicios/cuenta-corriente'])
-  //       }
-  //     }
-  //   });
-
-  //   await modal.present();
-  // }
   async moodleTap() {
     try {
-      let auth = await this.auth.getAuth();
-      let token = encodeURIComponent(auth.private_token);
-      let url = `https://siga.inacap.cl/inacap.api.movil/Moodle?user=${auth.user.data.persNcorr}&token=${token}`;
+      const auth = await this.auth.getAuth();
+      const token = encodeURIComponent(auth.private_token);
+      const url = `https://siga.inacap.cl/inacap.api.movil/Moodle?user=${auth.user.data.persNcorr}&token=${token}`;
 
       await this.utils.openLink(url);
     }
@@ -900,12 +851,6 @@ export class InicioPage implements OnInit, AfterViewInit {
 
     await this.profile.setStorage('principal', this.principal);
   }
-  groupBy(xs: any[], key: string) {
-    return xs.reduce(function (rv, x) {
-      (rv[x[key]] = rv[x[key]] || []).push(x);
-      return rv;
-    }, {});
-  }
   get mostrarNotificaciones() {
     return this.global.NotificationFlag;
   }
@@ -949,6 +894,10 @@ export class InicioPage implements OnInit, AfterViewInit {
     }
   }
   get mostrarDestacados() {
+    // if (this.pt.is('mobileweb')) {
+    //   return true;
+    // }
+
     if (this.status && this.status.destacado) {
       if (this.principal.mostrarDescatados) {
         return true;
@@ -957,6 +906,10 @@ export class InicioPage implements OnInit, AfterViewInit {
     return false;
   }
   get mostrarJustificaEvaluacion() {
+    if (this.pt.is('mobileweb')) {
+      return true;
+    }
+
     if (this.status) {
       return this.status.justificaEvaluacion === true;
     }

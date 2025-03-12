@@ -1,3 +1,56 @@
 <app-header personLink="privado"></app-header>
 
-<ion-content></ion-content>
+<ion-content>
+
+  <section class="image">
+    <img src="assets/images/publico/inacap-publico.jpg" />
+    <div class="detailBtn">
+      <ion-item lines="none" routerLink="detalle-inacap" detail="true">
+        <ion-icon slot="start" src="assets/icon/inacap.svg" color="dark"></ion-icon>
+        <ion-label>Nuestra Institución</ion-label>
+      </ion-item>
+    </div>
+  </section>
+
+  <section class="first instituciones">
+    <div class="section-header">Instituciones</div>
+    <div class="section-content">
+      <ion-list>
+        <ion-item (click)="abrirInstituciones(0)" detail="false" class="ion-activatable">
+          <ion-icon slot="start" src="assets/icon/precision_manufacturing.svg"></ion-icon>
+          <ion-label>Centro de Formación Técnica</ion-label>
+          <ion-icon slot="end" src="assets/icon/launch.svg"></ion-icon>
+        </ion-item>
+        <ion-item (click)="abrirInstituciones(1)" detail="false" class="ion-activatable">
+          <ion-icon slot="start" src="assets/icon/shield_person.svg"></ion-icon>
+          <ion-label>Instituto Profesional</ion-label>
+          <ion-icon slot="end" src="assets/icon/launch.svg"></ion-icon>
+        </ion-item>
+        <ion-item (click)="abrirInstituciones(4)" detail="false" class="ion-activatable">
+          <ion-icon slot="start" src="assets/icon/cycle.svg"></ion-icon>
+          <ion-label>Educación Continua</ion-label>
+          <ion-icon slot="end" src="assets/icon/launch.svg"></ion-icon>
+        </ion-item>
+        <ion-item (click)="abrirInstituciones(2)" detail="false" class="ion-activatable">
+          <ion-icon slot="start" src="assets/icon/apartment.svg"></ion-icon>
+          <ion-label>Universidad Tecnológica de Chile</ion-label>
+          <ion-icon slot="end" src="assets/icon/launch.svg"></ion-icon>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+
+  <section class="material">
+    <div class="section-header">Material Complementario</div>
+    <div class="section-content">
+      <ion-list>
+        <ion-item (click)="abrirMaterial()" detail="false" class="ion-activatable">
+          <ion-icon slot="start" src="assets/icon/developer_guide.svg"></ion-icon>
+          <ion-label>Reglamentos y Protocolos</ion-label>
+          <ion-icon slot="end" src="assets/icon/launch.svg"></ion-icon>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+
+</ion-content>

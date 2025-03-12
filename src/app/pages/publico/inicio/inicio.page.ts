@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import moment from 'moment';
+import { VISTAS } from 'src/app/core/constants/publico';
 import { PublicService } from 'src/app/core/services/http/public.service';
 import { UtilsService } from 'src/app/core/services/utils.service';
 
@@ -26,6 +27,7 @@ export class InicioPage implements OnInit {
   async ngOnInit() {
     await this.pt.ready();
     await this.cargar();
+    this.api.marcarVistaPublica(VISTAS.INICIO);
   }
   async cargar() {
 
@@ -36,13 +38,24 @@ export class InicioPage implements OnInit {
         this.data = result.data;
         this.mostrarData = true;
         this.mostrarError = false;
+        await this.api.setStorage('principal', this.data);
       }
       else {
         throw Error();
       }
     }
     catch (error: any) {
+      const principal_stored = await this.api.getStorage('principal');
 
+      if (!principal_stored) {
+        this.data = undefined;
+        this.mostrarData = false;
+        this.mostrarError = true;
+        return;
+      }
+
+      this.data = principal_stored;
+      this.mostrarData = true;
     }
     finally {
       this.mostrarCargando = false;
@@ -91,7 +104,7 @@ export class InicioPage implements OnInit {
   }
   async detalleNoticia(item: any) {
     await this.utils.openLink(item.url);
-    // this.api.marcarVistaPublica(VISTAS.DETALLE_NOTICIA);
+    this.api.marcarVistaPublica(VISTAS.DETALLE_NOTICIA);
   }
 
 }

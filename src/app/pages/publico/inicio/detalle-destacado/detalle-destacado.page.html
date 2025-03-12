@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Inicio" defaultHref="publico/inicio"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  @if (data) {
+  <section class="destacado">
+    <div class="image">
+      <img [src]="data.apdeBimagen" style="width: 100%;" />
+    </div>
+    <div class="section-content">
+      <p class="label">DESTACADO</p>
+      <h2 class="title">{{data.apdeTtitulo}}</h2>
+      <p class="date">{{data.apdeFpublicacion}}</p>
+      <div delegate class="content" [innerHTML]="data.apdeTdesc"></div>
+    </div>
+  </section>
+  }
+</ion-content>

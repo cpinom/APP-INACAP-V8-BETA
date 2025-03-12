@@ -119,7 +119,25 @@ export class PublicService {
   validarDocumento(params: any) {
     return this.post(`${this.baseUrl}/api/v5/validar-documento`, params);
   }
+  marcarVistaPublica(apesTevento: string, apesTdescripcion?: string, apesTvalor?: string) {
+    if (this.global.Integration) {
+      return;
+    }
 
+    try {
+      let params = {
+        apesTevento: apesTevento,
+        apesTdescripcion: apesTdescripcion || '',
+        apesTvalor: apesTvalor || '',
+        apesTdispositivoUuid: '', //this.device.uuid,
+        apesTdispositivoIp: '',
+        apesTdispositivoLatLng: '',
+        audiTusuario: 'MOVIL'
+      };
+      this.post(`${this.baseUrl}/api/v3/marcar-vista`, params);
+    }
+    catch { }
+  }
   async getStorage(key: string) {
     return Preferences.get({ key: `${this.storagePrefix}-${key}` }).then(result => {
       return result.value ? JSON.parse(result.value) : null;

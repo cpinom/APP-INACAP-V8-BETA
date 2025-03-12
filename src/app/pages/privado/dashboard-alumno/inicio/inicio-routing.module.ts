@@ -33,7 +33,7 @@ const routes: Routes = [
   },
   {
     path: 'malla-curricular',
-    loadChildren: () => import('./malla-curricular/malla-curricular.module').then(m => m.MallaCurricularPageModule)
+    loadChildren: () => import('./../portafolio/progresion/malla-curricular/malla-curricular.module').then(m => m.MallaCurricularPageModule)
   },
   {
     path: 'horario',
@@ -41,7 +41,7 @@ const routes: Routes = [
   },
   {
     path: 'seguro-accidentes',
-    loadChildren: () => import('src/app/pages/privado/dashboard-alumno/servicios/dae/seguro-accidentes/seguro-accidentes.module').then(m => m.SeguroAccidentesPageModule)
+    loadChildren: () => import('./../servicios/dae/seguro-accidentes/seguro-accidentes.module').then(m => m.SeguroAccidentesPageModule)
   },
   {
     path: 'solicitudes-academicas',

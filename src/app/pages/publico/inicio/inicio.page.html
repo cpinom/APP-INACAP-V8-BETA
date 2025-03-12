@@ -36,7 +36,7 @@
       <section class="classic">
         <div class="section-header">Noticias</div>
       </section>
-      @for (item of data.noticias.slice(0, 3);; track $index) {
+      @for (item of data.noticias.slice(0, 3); track $index) {
       <ion-card>
         <ion-card-content>
           <ion-item detail="false" lines="none" (click)="detalleNoticia(item)" class="ion-activatable">

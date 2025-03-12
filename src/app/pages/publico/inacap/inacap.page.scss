@@ -1,0 +1,45 @@
+ion-content {
+    section {
+        &.image {
+            margin: 0;
+            height: 276px;
+            overflow: hidden;
+            position: relative;
+
+            img {
+                height: 100%;
+                width: 100%;
+                object-fit: cover;
+            }
+
+            .detailBtn {
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+                padding: 0 15px 15px 15px;
+
+                ion-item {
+                    --border-radius: 8px;
+                    --padding-start: 15px;
+
+                    ion-label {
+                        font-size: var(--FS16);
+                        font-weight: 700;
+                        padding-top: 15px;
+                        padding-bottom: 15px;
+                    }
+                }
+            }
+        }
+        &.instituciones,
+        &.material {
+            ion-label {
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+            ion-icon[slot="end"] {
+                font-size: 18px;
+            }
+        }
+    }
+}

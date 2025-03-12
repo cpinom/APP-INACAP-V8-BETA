@@ -13,7 +13,6 @@
     <ion-card-header>
       <ion-card-title>Detalle Cuenta Corriente</ion-card-title>
     </ion-card-header>
-    <!-- <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar> -->
   </ion-card>
 
   @if (mostrarCargando) {
@@ -22,96 +21,97 @@
   </div>
   }
 
-  <ng-container *ngIf="mostrarData && conceptos">
-
-    <section>
-      <form [formGroup]="form">
-        <div class="section-content">
-          <ion-list>
-            <ion-item>
-              <!-- <ion-label position="stacked">Institución</ion-label> -->
-              <ion-select label="Institución" labelPlacement="stacked" formControlName="institucion" okText="Aceptar"
-                cancelText="Cancelar">
-                <ion-select-option [value]="item.instCcod" *ngFor="let item of instituciones">
-                  {{item.instTrazonSocial}}
-                </ion-select-option>
-              </ion-select>
-            </ion-item>
-            <ion-item>
-              <!-- <ion-label position="stacked">Semestre</ion-label> -->
-              <ion-select label="Semestre" labelPlacement="stacked" formControlName="semestre" okText="Aceptar"
-                cancelText="Cancelar">
-                <ion-select-option [value]="1">Historial</ion-select-option>
-                <ion-select-option [value]="2">Actual</ion-select-option>
-              </ion-select>
-            </ion-item>
-          </ion-list>
-        </div>
-      </form>
-    </section>
-
-    <section class="section-detalle">
-      <div #conceptosDiv class="section-content">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Período</th>
-              <th>Concepto</th>
-              <th>Fecha Vencimiento</th>
-              <th>Monto</th>
-              <th>Financiamiento Estatal (**)</th>
-              <th>Beneficios INACAP</th>
-              <th>Otros Beneficios</th>
-              <th>Otros Abonos</th>
-              <th>Saldo a la fecha</th>
-              <th>Estado</th>
-              <th>Detalle</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let item of conceptos">
-              <td>{{item.periodo}}</td>
-              <td>{{item.concepto}}</td>
-              <td>{{item.fechaCompromiso}}</td>
-              <td>${{item.monto | numberSeparator}}</td>
-              <td>${{item.estatal | numberSeparator}}</td>
-              <td>${{item.beneficiosInacap | numberSeparator}}</td>
-              <td>${{item.otrosBeneficios | numberSeparator}}</td>
-              <td>${{item.otros | numberSeparator}}</td>
-              <td>${{item.saldoFecha | numberSeparator}}</td>
-              <td [class]="item.estado | split:'|':1">{{item.estado | split:'|':0}}</td>
-              <td>
-                <ion-button *ngIf="item.detalle == 'true'" color="light" size="small" (click)="detalle(item, $event)">
-                  <ion-icon slot="icon-only" color="medium" src="assets/icon/info.svg"></ion-icon>
-                </ion-button>
-              </td>
-            </tr>
-            <tr *ngIf="conceptos.length == 0">
-              <td colspan="11">Sin Registros...</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="section-saldos">
+  @if (mostrarData && conceptos) {
+  <section>
+    <form [formGroup]="form">
       <div class="section-content">
-        <div class="leyendas">
-          <p>(*) Valores válidos a la fecha: {{fechaActual}}</p>
-          <p>(**) El Financiamiento informado está sujeto a ratificación por las entidades competentes (MINEDUC /
-            INGRESA según corresponda). De no ser ratificados, los montos a pagar son los establecidos en el contrato de
-            prestación de servicios educacionales correspondiente.</p>
-        </div>
+        <ion-list>
+          <ion-item>
+            <!-- <ion-label position="stacked">Institución</ion-label> -->
+            <ion-select label="Institución" labelPlacement="stacked" formControlName="institucion" okText="Aceptar"
+              cancelText="Cancelar">
+              <ion-select-option [value]="item.instCcod" *ngFor="let item of instituciones">
+                {{item.instTrazonSocial}}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item>
+            <!-- <ion-label position="stacked">Semestre</ion-label> -->
+            <ion-select label="Semestre" labelPlacement="stacked" formControlName="semestre" okText="Aceptar"
+              cancelText="Cancelar">
+              <ion-select-option [value]="1">Historial</ion-select-option>
+              <ion-select-option [value]="2">Actual</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-list>
       </div>
-    </section>
-  </ng-container>
-
-  <section *ngIf="mostrarData && !conceptos" class="empty-state">
+    </form>
+  </section>
+  <section class="section-detalle">
+    <div #conceptosDiv class="section-content">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Período</th>
+            <th>Concepto</th>
+            <th>Fecha Vencimiento</th>
+            <th>Monto</th>
+            <th>Financiamiento Estatal (**)</th>
+            <th>Beneficios INACAP</th>
+            <th>Otros Beneficios</th>
+            <th>Otros Abonos</th>
+            <th>Saldo a la fecha</th>
+            <th>Estado</th>
+            <th>Detalle</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of conceptos; track $index) {
+          <tr>
+            <td>{{item.periodo}}</td>
+            <td>{{item.concepto}}</td>
+            <td>{{item.fechaCompromiso}}</td>
+            <td>${{item.monto | numberSeparator}}</td>
+            <td>${{item.estatal | numberSeparator}}</td>
+            <td>${{item.beneficiosInacap | numberSeparator}}</td>
+            <td>${{item.otrosBeneficios | numberSeparator}}</td>
+            <td>${{item.otros | numberSeparator}}</td>
+            <td>${{item.saldoFecha | numberSeparator}}</td>
+            <td [class]="item.estado | split:'|':1">{{item.estado | split:'|':0}}</td>
+            <td class="ion-text-center">
+              <ion-button *ngIf="item.detalle == 'true'" color="light" size="small" (click)="detalle(item, $event)">
+                <ion-icon slot="icon-only" color="medium" src="assets/icon/info.svg"></ion-icon>
+              </ion-button>
+            </td>
+          </tr>
+          }
+          @if (conceptos.length == 0) {
+          <tr>
+            <td colspan="11">Sin Registros...</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <section class="section-saldos">
+    <div class="section-content">
+      <div class="leyendas">
+        <p>(*) Valores válidos a la fecha: {{fechaActual}}</p>
+        <p>(**) El Financiamiento informado está sujeto a ratificación por las entidades competentes (MINEDUC /
+          INGRESA según corresponda). De no ser ratificados, los montos a pagar son los establecidos en el contrato de
+          prestación de servicios educacionales correspondiente.</p>
+      </div>
+    </div>
+  </section>
+  }
+  @if (mostrarData && !conceptos) {
+  <section class="empty-state">
     <div>
       <ion-icon src="assets/icon/info.svg"></ion-icon>
       <p>Información no disponible en este momento.</p>
-      <!-- <ion-button color="primary" shape="round" (click)="recargar()">Recargar</ion-button> -->
     </div>
   </section>
+  }
 
 </ion-content>

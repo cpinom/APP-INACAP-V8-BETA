@@ -96,7 +96,7 @@
   --ion-border-color: #d5d6dd;
   --inner-border-width: 0px 0px 0.5px 0px;
   --ion-box-shadow: 0px 4px 8px 0px rgba(194, 201, 252, 0.15);
-  
+
   // Tamaños letras
   --FS9: 9px;
   --FS10: 10px;
@@ -423,8 +423,9 @@ body {
         background: #ffb066;
       }
     }
-    &[slot="end"] {
-      font-size: 18px;
+    &[slot="end"],
+    &[slot="icon-only"] {
+      font-size: 24px;
     }
   }
 

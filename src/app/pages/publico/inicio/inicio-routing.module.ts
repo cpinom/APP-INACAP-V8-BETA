@@ -6,11 +6,16 @@ const routes: Routes = [
   {
     path: '',
     component: InicioPage
+  },
+  {
+    path: 'detalle-destacado',
+    loadChildren: () => import('./detalle-destacado/detalle-destacado.module').then(m => m.DetalleDestacadoPageModule)
   }
+
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class InicioPageRoutingModule {}
+export class InicioPageRoutingModule { }

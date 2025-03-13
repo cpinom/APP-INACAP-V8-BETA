@@ -20,6 +20,8 @@ import { MensajeModule } from './mensaje/mensaje.module';
 import { PeriodosComponent } from './periodos/periodos.component';
 import { BarcodeScanningModalComponent } from './barcode-scanning-modal/barcode-scanning-modal.component';
 import { ConsultaBipComponent } from './consulta-bip/consulta-bip.component';
+import { BibliotecaComponent } from './sede/biblioteca/biblioteca.component';
+import { CafeteriaComponent } from './sede/cafeteria/cafeteria.component';
 
 @NgModule({
   schemas: [],
@@ -45,6 +47,8 @@ import { ConsultaBipComponent } from './consulta-bip/consulta-bip.component';
     DetalleOpinionComponent,
     NuevaOpinionComponent,
     SedeComponent,
+    BibliotecaComponent,
+    CafeteriaComponent,
     PeriodosComponent,
     BarcodeScanningModalComponent,
     ConsultaBipComponent
@@ -60,6 +64,8 @@ import { ConsultaBipComponent } from './consulta-bip/consulta-bip.component';
     DetalleOpinionComponent,
     NuevaOpinionComponent,
     SedeComponent,
+    BibliotecaComponent,
+    CafeteriaComponent,
     PeriodosComponent,
     BarcodeScanningModalComponent,
     ConsultaBipComponent

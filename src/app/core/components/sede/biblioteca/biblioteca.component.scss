@@ -1,0 +1,59 @@
+ion-content {
+  section.horario-atencion {
+    .section-content {
+      background: transparent !important;
+      overflow-x: scroll;
+      padding: 10px 0 0 0;
+      white-space: nowrap;
+      border: none !important;
+      margin-bottom: 0;
+      box-shadow: none;
+
+      ion-card {
+        display: inline-block;
+        margin: 0 10px 0 0;
+        width: 160px;
+        min-height: 80px;
+        white-space: normal;
+        box-shadow: none;
+        background: #deeded;
+
+        ion-card-content {
+          padding: 10px 8px;
+          font-weight: 400;
+          display: flex;
+          align-items: start;
+          height: 100%;
+          flex-direction: column;
+          justify-content: space-between;
+
+          h2 {
+            font-size: var(--FS16);
+            font-weight: 700;
+            color: var(--ion-text-color);
+            margin-bottom: 5px;
+          }
+
+          span {
+            border-left: 3px solid #5aa8a8;
+            font-size: var(--FS13);
+            font-weight: 400;
+            color: var(--ion-text-color);
+            line-height: 16px;
+            padding-left: 5px;
+          }
+        }
+      }
+    }
+  }
+}
+
+::ng-deep body.dark {
+  section.horario-atencion {
+    .section-content {
+      ion-card {
+        background: #2b3b3b !important;
+      }
+    }
+  }
+}

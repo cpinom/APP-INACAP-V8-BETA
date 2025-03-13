@@ -1,23 +1,30 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button text="Inicio" defaultHref="/dashboard-alumno/inicio"></ion-back-button>
+      <ion-back-button [text]="backText" [defaultHref]="backUrl"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
-  <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar>
 </ion-header>
 
 <ion-content>
 
+  @if (mostrarCargando) {
+  <div class="loaderInacap">
+    <ion-spinner name="lines" color="primary"></ion-spinner>
+  </div>
+  }
+
   <sede-comp rol="alumno" (onLoadCompleted)="sedeCargada($event)" (onError)="sedeError($event)"
     (onAction)="sedeAction($event)" (onServicesClick)="sedeServices($event)"></sede-comp>
 
-  <section *ngIf="mostrarError" class="empty-state">
+  @if (mostrarError) {
+  <section class="empty-state">
     <div>
       <ion-icon src="assets/icon/info.svg"></ion-icon>
       <p>Información no disponible en este momento.</p>
       <ion-button color="primary" shape="round" (click)="recargar()">Recargar</ion-button>
     </div>
   </section>
+  }
 
 </ion-content>

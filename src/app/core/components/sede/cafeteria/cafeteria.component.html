@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Cafetería</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrar()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list inset="true" class="card-list">
+    <ion-item detail="false">
+      <ion-icon slot="start" src="assets/icon/restaurant.svg" class="rounded variant-5"></ion-icon>
+      <ion-label>
+        <h2>{{data.apcaTtitulo}}</h2>
+        @if (data.apcaTnota) {
+        <p>{{data.apcaTnota}}</p>
+        }
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-list inset="true" class="detalle">
+    <ion-item>
+      <ion-icon slot="start" src="assets/icon/room.svg"></ion-icon>
+      <ion-label>
+        <h2>Ubicación</h2>
+        <p>{{data.apcaTubicacion || 'Sin información'}}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <section class="horario-atencion">
+    <div class="section-header">Horario de Atención</div>
+    <div class="section-content">
+      @for (item of data.horario; track $index) {
+      <ion-card>
+        <ion-card-content>
+          <h2>{{item.diasTdesc}}</h2>
+          <span>{{item.achoThorario || 'Sin información'}}</span>
+          @if (item.achoTencargado) {
+          <span>{{item.achoTencargado}}</span>
+          }
+        </ion-card-content>
+      </ion-card>
+      }
+    </div>
+  </section>
+
+  @if (data.documento == 1) {
+  <section>
+    <div class="section-header">Menú</div>
+    <div class="section-content">
+      <ion-list>
+        <ion-item class="ion-activatable" (click)="descargarMenu()" detail="false">
+          <ion-icon slot="start" src="assets/icon/picture_as_pdf.svg"></ion-icon>
+          <ion-label>Ver Menú</ion-label>
+          <ion-icon slot="end" src="assets/icon/download.svg"></ion-icon>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+  }
+
+</ion-content>

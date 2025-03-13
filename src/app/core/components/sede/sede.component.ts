@@ -1,5 +1,5 @@
 import { Component, EventEmitter, inject, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { IonModal, LoadingController, Platform } from '@ionic/angular';
+import { IonModal, IonRouterOutlet, LoadingController, Platform } from '@ionic/angular';
 import { UtilsService } from '../../services/utils.service';
 import { Directory, Filesystem } from '@capacitor/filesystem';
 import { FileOpener } from '@capacitor-community/file-opener';
@@ -11,6 +11,9 @@ import { ProfileService } from '../../services/profile.service';
 import { EventsService } from '../../services/events.service';
 import { PrivateService } from '../../services/http/private.service';
 import { ROLES } from '../../constants/roles';
+import { DialogService } from '../../services/dialog.service';
+import { BibliotecaComponent } from './biblioteca/biblioteca.component';
+import { CafeteriaComponent } from './cafeteria/cafeteria.component';
 
 @Component({
   selector: 'sede-comp',
@@ -48,6 +51,8 @@ export class SedeComponent implements OnInit {
   private snackbar = inject(SnackbarService);
   private profile = inject(ProfileService);
   private events = inject(EventsService);
+  private dialog = inject(DialogService);
+  private routerOutlet = inject(IonRouterOutlet);
 
   constructor() { }
 
@@ -100,25 +105,36 @@ export class SedeComponent implements OnInit {
       this.onLoadCompleted.emit();
     }
   }
-  resolverFechaEvento(fecha:string) {
+  resolverImagen() {
+    if (this.sede) {
+      return `${this.api.baseUrl}/v3/imagen-sede/${this._sedeCcod}`;
+    }
+    return '';
+  }
+  resolverFechaEvento(fecha: string) {
     return moment(fecha, 'DD/MM/YYYY HH:mm').locale('es').format('<b>DD</b> MMM').replace('.', '');
   }
   async mostrarRuta() {
     this.utils.openLink(`https://maps.google.com/maps?daddr=${this.sede.sedeTlatitud},${this.sede.sedeTlongitud}&amp;ll=`);
 
   }
-  async nuevoCorreo(sedeTemail:any) {
+  async nuevoCorreo(sedeTemail: any) {
     try {
       await this.mensaje.crear(sedeTemail);
     }
-    catch (error:any) {
+    catch (error: any) {
       await this.snackbar.showToast(error, 2000, 'danger');
     }
   }
-  async mostrarCafeteria(cafeteria:any) {
-    this.cafeteriaData = cafeteria;
-    this.cafeteriaMdl.present();
-    this.onServicesClick.emit('cafeteria');
+  async mostrarCafeteria(cafeteria: any) {
+    await this.dialog.showModal({
+      component: CafeteriaComponent,
+      componentProps: { data: cafeteria },
+      presentingElement: this.routerOutlet.nativeEl
+    })
+    // this.cafeteriaData = cafeteria;
+    // this.cafeteriaMdl.present();
+    // this.onServicesClick.emit('cafeteria');
   }
   async reservasTap() {
     this.onAction.emit('reserva-espacios');
@@ -163,8 +179,13 @@ export class SedeComponent implements OnInit {
     }
   }
   async mostrarBiblioteca() {
-    this.bibliotecaMdl.present();
-    this.onServicesClick.emit('biblioteca');
+    await this.dialog.showModal({
+      component: BibliotecaComponent,
+      componentProps: { data: this.bibliotecaData },
+      presentingElement: this.routerOutlet.nativeEl
+    })
+    // this.bibliotecaMdl.present();
+    // this.onServicesClick.emit('biblioteca');
   }
   async abrirNavegador(url: string) {
     await this.utils.openLink(url);
@@ -172,9 +193,9 @@ export class SedeComponent implements OnInit {
   onModalDismiss(e?: any) {
     this.events.app.next({ action: 'app:modal-dismiss' });
   }
-  get routerOutlet() {
-    return getRouterOutlet(this.rol);
-  }
+  // get routerOutlet() {
+  //   return getRouterOutlet(this.rol);
+  // }
 }
 
 export function getRouterOutlet(rol: string) {

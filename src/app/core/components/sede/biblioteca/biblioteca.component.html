@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Biblioteca</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrar()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list inset="true" class="card-list">
+    <ion-item detail="false">
+      <ion-icon slot="start" src="assets/icon/local_library.svg" class="rounded variant-5"></ion-icon>
+      <ion-label>
+        <h2>{{data.apbiTtitulo}}</h2>
+        @if (data.apbiTnota) {
+        <p>{{data.apbiTnota}}</p>
+        }
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-list inset="true" class="detalle">
+    <ion-item>
+      <ion-icon slot="start" src="assets/icon/room.svg"></ion-icon>
+      <ion-label>
+        <h2>Ubicación</h2>
+        <p>{{data.apbiTubicacion || 'Sin información'}}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <section class="horario-atencion">
+    <div class="section-header">Horario de Atención</div>
+    <div class="section-content">
+      @for (item of data.horario; track $index) {
+      <ion-card>
+        <ion-card-content>
+          <h2>{{item.diasTdesc}}</h2>
+          <span>{{item.abhoThorario || 'Sin información'}}</span>
+          @if (item.abhoTencargado) {
+          <span>{{item.abhoTencargado}}</span>
+          }
+        </ion-card-content>
+      </ion-card>
+      }
+    </div>
+  </section>
+
+</ion-content>

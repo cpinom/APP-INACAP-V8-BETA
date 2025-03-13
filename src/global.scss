@@ -423,7 +423,9 @@ body {
         background: #ffb066;
       }
     }
-    &[slot="end"],
+    &[slot="end"] {
+      font-size: 18px;
+    }
     &[slot="icon-only"] {
       font-size: 24px;
     }

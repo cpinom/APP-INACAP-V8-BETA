@@ -13,7 +13,11 @@ const routes: Routes = [
   },
   {
     path: 'sede',
-    loadChildren: () => import('./sede/sede.module').then(m => m.SedePageModule)
+    loadChildren: () => import('./../../inicio/sede/sede.module').then(m => m.SedePageModule)
+  },
+  {
+    path: 'reserva-espacios',
+    loadChildren: () => import('src/app/pages/privado/shared/reserva-espacios/reserva-espacios.module').then(m => m.ReservaEspaciosPageModule)
   },
   {
     path: 'buzon-opinion',

@@ -123,7 +123,7 @@ export class ReservaEspaciosPage implements OnInit, OnDestroy {
     else {
       if (this.router.url.indexOf('/dashboard-alumno/inicio') > -1)
         return 'Inicio';
-      return 'Servicios';
+      return 'Sede';
 
     }
   }

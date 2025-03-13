@@ -155,9 +155,7 @@ export class OnedrivePage implements OnInit {
     const nombreCarpeta = await this.confimarNombreCarpeta();
 
     if (nombreCarpeta) {
-      const loading = await this.loading.create({ message: 'Creando...' });
-
-      await loading.present();
+      const loading = await this.dialog.showLoading({ message: 'Creando...' });
 
       try {
         const result = await this.api.crearCarpeta({ carpeta: nombreCarpeta });
@@ -186,9 +184,7 @@ export class OnedrivePage implements OnInit {
     const nombreCarpeta = await this.confimarNombreCarpeta(folder);
 
     if (nombreCarpeta) {
-      const loading = await this.loading.create({ message: 'Actualizando...' });
-
-      await loading.present();
+      const loading = await this.dialog.showLoading({ message: 'Actualizando...' });
 
       try {
         const result = await this.api.renombrarCarpeta({
@@ -317,9 +313,7 @@ export class OnedrivePage implements OnInit {
     }
   }
   async descargarTap(file: any) {
-    const loading = await this.loading.create({ message: 'Descargando...' });
-
-    await loading.present();
+    const loading = await this.dialog.showLoading({ message: 'Descargando...' });
 
     try {
       const result = await this.api.descargarArchivo({ fileId: file.id, folderId: this.driveId });

@@ -26,11 +26,11 @@ export class SedePage implements OnInit {
     await this.cargar();
   }
   async cargar() {
-    let principal = await this.profile.getStorage('principal');
-    let programa = principal.programas[principal.programaIndex];
-    let sedes = [{ sedeCcod: programa.sedeCcod }];
+    const principal = await this.profile.getStorage('principal');
+    const programa = principal.programas[principal.programaIndex];
+    const sedes = [{ sedeCcod: programa.sedeCcod }];
 
-    this.sedeCmp.loadData(sedes);
+    await this.sedeCmp.loadData(sedes);
   }
   async recargar() {
     this.sedeCmp._sedeCcod = '';
@@ -58,6 +58,14 @@ export class SedePage implements OnInit {
     else if (service == 'biblioteca') {
       this.api.marcarVista(VISTAS_ALUMNO.BIBLIOTECA);
     }
+  }
+  get backUrl() {
+    return this.router.url.replace('/sede', '');
+  }
+  get backText() {
+    if (this.router.url.indexOf('/dashboard-alumno/inicio') > -1)
+      return 'Inicio';
+    return 'DAE';
   }
 
 }

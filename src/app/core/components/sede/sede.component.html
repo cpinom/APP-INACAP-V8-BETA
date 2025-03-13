@@ -1,58 +1,79 @@
+@if (sede) {
+
 <div class="sede-titulo">
   <img src="assets/images/bg-sede.png" />
   <div class="avatar">
     <ion-avatar>
-      <img src="assets/images/logo-inacap.png" />
+      <img [src]="resolverImagen()" />
     </ion-avatar>
   </div>
-  <h2>Sede Puente Alto</h2>
-  <p>Av. Concha y Toro 590, Puente Alto</p>
+  <section class="sede-info">
+    <h2>INACAP {{sede.sedeTdesc}}</h2>
+    <ion-button color="primary" fill="outline" size="small" (click)="mostrarRuta()">
+      <ion-icon src="assets/icon/room.svg" slot="start"></ion-icon>
+      {{sede.sedeTdireccion}}, {{sede.ciudTcomuna}}
+    </ion-button>
+  </section>
 </div>
+
+@if (mostrarServicios) {
+<section>
+  <div class="section-header">Servicios de la Sede</div>
+  <div class="section-content">
+    <ion-list>
+      @if (bibliotecaData) {
+      <ion-item class="ion-activatable" (click)="mostrarBiblioteca()">
+        <ion-icon src="assets/icon/local_library.svg" slot="start"></ion-icon>
+        <ion-label>Biblioteca</ion-label>
+        <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
+      </ion-item>
+      }
+      @if (cafeterias && cafeterias.length) {
+      @for (item of cafeterias; track $index) {
+      <ion-item class="ion-activatable" (click)="mostrarCafeteria(item)">
+        <ion-icon src="assets/icon/restaurant.svg" slot="start"></ion-icon>
+        <ion-label>{{item.apcaTtitulo}}</ion-label>
+        <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
+      </ion-item>
+      }
+      }
+      @if (mostrarReservas) {
+      <ion-item class="ion-activatable" (click)="reservasTap()">
+        <ion-icon src="assets/icon/account_balance.svg" slot="start"></ion-icon>
+        <ion-label>Reserva de Espacios</ion-label>
+        <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
+      </ion-item>
+      }
+    </ion-list>
+  </div>
+</section>
+}
+
+<section>
+  <div class="section-header">Información de la Sede</div>
+  <div class="section-content">
+    <ion-list>
+      <ion-item class="ion-activatable" (click)="mostrarRuta()">
+        <ion-icon src="assets/icon/room.svg" slot="start"></ion-icon>
+        <ion-label>{{sede.sedeTdireccion}}, {{sede.ciudTcomuna}}</ion-label>
+      </ion-item>
+      <ion-item detail="false" class="ion-activatable" href="tel:{{sede.sedeTfono}}">
+        <ion-icon src="assets/icon/phone.svg" slot="start"></ion-icon>
+        <ion-label>{{sede.sedeTfono}}</ion-label>
+      </ion-item>
+      <ion-item class="ion-activatable" (click)="nuevoCorreo(sede.sedeTemail)">
+        <ion-icon src="assets/icon/mail.svg" slot="start"></ion-icon>
+        <ion-label>{{sede.sedeTemail}}</ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+</section>
+
+}
 
 <!-- <ng-container *ngIf="sede">
 
-  <ion-card color="white" class="primary-card">
-    <ion-card-header>
-      <ion-card-title *ngIf="sedes.length == 1">INACAP {{sede.sedeTdesc}}</ion-card-title>
-      <div *ngIf="sedes.length > 1" class="select-container">
-        <ion-select interface="action-sheet" [(ngModel)]="_sedeCcod" (ionChange)="cargarSede()">
-          <ion-select-option *ngFor="let item of sedes" [value]="item.sedeCcod">INACAP {{item.sedeTdesc | titleCase}}</ion-select-option>
-        </ion-select>
-      </div>
-    </ion-card-header>
-    <ion-card-content class="botones-sede">
-      <ion-button fill="outline" color="primary" shape="round" (click)="mostrarRuta()">
-        <ion-icon src="assets/icon/directions.svg"></ion-icon> Ver Mapa
-      </ion-button>
-      <ion-button fill="outline" color="primary" shape="round" class="round" *ngIf="sede.sedeTfono"
-        href="tel:{{sede.sedeTfono}}" role="button" aria-label="Llamar a la sede">
-        <ion-icon slot="icon-only" src="assets/icon/phone.svg"></ion-icon>
-      </ion-button>
-      <ion-button fill="outline" color="primary" shape="round" class="round" *ngIf="sede.sedeTemail"
-        (click)="nuevoCorreo(sede.sedeTemail)" role="button" aria-label="Enviar un correo a la sede">
-        <ion-icon slot="icon-only" src="assets/icon/mail.svg"></ion-icon>
-      </ion-button>
-    </ion-card-content>
-  </ion-card>
-
-  <ion-card class="secondary-card eventos" color="white">
-    <ion-card-header>
-      <ion-card-title>Próximos Eventos</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-list class="ion-no-margin">
-        <ion-item *ngIf="eventos.length === 0">
-          <ion-label color="medium">No hay eventos próximos</ion-label>
-        </ion-item>
-        <ion-item *ngFor="let item of eventos" detail="true" role="button" (click)="abrirNavegador(item.url)">
-          <div slot="start" [innerHTML]="resolverFechaEvento(item.fecha)"></div>
-          <ion-label class="ion-no-padding">
-            <h2>{{item.titulo}}</h2>
-          </ion-label>
-        </ion-item>
-      </ion-list>
-    </ion-card-content>
-  </ion-card>
+  
 
   <section *ngIf="mostrarServicios">
     <div class="section-header">Servicios de la Sede</div>

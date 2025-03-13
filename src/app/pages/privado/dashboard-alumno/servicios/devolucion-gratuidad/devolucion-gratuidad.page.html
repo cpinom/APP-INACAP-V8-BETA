@@ -4,12 +4,12 @@
       <ion-back-button text="Servicios" defaultHref="/dashboard-alumno/servicios"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
-  <ion-card class="primary-card" color="white">
+  <!-- <ion-card class="primary-card" color="white">
     <ion-card-header>
       <ion-card-title>Devolución Gratuidad</ion-card-title>
     </ion-card-header>
     <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar>
-  </ion-card>
+  </ion-card> -->
 </ion-header>
 
 <ion-content>
@@ -18,100 +18,123 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ng-container *ngIf="mostrarData">
+  <ion-list inset="true" class="card-list">
+    <ion-item detail="false">
+      <ion-icon slot="start" src="assets/icon/add_card.svg" class="rounded variant-2"></ion-icon>
+      <ion-label>
+        <h2>Devolución Gratuidad</h2>
+        <!-- <p>Accede a tus contratos.</p> -->
+      </ion-label>
+    </ion-item>
+  </ion-list>
 
-    <ng-container *ngIf="data">
-      
-      <section class="first" *ngIf="data.montosPagados.length > 0">
-        <div class="section-header">Seleccionar Montos Pagados</div>
+  @if (mostrarCargando) {
+  <div class="loaderInacap">
+    <ion-spinner name="lines" color="primary"></ion-spinner>
+  </div>
+  }
+
+  @if (mostrarData) {
+
+  <ng-container *ngIf="data">
+
+    <section class="first" *ngIf="data.montosPagados.length > 0">
+      <div class="section-header">Seleccionar Montos Pagados</div>
+      <div class="section-content">
+        <ion-list>
+          <ion-item *ngFor="let item of data.montosPagados">
+            <ion-checkbox (ionChange)="item.checked = !item.checked" color="primary" [disabled]="montosSolicitados">
+              <ion-label style="padding: 0;">
+                <h2>{{item.carrera}}</h2>
+                <p>{{item.institucion}}</p>
+                <p>{{item.sede}} </p>
+                <b>Monto a devolver - CLP ${{item.monto | numberSeparator}}</b>
+              </ion-label>
+            </ion-checkbox>
+          </ion-item>
+          <div class="invalid" *ngIf="submitted && !montoSeleccionado">Debe seleccionar un monto.</div>
+        </ion-list>
+      </div>
+    </section>
+
+    <ng-container *ngIf="data.montosPagados.length > 0 && !montosSolicitados">
+      <section>
+        <div class="section-header">Solicitar Devolución</div>
         <div class="section-content">
           <ion-list>
-            <ion-item *ngFor="let item of data.montosPagados">              
-              <ion-checkbox (ionChange)="item.checked = !item.checked" color="primary" [disabled]="montosSolicitados">
-                <ion-label style="padding: 0;">
-                  <h2>{{item.carrera}}</h2>
-                  <p>{{item.institucion}}</p>
-                  <p>{{item.sede}} </p>
-                  <b>Monto a devolver - CLP ${{item.monto | numberSeparator}}</b>
-                </ion-label>
-              </ion-checkbox>
-            </ion-item>
-            <div class="invalid" *ngIf="submitted && !montoSeleccionado">Debe seleccionar un monto.</div>
+            <ion-radio-group [(ngModel)]="tipoDevolucion" (ionChange)="tipoDevolucionChanged($event)">
+              <ion-item *ngFor="let item of data.tiposDevoluciones">
+                <ion-radio [value]="item.tdeV_CCOD">
+                  <span>{{item.tdeV_TDESC}}</span>
+                </ion-radio>
+              </ion-item>
+            </ion-radio-group>
+            <div class="invalid" *ngIf="submitted && !tipoDevolucion">Deb seleccionar una opción.</div>
           </ion-list>
         </div>
       </section>
-
-      <ng-container *ngIf="data.montosPagados.length > 0 && !montosSolicitados">
+      <ng-container *ngIf="tipoDevolucion == 2">
         <section>
-          <div class="section-header">Solicitar Devolución</div>
           <div class="section-content">
-            <ion-list>
-              <ion-radio-group [(ngModel)]="tipoDevolucion" (ionChange)="tipoDevolucionChanged($event)">
-                <ion-item *ngFor="let item of data.tiposDevoluciones">
-                  <ion-radio [value]="item.tdeV_CCOD">
-                    <span>{{item.tdeV_TDESC}}</span>
-                  </ion-radio>
+            <form [formGroup]="form">
+              <ion-list>
+                <ion-item>
+                  <ion-select label="Banco" labelPlacement="stacked" formControlName="bancCcod" okText="Aceptar"
+                    cancelText="Cancelar" placeholder="Seleccione">
+                    <ion-select-option [value]="item.bancCcod" *ngFor="let item of data.bancos">
+                      {{item.bancTdesc}}
+                    </ion-select-option>
+                  </ion-select>
                 </ion-item>
-              </ion-radio-group>
-              <div class="invalid" *ngIf="submitted && !tipoDevolucion">Deb seleccionar una opción.</div>
-            </ion-list>
+                <div class="invalid" *ngIf="submitted && bancCcod?.hasError('required')">Campo obligatorio.</div>
+                <ion-item>
+                  <ion-select label="Tipo de cuenta" labelPlacement="stacked" formControlName="tcueCcod"
+                    okText="Aceptar" cancelText="Cancelar" placeholder="Seleccione">
+                    <ion-select-option [value]="item.tcuE_CCOD" *ngFor="let item of data.tiposCuentas">
+                      {{item.tcuE_TDESC}}
+                    </ion-select-option>
+                  </ion-select>
+                </ion-item>
+                <div class="invalid" *ngIf="submitted && tcueCcod?.hasError('required')">Campo obligatorio.</div>
+                <ion-item>
+                  <ion-input [errorText]="persTnumeroCuentaError" helperText="* El Titular de La Cuenta Debe ser Usted"
+                    label="Nº de cuenta de destino" labelPlacement="stacked" type="text" inputmode="numeric"
+                    formControlName="persTnumeroCuenta" placeholder="Ingrese número" clearInput></ion-input>
+                </ion-item>
+              </ion-list>
+            </form>
           </div>
         </section>
-        <ng-container *ngIf="tipoDevolucion == 2">
-          <section>
-            <div class="section-content">
-              <form [formGroup]="form">
-                <ion-list>
-                  <ion-item>
-                    <ion-select label="Banco" labelPlacement="stacked" formControlName="bancCcod" okText="Aceptar" cancelText="Cancelar" placeholder="Seleccione">
-                      <ion-select-option [value]="item.bancCcod" *ngFor="let item of data.bancos">
-                        {{item.bancTdesc}}
-                      </ion-select-option>
-                    </ion-select>
-                  </ion-item>
-                  <div class="invalid" *ngIf="submitted && bancCcod?.hasError('required')">Campo obligatorio.</div>
-                  <ion-item>
-                    <ion-select label="Tipo de cuenta" labelPlacement="stacked" formControlName="tcueCcod" okText="Aceptar" cancelText="Cancelar" placeholder="Seleccione">
-                      <ion-select-option [value]="item.tcuE_CCOD" *ngFor="let item of data.tiposCuentas">
-                        {{item.tcuE_TDESC}}
-                      </ion-select-option>
-                    </ion-select>
-                  </ion-item>
-                  <div class="invalid" *ngIf="submitted && tcueCcod?.hasError('required')">Campo obligatorio.</div>
-                  <ion-item>
-                    <ion-input [errorText]="persTnumeroCuentaError" helperText="* El Titular de La Cuenta Debe ser Usted" label="Nº de cuenta de destino" labelPlacement="stacked" type="text" inputmode="numeric" formControlName="persTnumeroCuenta" placeholder="Ingrese número" clearInput></ion-input>
-                  </ion-item>
-                </ion-list>
-              </form>
-            </div>
-          </section>
-        </ng-container>
-        <ion-button type="submit" expand="block" shape="round" color="primary" (click)="solicitar()">Solicitar</ion-button>
       </ng-container>
-
-      <section *ngIf="data.montosPagados.length > 0 && montosSolicitados" class="empty-state">
-        <div>
-          <ion-icon src="assets/icon/info.svg"></ion-icon>
-          <p>Montos devolución ya solicitado.</p>
-        </div>
+      <section style="margin-inline: 15px;">
+        <ion-button type="submit" expand="block" shape="round" color="primary"
+          (click)="solicitar()">Solicitar</ion-button>
       </section>
-
-      <section *ngIf="data.montosPagados.length == 0" class="empty-state">
-        <div>
-          <ion-icon src="assets/icon/warning.svg"></ion-icon>
-          <p>Sin registros en este momento.</p>
-        </div>
-      </section>
-      
     </ng-container>
 
-    <section *ngIf="!data && mensaje" class="empty-state">
+    <section *ngIf="data.montosPagados.length > 0 && montosSolicitados" class="empty-state">
+      <div>
+        <ion-icon src="assets/icon/info.svg"></ion-icon>
+        <p>Montos devolución ya solicitado.</p>
+      </div>
+    </section>
+
+    <section *ngIf="data.montosPagados.length == 0" class="empty-state">
       <div>
         <ion-icon src="assets/icon/warning.svg"></ion-icon>
-        <p>{{mensaje}}</p>
+        <p>Sin registros en este momento.</p>
       </div>
     </section>
 
   </ng-container>
+
+  <section *ngIf="!data && mensaje" class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/warning.svg"></ion-icon>
+      <p>{{mensaje}}</p>
+    </div>
+  </section>
+
+  }
 
 </ion-content>

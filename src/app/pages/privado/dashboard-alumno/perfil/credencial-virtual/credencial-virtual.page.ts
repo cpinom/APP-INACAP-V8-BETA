@@ -11,5 +11,6 @@ export class CredencialVirtualPage implements OnInit {
 
   ngOnInit() {
   }
+  cerrar() {}
 
 }

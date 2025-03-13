@@ -21,10 +21,108 @@
     <img src="assets/images/bg-sede.png" />
     <div class="avatar">
       <ion-avatar>
-        <avatar-comp></avatar-comp>
+        <avatar-comp [buttonConfig]="avatarConfig" (buttonFn)="fotoPerfil()"></avatar-comp>
       </ion-avatar>
     </div>
-    <h2>Información Personal</h2>
+    <section class="user-info">
+      <h2>{{nombreCompleto}}</h2>
+      <p>{{correo}}</p>
+    </section>
+    <section class="user-extras">
+      <ion-button color="primary" fill="outline" size="small">Diurno</ion-button>
+      <ion-button color="primary" fill="outline" size="small">Diurno</ion-button>
+      <ion-button color="primary" fill="outline" size="small">Diurno</ion-button>
+      <ion-button color="primary" fill="outline" size="small">Diurno</ion-button>
+    </section>
   </section>
+
+  <section class="accesos-directos">
+    <div class="section-header">Sobre el Estudiante</div>
+    <ion-row>
+      <ion-col size="6">
+        <ion-button class="color-1" routerLink="informacion-academica">
+          <div class="btn-inner">
+            <ion-icon src="assets/icon/school.svg" class="rounded"></ion-icon>
+            <ion-label>
+              <h2>Información Académica</h2>
+            </ion-label>
+            <ion-icon src="assets/icon/arrow_forward.svg" class="launch"></ion-icon>
+          </div>
+        </ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button class="color-2" (click)="credencialVirtual()">
+          <div class="btn-inner">
+            <ion-icon src="assets/icon/qr_code_2.svg" class="rounded"></ion-icon>
+            <ion-label>
+              <h2>Credencial Virtual</h2>
+            </ion-label>
+            <ion-icon src="assets/icon/arrow_forward.svg" class="launch"></ion-icon>
+          </div>
+        </ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button class="color-3" routerLink="cuenta-corriente">
+          <div class="btn-inner">
+            <ion-icon src="assets/icon/credit_card.svg" class="rounded"></ion-icon>
+            <ion-label>
+              <h2>Visualización de Pagos</h2>
+            </ion-label>
+            <ion-icon src="assets/icon/arrow_forward.svg" class="launch"></ion-icon>
+          </div>
+        </ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button class="color-4" routerLink="documentos">
+          <div class="btn-inner">
+            <ion-icon src="assets/icon/description.svg" class="rounded"></ion-icon>
+            <ion-label>
+              <h2>Documentos</h2>
+            </ion-label>
+            <ion-icon src="assets/icon/arrow_forward.svg" class="launch"></ion-icon>
+          </div>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </section>
+
+  <div class="tabs">
+    <ion-segment [(ngModel)]="activeTab" mode="ios" [swipeGesture]="false">
+      <ion-segment-button [value]="0">
+        <ion-label>Datos Personales</ion-label>
+      </ion-segment-button>
+      <ion-segment-button [value]="1">
+        <ion-label>Contacto de Emergencia</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
+  @if (activeTab == 0) {
+  <ion-list inset="true" class="detalle">
+    <ion-item>
+      <ion-label></ion-label>
+    </ion-item>
+  </ion-list>
+  }
+  @else if (activeTab == 1) {
+  <ion-list inset="true" class="detalle">
+    <ion-item>
+      <ion-label>
+        <h2>Teléfono Contacto: <span>{{perfil.persTnombreEmergencia}}</span></h2>
+      </ion-label>
+      <ion-button icon-only slot="end" fill="clear">
+        <ion-icon src="assets/icon/edit.svg"></ion-icon>
+      </ion-button>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <h2>Correo Contacto: <span>{{perfil.persTfonoEmergencia}}</span></h2>
+      </ion-label>
+      <ion-button icon-only slot="end" fill="clear">
+        <ion-icon src="assets/icon/edit.svg"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+  }
 
 </ion-content>

@@ -1,13 +1,31 @@
-<ion-header [translucent]="true">
+<ion-header class="credencial-virtual-header">
   <ion-toolbar>
-    <ion-title>credencial-virtual</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrar()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">credencial-virtual</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding credencial-virtual-content">
+
+  <div class="contenedor">
+    <div class="user-info">
+      <div class="avatar">
+        <ion-avatar>
+          <avatar-comp></avatar-comp>
+        </ion-avatar>
+      </div>
+    </div>
+    <div class="codigo-barra"></div>
+  </div>
+
 </ion-content>
+
+<ion-footer>
+  <div class="">
+    <ion-button color="dark" shape="round" expand="block">Agregar Wallet</ion-button>
+    <ion-button fill="outline" color="dark" shape="round" expand="block">Cerrar</ion-button>
+  </div>
+</ion-footer>

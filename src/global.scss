@@ -73,6 +73,13 @@
   --ion-color-danger-shade: #b40000;
   --ion-color-danger-tint: #d11a1a;
 
+  --ion-color-dark: #040B15;
+	--ion-color-dark-rgb: 4,11,21;
+	--ion-color-dark-contrast: #ffffff;
+	--ion-color-dark-contrast-rgb: 255,255,255;
+	--ion-color-dark-shade: #040a12;
+	--ion-color-dark-tint: #1d232c;
+
   // Variable app
   --color: #040b15;
   --ion-text-color: #040b15;
@@ -421,6 +428,9 @@ body {
       }
       &.variant-5 {
         background: #ffb066;
+      }
+      &.variant-6 {
+        background: #DDEB93;
       }
     }
     &[slot="end"] {

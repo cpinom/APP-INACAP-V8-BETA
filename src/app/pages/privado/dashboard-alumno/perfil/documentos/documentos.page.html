@@ -1,0 +1,107 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Perfil" defaultHref="/dashboard-alumno/perfil"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list inset="true" class="card-list">
+    <ion-item detail="false">
+      <ion-icon slot="start" src="assets/icon/description.svg" class="rounded variant-6"></ion-icon>
+      <ion-label>
+        <h2>Documentos</h2>
+        <p>Accede a tus contratos.</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  @if (mostrarCargando) {
+  <div class="loaderInacap">
+    <ion-spinner name="lines" color="primary"></ion-spinner>
+  </div>
+  }
+
+  @if (mostrarData && contratos ){
+
+  <div class="tabs">
+    <ion-segment [(ngModel)]="tabModel" mode="ios" [swipeGesture]="false">
+      <ion-segment-button [value]="0">
+        <ion-label>Contratos</ion-label>
+      </ion-segment-button>
+      <ion-segment-button [value]="1">
+        <ion-label>Acuerdo Tutorial</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
+  @if (tabModel == 0) {
+  @if (contratos.length) {
+  <ion-list inset="true">
+    @for (item of contratos; track $index) {
+    <ion-item (click)="detalleContrato(item)" detail="false" class="ion-activatable">
+      <ion-icon slot="start" src="assets/icon/picture_as_pdf.svg" color="medium"></ion-icon>
+      <ion-label style="white-space: normal">
+        <h2>{{item.carrera}}</h2>
+        <p>Período: {{item.periodo}}</p>
+        <p>Fecha Contrato/Anexo: {{item.fecha}}</p>
+        <p>Firma Estudiante: <b>{{item.estadoFirmaAlumno}}</b></p>
+        <p>Firma Fiador: <b>{{item.estadoFirmaFiador}}</b></p>
+        <p>Estado: <b>{{item.estado}}</b></p>
+      </ion-label>
+      <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
+    </ion-item>
+    }
+  </ion-list>
+  }
+  @else {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Sin registros en este momento.</p>
+    </div>
+  </section>
+  }
+  }
+  @else if (tabModel == 1) {
+  @if (acuerdoTutorial.length) {
+  @for (item of acuerdoTutorial; track $index) {
+  <ion-list inset="true">
+    <ion-item (click)="descargarAcuerdoTutorial()" detail="false" class="ion-activatable">
+      <ion-icon slot="start" src="assets/icon/picture_as_pdf.svg" color="medium"></ion-icon>
+      <ion-label>
+        <h2>{{item.documento}}</h2>
+        <p>Período: {{item.periodo}}</p>
+        <p>Fecha Firma: {{item.fecha}}</p>
+        <p>Estado: <b>{{item.estado}}</b></p>
+      </ion-label>
+      <ion-icon slot="end" src="assets/icon/download.svg"></ion-icon>
+    </ion-item>
+  </ion-list>
+  }
+  }
+  @else {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Sin registros en este momento.</p>
+    </div>
+  </section>
+  }
+  }
+
+  }
+
+  @if (mostrarData && !contratos) {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Información no disponible en este momento.</p>
+      <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+    </div>
+  </section>
+  }
+
+</ion-content>

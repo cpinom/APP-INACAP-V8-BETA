@@ -54,7 +54,7 @@ export class DevolucionGratuidadPage implements OnInit {
   }
   async cargar() {
     try {
-      let result = await this.api.getGratiudad();
+      const result = await this.api.getGratiudad();
 
       if (result.success) {
         this.montosSolicitados = result.montosPagados.filter((t: any) => t.solicitado == 1).length > 0;
@@ -98,7 +98,7 @@ export class DevolucionGratuidadPage implements OnInit {
         }
       }
       else {
-        this.snack.showToast('El monto debe ser mayor a CLP $0.');
+        await this.snack.showToast('El monto debe ser mayor a CLP $0.');
         return;
       }
 

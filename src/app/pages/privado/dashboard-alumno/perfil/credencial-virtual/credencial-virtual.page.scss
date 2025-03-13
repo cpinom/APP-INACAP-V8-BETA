@@ -1,0 +1,61 @@
+::ng-deep .modal-credencial-virtual {
+  --height: 95%;
+  --width: 92%;
+  --border-radius: 10px;
+}
+
+ion-header.credencial-virtual-header {
+  ion-toolbar {
+    --background: #fff;
+    --border-color: #fff;
+
+    ion-icon {
+      color: #040b15;
+      font-size: 24px;
+    }
+  }
+}
+
+ion-content.credencial-virtual-content {
+  --background: #fff;
+  --padding-top: 0;
+
+  .contenedor {
+    background-color: rgba(204, 0, 0, 0.2);
+    display: flex;
+    height: 100%;
+    width: 100%;
+    border-radius: 10px 62px 10px 10px;
+    flex-direction: row;
+    overflow: hidden;
+    position: relative;
+
+    .user-info {
+      flex: 1;
+
+      .avatar {
+        position: absolute;
+        right: 0;
+
+        ion-avatar {
+          background-image: url("./../../../../../../assets/images/mesh-gradient.png");
+          padding: 10px;
+          width: 120px;
+          height: 120px;
+        }
+      }
+    }
+
+    .codigo-barra {
+      flex: 0 0 60px;
+      background: #cc0000;
+    }
+  }
+}
+ion-footer {
+  div {
+    margin: 0px 15px 10px;
+    display: flex;
+    flex-direction: column;
+  }
+}

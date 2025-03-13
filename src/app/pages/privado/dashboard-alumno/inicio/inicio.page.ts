@@ -766,10 +766,10 @@ export class InicioPage implements OnInit, AfterViewInit {
   async credencialVirtualTap() {
 
     await this.dialog.showModal({
+      cssClass: 'modal-credencial-virtual',
       component: CredencialVirtualPage,
-      canDismiss: true,
-      presentingElement: this.routerOutlet.nativeEl
-    })
+      animated: false
+    });
 
   }
   async justificacionInasistenciaTap() {

@@ -21,17 +21,19 @@ ion-button {
   position: absolute;
   bottom: -6px;
   right: -6px;
-  width: 24px;
-  height: 24px;
+  width: 35px;
+  height: 35px;
   min-height: 24px;
   --border-radius: 50%;
   border-radius: 50%;
-  // border: 2px solid;
   --padding-start: 0px;
   --padding-end: 0px;
+  border: 1px solid #fff;
+  --background: #000;
+  --background-activated: #000;
 
   ion-icon {
     font-size: 20px;
-    color: #666;
+    color: #fff;
   }
 }

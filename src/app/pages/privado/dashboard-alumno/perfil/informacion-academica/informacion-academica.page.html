@@ -1,0 +1,78 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Perfil" defaultHref="/dashboard-alumno/perfil"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-card class="primary-card" color="white">
+    <ion-card-header>
+      <ion-card-title>Información Académica</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+</ion-header>
+
+<ion-content>
+
+  @if (periodo) {
+  <section>
+    <div class="section-header">Información Académica</div>
+    <div class="section-content">
+      <ion-list class="detalle">
+        <ion-item>
+          <ion-label>
+            <h2>Período Académico: <span>{{periodo.periTdesc}}</span></h2>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h2>Carrera: <span>{{programa.carrTdesc}}</span></h2>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h2>Sede: <span>{{programa.sedeTdesc}}</span></h2>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h2>Jornada: <span>{{programa.jornTdesc}}</span></h2>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h2>Tipo de Estudiante: <span>{{programa.alumTrabajador}}</span></h2>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+  }
+
+  @if (resultados && resultados.length) {
+  <section class="accesos-directos">
+    <div class="section-header">Carga Académica</div>
+    <ion-row>
+      @for (item of resultados; track $index) {
+      <ion-col size="6">
+        <ion-button class="color-{{$index + 1}}" routerLink="informacion-academica">
+          <div class="btn-inner">
+            <h3>{{item.nombreEvaluacion}}</h3>
+            <h2>{{item.totalDiagnostico}}</h2>
+            <div class="mensaje">
+              <ion-icon src="assets/icon/warning.svg"></ion-icon>
+              <span>{{item.mensaje}}</span>
+            </div>
+            <!-- <ion-icon src="assets/icon/school.svg" class="rounded"></ion-icon>
+            <ion-label>
+              <h2>Información Académica</h2>
+            </ion-label> -->
+            <ion-icon src="assets/icon/arrow_forward.svg" class="launch"></ion-icon>
+          </div>
+        </ion-button>
+      </ion-col>
+      }
+    </ion-row>
+  </section>
+  }
+
+</ion-content>

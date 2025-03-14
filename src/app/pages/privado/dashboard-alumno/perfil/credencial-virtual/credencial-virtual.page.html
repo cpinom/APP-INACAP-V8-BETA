@@ -17,15 +17,51 @@
           <avatar-comp></avatar-comp>
         </ion-avatar>
       </div>
+      @if (perfil) {
+      <div class="info">
+        <h2>{{nombreCompleto}}</h2>
+        <p class="rut">{{perfil.rut}}</p>
+        <p>Estudiante</p>
+        <p>{{programa.carrTdesc}}</p>
+        <p>INACAP {{programa.sedeTdesc}}</p>
+        <p class="icono jornada">
+          <ion-icon src="assets/icon/wb_sunny.svg"></ion-icon>
+          Jornada {{programa.jornTdesc}}
+        </p>
+        @if (mostrarDelegado) {
+        <p class="icono">
+          <ion-icon src="assets/icon/verified.svg"></ion-icon>
+          Delegado Estudiantil
+        </p>
+        }
+        @if (mostrarEstacionamiento) {
+        <p class="icono">
+          <ion-icon src="assets/icon/directions_car.svg"></ion-icon>
+          Acceso a estacionamiento
+        </p>
+        }
+        @if (mostrarTransporte) {
+        <p class="icono">
+          <ion-icon src="assets/icon/restaurant_menu.svg"></ion-icon>
+          Uso de utensilios de cocina
+        </p>
+        }
+      </div>
+      }
+      <div class="qr-code">
+        <div #qrcode></div>
+      </div>
     </div>
-    <div class="codigo-barra"></div>
+    <div class="codigo-barra">
+      <img #barcode />
+    </div>
   </div>
 
 </ion-content>
 
 <ion-footer>
   <div class="">
-    <ion-button color="dark" shape="round" expand="block">Agregar Wallet</ion-button>
-    <ion-button fill="outline" color="dark" shape="round" expand="block">Cerrar</ion-button>
+    <ion-button shape="round" expand="block">Agregar Wallet</ion-button>
+    <ion-button fill="outline" shape="round" expand="block" (click)="cerrar()">Cerrar</ion-button>
   </div>
 </ion-footer>

@@ -19,6 +19,7 @@ ion-header.credencial-virtual-header {
 ion-content.credencial-virtual-content {
   --background: #fff;
   --padding-top: 0;
+  --padding-bottom: 10px;
 
   .contenedor {
     background-color: rgba(204, 0, 0, 0.2);
@@ -44,18 +45,81 @@ ion-content.credencial-virtual-content {
           height: 120px;
         }
       }
+
+      .info {
+        margin: 25px 70px 10px 10px;
+
+        h2 {
+          margin: 0;
+          font-size: var(--FS20);
+          font-weight: 700;
+          color: #040B15;
+        }
+
+        p {
+          margin: 10px 0 0;
+          font-size: var(--FS13);
+          font-weight: 400;
+          color: #040B15;
+
+          &.rut {
+            font-size: var(--FS14);
+            font-weight: 600;
+          }
+
+          &.jornada {
+            margin-bottom: 40px;
+          }
+
+          &.icono {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+
+            ion-icon {
+              font-size: 18px;
+            }
+          }
+        }
+      }
+
+      .qr-code {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+
+        ::ng-deep img {
+          padding: 20px;
+          background: white;
+          border-radius: 7px;
+        }
+      }
     }
 
     .codigo-barra {
-      flex: 0 0 60px;
+      flex: 0 0 62px;
       background: #cc0000;
+      display: flex;
+      align-items: end;
+
+      img {
+        transform: rotate(90deg);
+        position: absolute;
+        bottom: 122px;
+        right: -102px;
+      }
     }
   }
 }
 ion-footer {
+  background: #fff;
   div {
     margin: 0px 15px 10px;
     display: flex;
     flex-direction: column;
+
+    ion-button {
+      --background: #040B15;
+    }
   }
 }

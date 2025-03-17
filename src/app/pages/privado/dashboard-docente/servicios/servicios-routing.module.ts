@@ -36,10 +36,6 @@ const routes: Routes = [
     loadChildren: () => import('../notificaciones/notificaciones.module').then(m => m.NotificacionesPageModule)
   },
   {
-    path: 'evaluacion-docente',
-    loadChildren: () => import('./evaluacion-docente/evaluacion-docente.module').then(m => m.EvaluacionDocentePageModule)
-  },
-  {
     path: 'buscador-docente',
     loadChildren: () => import('src/app/pages/privado/shared/buscador-docente/buscador-docente.module').then(m => m.BuscadorDocentePageModule)
   },

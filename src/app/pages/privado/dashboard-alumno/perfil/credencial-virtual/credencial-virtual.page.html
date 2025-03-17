@@ -61,7 +61,9 @@
 
 <ion-footer>
   <div class="">
-    <ion-button shape="round" expand="block">Agregar Wallet</ion-button>
-    <ion-button fill="outline" shape="round" expand="block" (click)="cerrar()">Cerrar</ion-button>
+    @if (mostrarPassbook) {
+    <ion-button shape="round" expand="block" color="dark">Agregar Wallet</ion-button>
+    }
+    <ion-button fill="outline" shape="round" expand="block" color="dark" (click)="cerrar()">Cerrar</ion-button>
   </div>
 </ion-footer>

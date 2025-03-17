@@ -11,12 +11,24 @@ export class ProfileService {
   private storage = inject(StorageService);
 
   constructor() { }
-  
+
   async setPrincipal(profile: any) {
     await this.setStorage('perfil', profile);
   }
   async getPrincipal() {
     return this.getStorage('perfil');
+  }
+  async getPrograma() {
+    try {
+      const principal = await this.getStorage('principal');
+
+      if (principal) {
+        return principal.programas[principal.programaIndex];
+      }
+    }
+    catch { }
+
+    return null;
   }
   async getPreferencias() {
     let preferencias = await this.getStorage('preferencias');

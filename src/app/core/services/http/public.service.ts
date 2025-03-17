@@ -14,7 +14,7 @@ export class PublicService {
   private global = inject(AppGlobal);
 
   constructor() {
-    this.baseUrl = this.global.Api;
+    this.baseUrl = `${this.global.Api}/api`;
   }
 
   private get = async (url: string) => {
@@ -68,7 +68,7 @@ export class PublicService {
 
   async getImage(url: string): Promise<any> {
     const options: HttpOptions = {
-      url: `${this.baseUrl}/api/v3/${url}`,
+      url: `${this.baseUrl}/v3/${url}`,
       responseType: 'blob',
       headers: {}
     };
@@ -105,19 +105,19 @@ export class PublicService {
     catch (error: any) { }
   }
   getPrincipal() {
-    return this.get(`${this.baseUrl}/api/v5/principal`);
+    return this.get(`${this.baseUrl}/v5/principal`);
   }
   getAppVersion() {
-    return this.get(`${this.baseUrl}/api/app-version`);
+    return this.get(`${this.baseUrl}/app-version`);
   }
   getContacto() {
-    return this.get(`${this.baseUrl}/api/v3/contacto`);
+    return this.get(`${this.baseUrl}/v3/contacto`);
   }
   validarCodigoDocumento(codigoVerificacion: string) {
-    return this.get(`${this.baseUrl}/api/v5/validar-codigo-documento?codigoVerificacion=${codigoVerificacion}`);
+    return this.get(`${this.baseUrl}/v5/validar-codigo-documento?codigoVerificacion=${codigoVerificacion}`);
   }
   validarDocumento(params: any) {
-    return this.post(`${this.baseUrl}/api/v5/validar-documento`, params);
+    return this.post(`${this.baseUrl}/v5/validar-documento`, params);
   }
   marcarVistaPublica(apesTevento: string, apesTdescripcion?: string, apesTvalor?: string) {
     if (this.global.Integration) {
@@ -134,7 +134,7 @@ export class PublicService {
         apesTdispositivoLatLng: '',
         audiTusuario: 'MOVIL'
       };
-      this.post(`${this.baseUrl}/api/v3/marcar-vista`, params);
+      this.post(`${this.baseUrl}/v3/marcar-vista`, params);
     }
     catch { }
   }

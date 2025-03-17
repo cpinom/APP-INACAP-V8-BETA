@@ -2,13 +2,14 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProfileService } from 'src/app/core/services/profile.service';
 import { CodeInputComponent } from 'angular-code-input';
-import { IonNav, ModalController } from '@ionic/angular';
+import { /*IonNav,*/ ModalController } from '@ionic/angular';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { DocenteService } from 'src/app/core/services/http/docente.service';
 import { EventsService } from 'src/app/core/services/events.service';
 import { DialogService } from 'src/app/core/services/dialog.service';
 import { PrivateService } from 'src/app/core/services/http/private.service';
+import { Router } from '@angular/router';
 
 enum Movimientos {
   CORREO = 1,
@@ -35,12 +36,13 @@ export class EditarTelefonoPage implements OnInit {
   constructor(private fb: FormBuilder,
     private profile: ProfileService,
     private api: PrivateService,
-    private nav: IonNav,
+    //private nav: IonNav,
     private snackbar: SnackbarService,
     private dialog: DialogService,
     private error: ErrorHandlerService,
     private events: EventsService,
-    private modalCtrl: ModalController) {
+    private modalCtrl: ModalController,
+    private router: Router) {
 
     this.form = this.fb.group({
       persTcelular: ['', Validators.compose([
@@ -124,7 +126,7 @@ export class EditarTelefonoPage implements OnInit {
           }
           else {
             await this.presentSuccess(() => {
-              this.nav.pop();
+              // this.nav.pop();
               this.events.app.next({ action: 'app:alumno-datos-refresca' });
               this.events.app.next({ action: 'app:docente-datos-refresca' });
             });
@@ -186,6 +188,9 @@ export class EditarTelefonoPage implements OnInit {
   }
   get textoBtnCancelar() {
     return this.modo == 1 ? 'Volver' : 'Cancelar';
+  }
+  get backUrl() {
+    return this.router.url.startsWith('/dashboard-alumno') ? '/dashboard-alumno/perfil' : '/dashboard-docente/perfil';
   }
 
 }

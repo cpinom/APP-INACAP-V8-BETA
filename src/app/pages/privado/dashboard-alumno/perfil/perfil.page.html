@@ -28,12 +28,32 @@
       <h2>{{nombreCompleto}}</h2>
       <p>{{correo}}</p>
     </section>
+    @if (programa) {
     <section class="user-extras">
-      <ion-button color="primary" fill="outline" size="small">Diurno</ion-button>
-      <ion-button color="primary" fill="outline" size="small">Diurno</ion-button>
-      <ion-button color="primary" fill="outline" size="small">Diurno</ion-button>
-      <ion-button color="primary" fill="outline" size="small">Diurno</ion-button>
+      <ion-button color="primary" fill="outline" size="small">
+        <ion-icon src="assets/icon/wb_sunny.svg" slot="start"></ion-icon>
+        {{programa.jornTdesc}}
+      </ion-button>
+      @if (mostrarDelegado) {
+      <ion-button color="primary" fill="outline" size="small">
+        <ion-icon src="assets/icon/verified.svg" slot="start"></ion-icon>
+        Delegado
+      </ion-button>
+      }
+      @if (mostrarTransporte) {
+      <ion-button color="primary" fill="outline" size="small">
+        <ion-icon src="assets/icon/restaurant_menu.svg" slot="start"></ion-icon>
+        Utensilios Cocina
+      </ion-button>
+      }
+      @if (mostrarEstacionamiento) {
+      <ion-button color="primary" fill="outline" size="small">
+        <ion-icon src="assets/icon/directions_car.svg" slot="start"></ion-icon>
+        Estacionamiento
+      </ion-button>
+      }
     </section>
+    }
   </section>
 
   <section class="accesos-directos">
@@ -86,6 +106,7 @@
     </ion-row>
   </section>
 
+  @if (programa && perfil) {
   <div class="tabs">
     <ion-segment [(ngModel)]="activeTab" mode="ios" [swipeGesture]="false">
       <ion-segment-button [value]="0">
@@ -100,7 +121,35 @@
   @if (activeTab == 0) {
   <ion-list inset="true" class="detalle">
     <ion-item>
-      <ion-label></ion-label>
+      <ion-label>
+        <h2>Sede: <span>{{programa.sedeTdesc}}</span></h2>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <h2>Carrera: <span>{{programa.carrTdesc}}</span></h2>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <h2>Teléfono Personal: <span>{{perfil.persTcelular}}</span></h2>
+      </ion-label>
+      <ion-button icon-only slot="end" fill="clear" color="medium" routerLink="editar-telefono">
+        <ion-icon src="assets/icon/edit.svg"></ion-icon>
+      </ion-button>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <h2>Correo INACAP: <span>{{perfil.persTemailInacap}}</span></h2>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <h2>Correo Secundario: <span>{{perfil.persTemail}}</span></h2>
+      </ion-label>
+      <ion-button icon-only slot="end" fill="clear" color="medium" routerLink="editar-correo">
+        <ion-icon src="assets/icon/edit.svg"></ion-icon>
+      </ion-button>
     </ion-item>
   </ion-list>
   }
@@ -108,9 +157,9 @@
   <ion-list inset="true" class="detalle">
     <ion-item>
       <ion-label>
-        <h2>Teléfono Contacto: <span>{{perfil.persTnombreEmergencia}}</span></h2>
+        <h2>Nombre Contacto: <span>{{perfil.persTnombreEmergencia}}</span></h2>
       </ion-label>
-      <ion-button icon-only slot="end" fill="clear">
+      <ion-button icon-only slot="end" fill="clear" color="medium" routerLink="datos-emergencia">
         <ion-icon src="assets/icon/edit.svg"></ion-icon>
       </ion-button>
     </ion-item>
@@ -118,11 +167,18 @@
       <ion-label>
         <h2>Correo Contacto: <span>{{perfil.persTfonoEmergencia}}</span></h2>
       </ion-label>
-      <ion-button icon-only slot="end" fill="clear">
+      <ion-button icon-only slot="end" fill="clear" color="medium" routerLink="datos-emergencia">
         <ion-icon src="assets/icon/edit.svg"></ion-icon>
       </ion-button>
     </ion-item>
   </ion-list>
   }
+
+  }
+
+  <section class="cerrar-sesion">
+    <ion-button expand="block" color="primary" shape="round">Volver al Ambiente Público</ion-button>
+    <ion-button expand="block" color="white" shape="round" class="logout">Cerrar Sesión</ion-button>
+  </section>
 
 </ion-content>

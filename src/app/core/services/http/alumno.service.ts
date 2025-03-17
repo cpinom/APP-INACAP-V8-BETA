@@ -33,6 +33,9 @@ export class AlumnoService extends PrivateService {
   getPerfilV5(sedeCcod: any) {
     return this.get(`${this.baseUrl}/v5/alumno/perfil?sedeCcod=${sedeCcod}`);
   }
+  getPassbook(params: any) {
+    return this.post(`${this.baseUrl}/v4/alumno/passbook`, params);
+  }
   getHorario(params: any): Promise<any> {
     return this.post(`${this.baseUrl}/v4/alumno/horario`, params);
   }

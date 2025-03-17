@@ -21,6 +21,7 @@ export class PerfilPage implements OnInit {
 
   avatarConfig = { show: true, icon: 'edit', color: '' };
   perfil: any;
+  programa: any;
   activeTab = 0;
 
   constructor() { }
@@ -29,17 +30,8 @@ export class PerfilPage implements OnInit {
     await this.cargar();
   }
   async cargar() {
-    const principal = await this.profile.getStorage('principal');
-
-    if (principal) {
-      const programa = principal.programas[principal.programaIndex];
-      const perfil = await this.profile.getPrincipal();
-
-      if (perfil) {
-        this.perfil = perfil;
-      }
-    }
-
+    this.programa = await this.profile.getPrograma();
+    this.perfil = await this.profile.getPrincipal();
   }
   async fotoPerfil() {
     await this.nav.navigateForward('/dashboard-alumno/perfil/foto-perfil');
@@ -72,6 +64,27 @@ export class PerfilPage implements OnInit {
   }
   get mostrarNotificaciones() {
     return this.global.NotificationFlag;
+  }
+  get mostrarDelegado() {
+    return this.perfil && this.perfil.estadoDelegado == 1;
+  }
+  get mostrarEstacionamiento() {
+    if (this.perfil) {
+      if (this.perfil.estadoEstacionamiento == 2) return true;
+      if (this.perfil.estadoEstacionamiento == 3) return false;
+    }
+    return null;
+  }
+  get mostrarAccesibilidad() {
+    return this.perfil && this.perfil.estadoAccesibilidad == 1;
+  }
+  get mostrarTransporte() {
+    if (this.perfil && this.perfil.estadoTransporte == 1) {
+      if (this.programa && ['AHS', 'AGA', 'L5', 'L6', 'GA', 'HS'].indexOf(this.programa.espeCcod.trim()) > -1) {
+        return true;
+      }
+    }
+    return false;
   }
 
 }

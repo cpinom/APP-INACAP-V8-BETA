@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IonNav, ModalController, Platform } from '@ionic/angular';
+import { /*IonNav,*/ ModalController, Platform } from '@ionic/angular';
 import { CodeInputComponent } from 'angular-code-input';
 import { AlumnoService } from 'src/app/core/services/http/alumno.service';
 import { DialogService } from 'src/app/core/services/dialog.service';
@@ -9,6 +9,7 @@ import { EventsService } from 'src/app/core/services/events.service';
 import { ProfileService } from 'src/app/core/services/profile.service';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
 import { EditarTelefonoPage } from '../editar-telefono/editar-telefono.page';
+import { Router } from '@angular/router';
 
 enum Movimientos {
   CORREO = 1,
@@ -37,10 +38,11 @@ export class EditarCorreoPage implements OnInit {
     private api: AlumnoService,
     private snackbar: SnackbarService,
     private error: ErrorHandlerService,
-    private nav: IonNav,
+    // private nav: IonNav,
     private events: EventsService,
     private pt: Platform,
-    private modalCtrl: ModalController) {
+    private modalCtrl: ModalController,
+    private router: Router) {
 
     this.form = this.fb.group({
       persTemail: ['', Validators.compose([Validators.required, Validators.email])],
@@ -84,7 +86,7 @@ export class EditarCorreoPage implements OnInit {
           if (response.success) {
             await this.presentSuccess(() => {
               if (this.actualizarCelular) {
-                this.nav.push(EditarTelefonoPage, { modo: this.modo });
+                // this.nav.push(EditarTelefonoPage, { modo: this.modo });
               }
               else {
                 this.modalCtrl.dismiss();
@@ -134,7 +136,7 @@ export class EditarCorreoPage implements OnInit {
         if (response.success) {
           await loading.dismiss();
           await this.presentSuccess(() => {
-            this.nav.pop();
+            // this.nav.pop();
             this.events.app.next({ action: 'app:alumno-datos-refresca' });
             this.events.app.next({ action: 'app:docente-datos-refresca' });
           });
@@ -192,6 +194,9 @@ export class EditarCorreoPage implements OnInit {
   }
   get textoBtnCancelar() {
     return this.modo == 1 ? 'Volver' : 'Cancelar';
+  }
+  get backUrl() {
+    return this.router.url.startsWith('/dashboard-alumno') ? '/dashboard-alumno/perfil' : '/dashboard-docente/perfil';
   }
 
 }

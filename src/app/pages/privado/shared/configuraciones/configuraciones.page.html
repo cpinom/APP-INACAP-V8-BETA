@@ -35,12 +35,12 @@
             [snaps]="true" [min]="0" [max]="4"></ion-range>
           <ion-icon slot="end" src="assets/icon/text_increase.svg"></ion-icon>
         </ion-item>
-        <ion-item [disabled]="darkMode">
+        <!-- <ion-item [disabled]="darkMode">
           <ion-icon slot="start" src="assets/icon/contrast.svg"></ion-icon>
           <ion-toggle [(ngModel)]="contrastMode" (ngModelChange)="toggleContrastMode()" color="success">
             Aumentar Contraste
           </ion-toggle>
-        </ion-item>
+        </ion-item> -->
         <ion-item *ngIf="mostrarFaceID">
           <ion-toggle [(ngModel)]="privacyMode" (ngModelChange)="togglePrivacy()" color="success">
             <h2>Face ID</h2>

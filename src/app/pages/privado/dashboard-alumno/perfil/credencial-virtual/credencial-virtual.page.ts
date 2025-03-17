@@ -1,6 +1,10 @@
 import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
+import { CapacitorPassToWallet } from '@atroo/capacitor-pass-to-wallet';
+import { Platform } from '@ionic/angular';
 import JsBarcode from 'jsbarcode';
 import { DialogService } from 'src/app/core/services/dialog.service';
+import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
+import { AlumnoService } from 'src/app/core/services/http/alumno.service';
 import { ProfileService } from 'src/app/core/services/profile.service';
 
 declare const QRCode: any;
@@ -14,11 +18,15 @@ export class CredencialVirtualPage implements OnInit {
 
   private dialog = inject(DialogService);
   private profile = inject(ProfileService);
+  private api = inject(AlumnoService);
+  private error = inject(ErrorHandlerService);
+  private pt = inject(Platform);
 
   @ViewChild('barcode') barcode!: ElementRef;
   @ViewChild('qrcode') qrcode!: ElementRef;
   perfil: any;
   programa: any;
+  generandoPassbook = false;
 
   constructor() { }
 
@@ -61,6 +69,48 @@ export class CredencialVirtualPage implements OnInit {
       lineColor: '#040B15'
     });
   }
+  async wallet() {
+    let programa = await this.profile.getPrograma();
+    let perfil = await this.profile.getPrincipal();
+
+    if (perfil) {
+      try {
+        this.generandoPassbook = true;
+
+        const params = {
+          sedeCcod: programa.sedeCcod,
+          sedeTdesc: programa.sedeTdesc,
+          carrTdesc: programa.carrTdesc,
+          jornTdesc: programa.jornTdesc
+        };
+        const result = await this.api.getPassbook(params);
+
+        if (result.success) {
+          const base64 = result.data;
+          const passbook = await CapacitorPassToWallet.addToWallet({ base64: base64 });
+        }
+        else {
+          throw Error();
+        }
+      }
+      catch (error: any) {
+        if (error && error.status == 401) {
+          await this.error.handle(error);
+          return;
+        }
+
+        await this.dialog.showAlert({
+          cssClass: 'warning-alert',
+          header: 'Credencial Virtual',
+          message: `<div class="image"><img src="./assets/images/warning.svg" /><br />Error generando Wallet. Vuelva a intentar más tarde.</div>`,
+          buttons: ['Aceptar']
+        });
+      }
+      finally {
+        this.generandoPassbook = false;
+      }
+    }
+  }
   async cerrar() {
     await this.dialog.dismissModal();
   }
@@ -76,6 +126,9 @@ export class CredencialVirtualPage implements OnInit {
     if (this.perfil)
       return this.perfil.qrCode;
     return 'invalid';
+  }
+  get mostrarPassbook() {
+    return this.pt.is('ios');
   }
   get mostrarDelegado() {
     return this.perfil && this.perfil.estadoDelegado == 1;

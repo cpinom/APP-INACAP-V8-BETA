@@ -12,17 +12,21 @@
       <div class="section-content">
         <ion-list>
           <ion-item>
-            <ion-input type="number" inputmode="numeric" placeholder="Ej: 41271178" formControlName="codigo" clearInput></ion-input>
+            <ion-input type="number" inputmode="numeric" placeholder="Ej: 41271178" formControlName="codigo"
+              clearInput></ion-input>
           </ion-item>
           <div class="invalid" *ngIf="submitted && codigo?.hasError('required')">Campo obligatorio.</div>
-          <div class="invalid" *ngIf="submitted && codigo?.hasError('lengthValidator')">El número debe tener máximo 14 dígitos.</div>
+          <div class="invalid" *ngIf="submitted && codigo?.hasError('lengthValidator')">El número debe tener máximo 14
+            dígitos.</div>
         </ion-list>
       </div>
     </section>
 
-    <ion-button type="submit" expand="block" color="primary" shape="round" [disabled]="!estadoBoton">
-      Consultar Saldo
-    </ion-button>
+    <section class="btn-consultar">
+      <ion-button type="submit" expand="block" color="primary" shape="round" [disabled]="!estadoBoton">
+        Consultar Saldo
+      </ion-button>
+    </section>
 
   </form>
 
@@ -81,7 +85,8 @@
               <p>Código tarjeta: {{item.id}}</p>
               <p>Última consulta: {{item.fechaConsulta}} </p>
             </ion-label>
-            <ion-button size="small" slot="end" color="medium" (click)="recargar(item)" [disabled]="item.cargado === false" role="button" aria-label="Actualizar">
+            <ion-button size="small" slot="end" color="medium" (click)="recargar(item)"
+              [disabled]="item.cargado === false" role="button" aria-label="Actualizar">
               <ion-icon src="assets/icon/refresh.svg" slot="start"></ion-icon>
               Recargar
             </ion-button>

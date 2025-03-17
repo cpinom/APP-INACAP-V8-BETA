@@ -2,7 +2,7 @@
   <ion-toolbar>
     <!-- <ion-title>editar-correo</ion-title> -->
     <ion-buttons slot="start">
-      <ion-back-button text="Datos Personales"></ion-back-button>
+      <ion-back-button text="Perfil" [defaultHref]="backUrl"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -40,7 +40,7 @@
           <ion-row>
             <ion-col>
               <ion-nav-link router-direction="back">
-                <ion-button ion-nav-link color="secondary" shape="round" expand="full">
+                <ion-button ion-nav-link color="primary" shape="round" expand="full" fill="outline">
                   {{textoBtnCancelar}}
                 </ion-button>
               </ion-nav-link>
@@ -77,7 +77,7 @@
       <ion-grid>
         <ion-row>
           <ion-col>
-            <ion-button (click)="cancelar()" color="secondary" shape="round" expand="full">
+            <ion-button (click)="cancelar()" color="primary" shape="round" expand="full" fill="outline">
               Cancelar
             </ion-button>
           </ion-col>

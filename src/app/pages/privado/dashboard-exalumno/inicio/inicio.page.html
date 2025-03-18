@@ -1,0 +1,154 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title routerLink="/publico/inicio">Exalumnos INACAP</ion-title>
+    <ion-buttons slot="start">
+      <ion-button icon-only routerLink="configuraciones" role="button" aria-label="Ver notificaciones">
+        <ion-icon src="assets/icon/settings.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <!-- <ion-button icon-only (click)="notificacionesTap()" role="button" aria-label="Ver notificaciones">
+        <ion-icon src="assets/icon/notifications.svg"></ion-icon>
+        <ion-badge *ngIf="mostrarNotificaciones">1</ion-badge>
+      </ion-button> -->
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list inset="true" class="card-list">
+    <ion-item detail="false">
+      <ion-avatar class="avatar" slot="start">
+        <avatar-comp></avatar-comp>
+      </ion-avatar>
+      <ion-label>
+        <h2>¡Bienvenido a la RED de Exalumnos INACAP!</h2>
+        <p>Actividades, beneficios y servicios creados para apoyarte y seguir creciendo juntos.</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  @if (mostrarCargando) {
+  <div class="loaderInacap">
+    <ion-spinner name="lines" color="primary"></ion-spinner>
+  </div>
+  }
+
+  @if (mostrarData && empleos.length) {
+  <section class="ofertas">
+    <div class="section-header">Oportunidades Laborales Emplea INACAP</div>
+    <div class="section-content">
+      <ion-list>
+        @for (item of empleos; track $index) {
+        <ion-item detail="false" class="ion-activatable" (click)="detalleOferta(item)">
+          <ion-avatar slot="start">
+            <img [src]="'https:' + item.logo" />
+          </ion-avatar>
+          <ion-label class="ion-no-padding">
+            <h2>{{item.jobTitle | titleCase}}</h2>
+            <p>{{item.company}}</p>
+            <p>{{item.region}}</p>
+            <p class="date">Publicado {{resolverFecha(item.publishDate)}}</p>
+          </ion-label>
+          <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
+        </ion-item>
+        }
+      </ion-list>
+    </div>
+  </section>
+  }
+
+  <section class="accesos-directos">
+    <div class="section-header">Accesos Directos</div>
+    <ion-row>
+      <ion-col size="6">
+        <ion-button class="color-1" routerLink="/dashboard-exalumno/empleos">
+          <div class="btn-inner">
+            <ion-icon src="assets/icon/work.svg" class="rounded"></ion-icon>
+            <ion-label>
+              <h2>Empleos</h2>
+            </ion-label>
+            <ion-icon src="assets/icon/arrow_forward.svg" class="launch"></ion-icon>
+          </div>
+        </ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button class="color-2" routerLink="practica-profesional">
+          <div class="btn-inner">
+            <ion-icon src="assets/icon/assignment_ind.svg" class="rounded"></ion-icon>
+            <ion-label>
+              <h2>Práctica Profesional</h2>
+            </ion-label>
+            <ion-icon src="assets/icon/arrow_forward.svg" class="launch"></ion-icon>
+          </div>
+        </ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button class="color-3" routerLink="certificados">
+          <div class="btn-inner">
+            <ion-icon src="assets/icon/description.svg" class="rounded"></ion-icon>
+            <ion-label>
+              <h2>Certificados</h2>
+            </ion-label>
+            <ion-icon src="assets/icon/arrow_forward.svg" class="launch"></ion-icon>
+          </div>
+        </ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button class="color-4" routerLink="beneficios">
+          <div class="btn-inner">
+            <ion-icon src="assets/icon/description.svg" class="rounded"></ion-icon>
+            <ion-label>
+              <h2>Beneficios</h2>
+            </ion-label>
+            <ion-icon src="assets/icon/arrow_forward.svg" class="launch"></ion-icon>
+          </div>
+        </ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button class="color-5" routerLink="inacapmail">
+          <div class="btn-inner">
+            <ion-icon src="assets/icon/outlook.svg" class="rounded"></ion-icon>
+            <ion-label>
+              <h2>INACAPMail</h2>
+              @if (inacapMail) {
+              <i *ngIf="inacapMail.unReadTotal && (inacapMail.unReadTotal > 0)">{{inacapMail?.unReadTotal}}</i>
+              }
+            </ion-label>
+            <ion-icon src="assets/icon/arrow_forward.svg" class="launch"></ion-icon>
+          </div>
+        </ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button class="color-6" (click)="educacionContinuaTap()">
+          <div class="btn-inner">
+            <ion-icon src="assets/icon/work.svg" class="rounded"></ion-icon>
+            <ion-label>
+              <h2>Educación Continua</h2>
+            </ion-label>
+            <ion-icon src="assets/icon/launch.svg" class="launch"></ion-icon>
+          </div>
+        </ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button class="color-7" (click)="credencialVirtualTap()">
+          <div class="btn-inner">
+            <ion-icon src="assets/icon/qr_code_2.svg" class="rounded"></ion-icon>
+            <ion-label>
+              <h2>Credencial Virtual</h2>
+            </ion-label>
+            <ion-icon src="assets/icon/arrow_forward.svg" class="launch"></ion-icon>
+          </div>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </section>
+
+  <section class="cerrar-sesion">
+    <ion-button shape="round" expand="block" color="white" (click)="logout()">Cerrar Sesión</ion-button>
+  </section>
+
+  <p class="version">Versión - {{version}}</p>
+
+</ion-content>

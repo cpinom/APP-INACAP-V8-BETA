@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Inicio" defaultHref="/dashboard-exalumno/inicio"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <ion-list inset="true" class="card-list">
+    <ion-item detail="false">
+      <ion-icon slot="start" src="assets/icon/people.svg" class="rounded variant-6"></ion-icon>
+      <ion-label>
+        <h2>Beneficios</h2>
+        <p>Conoce los beneficios que tenemos preparados para ti por ser parte de nuestra Red de Exalumnos de INACAP.</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  @if (mostrarCargando) {
+  <div class="loaderInacap">
+    <ion-spinner name="lines" color="primary"></ion-spinner>
+  </div>
+  }
+
+  @if (mostrarData && beneficios) {
+  <ion-list inset="true">
+    @for (item of beneficios; track $index) {
+    <ion-item detail="false" class="ion-activatable">
+      <ion-thumbnail slot="start">
+        <ion-spinner name="lines" color="primary"></ion-spinner>
+        <img [src]="resolverFoto(item.aebeNcorr)" [appImage]="fotoEmplea" [hideViewer]="true" />
+      </ion-thumbnail>
+      <ion-label>
+        <h2>{{item.aebeTnombre}}</h2>
+        <p>{{item.aebeTdescripcion}}</p>
+      </ion-label>
+      <!-- <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon> -->
+    </ion-item>
+    }
+  </ion-list>
+  }
+
+  @if (mostrarData && !beneficios) {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Información no disponible en este momento.</p>
+      <ion-button color="primary" shape="round" (click)="recargar()">Recargar</ion-button>
+    </div>
+  </section>
+  }
+
+</ion-content>

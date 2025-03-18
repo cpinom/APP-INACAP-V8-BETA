@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Exalumnos INACAP</ion-title>
+    <ion-buttons slot="start">
+      <ion-button icon-only routerLink="configuraciones" role="button" aria-label="Ver notificaciones">
+        <ion-icon src="assets/icon/settings.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <!-- <ion-button icon-only (click)="notificacionesTap()" role="button" aria-label="Ver notificaciones">
+        <ion-icon src="assets/icon/notifications.svg"></ion-icon>
+        <ion-badge *ngIf="mostrarNotificaciones">1</ion-badge>
+      </ion-button> -->
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  
+  <ion-list inset="true" class="card-list">
+    <ion-item detail="false">
+      <ion-icon slot="start" src="assets/icon/work.svg" class="rounded variant-3"></ion-icon>
+      <ion-label>
+        <h2>Empleos</h2>
+        <p>Encuentra las mejores oportunidades laborales con nosotros.</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <app-emplea-buscador rol="exalumno" (onOfertaTap)="detalleEmpleo($event)"></app-emplea-buscador>
+
+</ion-content>

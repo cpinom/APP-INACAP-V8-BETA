@@ -1,0 +1,51 @@
+<ion-header class="credencial-virtual-header">
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrar()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding credencial-virtual-content">
+
+  <div class="contenedor">
+    <div class="user-info">
+      <div class="avatar">
+        <ion-avatar>
+          <avatar-comp></avatar-comp>
+        </ion-avatar>
+      </div>
+      @if (perfil) {
+      <div class="info">
+        <h2>{{nombreCompleto}}</h2>
+        <p class="rut">{{principal.identification}}</p>
+        <p>Exalumno</p>
+        <p>{{nombreCarreras}}</p>
+        <p>INACAP {{perfil.sedeTdesc}}</p>
+        <p class="icono jornada">
+          <ion-icon src="assets/icon/wb_sunny.svg"></ion-icon>
+          Jornada {{perfil.jornTdesc}}
+        </p>
+      </div>
+      }
+      <div class="qr-code">
+        <div #qrcode></div>
+      </div>
+    </div>
+    <div class="codigo-barra">
+      <img #barcode />
+    </div>
+  </div>
+
+</ion-content>
+
+<ion-footer>
+  <div class="">
+    @if (mostrarPassbook) {
+    <ion-button shape="round" expand="block" color="dark">Agregar Wallet</ion-button>
+    }
+    <ion-button fill="outline" shape="round" expand="block" color="dark" (click)="cerrar()">Cerrar</ion-button>
+  </div>
+</ion-footer>

@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Perfil</ion-title>
+    <ion-buttons slot="start">
+      <ion-button icon-only routerLink="configuraciones" role="button" aria-label="Ver notificaciones">
+        <ion-icon src="assets/icon/settings.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <!-- <ion-button icon-only (click)="notificacionesTap()" role="button" aria-label="Ver notificaciones">
+        <ion-icon src="assets/icon/notifications.svg"></ion-icon>
+        <ion-badge *ngIf="mostrarNotificaciones">1</ion-badge>
+      </ion-button> -->
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <section class="avatar-container">
+    <img src="assets/images/bg-sede.png" />
+    <div class="avatar">
+      <ion-avatar>
+        <avatar-comp [buttonConfig]="avatarConfig" (buttonFn)="fotoPerfilTap()"></avatar-comp>
+      </ion-avatar>
+    </div>
+    <section class="user-info">
+      <h2>{{nombreCompleto}}</h2>
+      <p>{{correo}}</p>
+    </section>
+  </section>
+
+  <p class="user-legend">Mantente conectado con la RED de Exalumnos INACAP</p>
+
+  <ion-list inset="true">
+    <ion-item detail="false" class="ion-activatable" (click)="actualizarDatosTap()">
+      <ion-icon slot="start" src="assets/icon/frame.svg"></ion-icon>
+      <ion-label>Actualiza tus datos</ion-label>
+      <ion-icon slot="end" src="assets/icon/launch.svg"></ion-icon>
+    </ion-item>
+    <ion-item detail="false" class="ion-activatable" (click)="credencialVirtualTap()">
+      <ion-icon slot="start" src="assets/icon/qr_code_2.svg"></ion-icon>
+      <ion-label>Credencial Virtual</ion-label>
+      <ion-icon slot="end" src="assets/icon/contacts.svg"></ion-icon>
+    </ion-item>
+  </ion-list>
+
+  <section class="cerrar-sesion">
+    <ion-button expand="block" color="primary" shape="round" (click)="publicoTap()">Volver al Ambiente Público</ion-button>
+    <ion-button expand="block" color="white" shape="round" class="logout" (click)="logoutTap()">Cerrar Sesión</ion-button>
+  </section>
+
+</ion-content>

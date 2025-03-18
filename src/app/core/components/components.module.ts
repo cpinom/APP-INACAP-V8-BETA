@@ -22,6 +22,8 @@ import { BarcodeScanningModalComponent } from './barcode-scanning-modal/barcode-
 import { ConsultaBipComponent } from './consulta-bip/consulta-bip.component';
 import { BibliotecaComponent } from './sede/biblioteca/biblioteca.component';
 import { CafeteriaComponent } from './sede/cafeteria/cafeteria.component';
+import { BuscadorComponent } from './emplea-inacap/buscador/buscador.component';
+import { OfertaComponent } from './emplea-inacap/oferta/oferta.component';
 
 @NgModule({
   schemas: [],
@@ -51,7 +53,9 @@ import { CafeteriaComponent } from './sede/cafeteria/cafeteria.component';
     CafeteriaComponent,
     PeriodosComponent,
     BarcodeScanningModalComponent,
-    ConsultaBipComponent
+    ConsultaBipComponent,
+    BuscadorComponent,
+    OfertaComponent
   ],
   exports: [
     HeaderComponent,
@@ -68,7 +72,9 @@ import { CafeteriaComponent } from './sede/cafeteria/cafeteria.component';
     CafeteriaComponent,
     PeriodosComponent,
     BarcodeScanningModalComponent,
-    ConsultaBipComponent
+    ConsultaBipComponent,
+    BuscadorComponent,
+    OfertaComponent
   ]
 })
 export class ComponentsModule { }

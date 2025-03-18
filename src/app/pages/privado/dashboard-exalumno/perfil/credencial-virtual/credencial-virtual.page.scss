@@ -1,0 +1,125 @@
+::ng-deep .modal-credencial-virtual {
+  --height: 95%;
+  --width: 92%;
+  --border-radius: 10px;
+}
+
+ion-header.credencial-virtual-header {
+  ion-toolbar {
+    --background: #fff;
+    --border-color: #fff;
+
+    ion-icon {
+      color: #040b15;
+      font-size: 24px;
+    }
+  }
+}
+
+ion-content.credencial-virtual-content {
+  --background: #fff;
+  --padding-top: 0;
+  --padding-bottom: 10px;
+
+  .contenedor {
+    background-color: rgba(204, 0, 0, 0.2);
+    display: flex;
+    height: 100%;
+    width: 100%;
+    border-radius: 10px 62px 10px 10px;
+    flex-direction: row;
+    overflow: hidden;
+    position: relative;
+
+    .user-info {
+      flex: 1;
+
+      .avatar {
+        position: absolute;
+        right: 0;
+
+        ion-avatar {
+          background-image: url("./../../../../../../assets/images/mesh-gradient.png");
+          padding: 10px;
+          width: 120px;
+          height: 120px;
+        }
+      }
+
+      .info {
+        margin: 25px 70px 10px 10px;
+
+        h2 {
+          margin: 0;
+          font-size: var(--FS20);
+          font-weight: 700;
+          color: #040b15;
+        }
+
+        p {
+          margin: 10px 0 0;
+          font-size: var(--FS13);
+          font-weight: 400;
+          color: #040b15;
+
+          &.rut {
+            font-size: var(--FS14);
+            font-weight: 600;
+          }
+
+          &.jornada {
+            margin-bottom: 40px;
+          }
+
+          &.icono {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+
+            ion-icon {
+              font-size: 18px;
+            }
+          }
+        }
+      }
+
+      .qr-code {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+
+        ::ng-deep img {
+          padding: 20px;
+          background: white;
+          border-radius: 7px;
+        }
+      }
+    }
+
+    .codigo-barra {
+      flex: 0 0 62px;
+      background: #810413;
+      display: flex;
+      align-items: end;
+
+      img {
+        transform: rotate(90deg);
+        position: absolute;
+        bottom: 122px;
+        right: -102px;
+      }
+    }
+  }
+}
+ion-footer {
+  background: #fff;
+  div {
+    margin: 0px 15px 10px;
+    display: flex;
+    flex-direction: column;
+
+    // ion-button {
+    //   --background: #040B15;
+    // }
+  }
+}

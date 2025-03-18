@@ -1,0 +1,185 @@
+<div class="searchbar-container">
+  <div class="controles">
+    <ion-searchbar color="white" placeholder="¿Qué Trabajo estás buscando?" [(ngModel)]="filtro"
+      (ionInput)="filtrarEmpleos()" (ionClear)="resetEmpleos()">
+    </ion-searchbar>
+    <ion-button id="filtrosEduc" color="white" (click)="mostrarFiltros(filtrosMdl)">
+      <ion-icon name="options-outline"></ion-icon>
+    </ion-button>
+  </div>
+  <div class="filtros" *ngIf="filtrosMarcados.length">
+    <ion-chip *ngFor="let item of filtrosMarcados">
+      <ion-label><span [innerHTML]="item.name"></span></ion-label>
+      <ion-icon name="close" (click)="quitarFiltro(item)"></ion-icon>
+    </ion-chip>
+  </div>
+</div>
+
+@if (!mostrarData && !empleos) {
+<div class="loaderInacap">
+  <ion-spinner name="lines" color="primary"></ion-spinner>
+</div>
+}
+
+<ng-container *ngIf="mostrarData && empleos">
+  <section class="ofertas">
+    <div class="section-content">
+      <ion-list>
+        <ion-item *ngIf="empleos.length == 0">
+          <ion-label color="medium">
+            No se encontraron ofertas, puede cambiar los filtros y volver a buscar.
+          </ion-label>
+        </ion-item>
+        <ion-item *ngFor="let item of empleos" (click)="detalleEmpleo(item)" class="ion-activatable" detail="false">
+          <ion-avatar slot="start">
+            <img [src]="'https:' + item.logo" />
+          </ion-avatar>
+          <ion-label class="ion-no-padding">
+            <h2>{{item.jobTitle | titleCase}}</h2>
+            <p>{{item.company}}</p>
+            <p>Región {{item.region}}</p>
+            <p class="date">Publicado {{formatFecha(item.publishDate)}}</p>
+          </ion-label>
+          <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+  <ion-infinite-scroll #infinite threshold="100px" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles"
+      loadingText="Cargando empleos..."></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ng-container>
+
+<!-- <section class="first" *ngIf="!mostrarCargando && !mostrarData && !empleos">
+  <div class="section-content">
+    <ion-list>
+      <ion-item>
+        <ion-avatar slot="start">
+          <ion-skeleton-text animated style="width: 100%; height: 100%;"></ion-skeleton-text>
+        </ion-avatar>
+        <ion-label>
+          <ion-skeleton-text animated style="width: 80%;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 40%;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 40%;"></ion-skeleton-text>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-avatar slot="start">
+          <ion-skeleton-text animated style="width: 100%; height: 100%;"></ion-skeleton-text>
+        </ion-avatar>
+        <ion-label>
+          <ion-skeleton-text animated style="width: 80%;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 40%;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 40%;"></ion-skeleton-text>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-avatar slot="start">
+          <ion-skeleton-text animated style="width: 100%; height: 100%;"></ion-skeleton-text>
+        </ion-avatar>
+        <ion-label>
+          <ion-skeleton-text animated style="width: 80%;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 40%;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 40%;"></ion-skeleton-text>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-avatar slot="start">
+          <ion-skeleton-text animated style="width: 100%; height: 100%;"></ion-skeleton-text>
+        </ion-avatar>
+        <ion-label>
+          <ion-skeleton-text animated style="width: 80%;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 40%;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 40%;"></ion-skeleton-text>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-avatar slot="start">
+          <ion-skeleton-text animated style="width: 100%; height: 100%;"></ion-skeleton-text>
+        </ion-avatar>
+        <ion-label>
+          <ion-skeleton-text animated style="width: 80%;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 40%;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 40%;"></ion-skeleton-text>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+</section> -->
+
+<section *ngIf="mostrarData && !empleos" class="empty-state">
+  <div>
+    <ion-icon src="assets/icon/warning.svg"></ion-icon>
+    <p>Información no disponbile en este momento.</p>
+    <ion-button color="primary" shape="round" (click)="recargar()">Recargar</ion-button>
+  </div>
+</section>
+
+<ion-modal #filtrosMdl [breakpoints]="[0, 0.5, 0.8]" [initialBreakpoint]="0.5" [canDismiss]="true">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Filtrar Empleos</ion-title>
+        <ion-buttons slot="start">
+          <ion-button (click)="limpiarFiltros()">Limpiar</ion-button>
+        </ion-buttons>
+        <ion-buttons slot="end">
+          <ion-button (click)="filtrosMdl.dismiss()">
+            <ion-icon name="close"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <form [formGroup]="formFiltros" (ngSubmit)="filtrarSubmit(filtrosMdl)">
+        <ion-list>
+          <ion-item>
+            <ion-select label="Región" labelPlacement="stacked" placeholder="Seleccione..." formControlName="region"
+              okText="Aceptar" cancelText="Cancelar">
+              <ion-select-option [value]="item.id" *ngFor="let item of filtros.regiones">
+                {{item.name}}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item>
+            <ion-select label="Comuna" labelPlacement="stacked" placeholder="Seleccione..." formControlName="comuna"
+              okText="Aceptar" cancelText="Cancelar">
+              <ion-select-option [value]="item.id" *ngFor="let item of filtros.usuario.comunas">
+                {{item.name}}
+              </ion-select-option>
+              <!-- <ion-button fill="clear" slot="end" aria-label="Show/hide password">
+                <ion-icon slot="icon-only" name="eye" aria-hidden="true"></ion-icon>
+              </ion-button> -->
+            </ion-select>
+            <!-- <ion-button fill="clear" slot="end" aria-label="Show/hide password" color="medium">
+              <ion-icon slot="icon-only" name="close" aria-hidden="true"></ion-icon>
+            </ion-button> -->
+          </ion-item>
+          <ion-item>
+            <ion-select label="Carrera" labelPlacement="stacked" placeholder="Seleccione..." formControlName="carrera"
+              okText="Aceptar" cancelText="Cancelar">
+              <ion-select-option [value]="item.id" *ngFor="let item of filtros.carreras">
+                {{item.name}}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item>
+            <ion-select label="Fecha publicación" labelPlacement="stacked" placeholder="Seleccione..."
+              formControlName="tipos" okText="Aceptar" cancelText="Cancelar">
+              <ion-select-option [value]="item.id" *ngFor="let item of filtros.tipos">
+                {{item.name}}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-list>
+        <ion-button color="primary" shape="round" expand="block" type="submit" style="margin-top: 15px">
+          Filtrar
+        </ion-button>
+        <ion-button fill="clear" expand="block" (click)="resetFiltros()">
+          Reestablecer
+        </ion-button>
+      </form>
+    </ion-content>
+  </ng-template>
+</ion-modal>

@@ -11,11 +11,8 @@ export class ExalumnoService extends PrivateService {
   constructor() {
     super();
   }
-
+  
   getPrincipal() {
-    return this.get(`${this.baseUrl}/v3/exalumno/principal`);
-  }
-  getPrincipalV4() {
     return this.get(`${this.baseUrl}/v4/exalumno/principal`);
   }
   getCorreos() {
@@ -25,7 +22,13 @@ export class ExalumnoService extends PrivateService {
     return this.post(`${this.baseUrl}/v3/exalumno/status`, params);
   }
   getPerfil() {
-    return this.get(`${this.baseUrl}/v3/exalumno/perfil`);
+    return this.get(`${this.baseUrl}/v4/exalumno/perfil`);
+  }
+  getEmplea(sedeCcod: any) {
+    return this.get(`${this.baseUrl}/v4/exalumno/emplea?sedeCcod=${sedeCcod}`);
+  }
+  getEmpleaBeneficios(sedeCcod: any) {
+    return this.get(`${this.baseUrl}/v4/exalumno/emplea-beneficios?sedeCcod=${sedeCcod}`);
   }
   validarFotoPerfilWeb(data: FormData, params?: any): Promise<any> {
     return Promise.resolve({});

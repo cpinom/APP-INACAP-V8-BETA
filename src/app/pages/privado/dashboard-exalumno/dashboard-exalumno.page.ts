@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { EventsService } from 'src/app/core/services/events.service';
 
 @Component({
   selector: 'app-dashboard-exalumno',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardExalumnoPage implements OnInit {
 
-  constructor() { }
+  private events = inject(EventsService);
 
-  ngOnInit() {
+  constructor() { }
+  ngOnInit() { }
+  checkTap(ev?: Event, index?: number) {
+    this.events.app.next({ action: 'scrollTop', index: index, ev: ev });
   }
 
 }

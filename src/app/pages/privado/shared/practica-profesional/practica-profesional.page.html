@@ -1,13 +1,41 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>practica-profesional</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button [text]="backText" [defaultHref]="backUrl"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">practica-profesional</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+
+  <ion-list inset="true" class="card-list">
+    <ion-item detail="false">
+      <ion-icon slot="start" src="assets/icon/assignment_ind.svg" class="rounded variant-1"></ion-icon>
+      <ion-label>
+        <h2>Práctica Profesional</h2>
+        @if (carrera) {
+        <p>{{carrera}}</p>
+        }
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-list inset="true">
+    <ion-item class="ion-activatable" detail="false" (click)="mostrarInfoPracticas()">
+      <ion-icon slot="start" color="medium" src="assets/icon/info.svg"></ion-icon>
+      <ion-label>Información de Prácticas</ion-label>
+      <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
+    </ion-item>
+    <ion-item class="ion-activatable" detail="false" (click)="mostrarSolicitudPractica()">
+      <ion-icon slot="start" color="medium" src="assets/icon/access_time.svg"></ion-icon>
+      <ion-label>Sol. de Inscripción de Práctica</ion-label>
+      <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
+    </ion-item>
+    <ion-item class="ion-activatable" detail="false" (click)="mostrarCertificadoPractica()">
+      <ion-icon slot="start" color="medium" src="assets/icon/file_copy.svg"></ion-icon>
+      <ion-label>Sol. Certificado Seguro - Prácticas</ion-label>
+      <ion-icon slot="end" src="assets/icon/launch.svg"></ion-icon>
+    </ion-item>
+  </ion-list>
+
 </ion-content>

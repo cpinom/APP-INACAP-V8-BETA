@@ -17,7 +17,7 @@ const routes: Routes = [
   },
   {
     path: 'practica-profesional',
-    loadChildren: () => import('./practica-profesional/practica-profesional.module').then( m => m.PracticaProfesionalPageModule)
+    loadChildren: () => import('src/app/pages/privado/shared/practica-profesional/practica-profesional.module').then( m => m.PracticaProfesionalPageModule)
   },
   {
     path: 'certificados-intermedios',

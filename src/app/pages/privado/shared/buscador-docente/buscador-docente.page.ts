@@ -10,7 +10,6 @@ import { DialogService } from 'src/app/core/services/dialog.service';
 import { VISTAS_DOCENTE } from 'src/app/core/constants/docente';
 import { VISTAS_ALUMNO } from 'src/app/core/constants/alumno';
 import { BarcodeScanningModalComponent } from 'src/app/core/components/barcode-scanning-modal/barcode-scanning-modal.component';
-import { Barcode, BarcodeFormat, LensFacing } from '@capacitor-mlkit/barcode-scanning';
 import { Camera } from '@capacitor/camera';
 import { UtilsService } from 'src/app/core/services/utils.service';
 
@@ -251,20 +250,16 @@ export class BuscadorDocentePage implements OnInit {
     await this.utils.showAlertCamera();
   }
   async escanearQR() {
-    return new Promise<Barcode | undefined>(async resolve => {
+    return new Promise<string | undefined>(async resolve => {
       const element = await this.dialog.showModal({
         component: BarcodeScanningModalComponent,
         cssClass: 'barcode-scanning-modal',
         showBackdrop: false,
-        componentProps: {
-          formats: [BarcodeFormat.QrCode],
-          lensFacing: LensFacing.Back,
-        },
         animated: false
       });
 
       element.onDidDismiss().then((result) => {
-        const barcode: Barcode | undefined = result.data?.barcode;
+        const barcode: string | undefined = result.data?.barcode;
         if (barcode) {
           resolve(barcode)
         }

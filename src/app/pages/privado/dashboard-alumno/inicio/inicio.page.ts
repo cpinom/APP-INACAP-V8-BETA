@@ -230,7 +230,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     }
     catch { }
 
-    await this.credencialVirtualTap();
+    // await this.credencialVirtualTap();
   }
   ngOnDestroy() {
     this.scrollObs.unsubscribe();

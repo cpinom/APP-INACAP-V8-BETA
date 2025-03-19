@@ -16,7 +16,6 @@ export class PublicService {
   constructor() {
     this.baseUrl = `${this.global.Api}/api`;
   }
-
   private get = async (url: string) => {
     const options: HttpOptions = {
       url: url,
@@ -65,7 +64,31 @@ export class PublicService {
       return Promise.reject(error);
     }
   }
+  public patch = async (url: string, params: any) => {
+    const options: HttpOptions = {
+      method: 'patch',
+      url: url,
+      responseType: 'json',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      data: params
+    };
 
+    try {
+      const response = await CapacitorHttp.patch(options);
+
+      if (response.status == 200) {
+        return response.data;
+      }
+      else {
+        return Promise.reject(response);
+      }
+    }
+    catch (error: any) {
+      return Promise.reject(error);
+    }
+  }
   async getImage(url: string): Promise<any> {
     const options: HttpOptions = {
       url: `${this.baseUrl}/v3/${url}`,
@@ -137,6 +160,9 @@ export class PublicService {
       this.post(`${this.baseUrl}/v3/marcar-vista`, params);
     }
     catch { }
+  }
+  registrarDispositivo(params: any) {
+    return this.patch(`${this.baseUrl}/v5/dispositivo`, params);
   }
   async getStorage(key: string) {
     return Preferences.get({ key: `${this.storagePrefix}-${key}` }).then(result => {

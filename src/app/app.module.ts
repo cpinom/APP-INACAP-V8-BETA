@@ -8,6 +8,11 @@ import { LoginPageModule } from './core/components/login/login.module';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { PagosModule } from './core/components/pagos/pagos.module';
 import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
+import { FingerprintAIO } from '@awesome-cordova-plugins/fingerprint-aio/ngx';
+import { initializeApp } from "firebase/app";
+import { environment } from 'src/environments/environment.proxy';
+
+initializeApp(environment.firebase);
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,7 +29,8 @@ import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideAnimationsAsync(),
-    InAppBrowser
+    InAppBrowser,
+    FingerprintAIO
   ],
   bootstrap: [AppComponent],
 })

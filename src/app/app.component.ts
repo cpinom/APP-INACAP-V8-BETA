@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, NgZone } from '@angular/core';
 import { LoadingController, ModalController, NavController, Platform, ToastController } from '@ionic/angular';
 import { EventsService } from './core/services/events.service';
 import { NavigationEnd, Router } from '@angular/router';
@@ -26,6 +26,13 @@ import { CertificadosService } from './core/services/http/certificados.service';
 import { BuzonOpinionService } from './core/services/http/buzonopinion.service';
 import { EmpleaInacapService } from './core/services/http/emplea-inacap.service';
 import { OneDriveService } from './core/services/http/onedrive.service';
+import { SeguroAccidentesService } from './core/services/http/seguroaccidentes.service';
+import { NotificactionsService } from './core/services/notificacions.service';
+import { ActionPerformed, PushNotifications, PushNotificationSchema } from '@capacitor/push-notifications';
+import { LocalNotificationSchema, LocalNotifications, ScheduleOptions } from '@capacitor/local-notifications';
+import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import { environment } from 'src/environments/environment.proxy';
+import { Device } from '@capacitor/device';
 
 @Component({
   selector: 'app-root',
@@ -54,12 +61,15 @@ export class AppComponent {
   private inacapmail = inject(InacapMailService);
   private mteams = inject(MicrosoftTeamsService);
   private docente = inject(DocenteService);
-  // private seguro = inject(SeguroAccidentesService);
+  private seguro = inject(SeguroAccidentesService);
   private solicitudes = inject(SolicitudesService);
   private certificados = inject(CertificadosService);
   private buzon = inject(BuzonOpinionService);
   private emplea = inject(EmpleaInacapService);
   private onedrive = inject(OneDriveService);
+  private notifications = inject(NotificactionsService);
+  private modalCtrl = inject(ModalController);
+  private zone = inject(NgZone);
 
   constructor() {
     this.pt.ready().then(() => this.initializeApp());
@@ -170,7 +180,7 @@ export class AppComponent {
     this.onedrive.clearStorage();
     this.accessibilitySetup();
     this.clearCacheFolder();
-    this.snackbar.showToast('Se ha cerrado su sesión correctamente.');
+    await this.snackbar.showToast('Se ha cerrado su sesión correctamente.');
     this.api.registrarSalida(data.uuid).catch(error => console.log(error));
   }
   async onRouterEvents(val: any) {
@@ -209,10 +219,104 @@ export class AppComponent {
     }
   }
   async notificactionsSetup() {
-    // throw new Error('Method not implemented.');
+    try {
+      this.notifications.init();
+
+      PushNotifications.addListener('pushNotificationReceived', async (notification: PushNotificationSchema) => {
+        var scheduleAt = new Date();
+        scheduleAt.setSeconds(scheduleAt.getSeconds() + 1);
+
+        let opts: ScheduleOptions = {
+          notifications: [{
+            title: notification.title,
+            id: 1,
+            body: notification.body,
+            schedule: { at: scheduleAt }
+          } as LocalNotificationSchema]
+        };
+
+        await LocalNotifications.schedule(opts);
+
+        this.zone.run(() => {
+          this.global.NotificationFlag = true;
+          this.events.app.next({ action: 'app:alumno-notificaciones-recibida' });
+        });
+      });
+
+      PushNotifications.addListener('pushNotificationActionPerformed', async (notification: ActionPerformed) => {
+        const tokenValid = await this.auth.isTokenValid();
+
+        if (tokenValid) {
+          if (this.router.url.indexOf('/dashboard-alumno') == -1) {
+            await this.router.navigate(['/dashboard-alumno']);
+          }
+
+          const currentModal = await this.modalCtrl.getTop();
+
+          if (currentModal && currentModal.id == 'modal-notificaciones') {
+            return;
+          }
+
+          this.events.app.next({ action: 'app:alumno-notificaciones' });
+        }
+      });
+
+      LocalNotifications.addListener('localNotificationActionPerformed', async (notification: any) => {
+        const tokenValid = await this.auth.isTokenValid();
+
+        if (tokenValid) {
+          if (this.router.url.indexOf('/dashboard-alumno') == -1) {
+            await this.router.navigate(['/dashboard-alumno']);
+          }
+
+          const currentModal = await this.modalCtrl.getTop();
+
+          if (currentModal && currentModal.id == 'modal-notificaciones') {
+            return;
+          }
+
+          this.events.app.next({ action: 'app:alumno-notificaciones' });
+        }
+      })
+
+    }
+    catch (error) {
+      console.log('Error - notificactionsSetup', error);
+    }
   }
   async notificacionsWeb() {
-    // throw new Error('Method not implemented.');
+    const messaging = getMessaging();
+
+    getToken(messaging, { vapidKey: environment.firebase.vapidKey }).then(async (currentToken) => {
+      if (currentToken) {
+        const id = await Device.getId();
+        const info = await Device.getInfo();
+        const request = this.publicApi.registrarDispositivo({
+          token: currentToken,
+          plataforma: info.platform,
+          modelo: info.model,
+          uuid: id.identifier,
+          version: info.osVersion,
+          aplicacion: 'APP_MOVIL'
+        });
+
+        request.then(() => {
+          this.events.app.next({ action: 'app:notificaciones-registro' })
+        });
+
+      }
+      else {
+        console.log('No registration token available. Request permission to generate one.');
+      }
+    }).catch((err) => {
+      console.log('An error occurred while retrieving token. ', err);
+    });
+
+    onMessage(messaging, (payload) => {
+      debugger
+      alert(payload.notification?.body);
+      console.log('Message received. ', payload);
+    });
   }
   async accessibilitySetup() {
     try {

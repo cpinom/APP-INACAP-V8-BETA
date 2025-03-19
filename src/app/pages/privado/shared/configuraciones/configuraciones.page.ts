@@ -70,15 +70,18 @@ export class ConfiguracionesPage implements OnInit {
     this.color = preferencias.movil.paleta_color || '';
 
     if (this.pt.is('ios')) {
-      this.mostrarIcono = (await AppIcon.isSupported()).value == true;
+      try {
+        this.mostrarIcono = (await AppIcon.isSupported()).value == true;
 
-      if (this.mostrarIcono) {
-        const iconName = await AppIcon.getName();
+        if (this.mostrarIcono) {
+          const iconName = await AppIcon.getName();
 
-        if (iconName.value == 'normal-dark') {
-          this.icono = 'oscuro';
+          if (iconName.value == 'normal-dark') {
+            this.icono = 'oscuro';
+          }
         }
       }
+      catch { }
     }
 
     if (this.pt.is('mobileweb')) {
@@ -256,12 +259,12 @@ export class ConfiguracionesPage implements OnInit {
   }
   async togglePrivacy() {
     if (this.privacyMode) {
-      // const result = await this.auth.validateFaceID();
+      const result = await this.auth.validateFaceID();
 
-      // if (!result) {
-      //   this.privacyMode = false;
-      //   this.snackbar.showToast('No se pudo habilitar FaceID', 3000, 'danger');
-      // }
+      if (!result) {
+        this.privacyMode = false;
+        await this.snackbar.showToast('No se pudo habilitar FaceID', 3000, 'danger');
+      }
     }
 
     await this.profile.setStorage('privacyMode', this.privacyMode);

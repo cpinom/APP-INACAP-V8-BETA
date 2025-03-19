@@ -5,11 +5,12 @@ import { DialogService } from './dialog.service';
 import { LoginComponent } from '../components/login/login.component';
 import { CapacitorHttp, HttpOptions } from '@capacitor/core';
 import { AppGlobal } from 'src/app/app.global';
-import { ActionSheetController, NavController } from '@ionic/angular';
+import { ActionSheetController, NavController, Platform } from '@ionic/angular';
 import { Auth } from '../interfaces/auth.interfaces';
 import { EventsService } from './events.service';
 import { Device } from '@capacitor/device';
 import { Directory, Filesystem } from '@capacitor/filesystem';
+import { FingerprintAIO } from '@awesome-cordova-plugins/fingerprint-aio/ngx';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,8 @@ export class AuthService {
   private nav = inject(NavController);
   private events = inject(EventsService);
   private action = inject(ActionSheetController);
+  private pt = inject(Platform);
+  private faio = inject(FingerprintAIO);
 
   constructor() { }
 
@@ -234,6 +237,47 @@ export class AuthService {
   }
   async clearUserCache() {
     await Preferences.remove({ key: `${this.storageAuth}-cache` });
+  }
+  validateFaceID(): Promise<boolean> {
+
+    if (this.pt.is('mobileweb')) {
+      return Promise.resolve(true);
+    }
+
+    return new Promise(async (resolve) => {
+      this.faio.isAvailable({ requireStrongBiometrics: false }).then((available) => {
+        console.log('*** available');
+        console.log(available);
+
+        this.faio.show({
+          //clientId: 'Fingerprint-Demo',
+          //clientSecret: 'password',
+          disableBackup: false,
+          //localizedFallbackTitle: 'Ingrese el código',
+          //localizedReason: 'Ingrese el código'
+        }).then(() => {
+          resolve(true)
+        }).catch((error) => {
+          // alert('error show');
+          // alert(JSON.stringify(error));
+          resolve(false)
+        });
+
+      }).catch((error) => {
+        // alert('error isAvailable');
+        // alert(JSON.stringify(error));
+        console.log('*** error');
+        console.log(error);
+
+        // this.faio.loadBiometricSecret({}).then(result => {
+        //   resolve(true)
+        // }).catch(error => {
+        //   // alert('error loadBiometricSecret');
+        //   // alert(JSON.stringify(error));
+        //   resolve(false)
+        // });
+      })
+    });
   }
 
 }

@@ -74,7 +74,7 @@ export class PerfilPage implements OnInit, OnDestroy {
     });
   }
   async publicoTap() {
-    await this.nav.navigateRoot('/publico/inicio');
+    await this.nav.navigateRoot('publico');
   }
   async logoutTap() {
     await this.auth.tryLogout();

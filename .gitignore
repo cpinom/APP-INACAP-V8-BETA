@@ -24,6 +24,7 @@ log.txt
 /plugins
 /ios
 /android
+/resources
 
 # Compiled output
 /dist

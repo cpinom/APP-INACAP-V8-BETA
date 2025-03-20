@@ -3,6 +3,7 @@ ion-toolbar.periodos {
   --border-color: var(--ion-color-dark-tint);
   --min-height: 30px;
   border-radius: 0 0 5px 5px;
+  padding-top: 0 !important;
 
   ion-button {
     ion-icon {

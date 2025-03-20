@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
-  sigaUrl: 'https://siga.inacap.cl',
-  apiUrl: 'https://siga.inacap.cl/inacap.api.movil',
+  sigaUrl: 'https://siga.test.inacap.cl',
+  apiUrl: 'https://siga.test.inacap.cl/inacap.api.movil',
   version: '8.0.0',
   compilation: '202501081150',
   environmentTitle: 'Producción',

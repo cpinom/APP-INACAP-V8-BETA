@@ -34,6 +34,7 @@ import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import { environment } from 'src/environments/environment.proxy';
 import { Device } from '@capacitor/device';
 import { register } from 'swiper/element/bundle';
+import { AppShortcuts, ClickEvent } from '@capawesome/capacitor-app-shortcuts';
 
 // Registramos el componente Swiper
 register();
@@ -76,9 +77,12 @@ export class AppComponent {
   private zone = inject(NgZone);
 
   constructor() {
-    this.pt.ready().then(() => this.initializeApp());
+    this.initializeApp();
+    // this.pt.ready().then(() => this.initializeApp());
   }
   async initializeApp() {
+    await this.pt.ready();
+
     this.events.app.subscribe(this.onAppEvents.bind(this));
     this.events.onLogin.subscribe(this.onAppLogin.bind(this));
     this.events.onLogout.subscribe(this.onAppLogout.bind(this));
@@ -92,6 +96,48 @@ export class AppComponent {
       if (this.pt.is('ios')) {
         await Keyboard.setAccessoryBarVisible({ isVisible: true });
       }
+
+      await AppShortcuts.set({
+        shortcuts: [
+          {
+            id: 'inacapmail',
+            title: 'INACAPMail'
+          }
+          // ,
+          // {
+          //   id: 'horario',
+          //   title: 'Mi Horario'
+          // },
+          // {
+          //   id: 'credencial-virtual',
+          //   title: 'Credencial Virtual'
+          // },
+          // {
+          //   id: 'certificados',
+          //   title: 'Mis Certificados'
+          // }
+        ]
+      });
+
+      AppShortcuts.addListener('click', async (event: ClickEvent) => {
+        console.log('Shortcut clicked:', event.shortcutId);
+        alert(JSON.stringify(event));
+
+        if (event.shortcutId == 'inacapmail') {
+          await this.nav.navigateForward('/dashboard-alumno/inicio/inacapmail');
+        }
+        if (event.shortcutId == 'horario') {
+          await this.nav.navigateForward('/dashboard-alumno/inicio/horario');
+        }
+        if (event.shortcutId == 'credencial-virtual') {
+          //await this.nav.navigateForward('/dashboard-alumno/inicio/inacapmail');
+        }
+        if (event.shortcutId == 'certificados') {
+          await this.nav.navigateForward('/dashboard-alumno/inicio/certificados');
+        }
+
+      });
+
     }
     else {
       await this.notificacionsWeb();

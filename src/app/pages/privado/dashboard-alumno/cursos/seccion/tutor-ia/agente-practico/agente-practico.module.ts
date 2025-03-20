@@ -2,16 +2,16 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { FotoPerfilPageRoutingModule } from './foto-perfil-routing.module';
-import { FotoPerfilPage } from './foto-perfil.page';
+import { AgentePracticoPageRoutingModule } from './agente-practico-routing.module';
+import { AgentePracticoPage } from './agente-practico.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    FotoPerfilPageRoutingModule
+    AgentePracticoPageRoutingModule
   ],
-  declarations: [FotoPerfilPage]
+  declarations: [AgentePracticoPage]
 })
-export class FotoPerfilPageModule { }
+export class AgentePracticoPageModule { }

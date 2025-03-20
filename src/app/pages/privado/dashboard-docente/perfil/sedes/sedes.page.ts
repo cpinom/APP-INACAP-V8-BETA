@@ -51,7 +51,7 @@ export class SedesPage implements OnInit {
     }
   }
   get backText() {
-    if (this.router.url.endsWith('docente/inicio/sede'))
+    if (this.router.url.endsWith('dashboard-docente/inicio/sede'))
       return 'Inicio';
     return 'Perfil';
   }

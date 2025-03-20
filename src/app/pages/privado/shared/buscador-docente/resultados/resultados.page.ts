@@ -115,8 +115,8 @@ export class ResultadosPage implements OnInit {
             this.data.fecha = moment(periodo.acpeFinicio, 'DD/MM/YYYY').toDate();
           }
           else {
-            this.salaFecha = moment().startOf('week').toDate();
-            this.data.fecha = moment().startOf('week').toDate();
+            this.salaFecha = moment().startOf('isoWeek').toDate();
+            this.data.fecha = moment().startOf('isoWeek').toDate();
           }
 
           this.nombreSala = `${this.data.salaTdesc}`;
@@ -145,25 +145,30 @@ export class ResultadosPage implements OnInit {
 
       if (!docente.fecha) {
         if (this.pt.is('mobileweb')) {
-          const principal = await this.profile.getStorage('principal');
-          const periodo = principal.periodos.find((t:any) => t.periCcod == principal.periodoActual);
-          docente.fecha = moment(periodo.acpeFinicio, 'DD/MM/YYYY').toDate();
+          try {
+            const principal = await this.profile.getStorage('principal');
+            const periodo = principal.periodos.find((t: any) => t.periCcod == principal.periodoActual);
+            docente.fecha = moment(periodo.acpeFinicio, 'DD/MM/YYYY').toDate();
+          }
+          catch {
+            docente.fecha = moment().startOf('isoWeek').toDate();
+          }
         }
         else {
-          docente.fecha = moment().startOf('week').toDate();
+          docente.fecha = moment().startOf('isoWeek').toDate();
         }
       }
 
       await this.cargarPlanificacionDocente(docente);
     }
   }
-  async correo(e:any, persTemail: string) {
+  async correo(e: any, persTemail: string) {
     e.stopPropagation();
 
     try {
       await this.mensaje.crear(persTemail);
     }
-    catch (error:any) {
+    catch (error: any) {
       this.snackbar.showToast(error, 2000, 'danger');
     }
   }
@@ -177,12 +182,12 @@ export class ResultadosPage implements OnInit {
       const fechaTermino = moment(docente.fecha).clone().add('day', 6).format('DD/MM/YYYY');
       const result = await this.api.getPlanificacionDocenteV5(sedeCcod, persNcorr, fechaInicio, fechaTermino);
 
-      let eventos:any[] = [];
+      let eventos: any[] = [];
 
       if (result.success && result.data.length) {
-        result.data.forEach((event:any) => {
-          event.bloques.forEach((bloque:any) => {
-            let horario = this.horario.find((hora:any) => hora.horaCcod == bloque.horaCcod);
+        result.data.forEach((event: any) => {
+          event.bloques.forEach((bloque: any) => {
+            let horario = this.horario.find((hora: any) => hora.horaCcod == bloque.horaCcod);
             let cssClass = '';
 
             if (bloque.enCurso == 1) cssClass = 'progreso';
@@ -205,7 +210,7 @@ export class ResultadosPage implements OnInit {
 
       this.cdRef.detectChanges();
     }
-    catch (error:any) {
+    catch (error: any) {
       if (error && error.status == 401) {
         await this.error.handle(error);
       }
@@ -228,11 +233,11 @@ export class ResultadosPage implements OnInit {
       if (result.success) {
         this.horario = result.data.horario;
 
-        let eventos :any[]= [];
-        result.data.planificacion.forEach((dia:any) => {
-          dia.bloques.forEach((bloque:any) => {
+        let eventos: any[] = [];
+        result.data.planificacion.forEach((dia: any) => {
+          dia.bloques.forEach((bloque: any) => {
 
-            const horario = this.horario.find((hora:any) => hora.horaCcod == bloque.horaCcod);
+            const horario = this.horario.find((hora: any) => hora.horaCcod == bloque.horaCcod);
 
             if (horario) {
               eventos.push({
@@ -248,8 +253,8 @@ export class ResultadosPage implements OnInit {
         this.salaEventos = eventos;
       }
     }
-    catch (error:any) {
-      if (error&& error.status == 401) {
+    catch (error: any) {
+      if (error && error.status == 401) {
         await this.error.handle(error);
         return;
       }
@@ -269,7 +274,7 @@ export class ResultadosPage implements OnInit {
     this.data.fecha = moment(args.firstDay);
     this.cargarPlanificacionSala(this.data);
   }
-  resolverFoto(persNcorr:any) {
+  resolverFoto(persNcorr: any) {
     return `${this.global.Api}/api/v3/imagen-persona/${persNcorr}`;
   }
   get oppositeOrientation() {

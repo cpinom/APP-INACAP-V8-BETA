@@ -6,6 +6,7 @@ section.bienvenida {
         // color: #4a4a4a;
         padding: 15px;
         line-height: 21px;
+        font-size: var(--FS14);
 
         .url {
             display: block;
@@ -14,6 +15,8 @@ section.bienvenida {
     }
 }
 section.btn-presenta {
+    margin-inline: 15px;
+
     ion-button[fill="outline"] {
         margin-top: 12px;
         
@@ -25,9 +28,9 @@ section.btn-presenta {
 section.btn-contestada {
     display: flex;
     flex-direction: column;
+    margin-inline: 15px;
 
     ion-button[fill="outline"] {
-        margin-top: 12px;
         
         &::part(native) {
             border-width: 2px;

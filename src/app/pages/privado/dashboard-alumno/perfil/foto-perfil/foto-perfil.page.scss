@@ -1,0 +1,110 @@
+section.acciones {
+  display: flex;
+  margin: 15px;
+  gap: 10px;
+  justify-content: space-between;
+
+  ion-button {
+    flex: 1;
+  }
+}
+
+.foto-perfil-previa {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background: #33333380;
+
+  ion-avatar {
+    height: 350px;
+    width: 350px;
+  }
+}
+
+section.foto-perfil,
+section.foto-cedula {
+  .section-content {
+    ion-item {
+      ion-avatar {
+        height: 80px;
+        width: 80px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+      }
+      ion-thumbnail {
+        width: 120px;
+        height: 120px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+      ion-label {
+        margin: 5px 0;
+        font-size: var(--FS14);
+
+        display: flex;
+        align-items: center;
+
+        ion-icon {
+          margin-right: 10px;
+          color: var(--ion-color-success);
+          font-size: 32px;
+        }
+      }
+    }
+  }
+}
+
+::ng-deep body ion-alert.success-foto-perfil {
+  .foto-contenedor {
+    display: flex;
+    padding: 20px 0;
+    justify-content: end;
+    position: relative;
+
+    img {
+      &.foto-cedula {
+        height: 130px;
+        -webkit-transform: rotate(-15deg);
+        transform: rotate(-15deg);
+        padding: 5px 5px 25px;
+        background: white;
+        position: relative;
+        left: 0px;
+      }
+      &.foto-perfil {
+        height: 130px;
+        -webkit-transform: rotate(15deg);
+        transform: rotate(15deg);
+        padding: 5px 5px 25px;
+        background: white;
+        right: 20px;
+        position: relative;
+      }
+
+      &.icon {
+        position: absolute;
+        bottom: 0px;
+        width: 48px;
+        height: 48px;
+        right: 20px;
+      }
+    }
+  }
+}
+
+::ng-deep body {
+  ion-alert {
+    &.fail-foto-perfil {
+      img {
+        width: 48px;
+        height: 48px;
+      }
+    }
+    &.alert-foto-perfil {
+      img {
+        width: 48px;
+        height: 48px;
+      }
+    }
+  }
+}

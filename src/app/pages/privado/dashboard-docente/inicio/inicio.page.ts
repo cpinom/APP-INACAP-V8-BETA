@@ -240,8 +240,8 @@ export class InicioPage implements OnInit {
       return;
     }
 
-    const fechaLunes = moment(this.fechaHorario).clone().startOf('week');
-    const fechaInicio = fechaLunes.clone().startOf('week').format('DD/MM/YYYY');
+    const fechaLunes = moment(this.fechaHorario).clone().startOf('isoWeek');
+    const fechaInicio = fechaLunes.clone().startOf('isoWeek').format('DD/MM/YYYY');
     const fechaTermino = fechaLunes.clone().add(5, 'day').format('DD/MM/YYYY');
 
     this.cargandoClases = true;

@@ -1,13 +1,151 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>foto-perfil</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button text="Perfil" defaultHref="/dashboard-alumno/perfil"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">foto-perfil</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+
+  <ion-list inset="true" class="card-list">
+    <ion-item detail="false">
+      <ion-icon slot="start" src="assets/icon/account_circle.svg" class="rounded variant-6"></ion-icon>
+      <ion-label>
+        <h2>Foto de Perfil</h2>
+        <p>Mantén tu información actualizada en las plataformas INACAP.</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  @if (mostrarCargando) {
+  <div class="loaderInacap">
+    <ion-spinner name="lines" color="primary"></ion-spinner>
+  </div>
+  }
+
+  @if (mostrarData && solicitudId) {
+
+  @if (pasoActual == 0) {
+
+  @if (!fotoPerfil) {
+  <section>
+    <div class="section-header">Instrucciones</div>
+    <div class="section-content">
+      <ion-list>
+        <ion-item>
+          <ion-label>1-. Asegúrese de tomar la fotografía con un fondo blanco, rostro descubierto, mirando al frente,
+            mantener los ojos abiertos y sin lentes de sol.</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>2-. Luego le solicitaremos una fotografía de su cédula de identidad para un mejor control de
+            calidad.</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>3-. En caso de que no sea posible validar tu imagen, ésta será remitida al personal del DAE de tu
+            sede, quienes tendrán la responsabilidad de evaluar tu foto de perfil.</ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+  <section class="acciones">
+    <ion-button color="primary" shape="round" expand="full" fill="outline" routerLink="/dashboard-alumno/perfil">
+      Cancelar
+    </ion-button>
+    <ion-button color="primary" shape="round" expand="full" (click)="siguientePaso(1, perfilInput)">
+      Tomar Foto
+    </ion-button>
+  </section>
+  }
+  @else {
+  <div class="foto-perfil-previa">
+    <ion-avatar>
+      <img [src]="resolverFoto(1)">
+    </ion-avatar>
+  </div>
+  <section class="acciones">
+    <ion-button color="primary" shape="round" expand="full" fill="outline" (click)="fotoPerfil = ''">
+      Cancelar
+    </ion-button>
+    <ion-button color="primary" shape="round" expand="full" (click)="siguientePaso(1)">
+      Siguiente
+    </ion-button>
+  </section>
+  }
+
+  }
+
+  @if (pasoActual == 1) {
+  <section class="first">
+    <div class="section-header">Adjuntar Foto Cédula de Identidad</div>
+    <div class="section-content">
+      <ion-list>
+        <ion-item>
+          <ion-label>Para un mejor control de calidad debe adjuntar su cédula de indentidad.</ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+  <section class="acciones">
+    <ion-button color="primary" shape="round" expand="full" fill="outline" (click)="anteriorPaso(0)">
+      Cancelar
+    </ion-button>
+    <ion-button color="primary" shape="round" expand="full" (click)="siguientePaso(2, cedulaInput)">
+      Tomar Foto
+    </ion-button>
+  </section>
+  }
+
+  @if (pasoActual == 2) {
+  <section class="foto-perfil">
+    <div class="section-header">Nueva Foto Perfil</div>
+    <div class="section-content">
+      <ion-list>
+        <ion-item>
+          <ion-thumbnail slot="start">
+            <img [src]="resolverFoto(1)" />
+          </ion-thumbnail>
+          <ion-label>
+            <ion-icon src="assets/icon/check_circle_outline.svg"></ion-icon>
+            <strong>La imagen cumple con los estándares</strong>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+
+  <section class="foto-cedula">
+    <div class="section-header">Cédula de Identidad</div>
+    <div class="section-content">
+      <ion-list>
+        <ion-item>
+          <ion-thumbnail slot="start">
+            <img [src]="resolverFoto(2)" />
+          </ion-thumbnail>
+          <ion-label>
+            <ion-icon src="assets/icon/check_circle_outline.svg"></ion-icon>
+            <strong>La imagen cumple con los estándares</strong>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+  }
+
+  }
+
+  @if (mostrarData && !solicitudId) {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Información no disponible en este momento.</p>
+      <ion-button color="primary" shape="round" (click)="cargar()">Recargar</ion-button>
+    </div>
+  </section>
+  }
+
+  <input type="file" #perfilInput style="display: none;" (change)="adjuntarPerfil($event)" accept="image/*" />
+
+  <input type="file" #cedulaInput style="display: none;" (change)="adjuntarCedula($event)" accept="image/*" />
+
 </ion-content>

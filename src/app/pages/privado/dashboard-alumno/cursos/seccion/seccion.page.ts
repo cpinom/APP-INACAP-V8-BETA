@@ -200,6 +200,9 @@ export class SeccionPage implements OnInit, OnDestroy {
     let params = await this.parametros();
     await this.nav.navigateForward(`${this.router.url}/bibliografia`, { state: params });
   }
+  async tutorIATap() {
+    await this.nav.navigateForward(`${this.router.url}/tutor-ia`, { state: this.seccion });
+  }
   resolverFechaEvaluacion(caliFevaluacion: string) {
     return moment(caliFevaluacion, "DD/MM/YYYY").format("DD MMM");
   }

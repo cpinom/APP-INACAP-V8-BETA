@@ -6,9 +6,18 @@ const routes: Routes = [
   {
     path: '',
     component: TutorIaPage
-  },  {
-    path: 'agente',
-    loadChildren: () => import('./agente/agente.module').then( m => m.AgentePageModule)
+  },
+  {
+    path: 'agente-socratico',
+    loadChildren: () => import('./agente-socratico/agente-socratico.module').then( m => m.AgenteSocraticoPageModule)
+  },
+  {
+    path: 'agente-practico',
+    loadChildren: () => import('./agente-practico/agente-practico.module').then( m => m.AgentePracticoPageModule)
+  },
+  {
+    path: 'test',
+    loadChildren: () => import('./test/test.module').then( m => m.TestPageModule)
   }
 
 ];

@@ -140,6 +140,7 @@ section.accesos-directos {
         --padding-end: 11px;
         --padding-start: 11px;
         --padding-top: 11px;
+        --box-shadow: none;
         margin-top: 0;
         margin-bottom: 0;
 
@@ -151,6 +152,7 @@ section.accesos-directos {
           text-align: left;
           position: relative;
           justify-content: space-between;
+          text-transform: none;
 
           .rounded {
             padding: 10px;

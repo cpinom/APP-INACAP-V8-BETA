@@ -8,48 +8,71 @@
 
 <ion-content>
 
-  <ion-card class="primary-card" color="white" *ngIf="mostrarData && data">
+  @if (mostrarCargando) {
+  <div class="loaderInacap">
+    <ion-spinner name="lines" color="primary"></ion-spinner>
+  </div>
+  }
+
+  @if (mostrarData && data) {
+  <ion-card class="primary-card" color="white">
     <ion-card-header>
       <ion-card-title>{{data.titulo}}</ion-card-title>
     </ion-card-header>
   </ion-card>
 
-  <div class="loaderInacap" *ngIf="!hideLoadingSpinner">
-    <ion-spinner name="lines" color="primary"></ion-spinner>
-  </div>
+  <section class="first bienvenida">
+    <div class="section-header">Información previa</div>
+    <div class="section-content">
+      <ng-container *ngIf="data.contestada == false">
+        <span [innerHTML]="data.bienvenida"></span>
+        <span class="url" *ngIf="data.link">
+          Para más información puedes <a delegate [href]="data.link">ingresar aquí.</a>
+        </span>
+      </ng-container>
+      <ng-container *ngIf="data.contestada == true">
+        <span [innerHTML]="data.bienvenida"></span>
+      </ng-container>
+    </div>
+  </section>
+  @if (!data.contestada) {
+  <section class="btn-presenta">
+    <ion-button color="primary" shape="round" expand="block" (click)="postular()">
+      Postularme como Delegado
+    </ion-button>
+    <ion-button color="primary" shape="round" expand="block" fill="outline" (click)="rechazar()">
+      No quiero participar
+    </ion-button>
+  </section>
+  }
+  @if (data.contestada == true) {
+  @if (data.respuesta == data.evento.postulaOk) {
+  <section class="btn-contestada">
+    <ion-button color="primary" shape="round" expand="block" (click)="postular()">
+      Confirmo Postulación
+    </ion-button>
+    <ion-button color="primary" shape="round" expand="block" fill="outline" (click)="cancelar()">
+      Cancelar Postulación
+    </ion-button>
+  </section>
+  }
+  @if (data.respuesta == data.evento.postulaCancela || data.respuesta == data.evento.postulaRechaza) {
+  <section class="btn-contestada">
+    <ion-button color="primary" shape="round" expand="block" routerLink="/dashboard-alumno/inicio" routerDirection="back">
+      Volver al Inicio
+    </ion-button>
+  </section>
+  }
+  }
+  }
 
-  <ng-container *ngIf="mostrarData && data">
-
-    <section class="first bienvenida">
-      <div class="section-header">Información previa</div>
-      <div class="section-content">
-        <ng-container *ngIf="data.contestada == false">
-          <span [innerHTML]="data.bienvenida"></span>
-          <span class="url" *ngIf="data.link">Para más información puedes <a delegate [href]="data.link">ingresar aquí.</a></span>
-        </ng-container>
-        <ng-container *ngIf="data.contestada == true">
-          <span [innerHTML]="data.bienvenida"></span>
-        </ng-container>
-      </div>
-    </section>
-
-    <section class="btn-presenta" *ngIf="!data.contestada">
-      <ion-button color="primary" shape="round" expand="block" (click)="postular()">Postularme como Delegado</ion-button>
-      <ion-button color="primary" shape="round" expand="block" fill="outline" (click)="rechazar()">No quiero participar</ion-button>
-    </section>
-
-    <section class="btn-contestada" *ngIf="data.contestada == true && data.respuesta == data.evento.postulaOk">
-      <ion-button color="primary" shape="round" expand="block" (click)="postular()">Confirmo Postulación</ion-button>
-      <ion-button color="primary" shape="round" expand="block" fill="outline" (click)="cancelar()">Cancelar Postulación</ion-button>
-    </section>
-
-  </ng-container>
-
-  <section class="empty-state" *ngIf="mostrarData && !data">
+  @if (mostrarData && !data) {
+  <section class="empty-state">
     <div>
       <ion-icon src="assets/icon/group.svg"></ion-icon>
       <p>Información no disponible. Contáctese con su DAE para mayor información.</p>
     </div>
   </section>
+  }
 
 </ion-content>

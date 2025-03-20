@@ -33,6 +33,7 @@ section.social-media {
           width: 100%;
           height: 90px;
           --color: var(--color);
+          --box-shadow: none;
 
           &.facebook {
             --background: var(--ion-color-1-background);
@@ -119,6 +120,7 @@ section.social-media {
             width: 100%;
             text-align: left;
             position: relative;
+            text-transform: none;
 
             .rounded {
               padding: 10px;

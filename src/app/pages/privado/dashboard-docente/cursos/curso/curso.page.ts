@@ -196,7 +196,7 @@ export class CursoPage implements OnInit {
     await this.nav.navigateForward(`${this.router.url}/recuperacion`, { state: this.data });
   }
   get semanaHorario() {
-    let fechaInicio = moment().startOf('week');
+    let fechaInicio = moment().startOf('isoWeek');
     let fechaTermino = fechaInicio.clone().add(5, 'day');
 
     if (fechaInicio.format('MM') == fechaTermino.format('MM')) {

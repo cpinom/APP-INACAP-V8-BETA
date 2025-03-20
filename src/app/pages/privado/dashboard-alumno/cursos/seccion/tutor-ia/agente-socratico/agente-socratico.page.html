@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Tutor IA" defaultHref=""></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-card color="white" class="primary-card">
+    <ion-card-header>
+      <ion-icon src="assets/icon/mingcute_ai-line.svg" class="rounded variant-1"></ion-icon>
+      <ion-card-title>
+        <h2>Tutor IA</h2>
+        <p>Te ayudo a estudiar</p>
+      </ion-card-title>
+      <ion-button shape="round" color="primary" fill="outline" (click)="reiniciar()">Reiniciar chat</ion-button>
+    </ion-card-header>
+  </ion-card>
+</ion-header>
+
+<ion-content>
+  <div class="chat-container">
+    @if (mensajes.length) {
+    @for (item of mensajes; track $index) {
+    @if (item.user =='alumno') {
+    <div class="message sent">
+      <div class="bubble">
+        {{item.message}}
+      </div>
+    </div>
+    }
+    @else if (item.user =='tutor') {
+    <div class="message received">
+      <div class="bubble" [innerHTML]="item.message | replaceLineBreaks"></div>
+    </div>
+    }
+    }
+    }
+    @if (procesando) {
+    Generando respuesta...
+    }
+  </div>
+</ion-content>
+
+<ion-footer class="agente-footer">
+  <ion-row align-items-center>
+    <ion-col size="10">
+      <ion-textarea [(ngModel)]="mensaje" [disabled]="procesando" auto-grow fill="outline" rows="1"
+        placeholder="Escribe un mensaje..." (keyup.enter)="enviarMensaje()"></ion-textarea>
+    </ion-col>
+    <ion-col size="2">
+      <ion-button shape="round" (click)="enviarMensaje()" [disabled]="procesando">
+        <ion-icon slot="icon-only" src="assets/icon/send.svg" color="white"></ion-icon>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

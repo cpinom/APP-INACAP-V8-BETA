@@ -1,9 +1,30 @@
 ion-content {
+  .disclaimer {
+    .section-content {
+      padding: 12px 15px;
+      font-size: var(--FS15);
+      gap: 10px;
+      display: flex;
+      
+      ion-icon {
+        background: #C8DCE9;
+        padding: 6px;
+        border-radius: 50%;
+        font-size: 18px;
+        flex: 0 0 18px;
+      }
+    }
+  }
   .bienvenida {
     margin-inline: 15px;
+    margin-top: 20px;
     display: flex;
     flex-direction: column;
     gap: 15px;
+
+    .section-header {
+      padding-left: 10px;
+    }
 
     ion-button {
       width: 100%;
@@ -13,6 +34,7 @@ ion-content {
       --padding-end: 11px;
       --padding-start: 11px;
       --padding-top: 11px;
+      --box-shadow: none;
       margin: 0;
 
       .btn-inner {
@@ -23,6 +45,7 @@ ion-content {
         text-align: left;
         position: relative;
         justify-content: space-evenly;
+        text-transform: none;
 
         .launch {
           position: absolute;
@@ -44,6 +67,7 @@ ion-content {
           ion-label {
             color: var(--ion-text-color);
             font-size: var(--FS16);
+            font-weight: 700;
           }
         }
 

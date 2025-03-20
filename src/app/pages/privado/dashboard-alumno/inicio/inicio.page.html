@@ -104,11 +104,11 @@
   <ion-card color="white" class="destacado-list" routerLink="postulaciones" *ngIf="mostrarPostulaciones">
     <ion-card-content>
       <ion-list>
-        <ion-item detail="true" lines="none" class="ion-activatable">
-          <ion-icon slot="start" src="assets/icon/star.svg"></ion-icon>
+        <ion-item detail="false" lines="none" class="ion-activatable">
           <ion-label>
             <h2>{{status.delegados.postulaciones.banner}}</h2>
           </ion-label>
+          <ion-icon slot="end" class="rounded" src="assets/icon/star.svg"></ion-icon>
         </ion-item>
       </ion-list>
     </ion-card-content>
@@ -117,11 +117,11 @@
   <ion-card color="white" class="destacado-list" routerLink="votaciones" *ngIf="mostrarVotaciones">
     <ion-card-content>
       <ion-list>
-        <ion-item detail="true" lines="none" class="ion-activatable">
-          <ion-icon slot="start" src="assets/icon/star.svg"></ion-icon>
+        <ion-item detail="false" lines="none" class="ion-activatable">
           <ion-label>
             <h2>{{status.delegados.votaciones.banner}}</h2>
           </ion-label>
+          <ion-icon slot="end" class="rounded" src="assets/icon/how_to_vote.svg"></ion-icon>
         </ion-item>
       </ion-list>
     </ion-card-content>

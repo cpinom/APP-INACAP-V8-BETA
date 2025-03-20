@@ -1,5 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-tutor-ia',
@@ -9,10 +10,19 @@ import { Router } from '@angular/router';
 export class TutorIaPage implements OnInit {
 
   private router = inject(Router);
+  private nav = inject(NavController);
 
-  constructor() { }
+  seccion: any;
+
+  constructor() {
+    this.seccion = this.router.getCurrentNavigation()?.extras.state;
+    console.log(this.seccion);
+  }
 
   ngOnInit() {
+  }
+  agenteSocraticoTap() {
+    this.nav.navigateForward(`${this.router.url}/agente-socratico`, { state: this.seccion });
   }
   get backUrl() {
     return this.router.url.replace('/tutor-ia', '');

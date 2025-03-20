@@ -33,6 +33,10 @@ import { LocalNotificationSchema, LocalNotifications, ScheduleOptions } from '@c
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import { environment } from 'src/environments/environment.proxy';
 import { Device } from '@capacitor/device';
+import { register } from 'swiper/element/bundle';
+
+// Registramos el componente Swiper
+register();
 
 @Component({
   selector: 'app-root',

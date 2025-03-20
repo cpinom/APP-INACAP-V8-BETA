@@ -135,7 +135,19 @@ export class AlumnoService extends PrivateService {
   }
 
   // Perfil
+  crearSolicitudFoto() {
+    return this.get(`${this.baseUrl}/v4/alumno/crear-solicitud-foto`);
+  }
   getEstadoFotoPerfil() {
     return this.get(`${this.baseUrl}/v5/alumno/estado-foto-perfil`);
+  }
+  cargarFotoPerfil(solicitudId: any, params: any) {
+    return this.post(`${this.baseUrl}/v6/alumno/cargar-foto-perfil?solicitudId=${solicitudId}`, params);
+  }
+  cargarFotoCedula(solicitudId: any, params: any) {
+    return this.post(`${this.baseUrl}/v6/alumno/cargar-foto-cedula?solicitudId=${solicitudId}`, params);
+  }
+  actualizarFotoPerfil(params: any) {
+    return this.post(`${this.baseUrl}/v5/alumno/actualizar-foto-perfil`, params);
   }
 }

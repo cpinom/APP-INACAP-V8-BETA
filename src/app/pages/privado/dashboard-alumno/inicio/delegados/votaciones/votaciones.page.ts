@@ -23,10 +23,10 @@ interface DataResult {
 })
 export class VotacionesPage implements OnInit, AfterViewInit {
 
-  @ViewChild('swiperEl', { static: false }) private swiperRef: ElementRef | undefined;
+  @ViewChild('swiperEl', { static: false }) private swiperRef!: ElementRef;
   swiper!: Swiper;
-  hideLoadingSpinner = false;
   candidatos: any;
+  mostrarCargando = true;
   mostrarData = false;
   mostrarCandidatos = false;
   fotoDesconocido = desconocido.imgBase64;
@@ -44,11 +44,10 @@ export class VotacionesPage implements OnInit, AfterViewInit {
   private dialog = inject(DialogService);
 
   constructor() { }
-
-  async ngOnInit() {
+  async ngOnInit() { }
+  async ngAfterViewInit() {
     await this.cargar();
   }
-  ngAfterViewInit() { }
   async cargar() {
     try {
       const result: DataResult = await this.api.getVotaciones();
@@ -73,7 +72,7 @@ export class VotacionesPage implements OnInit, AfterViewInit {
       }
     }
     finally {
-      this.hideLoadingSpinner = true;
+      this.mostrarCargando = false;
       this.mostrarData = true;
     }
 
@@ -85,11 +84,11 @@ export class VotacionesPage implements OnInit, AfterViewInit {
   }
   async votar() {
     if (this.votoPersona) {
-      const confirmar = await this.confirmar('¿Estás seguro de que deseas emitir tu voto?')
-      const loading = await this.dialog.showLoading({ message: 'Enviando Voto...' });
+      const confirmar = await this.confirmar('¿Estás seguro de que deseas emitir tu voto?');
 
       if (!confirmar) return;
 
+      const loading = await this.dialog.showLoading({ message: 'Enviando Voto...' });
       const info = this.candidatos[0];
       const params = {
         persNcorr: this.votoPersona,
@@ -99,22 +98,24 @@ export class VotacionesPage implements OnInit, AfterViewInit {
         niveCcod: info.niveCcod
       };
 
-      await loading.present();
-
       try {
-        let result = await this.api.enviarVoto(params);
+        const result = await this.api.enviarVoto(params);
 
-        if (result.success) {
-          if (result.code == 1) {
-            this.presentarOk('Tu voto ha sido enviado existosamente.');
-            return;
-          }
+        if (result.success && result.code == 1) {
+          await loading.dismiss();
+          await this.presentarOk('Tu voto ha sido enviado existosamente.');
+          return;
         }
 
-        this.snackbar.showToast('No se pudo procesar tu solicitud. Vuelve a intentar.');
+        throw Error();
       }
       catch (error: any) {
-        await this.error.handle(error);
+        if (error && error.status == 401) {
+          await this.error.handle(error);
+          return;
+        }
+
+        await this.snackbar.showToast('No se pudo procesar tu solicitud. Vuelve a intentar.');
       }
       finally {
         await loading.dismiss();
@@ -139,14 +140,14 @@ export class VotacionesPage implements OnInit, AfterViewInit {
         {
           text: 'Aceptar',
           handler: () => {
-            this.nav.navigateBack('alumno/inicio');
+            this.nav.navigateBack('/dashboard-alumno/inicio');
           }
         }
       ]
     });
   }
   async cerrar() {
-    await this.nav.navigateBack('/alumno/inicio');
+    await this.nav.navigateBack('/dashboard-alumno/inicio');
   }
   confirmar(message: string, title?: string): Promise<boolean> {
 
@@ -170,8 +171,7 @@ export class VotacionesPage implements OnInit, AfterViewInit {
       });
 
       await actionSheet.present();
-
-    })
+    });
   }
 
 }

@@ -42,6 +42,7 @@ ion-content.detalle-seccion {
             --padding-end: 11px;
             --padding-start: 11px;
             --padding-top: 11px;
+            --box-shadow: none;
             margin: 0;
 
             .btn-inner {
@@ -52,6 +53,7 @@ ion-content.detalle-seccion {
                 text-align: left;
                 position: relative;
                 justify-content: space-between;
+                text-transform: none;
 
                 .rounded {
                     flex: 0 0 24px;
@@ -76,6 +78,7 @@ ion-content.detalle-seccion {
                     h2 {
                         font-size: var(--FS20);
                         font-weight: 700;
+                        white-space: nowrap;
                     }
                     p {
                         font-size: var(--FS14);

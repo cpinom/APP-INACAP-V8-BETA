@@ -18,9 +18,20 @@
     </ion-item>
   </ion-list>
 
+  <section class="disclaimer">
+    <div class="section-content">
+      <span>Este tutor IA es generado con inteligencia artificial y podrá ayudarte a reforzar tus conocimientos. Es
+        importante que revises las respuestas con la información que te entrega el docente.</span>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+    </div>
+  </section>
+
+  @if (seccion) {
   <section class="bienvenida">
 
-    <ion-button class="color-1" routerLink="agente">
+    <div class="section-header">{{seccion.asigTdesc}}</div>
+
+    <ion-button class="color-1" (click)="agenteSocraticoTap()">
       <div class="btn-inner">
         <div class="title">
           <ion-icon src="assets/icon/checkbook.svg" class="rounded"></ion-icon>
@@ -31,7 +42,7 @@
       </div>
     </ion-button>
 
-    <ion-button class="color-2" routerLink="agente">
+    <ion-button class="color-2" routerLink="agente-practico">
       <div class="btn-inner">
         <div class="title">
           <ion-icon src="assets/icon/view_timeline.svg" class="rounded"></ion-icon>
@@ -42,7 +53,7 @@
       </div>
     </ion-button>
 
-    <ion-button class="color-3" routerLink="agente">
+    <ion-button class="color-3" routerLink="test">
       <div class="btn-inner">
         <div class="title">
           <ion-icon src="assets/icon/stars.svg" class="rounded"></ion-icon>
@@ -54,5 +65,6 @@
     </ion-button>
 
   </section>
+  }
 
 </ion-content>

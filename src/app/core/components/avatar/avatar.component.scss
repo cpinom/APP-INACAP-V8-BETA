@@ -23,6 +23,7 @@ ion-button {
   right: -6px;
   width: 35px;
   height: 35px;
+  min-height: auto !important;
   min-height: 24px;
   --border-radius: 50%;
   border-radius: 50%;

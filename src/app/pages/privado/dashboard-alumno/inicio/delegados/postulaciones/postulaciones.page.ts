@@ -18,9 +18,9 @@ interface DataResult {
 })
 export class PostulacionesPage implements OnInit {
 
-  hideLoadingSpinner!: boolean;
-  data: any;
+  mostrarCargando = true;
   mostrarData = false;
+  data: any;
 
   private api = inject(DelegadosService);
   private nav = inject(NavController);
@@ -57,7 +57,7 @@ export class PostulacionesPage implements OnInit {
       }
     }
     finally {
-      this.hideLoadingSpinner = true;
+      this.mostrarCargando = false;
       this.mostrarData = true;
     }
   }
@@ -65,10 +65,10 @@ export class PostulacionesPage implements OnInit {
     const result = await this.guardarPostulacion(this.data.evento.postulaOk);
 
     if (result) {
-      this.presentSuccess('Tu postulación ha sido enviada exitosamente.')
+      await this.presentSuccess('Tu postulación ha sido enviada exitosamente.')
     }
     else {
-      this.presentError('Ha ocurrido un error mientras se procesaba tu solicitud. Vuelve a intentarlo.')
+      await this.presentError('Ha ocurrido un error mientras se procesaba tu solicitud. Vuelve a intentarlo.')
     }
   }
   async rechazar() {
@@ -78,10 +78,10 @@ export class PostulacionesPage implements OnInit {
       const result = await this.guardarPostulacion(this.data.evento.postulaRechaza);
 
       if (result) {
-        this.presentSuccess('Tu preferencia se ha guardado correctamente.')
+        await this.presentSuccess('Tu preferencia se ha guardado correctamente.')
       }
       else {
-        this.presentError('Ha ocurrido un error mientras se procesaba tu solicitud. Vuelva a intentarlo.')
+        await this.presentError('Ha ocurrido un error mientras se procesaba tu solicitud. Vuelva a intentarlo.')
       }
     }
   }
@@ -89,10 +89,10 @@ export class PostulacionesPage implements OnInit {
     const result = await this.guardarPostulacion(this.data.evento.postulaCancela);
 
     if (result) {
-      this.presentSuccess('Tu postulación ha sido cancelada exitosamente.')
+      await this.presentSuccess('Tu postulación ha sido cancelada exitosamente.')
     }
     else {
-      this.presentError('Ha ocurrido un error mientras se procesaba tu solicitud. Vuelve a intentarlo.')
+      await this.presentError('Ha ocurrido un error mientras se procesaba tu solicitud. Vuelve a intentarlo.')
     }
   }
   async guardarPostulacion(respuestaId: string) {
@@ -141,7 +141,7 @@ export class PostulacionesPage implements OnInit {
         {
           text: 'Aceptar',
           handler: () => {
-            this.nav.navigateBack('alumno/inicio');
+            this.nav.navigateBack('/dashboard-alumno/inicio');
           }
         }
       ]
@@ -159,7 +159,7 @@ export class PostulacionesPage implements OnInit {
         {
           text: 'Aceptar',
           handler: () => {
-            this.nav.navigateBack('alumno/inicio');
+            this.nav.navigateBack('/dashboard-alumno/inicio');
           }
         }
       ]

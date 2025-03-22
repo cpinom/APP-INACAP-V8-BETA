@@ -57,7 +57,8 @@ export class AuthService {
           return false;
         }
         return true
-      }
+      },
+      presentingElement: getRouterOutlet() || undefined,
     });
 
     const { data } = await modal.onDidDismiss();
@@ -280,4 +281,8 @@ export class AuthService {
     });
   }
 
+}
+
+export function getRouterOutlet() {
+  return document.getElementById('ion-router-outlet-content') || undefined;
 }

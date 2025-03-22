@@ -8,6 +8,10 @@ const routes: Routes = [
     component: InicioPage
   },
   {
+    path: 'notificaciones',
+    loadChildren: () => import('./../notificaciones/notificaciones.module').then(m => m.NotificacionesPageModule)
+  },
+  {
     path: 'detalle-destacado',
     loadChildren: () => import('./detalle-destacado/detalle-destacado.module').then(m => m.DetalleDestacadoPageModule)
   }

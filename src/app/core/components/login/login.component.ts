@@ -44,6 +44,7 @@ export class LoginComponent implements OnInit {
   ngOnInit() { }
   async login() {
 
+    this.submitted = true;
     const isValid = this.loginForm.valid;
 
     if (isValid) {
@@ -156,12 +157,6 @@ export class LoginComponent implements OnInit {
       return 'assets/images/inacap-logo-blanco.png';
     }
     return 'assets/images/inacap-logo.png';
-  }
-  get usuarioError() {
-    return this.usuario?.hasError('required') ? 'Debe ingresar un usuario' : '';
-  }
-  get claveError() {
-    return this.clave?.hasError('required') ? 'Debe ingresar una clave' : '';
   }
   get usuario() { return this.loginForm.get('usuario'); }
   get clave() { return this.loginForm.get('clave'); }

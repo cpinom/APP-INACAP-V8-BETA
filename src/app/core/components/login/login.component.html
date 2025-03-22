@@ -27,16 +27,22 @@
       <ion-list>
         @if (!userCache) {
         <ion-item [disabled]="procesando">
-          <ion-input #usuario label="Usuario" labelPlacement="stacked" formControlName="usuario" tabindex="1"
-            placeholder="Ingresa tu RUN o usuario INACAPMail" [errorText]="usuarioError"></ion-input>
+          <ion-input #usuarioEl label="Usuario" labelPlacement="stacked" formControlName="usuario" tabindex="1"
+            placeholder="Ingresa tu RUN o usuario INACAPMail"></ion-input>
         </ion-item>
+        @if(submitted && usuario?.hasError('required')) {
+        <div class="invalid">Debe ingresar un usuario</div>
+        }
         }
         <ion-item [disabled]="procesando">
-          <ion-input label="Contraseña" type="password" formControlName="clave" tabindex="2"
-            placeholder="Ingresa tu contraseña" [errorText]="claveError">
+          <ion-input label="Contraseña" type="password" labelPlacement="stacked" formControlName="clave" tabindex="2"
+            placeholder="Ingresa tu contraseña">
             <ion-input-password-toggle slot="end" color="medium"></ion-input-password-toggle>
           </ion-input>
         </ion-item>
+        @if(submitted && clave?.hasError('required')) {
+        <div class="invalid">Debe ingresar una clave</div>
+        }
       </ion-list>
     </div>
     <ion-button type="submit" color="danger" expand="block" shape="round" [disabled]="procesando" tabindex="3">

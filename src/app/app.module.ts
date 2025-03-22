@@ -19,7 +19,7 @@ initializeApp(environment.firebase);
   imports: [
     BrowserModule,
     IonicModule.forRoot({
-      // mode: 'ios',
+      mode: 'ios',
       innerHTMLTemplatesEnabled: true
     }),
     AppRoutingModule,

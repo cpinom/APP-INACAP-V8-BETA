@@ -13,6 +13,7 @@ export class HeaderComponent implements OnInit {
   @Input('personIcon') personIcon: any;
   @Input('personLink') personLink!: string;
   @Input('notificationIcon') notificationIcon: any;
+  @Input('notificationLink') notificationLink!: string;
   @Output() personTap: EventEmitter<any> = new EventEmitter();
   @Output() notificacionTap: EventEmitter<any> = new EventEmitter();
 
@@ -24,7 +25,10 @@ export class HeaderComponent implements OnInit {
       await this.nav.navigateForward(this.personLink);
     }
   }
-  notificacionesTap() {
+  async notificacionesTap() {
+    if(this.notificationLink) {
+      await this.nav.navigateForward(this.notificationLink);
+    }
     this.notificacionTap.emit();
   }
 

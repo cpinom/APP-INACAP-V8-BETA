@@ -908,9 +908,9 @@ export class InicioPage implements OnInit, AfterViewInit {
     return false;
   }
   get mostrarJustificaEvaluacion() {
-    if (this.pt.is('mobileweb')) {
-      return true;
-    }
+    // if (this.pt.is('mobileweb')) {
+    //   return true;
+    // }
 
     if (this.status) {
       return this.status.justificaEvaluacion === true;

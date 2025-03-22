@@ -6,212 +6,76 @@
   </ion-toolbar>
   <ion-card color="white" class="primary-card">
     <ion-card-header>
-      <ion-card-title>Asistencia</ion-card-title>
-      <ion-card-subtitle>{{asignatura}}</ion-card-subtitle>
+      <ion-card-title>
+        <h2>Asistencia</h2>
+        <p>{{asignatura}}</p>
+      </ion-card-title>
     </ion-card-header>
-    <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar>
   </ion-card>
 </ion-header>
 
 <ion-content>
 
-  <!-- <section class="first" *ngIf="mostrarData">
-    <div class="section-content">
+  @if (mostrarCargando) {
+  <div class="loaderInacap">
+    <ion-spinner name="lines" color="primary"></ion-spinner>
+  </div>
+  }
 
-      <div class="tabs" *ngIf="detalleAsistencia.asistenciaCC.length">
-        <ion-segment [(ngModel)]="tabModel" mode="md" [swipeGesture]="false">
-          <ion-segment-button [value]="0">
-            <ion-label>Asistencia</ion-label>
-          </ion-segment-button>
-          <ion-segment-button [value]="1">
-            <ion-label>Campos Clínicos</ion-label>
-          </ion-segment-button>
-        </ion-segment>
-      </div>
-
-      <ng-container *ngIf="tabModel == 0">
-
-        <ion-accordion-group *ngIf="asistencia[3].length" style="margin: 15px;" expand="inset">
-          <ion-accordion value="first">
-            <ion-item slot="header" color="light">
-              <ion-label>Próximas</ion-label>
-              <ion-badge slot="end" color="primary">{{asistencia[3].length}}</ion-badge>
-            </ion-item>
-            <div slot="content">
-              <ion-list slot="content">
-                <ion-item *ngFor="let item of asistencia[3]">
-                  <ion-icon slot="start" src="assets/icon/{{resolverIcon(item.title)}}.svg" [color]="resolverColor(item.title)"></ion-icon>
-                  <ion-label>
-                    <h2 style="display: flex;">
-                      <div style="width: 40px; text-align: center;">{{item.dia.substr(0,3).toLowerCase()}}</div> {{item.fecha}}</h2>
-                  </ion-label>
-                </ion-item>
-              </ion-list>
-            </div>
-          </ion-accordion>
-        </ion-accordion-group>
-    
-        <section *ngIf="asistencia[0].length">
-          <div class="section-header">Esta semana</div>
-          <div class="section-content">
-            <ion-list>
-              <ion-item *ngFor="let item of asistencia[0]">
-                <ion-icon slot="start" src="assets/icon/{{resolverIcon(item.title)}}.svg" [color]="resolverColor(item.title)"></ion-icon>
-                <ion-label>
-                  <h2>{{item.fecha}}</h2>
-                  <p>{{item.title}}</p>
-                </ion-label>
-                <ion-badge slot="end" color="primary" *ngIf="item.hrs">{{item.hrs}} horas</ion-badge>
-              </ion-item>
-            </ion-list>
-          </div>
-        </section>
-    
-        <section *ngIf="asistencia[1].length">
-          <div class="section-header">Mensuales</div>
-          <div class="section-content">
-            <ion-list>
-              <ion-item *ngFor="let item of asistencia[1]">
-                <ion-icon slot="start" src="assets/icon/{{resolverIcon(item.title)}}.svg" [color]="resolverColor(item.title)"></ion-icon>
-                <ion-label>
-                  <h2>{{item.fecha}}</h2>
-                  <p>{{item.title}}</p>
-                </ion-label>
-                <ion-badge slot="end" color="primary" *ngIf="item.hrs">{{item.hrs}} horas</ion-badge>
-              </ion-item>
-            </ion-list>
-          </div>
-        </section>
-    
-        <section *ngIf="asistencia[2].length">
-          <div class="section-header">Anteriores</div>
-          <div class="section-content">
-            <ion-list>
-              <ion-item *ngFor="let item of asistencia[2]">
-                <ion-icon slot="start" src="assets/icon/{{resolverIcon(item.title)}}.svg" [color]="resolverColor(item.title)"></ion-icon>
-                <ion-label>
-                  <h2>{{item.fecha}}</h2>
-                  <p>{{item.title}}</p>
-                </ion-label>
-                <ion-badge slot="end" color="primary" *ngIf="item.hrs">{{item.hrs}} horas</ion-badge>
-              </ion-item>
-            </ion-list>
-          </div>
-        </section>
-    
-        <section *ngIf="listado.length === 0" class="empty-state">
-          <div>
-            <ion-icon src="assets/icon/info.svg"></ion-icon>
-            <p>Sin registros en este momento.</p>
-          </div>
-        </section>
-
-      </ng-container>
-
-      <ng-container *ngIf="tabModel == 1">
-        <ion-list>
-          <ion-item *ngFor="let item of detalleAsistencia.asistenciaCC">
-            <ion-icon slot="start" src="assets/icon/radio_button_unchecked.svg" *ngIf="item.apesNasistencia == 0"></ion-icon>
-            <ion-icon slot="start" src="assets/icon/check_circle_outline.svg" color="success" *ngIf="item.apesNasistencia == 1"></ion-icon>
-            <ion-icon slot="start" src="assets/icon/highlight_off.svg" color="danger" *ngIf="item.apesNasistencia == 2"></ion-icon>
-            <ion-label>
-              <h2>{{item.apcvFmodulo}}</h2>
-              <p>Sin registro</p>
-            </ion-label>
-            <ion-button size="small" fill="outline" slot="end" (click)="registrarAsistencia(item)" *ngIf="item.apesNasistencia == 0">Registrar Asistencia</ion-button>
-          </ion-item>
-        </ion-list>
-      </ng-container>
-
-    </div>
-
-  </section> -->
-
-  <ng-container *ngIf="mostrarData && asistencia">
-
-    <ion-accordion-group *ngIf="asistencia[3].length" style="margin: 15px;" expand="inset">
-      <ion-accordion value="first">
-        <ion-item slot="header" color="light">
-          <ion-label>Próximas</ion-label>
-          <ion-badge slot="end" color="primary">{{asistencia[3].length}}</ion-badge>
+  @if (mostrarData && asistencia) {
+  <ion-accordion-group #acordeones expand="inset">
+    @for (item of asistencia; track $index) {
+    <ion-accordion [value]="item.mes">
+      <ion-item slot="header">
+        <ion-label>{{item.mes}}</ion-label>
+        <p class="estado-actividad info" slot="end">{{item.resumen}}</p>
+      </ion-item>
+      <div slot="content">
+        @for (item of item.detalle; track $index) {
+        <ion-item>
+          <ion-label>
+            <p>{{item.fecha}}</p>
+          </ion-label>
+          @if (item.title == 'Presente') {
+          <p class="estado-actividad success" slot="end">Presente</p>
+          }
+          @else if (item.title=='Ausente') {
+          <p class="estado-actividad danger" slot="end">Ausente</p>
+          }
+          @else {
+          <p class="estado-actividad" slot="end">Sin Registro</p>
+          }
         </ion-item>
-        <div slot="content">
-          <ion-list slot="content">
-            <ion-item *ngFor="let item of asistencia[3]">
-              <ion-icon slot="start" src="assets/icon/{{resolverIcon(item.title)}}.svg" [color]="resolverColor(item.title)"></ion-icon>
-              <ion-label>
-                <h2 style="display: flex;">
-                  <div style="width: 40px; text-align: center;">{{item.dia.substr(0,3).toLowerCase()}}</div> {{item.fecha}}</h2>
-              </ion-label>
-            </ion-item>
-          </ion-list>
-        </div>
-      </ion-accordion>
-    </ion-accordion-group>
-
-    <section *ngIf="asistencia[0].length">
-      <div class="section-header">Esta semana</div>
-      <div class="section-content">
-        <ion-list>
-          <ion-item *ngFor="let item of asistencia[0]">
-            <ion-icon slot="start" src="assets/icon/{{resolverIcon(item.title)}}.svg" [color]="resolverColor(item.title)"></ion-icon>
-            <ion-label>
-              <h2>{{item.fecha}}</h2>
-              <p>{{item.title}}</p>
-            </ion-label>
-            <ion-badge slot="end" color="primary" *ngIf="item.hrs">{{item.hrs}} horas</ion-badge>
-          </ion-item>
-        </ion-list>
+        }
       </div>
-    </section>
+    </ion-accordion>
+    }
+  </ion-accordion-group>
+  }
 
-    <section *ngIf="asistencia[1].length">
-      <div class="section-header">Mensuales</div>
-      <div class="section-content">
-        <ion-list>
-          <ion-item *ngFor="let item of asistencia[1]">
-            <ion-icon slot="start" src="assets/icon/{{resolverIcon(item.title)}}.svg" [color]="resolverColor(item.title)"></ion-icon>
-            <ion-label>
-              <h2>{{item.fecha}}</h2>
-              <p>{{item.title}}</p>
-            </ion-label>
-            <ion-badge slot="end" color="primary" *ngIf="item.hrs">{{item.hrs}} horas</ion-badge>
-          </ion-item>
-        </ion-list>
-      </div>
-    </section>
-
-    <section *ngIf="asistencia[2].length">
-      <div class="section-header">Anteriores</div>
-      <div class="section-content">
-        <ion-list>
-          <ion-item *ngFor="let item of asistencia[2]">
-            <ion-icon slot="start" src="assets/icon/{{resolverIcon(item.title)}}.svg" [color]="resolverColor(item.title)"></ion-icon>
-            <ion-label>
-              <h2>{{item.fecha}}</h2>
-              <p>{{item.title}}</p>
-            </ion-label>
-            <ion-badge slot="end" color="primary" *ngIf="item.hrs">{{item.hrs}} horas</ion-badge>
-          </ion-item>
-        </ion-list>
-      </div>
-    </section>
-
-    <section *ngIf="listado.length === 0" class="empty-state">
-      <div>
-        <ion-icon src="assets/icon/info.svg"></ion-icon>
-        <p>Sin registros en este momento.</p>
-      </div>
-    </section>
-
-  </ng-container>
-
-  <section *ngIf="mostrarData && !asistencia" class="empty-state">
+  @if (mostrarData && !asistencia) {
+  <section class="empty-state">
     <div>
       <ion-icon src="assets/icon/info.svg"></ion-icon>
       <p>Información no disponible en este momento.</p>
       <ion-button color="primary" shape="round" (click)="recargar()">Recargar</ion-button>
     </div>
   </section>
+  }
 
 </ion-content>
+
+@if (mostrarData && detalleAsistencia) {
+<ion-footer>
+  <div>
+    <span>
+      Clases Programadas
+      <strong>{{detalleAsistencia.hrsrealasig}}</strong>
+    </span>
+    <span>
+      Clases Asistidas
+      <strong>{{detalleAsistencia.hrsasisasig}}</strong>
+    </span>
+  </div>
+</ion-footer>
+}

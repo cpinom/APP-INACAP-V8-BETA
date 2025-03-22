@@ -8,11 +8,14 @@ export class PortafolioService extends PrivateService {
 
   constructor() {
     super();
-    this.baseUrl += `/v5/portafolio`; // This is a mistake, it should be /portafolio
+    this.baseUrl += `/v5/portafolio`;
   }
 
-  getPrincipal() {
-    return this.get(`${this.baseUrl}/principal`);
+  getPrincipal(matrNcorr: any, carrCcod: any, planCcod: any) {
+    return this.get(`${this.baseUrl}/principal?matrNcorr=${matrNcorr}&carrCcod=${carrCcod}&planCcod=${planCcod}`);
+  }
+  getDelegaturas() {
+    return this.get(`${this.baseUrl}/delegaturas`);
   }
   descargarPortafolio(params: any) {
     return this.post(`${this.baseUrl}/exportar`, params);

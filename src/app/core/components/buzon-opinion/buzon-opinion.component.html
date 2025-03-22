@@ -11,12 +11,14 @@
     </ion-item>
   </ion-list>
 
+  @if (mostrarData && sugerencias) {
   <section class="section-nueva-opinion">
     <ion-button color="primary" shape="round" expand="full" (click)="nuevaOpinion()" [disabled]="mostrarCargando">
       <ion-icon slot="start" src="assets/icon/add.svg"></ion-icon>
       <ion-label>Nueva Opinión</ion-label>
     </ion-button>
   </section>
+  }
 
   @if (mostrarCargando) {
   <div class="loaderInacap">

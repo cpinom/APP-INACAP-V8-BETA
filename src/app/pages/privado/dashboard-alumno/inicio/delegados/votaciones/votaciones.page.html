@@ -67,24 +67,27 @@
                   <ion-avatar>
                     <img [src]="resolverFoto(item.persNcorr)" [appImage]="fotoDesconocido" />
                   </ion-avatar>
-                  <!-- <ion-label>                     -->
                   <div class="label">
                     <h2>{{item.nombreAlumno}}</h2>
                     <p>{{item.carrTdesc}}</p>
                   </div>
-                  <!-- </ion-label> -->
                 </div>
               </ion-radio>
             </ion-item>
             <ion-item lines="full">
               <ion-radio slot="start" value="0" labelPlacement="end">
-                <h2>Voto en blanco</h2>
+                <div class="empty">
+                  <ion-icon src="assets/icon/block.svg" color="medium"></ion-icon>
+                  <h2>Voto en blanco</h2>
+                </div>
               </ion-radio>
-              <!-- <ion-label>Voto en blanco</ion-label> -->
             </ion-item>
             <ion-item lines="full">
               <ion-radio slot="start" value="-1" labelPlacement="end">
-                <h2>Voto nulo</h2>
+                <div class="empty">
+                  <ion-icon src="assets/icon/trip_origin.svg" color="medium"></ion-icon>
+                  <h2>Voto nulo</h2>
+                </div>
               </ion-radio>
               <!-- <ion-label>Voto nulo</ion-label> -->
             </ion-item>

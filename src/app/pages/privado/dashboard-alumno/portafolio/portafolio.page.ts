@@ -8,6 +8,7 @@ import { DialogService } from 'src/app/core/services/dialog.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { EventsService } from 'src/app/core/services/events.service';
 import { PortafolioService } from 'src/app/core/services/http/portafolio.service';
+import { ProfileService } from 'src/app/core/services/profile.service';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
 
 @Component({
@@ -20,6 +21,11 @@ export class PortafolioPage implements OnInit, OnDestroy {
   @ViewChild(IonContent) content!: IonContent;
   activeTab = 0;
   scrollObs: Subscription;
+  programa: any;
+  perfil: any;
+  data: any;
+  mostrarCargando = true;
+  mostrarData = false;
 
   private events = inject(EventsService);
   private global = inject(AppGlobal);
@@ -28,6 +34,7 @@ export class PortafolioPage implements OnInit, OnDestroy {
   private dialog = inject(DialogService);
   private snackbar = inject(SnackbarService);
   private error = inject(ErrorHandlerService);
+  private profile = inject(ProfileService);
 
   constructor() {
 
@@ -39,7 +46,43 @@ export class PortafolioPage implements OnInit, OnDestroy {
     });
 
   }
-  ngOnInit() {
+  async ngOnInit() {
+    await this.cargar();
+  }
+  async cargar() {
+    this.programa = await this.profile.getPrograma();
+    this.perfil = await this.profile.getPrincipal();
+
+    try {
+      const { matrNcorr, carrCcod, planCcod } = this.programa;
+      const result = await this.api.getPrincipal(matrNcorr, carrCcod, planCcod);
+
+      if (result.success) {
+        this.data = result.data;
+      }
+    }
+    catch (error: any) { }
+    finally {
+      this.mostrarCargando = false;
+      this.mostrarData = true;
+    }
+  }
+  async recargar() {
+    this.mostrarCargando = true;
+    this.mostrarData = false;
+    await this.cargar();
+  }
+  resolverPorcentaje(value: string) {
+    // Reemplaza la coma por un punto y convierte a número
+    let numericValue = parseFloat(value.replace(",", "."));
+
+    // Si el valor es negativo, lo deja en 0
+    if (numericValue < 0) {
+      return 0;
+    }
+
+    // Convierte a decimal (dividiendo por 100)
+    return numericValue / 100;
   }
   ngOnDestroy() {
     this.scrollObs.unsubscribe();
@@ -93,6 +136,15 @@ export class PortafolioPage implements OnInit, OnDestroy {
   }
   get mostrarNotificaciones() {
     return this.global.NotificationFlag;
+  }
+  get nombreCompleto() {
+    if (this.perfil) {
+      if (this.perfil.persTnombreSocial)
+        return `${this.perfil.persTnombreSocial} ${this.perfil.persTapePaterno} ${this.perfil.persTapeMaterno}`;
+      return `${this.perfil.persTnombre} ${this.perfil.persTapePaterno} ${this.perfil.persTapeMaterno}`;
+    }
+
+    return '';
   }
 
 }

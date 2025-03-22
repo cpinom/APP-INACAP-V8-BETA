@@ -15,7 +15,8 @@
   </ion-toolbar>
   @if (principal && principal.periodos.length > 1) {
   <app-periodos [periodos]="principal.periodos" [selected]="periodo?.value"
-    (onPeriodoSelected)="periodoSeleccionado($event)"></app-periodos>
+    (onPeriodoSelected)="periodoSeleccionado($event)">
+  </app-periodos>
   }
 </ion-header>
 
@@ -25,14 +26,18 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <p class="last-update" *ngIf="errorStatus && ultimaCarga">{{ultimaCarga}}</p>
+  @if (errorStatus && ultimaCarga) {
+  <p class="last-update">{{ultimaCarga}}</p>
+  }
 
-  <ion-card color="white" class="destacado-list" *ngIf="mostrarDestacados">
+  @if (mostrarDestacados) {
+  <ion-card color="white" class="destacado-list">
     <ion-card-content>
       <ion-list>
         <ion-item lines="none" style="--inner-padding-end: 14px">
           <ion-icon slot="start" color="danger" *ngIf="destacado.tipo == 4" src="assets/icon/dangerous.svg"></ion-icon>
-          <ion-icon slot="start" color="success" *ngIf="destacado.tipo == 3" src="assets/icon/check_circle.svg"></ion-icon>
+          <ion-icon slot="start" color="success" *ngIf="destacado.tipo == 3"
+            src="assets/icon/check_circle.svg"></ion-icon>
           <ion-icon slot="start" color="primary" *ngIf="destacado.tipo == 2" src="assets/icon/info.svg"></ion-icon>
           <ion-icon slot="start" color="warning" *ngIf="destacado.tipo == 1" src="assets/icon/warning.svg"></ion-icon>
           <ion-label>
@@ -43,10 +48,11 @@
       </ion-list>
     </ion-card-content>
   </ion-card>
+  }
 
   <!-- Banner Estacionamientos -->
-  <ion-card color="white" class="destacado-list" (click)="mostrarDetalleEstacionamiento($event, usuarioModal)"
-    *ngIf="mostrarEstacionamientos">
+  @if (mostrarEstacionamientos) {
+  <ion-card color="white" class="destacado-list" (click)="mostrarDetalleEstacionamiento($event, usuarioModal)">
     <ion-card-content>
       <ion-list>
         <ion-item lines="none" style="--inner-padding-end: 14px" class="ion-activatable">
@@ -99,9 +105,11 @@
       </ion-content>
     </ng-template>
   </ion-modal>
+  }
   <!-- Banner Estacionamientos -->
 
-  <ion-card color="white" class="destacado-list" routerLink="postulaciones" *ngIf="mostrarPostulaciones">
+  @if (mostrarPostulaciones) {
+  <ion-card color="white" class="destacado-list" routerLink="postulaciones">
     <ion-card-content>
       <ion-list>
         <ion-item detail="false" lines="none" class="ion-activatable">
@@ -113,8 +121,10 @@
       </ion-list>
     </ion-card-content>
   </ion-card>
+  }
 
-  <ion-card color="white" class="destacado-list" routerLink="votaciones" *ngIf="mostrarVotaciones">
+  @if (mostrarVotaciones) {
+  <ion-card color="white" class="destacado-list" routerLink="votaciones">
     <ion-card-content>
       <ion-list>
         <ion-item detail="false" lines="none" class="ion-activatable">
@@ -126,9 +136,10 @@
       </ion-list>
     </ion-card-content>
   </ion-card>
+  }
 
-  <ion-card color="white" class="destacado-list" (click)="justificacionInasistenciaTap()"
-    *ngIf="mostrarJustificaEvaluacion">
+  @if (mostrarJustificaEvaluacion) {
+  <ion-card color="white" class="destacado-list" (click)="justificacionInasistenciaTap()">
     <ion-card-content>
       <ion-list>
         <ion-item detail="false" lines="none" class="ion-activatable">
@@ -141,8 +152,10 @@
       </ion-list>
     </ion-card-content>
   </ion-card>
+  }
 
-  <section class="ramos" *ngIf="!mostrarData">
+  @if (!mostrarData) {
+  <section class="ramos">
     <ion-card color="white">
       <ion-skeleton-text animated style="width: 100%; height: 100%; margin: 0"></ion-skeleton-text>
     </ion-card>
@@ -153,6 +166,7 @@
       <ion-skeleton-text animated style="width: 100%; height: 100%; margin: 0"></ion-skeleton-text>
     </ion-card>
   </section>
+  }
 
   @if (mostrarData && cursos && cursos.length) {
   <section #ramos class="ramos">

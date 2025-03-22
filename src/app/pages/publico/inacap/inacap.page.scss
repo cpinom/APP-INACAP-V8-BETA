@@ -33,10 +33,10 @@ ion-content {
         }
         &.instituciones,
         &.material {
-            ion-label {
-                padding-top: 10px;
-                padding-bottom: 10px;
-            }
+            // ion-label {
+            //     padding-top: 10px;
+            //     padding-bottom: 10px;
+            // }
             ion-icon[slot="end"] {
                 font-size: 18px;
             }

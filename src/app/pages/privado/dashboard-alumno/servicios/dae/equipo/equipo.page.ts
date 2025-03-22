@@ -36,7 +36,7 @@ export class EquipoPage implements OnInit {
     const dae = await this.profile.getStorage(`dae_${sedeCcod}`);
 
     this.programa = programa;
-    this.personas = dae.personas;
+    this.personas = dae && dae.personas;
     this.mostrarData = true;
 
     this.api.marcarVista(VISTAS_ALUMNO.EQUIPO_DAE);

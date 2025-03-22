@@ -98,7 +98,7 @@ ion-content.detalle-seccion {
                 }
 
                 ion-progress-bar {
-                    --background: #fff;
+                    --background: var(--ion-color-2-primary);;
                     height: 6px;
                 }
 
@@ -111,6 +111,10 @@ ion-content.detalle-seccion {
                         flex: 1;
                         background-color: var(--ion-color-7-primary);
                         border-radius: 3px;
+
+                        &.mark {
+                            background-color: var(--ion-color-7-foreground);
+                        }
                     }
                 }
             }

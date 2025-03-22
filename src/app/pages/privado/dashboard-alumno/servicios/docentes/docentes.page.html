@@ -54,38 +54,14 @@
   }
   }
 
-  <!-- <ng-container *ngIf="mostrarData">
-    
-    <section *ngIf="docentes && docentes.length > 0">
-      <div class="section-content">
-        <ion-list>
-          <ion-item *ngFor="let item of docentes">
-            <app-cached-image slot="start" [src]="resolverFoto(item.persNcorr)"></app-cached-image>
-            <ion-label style="white-space: normal">
-              <h2>{{item.persTnombre}}</h2>
-              <p [innerHTML]="item.asignaturasImpartidas"></p>
-            </ion-label>
-            <ion-icon slot="end" color="medium" (click)="correo(item.email)" src="assets/icon/email.svg"></ion-icon>
-          </ion-item>
-        </ion-list>
-      </div>
-    </section>
-
-    <section *ngIf="docentes && docentes.length == 0" class="empty-state">
-      <div>
-        <ion-icon src="assets/icon/group.svg"></ion-icon>
-        <p>Sin registros en este momento</p>
-      </div>
-    </section>
-    
-  </ng-container>
-
-  <section *ngIf="mostrarData && !docentes" class="empty-state">
+  @if (mostrarData && !docentes) {
+  <section class="empty-state">
     <div>
       <ion-icon src="assets/icon/info.svg"></ion-icon>
       <p>Información no disponible en este momento.</p>
       <ion-button color="primary" shape="round" (click)="recargar()">Recargar</ion-button>
     </div>
-  </section> -->
+  </section>
+  }
 
 </ion-content>

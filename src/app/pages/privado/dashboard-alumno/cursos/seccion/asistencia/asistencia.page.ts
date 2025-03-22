@@ -1,10 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlumnoService } from 'src/app/core/services/http/alumno.service';
 import * as moment from 'moment';
 import { VISTAS_ALUMNO } from 'src/app/core/constants/alumno';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
-import { NavController } from '@ionic/angular';
+import { IonAccordionGroup, NavController } from '@ionic/angular';
 import { EventsService } from 'src/app/core/services/events.service';
 import { AppEvent } from 'src/app/core/interfaces/auth.interfaces';
 import { Subscription } from 'rxjs';
@@ -16,6 +16,7 @@ import { Subscription } from 'rxjs';
 })
 export class AsistenciaPage implements OnInit, OnDestroy {
 
+  @ViewChild('acordeones', { static: false }) acordeones!: IonAccordionGroup;
   mostrarCargando = true;
   seccion: any;
   data: any;
@@ -24,6 +25,7 @@ export class AsistenciaPage implements OnInit, OnDestroy {
   mostrarData = false;
   tabModel = 0;
   asistenciaObs: Subscription;
+  mesModel = '';
 
   constructor(private api: AlumnoService,
     private router: Router,
@@ -63,7 +65,8 @@ export class AsistenciaPage implements OnInit, OnDestroy {
 
       if (result.success) {
         this.detalleAsistencia = result.data;
-        this.procesarAsistencia();
+        this.procesarAsistenciaV2();
+        // this.procesarAsistencia();
       }
       else {
         throw Error();
@@ -85,6 +88,87 @@ export class AsistenciaPage implements OnInit, OnDestroy {
     setTimeout(() => {
       this.cargar();
     }, 500);
+  }
+  procesarAsistenciaV2() {
+    const meses: string[] = [
+      'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+      'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+    ];
+
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0); // quitar hora para comparar solo fechas
+
+    const grupos = new Map<string, any[]>();
+
+    for (const clase of this.listado) {
+      const [dia, mes, anioCorto] = clase.fecha.split('/');
+      const anio = +anioCorto < 50 ? 2000 + +anioCorto : 1900 + +anioCorto; // ← Aquí corregimos el año
+
+      const fecha = new Date(anio, +mes - 1, +dia);
+      fecha.setHours(0, 0, 0, 0);
+
+      const clave = `${anio}-${mes.padStart(2, '0')}`; // ej: "2025-03"
+
+      if (!grupos.has(clave)) grupos.set(clave, []);
+      grupos.get(clave)!.push(clase);
+    }
+
+    const resultados: any[] = [];
+
+    for (const [clave, clasesMes] of grupos) {
+      const [anioStr, mesStr] = clave.split('-');
+      const anio = parseInt(anioStr, 10);
+      const mesIndex = parseInt(mesStr, 10) - 1;
+
+      const inicioMes = new Date(anio, mesIndex, 1);
+      const finMes = new Date(anio, mesIndex + 1, 0);
+      inicioMes.setHours(0, 0, 0, 0);
+      finMes.setHours(0, 0, 0, 0);
+
+      let resumen = '';
+      let detalle = [...clasesMes];
+
+      if (finMes < hoy) {
+        // Mes pasado
+        const asistidas = clasesMes.filter(c => c.title === 'Presente').length;
+        resumen = `${asistidas}/${clasesMes.length} clases asistidas`;
+      }
+      else if (inicioMes > hoy) {
+        // Mes futuro
+        resumen = `${clasesMes.length} clases por realizar`;
+      }
+      else {
+        // Mes actual
+        const clasesRealizadas = clasesMes.filter(clase => {
+          const [d, m, aCorto] = clase.fecha.split('/');
+          const a = +aCorto < 50 ? 2000 + +aCorto : 1900 + +aCorto;
+          const fechaClase = new Date(a, +m - 1, +d);
+          fechaClase.setHours(0, 0, 0, 0);
+          return fechaClase <= hoy;
+        });
+
+        const asistidas = clasesRealizadas.filter(c => c.title === 'Presente').length;
+        resumen = `${asistidas}/${clasesRealizadas.length} clases asistidas`;
+      }
+
+      const esMesActual = (mesIndex === hoy.getMonth() && anio === hoy.getFullYear());
+
+      resultados.push({
+        mes: `${meses[mesIndex][0].toUpperCase()}${meses[mesIndex].slice(1)}`,
+        resumen,
+        detalle,
+        actual: esMesActual
+      });
+    }
+
+    this.mesModel = resultados.find(m => m.actual)?.mes || '';
+    this.asistencia = resultados;
+
+    setTimeout(() => {
+      if (this.acordeones) {
+        this.acordeones.value = this.mesModel;
+      }
+    }, 250);
   }
   procesarAsistencia() {
     let proximas: any[] = [];

@@ -1,12 +1,72 @@
 ion-header {
     ion-card {
         margin-bottom: 0 !important;
+
+        ion-card-header {
+            ion-card-title {
+                h2 {
+                    margin: 0;
+                    font-size: var(--FS22);
+                    font-weight: 700;
+                }
+                p {
+                    margin: 5px 0 0;
+                    font-size: var(--FS14);
+                    font-weight: 400;
+                }
+            }
+        }
     }
 }
 ion-card.primary-card {
     margin-bottom: 10px !important;
 }
-div.info {
+ion-accordion-group {
+    ion-accordion {
+        ion-item[slot="header"] {
+            p.estado-actividad {
+                margin: 0;
+            }
+        }
+        div[slot="content"] {
+            ion-item:last-child {
+                --inner-border-width: 0 !important;
+                --border-width: 0 !important;
+            }
+            ion-label {
+                h2 {
+                    font-size: var(--FS14) !important;
+                }
+            }
+            p.estado-actividad {
+                margin: 0;
+            }
+        }
+    }
+}
+
+ion-footer {
+    background: var(--ion-color-light);
+}
+
+ion-footer > div {
+    display: flex;
+    padding: 10px 15px;
+    text-align: center;
+    font-size: var(--FS12);
+    color: var(--ion-color-dark);
+
+    span {
+        flex: 1;
+    }
+
+    strong {
+        font-size: var(--FS22);
+        display: block;
+    }
+}
+
+/*div.info {
     display: flex;
     align-items: center;
     margin: 14px;
@@ -29,4 +89,4 @@ ion-item {
     ion-icon {
         margin-right: 15px;
     }
-}
+}*/

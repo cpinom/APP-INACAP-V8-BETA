@@ -47,9 +47,9 @@ export class DevolucionGratuidadPage implements OnInit {
     await this.cargar();
     this.api.marcarVista(VISTAS_ALUMNO.DEVOLUCION_GRATIUDAD);
   }
-  recargar(e: any) {
+  recargar(e?: any) {
     this.cargar().finally(() => {
-      e.target.complete();
+      e && e.target.complete();
     })
   }
   async cargar() {
@@ -65,9 +65,10 @@ export class DevolucionGratuidadPage implements OnInit {
       }
     }
     catch (error: any) {
-      this.error.handle(error, async () => {
-        await this.router.navigate(['/alumno/servicios'], { replaceUrl: true })
-      });
+      if (error && error.status === 401) {
+        await this.error.handle(error);
+        return;
+      }
     }
     finally {
       this.mostrarCargando = false;

@@ -31,6 +31,7 @@
     "@capacitor-community/barcode-scanner": "^4.0.1",
     "@capacitor-community/fcm": "^5.0.3",
     "@capacitor-community/file-opener": "^6.0.0",
+    "@capacitor/android": "^6.2.0",
     "@capacitor/app": "6.0.2",
     "@capacitor/app-launcher": "^5.0.7",
     "@capacitor/browser": "^6.0.4",

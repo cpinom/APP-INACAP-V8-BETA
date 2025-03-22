@@ -3,7 +3,7 @@ export const environment = {
   sigaUrl: 'https://siga.inacap.cl',
   apiUrl: '',
   version: '8.0.0',
-  compilation: '202501081150',
+  compilation: '202503211130',
   environmentTitle: 'Desarrollo',
   disabledToken: false,
   mapsKey: 'AIzaSyBoGvWsUMvPL0glLPRSx-7V5GRWSEnC-Ns',

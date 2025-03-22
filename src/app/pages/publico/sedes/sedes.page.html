@@ -1,3 +1,21 @@
 <app-header personLink="privado"></app-header>
 
-<ion-content></ion-content>
+<ion-content>
+
+  <section class="image">
+    <img src="assets/images/publico/sedes-publico.jpg" />
+    <h4 class="title">Sedes</h4>
+  </section>
+
+  <div class="tabs">
+    <ion-segment [(ngModel)]="tabsModel" [swipeGesture]="false" (ionChange)="segmentChanged($event)" mode="ios">
+      <ion-segment-button [value]="0" content-id="cercanas">
+        <ion-label>Cercanas a mí</ion-label>
+      </ion-segment-button>
+      <ion-segment-button [value]="1" content-id="todas">
+        <ion-label>Todas</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
+</ion-content>

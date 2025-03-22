@@ -10,11 +10,13 @@
 
   @if (data) {
   <section class="destacado">
+    @if (data.apdeBimagen) {
     <div class="image">
       <img [src]="data.apdeBimagen" style="width: 100%;" />
     </div>
+    }
     <div class="section-content">
-      <p class="label">DESTACADO</p>
+      <!-- <p class="label">DESTACADO</p> -->
       <h2 class="title">{{data.apdeTtitulo}}</h2>
       <p class="date">{{data.apdeFpublicacion}}</p>
       <div delegate class="content" [innerHTML]="data.apdeTdesc"></div>

@@ -1,0 +1,24 @@
+section.image {
+  margin-top: 0;
+  height: 150px;
+  overflow: hidden;
+  position: relative;
+
+  img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .title {
+    position: absolute;
+    left: 50px;
+    right: 50px;
+    color: white;
+    text-shadow: #000 1px 0 10px;
+    top: 65px;
+    font-size: var(--FS16);
+    margin: 0;
+    text-align: center;
+  }
+}

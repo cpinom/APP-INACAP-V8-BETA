@@ -133,6 +133,9 @@ export class PublicService {
   getAppVersion() {
     return this.get(`${this.baseUrl}/app-version`);
   }
+  getDetalleInacap() {
+    return this.get(`${this.baseUrl}/v5/detalle-inacap`);
+  }
   getContacto() {
     return this.get(`${this.baseUrl}/v3/contacto`);
   }

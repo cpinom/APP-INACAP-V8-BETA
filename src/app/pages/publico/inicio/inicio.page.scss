@@ -23,21 +23,25 @@ ion-content {
             padding: 6px;
           }
           ion-label {
-            font-size: var(--FS14);
             white-space: normal;
             margin: 0;
-            margin-top: 16px;
-            margin-bottom: 16px;
+            margin-top: 10px;
+            margin-bottom: 10px;
 
             h2 {
               color: var(--ion-text-color);
+              font-size: var(--FS15);
             }
 
             p {
+              font-size: var(--FS12);
               white-space: nowrap;
               overflow: hidden;
               text-overflow: ellipsis;
             }
+          }
+          ion-icon {
+            margin-top: 0;
           }
         }
       }

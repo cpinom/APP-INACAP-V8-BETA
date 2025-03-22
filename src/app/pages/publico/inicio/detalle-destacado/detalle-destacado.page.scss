@@ -1,13 +1,15 @@
-section .image {
-  height: auto;
-}
-
-p.label {
-  font-size: var(--FS13);
-  margin-top: 0;
-  margin-bottom: 4px;
-}
-
 section.destacado {
-  margin-top: 15px;
+  section .image {
+    height: auto;
+  }
+
+  .section-content {
+    padding: 15px;
+    font-size: var(--FS14);
+
+    h2 {
+      font-size: var(--FS18);
+      margin: 0;
+    }
+  }
 }

@@ -33,10 +33,11 @@
               <li>El Centro de Formación Técnica INACAP</li>
               <li>La Dirección Nacional de Capacitación INACAP</li>
             </ul>
-            Para realizarlo debes ingresar el <b>Código de Verificación</b>,
-            para el caso de los certificados o el número que aparece debajo del código de barras para los diplomas,
-            indicado en las imágenes a continuación <ion-icon src="assets/icon/help_outline.svg"
-              (click)="imagenesMdl.present()"></ion-icon>
+            <div>
+              Para realizarlo debes ingresar el <b>Código de Verificación</b>,
+              para el caso de los certificados o el número que aparece debajo del código de barras para los diplomas,
+              indicado en las imágenes a continuación <ion-icon src="assets/icon/help_outline.svg"
+                (click)="instruccionesTap()"></ion-icon></div>
           </ion-label>
         </ion-item>
       </ion-list>
@@ -63,8 +64,6 @@
       <ion-button type="submit" expand="block" color="primary" shape="round">Validar</ion-button>
     </section>
   </form>
-
-  <ion-modal #imagenesMdl [breakpoints]="[0, 0.5]" [initialBreakpoint]="0.5" [canDismiss]="true"></ion-modal>
 
   <ion-modal class="mdl-detalle" #detalleMdl [breakpoints]="[0, 0.9]" [initialBreakpoint]="0.9" [canDismiss]="true">
     <ng-template>

@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Notificaciones" [defaultHref]="backUrl"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  @if (data) {
+  <ion-card class="primary-card" color="white">
+    <ion-card-header>
+      <ion-card-title>{{data.apnoTtitulo}}</ion-card-title>
+      <ion-card-subtitle>{{data.apnoFcreacion}}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <p [innerHTML]="data.apnoThtml"></p>
+    </ion-card-content>
+  </ion-card>
+  }
+
+</ion-content>

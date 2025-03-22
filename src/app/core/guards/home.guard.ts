@@ -15,7 +15,7 @@ export const homeGuard: CanMatchFn = async (route, segments) => {
     if (event instanceof NavigationEnd) {
       // debugger
       previousUrl = event.urlAfterRedirects || event.url;
-      console.log(previousUrl);
+      // console.log(previousUrl);
     }
   });
 

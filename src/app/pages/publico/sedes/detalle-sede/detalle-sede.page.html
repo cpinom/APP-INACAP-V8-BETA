@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="backUrl" [text]="backText | parseHTML"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  @if (data) {
+
+  <div class="sede-titulo">
+    <img src="assets/images/bg-sede.png" />
+    <div class="avatar">
+      <ion-avatar>
+        <img [src]="data.sedeBarchivo" />
+      </ion-avatar>
+    </div>
+    <section class="sede-info">
+      <h2>INACAP {{data.sedeTdesc}}</h2>
+      <ion-button color="primary" fill="outline" size="small" (click)="mostrarRuta()">
+        <ion-icon src="assets/icon/room.svg" slot="start"></ion-icon>
+        {{data.sedeTdireccion}}, {{data.ciudTcomuna}}
+      </ion-button>
+    </section>
+  </div>
+
+  <section>
+    <div class="section-header">Información de la Sede</div>
+    <div class="section-content">
+      <ion-list>
+        <ion-item detail="false" class="ion-activatable" (click)="mostrarRuta()">
+          <ion-icon src="assets/icon/room.svg" slot="start"></ion-icon>
+          <ion-label>{{data.sedeTdireccion}}, {{data.ciudTcomuna}}</ion-label>
+        </ion-item>
+        <ion-item detail="false" class="ion-activatable" href="tel:{{data.sedeTfono}}">
+          <ion-icon src="assets/icon/phone.svg" slot="start"></ion-icon>
+          <ion-label>{{data.sedeTfono}}</ion-label>
+        </ion-item>
+        <ion-item detail="false" class="ion-activatable" href="{{'mailto:' +  data.sedeTemail}}">
+          <ion-icon src="assets/icon/mail.svg" slot="start"></ion-icon>
+          <ion-label>{{data.sedeTemail}}</ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-header">Oferta Académica</div>
+    <div class="section-content">
+      <ion-list>
+        <ion-item detail="false" class="ion-activatable" routerLink="oferta-academica">
+          <ion-icon src="assets/icon/school.svg" slot="start"></ion-icon>
+          <ion-label>Carreras de Pregrado</ion-label>
+          <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+
+  }
+
+</ion-content>

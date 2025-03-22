@@ -8,9 +8,14 @@ const routes: Routes = [
     component: ServiciosPage
   },
   {
+    path: 'notificaciones',
+    loadChildren: () => import('./../notificaciones/notificaciones.module').then(m => m.NotificacionesPageModule)
+  },
+  {
     path: 'verificacion-documentos',
     loadChildren: () => import('./verificacion-documentos/verificacion-documentos.module').then(m => m.VerificacionDocumentosPageModule)
-  },  {
+  },
+  {
     path: 'informacion',
     loadChildren: () => import('./informacion/informacion.module').then( m => m.InformacionPageModule)
   },

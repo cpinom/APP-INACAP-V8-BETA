@@ -1,4 +1,4 @@
-<app-header personLink="privado"></app-header>
+<app-header personLink="privado" notificationLink="publico/programas/notificaciones"></app-header>
 
 <ion-content>
 
@@ -17,5 +17,14 @@
       </ion-segment-button>
     </ion-segment>
   </div>
+
+  <ion-segment-view>
+    <ion-segment-content id="educacion-superior">
+      <app-educacion-superior></app-educacion-superior>
+    </ion-segment-content>
+    <ion-segment-content id="educacion-continua">
+      <app-educacion-continua></app-educacion-continua>
+    </ion-segment-content>
+  </ion-segment-view>
 
 </ion-content>

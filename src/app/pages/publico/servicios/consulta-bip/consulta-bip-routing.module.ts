@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
 import { ConsultaBipPage } from './consulta-bip.page';
 
 const routes: Routes = [
@@ -14,4 +13,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class ConsultaBipPageRoutingModule {}
+export class ConsultaBipPageRoutingModule { }

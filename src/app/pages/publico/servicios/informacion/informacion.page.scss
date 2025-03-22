@@ -1,0 +1,36 @@
+.logo-container {
+    margin: 40px 0 20px;
+
+    ion-avatar {
+        height: 100px;
+        width: 100px;
+        margin: 0 auto;
+
+        img {
+            border-radius: 20px;
+        }
+    }
+}
+.detalle {
+    text-align: center;
+    margin-bottom: 20px;
+
+    p {
+        margin: 0;
+        font-size: var(--FS15);
+    }
+    p.bold {
+        font-weight: bold;
+    }
+}
+
+::ng-deep ion-alert.success-alert {
+    text-align: center;
+    div.image {
+        text-align: center;
+        img {
+            width: 80px;
+            margin: 0 auto 10px;
+        }
+    }
+}

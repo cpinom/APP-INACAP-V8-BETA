@@ -5,6 +5,8 @@ import { IonicModule } from '@ionic/angular';
 import { ProgramasPageRoutingModule } from './programas-routing.module';
 import { ProgramasPage } from './programas.page';
 import { ComponentsModule } from 'src/app/core/components/components.module';
+import { EducacionSuperiorComponentModule } from './educacion-superior/educacion-superior.component.module';
+import { EducacionContinuaComponentModule } from './educacion-continua/educacion-continua.component.module';
 
 @NgModule({
   imports: [
@@ -12,7 +14,9 @@ import { ComponentsModule } from 'src/app/core/components/components.module';
     FormsModule,
     IonicModule,
     ProgramasPageRoutingModule,
-    ComponentsModule
+    ComponentsModule,
+    EducacionSuperiorComponentModule,
+    EducacionContinuaComponentModule
   ],
   declarations: [ProgramasPage]
 })

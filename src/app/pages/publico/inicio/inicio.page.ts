@@ -1,5 +1,6 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { Platform } from '@ionic/angular';
+import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { IonContent, Platform } from '@ionic/angular';
 import moment from 'moment';
 import { VISTAS } from 'src/app/core/constants/publico';
 import { PublicService } from 'src/app/core/services/http/public.service';
@@ -11,19 +12,20 @@ import { UtilsService } from 'src/app/core/services/utils.service';
   styleUrls: ['./inicio.page.scss'],
   standalone: false
 })
-export class InicioPage implements OnInit {
+export class InicioPage implements OnInit, OnDestroy {
 
   private api = inject(PublicService);
   private pt = inject(Platform);
   private utils = inject(UtilsService);
 
+  @ViewChild(IonContent) content!: IonContent;
   mostrarCargando = true;
   mostrarData = false;
   mostrarError = false;
   data: any;
 
   constructor() { }
-
+  ngOnDestroy() { }
   async ngOnInit() {
     await this.pt.ready();
     await this.cargar();

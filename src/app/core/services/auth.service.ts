@@ -1,6 +1,5 @@
 import { inject, Injectable } from '@angular/core';
 import { Preferences } from '@capacitor/preferences';
-import * as moment from 'moment';
 import { DialogService } from './dialog.service';
 import { LoginComponent } from '../components/login/login.component';
 import { CapacitorHttp, HttpOptions } from '@capacitor/core';
@@ -11,6 +10,7 @@ import { EventsService } from './events.service';
 import { Device } from '@capacitor/device';
 import { Directory, Filesystem } from '@capacitor/filesystem';
 import { FingerprintAIO } from '@awesome-cordova-plugins/fingerprint-aio/ngx';
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +25,7 @@ export class AuthService {
   private action = inject(ActionSheetController);
   private pt = inject(Platform);
   private faio = inject(FingerprintAIO);
+  private global = inject(AppGlobal);
 
   constructor() { }
 
@@ -58,7 +59,8 @@ export class AuthService {
         }
         return true
       },
-      presentingElement: getRouterOutlet() || undefined,
+      presentingElement: this.global.PublicOutlet?.nativeEl || undefined,
+      // presentingElement: getRouterOutlet() || undefined,
     });
 
     const { data } = await modal.onDidDismiss();
@@ -283,6 +285,7 @@ export class AuthService {
 
 }
 
-export function getRouterOutlet() {
-  return document.getElementById('ion-router-outlet-content') || undefined;
-}
+// export function getRouterOutlet() {
+//   // if(this.global.PublicOutlet) {}
+//   return document.getElementById('ion-router-outlet-content') || undefined;
+// }

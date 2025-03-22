@@ -8,6 +8,10 @@ const routes: Routes = [
     component: InacapPage
   },
   {
+    path: 'notificaciones',
+    loadChildren: () => import('./../notificaciones/notificaciones.module').then(m => m.NotificacionesPageModule)
+  },
+  {
     path: 'detalle-inacap',
     loadChildren: () => import('./detalle-inacap/detalle-inacap.module').then(m => m.DetalleInacapPageModule)
   }

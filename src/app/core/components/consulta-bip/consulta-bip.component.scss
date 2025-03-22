@@ -22,10 +22,12 @@
         justify-content: space-between;
         align-items: center;
         flex-direction: row;
+        padding: 15px 15px 0;
 
         ion-card-title {
             padding-bottom: 0;
             border-bottom: 0;
+            font-size: var(--FS16);
         }
     }
 

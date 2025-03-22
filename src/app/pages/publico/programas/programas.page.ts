@@ -20,6 +20,7 @@ export class ProgramasPage implements OnInit {
   ngOnInit() {
   }
   segmentChanged(ev: any) {
+    debugger
   }
 
 }

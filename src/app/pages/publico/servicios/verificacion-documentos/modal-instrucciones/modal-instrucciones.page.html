@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Instrucciones</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrar()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <section class="instrucciones">
+    <div class="section-content">
+      <p>Aquí podrá validar los Certificados y Diplomas de Título emitidos por:</p>
+      <ul class="lista-instrucciones">
+        <li>La Universidad Tecnológica de Chile INACAP</li>
+        <li>El Instituto Profesional INACAP</li>
+        <li>El Centro de Formación Técnica INACAP</li>
+        <li>La Dirección Nacional de Capacitación INACAP</li>
+      </ul>
+      <p>Para realizarlo debe ingresar el <b>Código de Verificación</b>, para el caso de los certificados o el número
+        que
+        aparece debajo del código de barras para los diplomas, indicado en las imágenes a continuación:</p>
+    </div>
+  </section>
+  <section class="imagenes">
+    <img src="/assets/images/verificacion-doc-1.png" alt="">
+    <img src="/assets/images/verificacion-doc-2.png" alt="">
+  </section>
+</ion-content>

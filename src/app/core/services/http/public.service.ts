@@ -136,8 +136,17 @@ export class PublicService {
   getDetalleInacap() {
     return this.get(`${this.baseUrl}/v5/detalle-inacap`);
   }
+  getZonas() {
+    return this.get(`${this.baseUrl}/v3/sedes-zonas`);
+  }
   getContacto() {
     return this.get(`${this.baseUrl}/v3/contacto`);
+  }
+  getNotificaciones(npreTuuid: string) {
+    return this.get(`${this.baseUrl}/v4/notificaciones-publicas?npre_tuuid=${npreTuuid}`);
+  }
+  guardarNotificacionMovimiento(params: any) {
+    return this.post(`${this.baseUrl}/v4/guardar-notificacion-movimiento`, params);
   }
   validarCodigoDocumento(codigoVerificacion: string) {
     return this.get(`${this.baseUrl}/v5/validar-codigo-documento?codigoVerificacion=${codigoVerificacion}`);

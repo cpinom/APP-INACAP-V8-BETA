@@ -1,13 +1,110 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>notificaciones</ion-title>
+    <ion-title>Notificaciones</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="backUrl" text=""></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">notificaciones</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+
+  @if (mostrarCargando) {
+  <div class="loaderInacap">
+    <ion-spinner name="lines" color="primary"></ion-spinner>
+  </div>
+  }
+
+  @if (mostrarData) {
+
+  <section *ngIf="notificaciones[0].length > 0">
+    <div class="section-header">Nuevas</div>
+    <div class="section-content">
+      <ion-list>
+        <ion-item class="ion-activatable" detail="true" *ngFor="let item of notificaciones[0]"
+          [class.no-leido]="item.visto == 0" [disabled]="item.disabled" (click)="detalleNotificacion(item)">
+          <ion-label>
+            <h2>{{item.apnoTtitulo}}</h2>
+            <p class="date">{{item.apnoFcreacion}}</p>
+          </ion-label>
+          <ion-icon color="medium" slot="end" src="assets/icon/delete.svg"
+            (click)="eliminarNotificacion(item, $event)"></ion-icon>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+
+  <section *ngIf="notificaciones[1].length > 0">
+    <div class="section-header">Esta semana</div>
+    <div class="section-content">
+      <ion-list>
+        <ion-item detail="true" *ngFor="let item of notificaciones[1]" [class.no-leido]="item.visto == 0"
+          [disabled]="item.disabled" (click)="detalleNotificacion(item)">
+          <ion-label>
+            <h2>{{item.apnoTtitulo}}</h2>
+            <p class="date">{{item.apnoFcreacion}}</p>
+          </ion-label>
+          <ion-icon color="medium" slot="end" src="assets/icon/delete.svg"
+            (click)="eliminarNotificacion(item, $event)"></ion-icon>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+
+  <section *ngIf="notificaciones[2].length > 0">
+    <div class="section-header">Este mes</div>
+    <div class="section-content">
+      <ion-list>
+        <ion-item detail="true" *ngFor="let item of notificaciones[2]" [class.no-leido]="item.visto == 0"
+          [disabled]="item.disabled" (click)="detalleNotificacion(item)">
+          <ion-label>
+            <h2>{{item.apnoTtitulo}}</h2>
+            <p class="date">{{item.apnoFcreacion}}</p>
+          </ion-label>
+          <ion-icon color="medium" slot="end" src="assets/icon/delete.svg"
+            (click)="eliminarNotificacion(item, $event)"></ion-icon>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+
+  <section *ngIf="notificaciones[3].length > 0">
+    <div class="section-header">Anteriores</div>
+    <div class="section-content">
+      <ion-list>
+        <ion-item detail="true" *ngFor="let item of notificaciones[3]" [class.no-leido]="item.visto == 0"
+          [disabled]="item.disabled" (click)="detalleNotificacion(item)">
+          <ion-label>
+            <h2>{{item.apnoTtitulo}}</h2>
+            <p class="date">{{item.apnoFcreacion}}</p>
+          </ion-label>
+          <ion-icon color="medium" slot="end" src="assets/icon/delete.svg"
+            (click)="eliminarNotificacion(item, $event)"></ion-icon>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+
+  <section class="first-empty" *ngIf="mostrarEmpty">
+    <div class="section-content">
+      <div class="empty-state">
+        <div>
+          <ion-icon src="assets/icon/notifications_none.svg"></ion-icon>
+          <p>Sin notificaciones en este momento.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  }
+
+  @if (mostrarError) {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Información no disponible en este momento.</p>
+      <ion-button color="info" shape="round" (click)="recargar()">Recargar</ion-button>
+    </div>
+  </section>
+  }
+
 </ion-content>

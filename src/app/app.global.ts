@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { IonRouterOutlet } from '@ionic/angular';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -15,4 +16,5 @@ export class AppGlobal {
   public DisabledToken = environment.disabledToken;
   public NotificationFlag = false;
   public NotificationTopic = environment.notificationTopic;
+  public PublicOutlet: IonRouterOutlet | undefined;
 }

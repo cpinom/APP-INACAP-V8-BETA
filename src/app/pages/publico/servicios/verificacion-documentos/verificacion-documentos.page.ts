@@ -1,11 +1,12 @@
-import { Component, ElementRef, OnInit, viewChild, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, viewChild, ViewChild } from '@angular/core';
 import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IonModal, Platform } from '@ionic/angular';
+import { IonModal, IonRouterOutlet, Platform } from '@ionic/angular';
 import { DialogService } from 'src/app/core/services/dialog.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { MediaService } from 'src/app/core/services/media.service';
 import { PublicService } from 'src/app/core/services/http/public.service';
 import { UtilsService } from 'src/app/core/services/utils.service';
+import { ModalInstruccionesPage } from './modal-instrucciones/modal-instrucciones.page';
 
 enum TipoCertificado {
   Grado = 1,
@@ -22,6 +23,8 @@ enum TipoCertificado {
   standalone: false
 })
 export class VerificacionDocumentosPage implements OnInit {
+
+  private routerOutlet = inject(IonRouterOutlet);
 
   @ViewChild('documentosInput') adjuntarEl!: ElementRef;
   @ViewChild('detalleMdl') detalleMdl!: IonModal;
@@ -247,6 +250,13 @@ export class VerificacionDocumentosPage implements OnInit {
     });
 
     return alert;
+  }
+  async instruccionesTap() {
+    await this.dialog.showModal({
+      component: ModalInstruccionesPage,
+      canDismiss: true,
+      presentingElement: this.routerOutlet.nativeEl
+    })
   }
   get codigo() { return this.form.get('codigo'); }
   get codigoError() {

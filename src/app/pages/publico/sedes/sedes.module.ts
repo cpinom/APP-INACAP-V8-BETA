@@ -5,6 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { SedesPageRoutingModule } from './sedes-routing.module';
 import { SedesPage } from './sedes.page';
 import { ComponentsModule } from 'src/app/core/components/components.module';
+import { DirectivesModule } from 'src/app/core/directives/directives.module';
 
 @NgModule({
   imports: [
@@ -12,7 +13,8 @@ import { ComponentsModule } from 'src/app/core/components/components.module';
     FormsModule,
     IonicModule,
     SedesPageRoutingModule,
-    ComponentsModule
+    ComponentsModule,
+    DirectivesModule
   ],
   declarations: [SedesPage]
 })

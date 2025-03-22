@@ -22,3 +22,45 @@ section.image {
     text-align: center;
   }
 }
+
+ion-segment-view {
+  height: calc(100% - 220px);
+  overflow: hidden;
+
+  ion-segment-content {
+    height: 100%;
+    overflow: scroll;
+  }
+}
+
+.cercanas {
+  margin-top: 0;
+  
+  ion-item {
+    ion-thumbnail {
+      width: 80px;
+      height: 80px;
+      margin-top: 16px;
+      margin-bottom: 16px;
+      border-radius: 4px;
+      overflow: hidden;
+
+      img {
+        background: var(--ion-color-medium);
+      }
+    }
+
+    ion-label {
+      white-space: normal;
+      p {
+        font-size: var(--FS14);
+        color: var(--ion-color-medium);
+      }
+    }
+
+    ion-item:last-child {
+      border-bottom: 1px solid #ccc;
+    }
+  }
+  // }
+}

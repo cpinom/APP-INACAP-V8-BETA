@@ -1,6 +1,6 @@
-<app-header personLink="privado"></app-header>
+<app-header personLink="privado" notificationLink="publico/sedes/notificaciones"></app-header>
 
-<ion-content>
+<ion-content [scrollY]="false">
 
   <section class="image">
     <img src="assets/images/publico/sedes-publico.jpg" />
@@ -17,5 +17,89 @@
       </ion-segment-button>
     </ion-segment>
   </div>
+
+  <ion-segment-view>
+    <ion-segment-content id="cercanas">
+      @if (mostrarCargando) {
+      <div class="loaderInacap">
+        <ion-spinner name="lines" color="primary"></ion-spinner>
+      </div>
+      }
+      @if (mostrarSedes && cercanas) {
+      <ion-list inset="true" class="cercanas">
+        <ion-item *ngFor="let item of cercanas" [routerLink]="['detalle-sede', item.sedeCcod]" detail="false">
+          <ion-thumbnail slot="start">
+            <ion-spinner name="lines" color="info"></ion-spinner>
+            <img [src]="item.sedeBarchivo" alt="Sede INACAP" appImage [hideViewer]="true" />
+          </ion-thumbnail>
+          <ion-label>
+            <h2>{{item.sedeTdesc}}</h2>
+            <p>{{item.sedeTdireccion}}</p>
+            <p>{{item.km}}</p>
+          </ion-label>
+          <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
+        </ion-item>
+      </ion-list>
+      @if (online) {
+      <ion-list inset="true" class="cercanas">
+        <ion-item [routerLink]="['detalle-sede', online.sedeCcod]" detail="false">
+          <ion-thumbnail slot="start">
+            <ion-spinner name="lines" color="info"></ion-spinner>
+            <img [src]="online.sedeBarchivo" alt="Sede INACAP" appImage [hideViewer]="true" />
+          </ion-thumbnail>
+          <ion-label>
+            <h2>{{online.sedeTdesc}}</h2>
+            <p>Disponible 24/7 desde cualquier lugar de Chile</p>
+          </ion-label>
+          <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
+        </ion-item>
+      </ion-list>
+      }
+      }
+      @if (mostrarSedes && !cercanas) {
+      <div class="empty-state">
+        <div>
+          <ion-icon src="assets/icon/location_off.svg"></ion-icon>
+          <p>Para mostrar las sedes cercanas debes activar tu localización.</p>
+        </div>
+      </div>
+      }
+
+    </ion-segment-content>
+    <ion-segment-content id="todas">
+      <!-- Buscador -->
+      <div class="searchbar-container">
+        <ion-searchbar color="white" animated="true" placeholder="Buscar" [(ngModel)]="sedesFiltro"
+          (ionInput)="filtrarSedes()" (ionClear)="resetSedes()">
+        </ion-searchbar>
+      </div>
+      <!-- Listado Zonas y Sedes -->
+      @if (sedesFiltro.length == 0) {
+      <section *ngFor="let item of zonas">
+        <div class="section-header">{{item.zonaTdesc}}</div>
+        <div class="section-content">
+          <ion-list>
+            <ion-item *ngFor="let sede of item.sedes" [routerLink]="['detalle-sede', sede.sedeCcod]" detail="false">
+              <ion-label>{{sede.sedeTdesc}}</ion-label>
+              <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
+            </ion-item>
+          </ion-list>
+        </div>
+      </section>
+      }
+      <!-- Sedes filtradas -->
+      @if (sedesFiltro.length) {
+      <section>
+        <div class="section-content">
+          <ion-list>
+            <ion-item *ngFor="let item of sedesFiltradas" [routerLink]="['detalle-sede', item.sedeCcod]" detail="false">
+              <ion-label>{{item.sedeTdesc}}</ion-label>
+            </ion-item>
+          </ion-list>
+        </div>
+      </section>
+      }
+    </ion-segment-content>
+  </ion-segment-view>
 
 </ion-content>

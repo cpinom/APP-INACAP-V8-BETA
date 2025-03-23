@@ -1,0 +1,124 @@
+ion-header {
+    ion-card {
+        margin-bottom: 0 !important;
+    }
+}
+ion-content {
+    section {
+        // margin-top: 20px;
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            padding-right: 15px;
+        }
+    }
+    section:last-child {
+        margin-bottom: 20px;
+    }
+
+    ion-item {
+        --padding-start: 8px;
+
+        ion-label {
+            white-space: normal;
+            &.label {
+                color: var(--ion-color-medium);
+                flex: 0 0 70px;
+            }
+        }
+    }
+
+    div.nota {
+        color: var(--ion-color-medium);
+        border: 1px solid var(--ion-color-medium);
+        border-radius: 50%;
+        font-size: var(--FS12);
+        height: 30px;
+        width: 30px;
+        text-align: center;
+        line-height: 30px;
+        font-weight: bold;
+    }
+
+    div.nota.green {
+        color: var(--ion-color-success);
+        border: 1px solid var(--ion-color-success);
+    }
+
+    div.nota.red {
+        color: var(--ion-color-danger);
+        border: 1px solid var(--ion-color-danger);
+    }
+}
+
+ion-footer > div {
+    display: flex;
+    padding: 10px 15px;
+    text-align: center;
+    font-size: var(--FS14);
+
+    span {
+        flex: 1;
+    }
+
+    strong {
+        font-size: var(--FS22);
+        display: block;
+    }
+}
+
+::ng-deep .dark {
+    ion-footer > div {
+        color: #fff;
+        border-top: 1px solid #000;
+    }
+}
+
+.malla {
+    ion-row {
+        padding-left: 10px;
+        padding-right: 10px;
+        ion-col {
+            padding: 0px !important;
+            ion-card {
+                margin: 5px !important;
+                height: 87.5%;
+
+                ion-card-header {
+                    padding: 15px;
+                    height: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    ion-card-title {
+                        font-size: var(--FS14);
+                        text-align: center;
+                        font-weight: 400;
+
+                        b {
+                            font-weight: 600;
+                        }
+                        p {
+                            margin: 0;
+                            color: var(--ion-color-medium);
+                        }
+                    }
+                }
+                ion-card-content {
+                    padding: 0 10px 5px 10px;
+                    display: flex;
+                    align-items: flex-start;
+                    justify-content: space-between;
+                    > div {
+                    }
+                    p {
+                        font-size: var(--FS12) !important;
+                        margin-bottom: 0;
+                    }
+                }
+            }
+        }
+    }
+}

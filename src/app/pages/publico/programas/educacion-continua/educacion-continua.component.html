@@ -1,3 +1,226 @@
-<p>
-  educacion-continua works!
-</p>
+<ng-container *ngIf="mostrarData">
+
+  <!-- <ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher> -->
+
+  <div class="searchbar-container">
+    <div class="controles">
+      <ion-searchbar color="white" placeholder="¿Qué buscas estudiar?" [(ngModel)]="cursosFiltro"
+        (ionInput)="filtrarCursos()" (ionClear)="resetCursos()"></ion-searchbar>
+      <ion-button id="filtrosEduc" color="white" (click)="filtros.present()">
+        <ion-icon name="options-outline"></ion-icon>
+      </ion-button>
+    </div>
+    <div class="filtros" *ngIf="filtrosMarcados.length">
+      <div>
+        <ion-chip *ngFor="let item of filtrosMarcados">
+          <ion-label>{{item.texto}}</ion-label>
+          <ion-icon name="close" (click)="quitarFiltro(item, filtros)"></ion-icon>
+        </ion-chip>
+      </div>
+    </div>
+  </div>
+
+  <ng-container *ngIf="!mostrarResultados">
+
+    <ng-container *ngIf="cursosFiltro.length">
+      <ion-list [inset]="true" *ngIf="cursosFiltrados.length">
+        <ion-item *ngFor="let item of cursosFiltrados" detail="true" (click)="detalleCurso(item.value, true)">
+          <ion-label [innerHTML]="resaltarTexto(item.label)"></ion-label>
+        </ion-item>
+      </ion-list>
+      <section class="first-empty empty-state" *ngIf="cursosFiltrados.length == 0">
+        <div>
+          <ion-icon src="assets/icon/search.svg"></ion-icon>
+          <p>No se encontraton resultados.</p>
+        </div>
+      </section>
+    </ng-container>
+
+    <ng-container *ngIf="cursosFiltro.length == 0">
+      <section class="cursos destacados" *ngIf="destacados && destacados.length">
+        <h1>Destacados</h1>
+        <ion-card *ngFor="let item of destacados" (click)="detalleCurso(item)">
+          <div class="image">
+            <img [alt]="item.nomcurso" [src]="resolverImagen(item)" [appImage]="errorLoadImage" [hideViewer]="true" />
+          </div>
+          <ion-card-header>
+            <ion-card-subtitle>{{item.codTipoCurso == 5 ? 'Diplomado' : 'Curso'}}</ion-card-subtitle>
+            <ion-card-title>{{item.nomcurso}}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <div class="info">
+              <div class="item"><ion-icon src="assets/icon/event_available.svg"></ion-icon>Próxima fecha: {{item.fechaprox}}</div>
+              <div class="item"><ion-icon src="assets/icon/schedule.svg"></ion-icon>{{item.duracion}} horas</div>
+              <div class="item"><ion-icon src="assets/icon/room.svg"></ion-icon>{{resolverSedeDestacados(item)}}</div>
+              <div class="item"><ion-icon src="assets/icon/join_left.svg"></ion-icon>{{item.modalidad}}</div>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </section>
+      <section class="cursos" *ngIf="proximos && proximos.length">
+        <h1>Próximos a Dictar</h1>
+        <ion-card *ngFor="let item of proximos" (click)="detalleCurso(item)">
+          <div class="image">
+            <img [alt]="item.nomcurso" [src]="resolverImagen(item)" [appImage]="errorLoadImage" [hideViewer]="true" />
+          </div>
+          <ion-card-header>
+            <ion-card-subtitle>{{item.codTipoCurso == 5 ? 'Diplomado' : 'Curso'}}</ion-card-subtitle>
+            <ion-card-title>{{item.nomcurso}}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <div class="info">
+              <div class="item"><ion-icon src="assets/icon/event_available.svg"></ion-icon>Próxima fecha:
+                {{item.fechaprox}}</div>
+              <div class="item"><ion-icon src="assets/icon/schedule.svg"></ion-icon>{{item.duracion}} horas</div>
+              <div class="item"><ion-icon src="assets/icon/room.svg"></ion-icon>{{resolverSedeProximos(item)}}</div>
+              <div class="item"><ion-icon src="assets/icon/join_left.svg"></ion-icon>{{item.modalidad}}</div>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </section>
+      <section *ngIf="mostrarData && !mostrarError" style="margin: 15px;">
+        <ion-button color="primary" shape="round" expand="block" (click)="filtrar(filtros)">
+          Ver todos los Cursos y Diplomados »
+        </ion-button>
+      </section>
+    </ng-container>
+
+  </ng-container>
+
+  <ng-container *ngIf="mostrarResultados">
+
+    <ng-container *ngIf="cursos && cursos.length">
+
+      <ion-list [inset]="true">
+        <ion-item *ngFor="let item of cursos" detail="true" (click)="detalleCurso(item)">
+          <ion-thumbnail slot="start">
+            <img [src]="resolverImagen(item)" [appImage]="errorLoadImage" [hideViewer]="true" />
+          </ion-thumbnail>
+          <ion-label>
+            <h2>{{item.nomcurso}}</h2>
+            <p>Próxima fecha: {{item.fechaprox}}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+
+      <section style="text-align: center; margin-bottom: 15px;">
+        <ion-button shape="round" *ngIf="mostrarMas" (click)="numeroPagina = numeroPagina + 1; filtrar()">Mostrar más</ion-button>
+      </section>
+
+    </ng-container>
+
+    <ng-container *ngIf="cursos && !cursos.length">
+      <section class="first-empty empty-state">
+        <div>
+          <ion-icon src="assets/icon/search.svg"></ion-icon>
+          <p>No se encontraton resultados.</p>
+        </div>
+      </section>
+    </ng-container>
+
+  </ng-container>
+
+  <ion-modal #filtros [breakpoints]="[0, 0.6, 0.8]" [initialBreakpoint]="0.6" [canDismiss]="true">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Filtrar Programas</ion-title>
+          <ion-buttons slot="start">
+            <ion-button (click)="limpiarFiltros(filtros)">Limpiar</ion-button>
+          </ion-buttons>
+          <ion-buttons slot="end">
+            <ion-button (click)="filtros.dismiss()">
+              <ion-icon name="close"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <form [formGroup]="formFiltros" (ngSubmit)="cursos = undefined; numeroPagina = 1; filtrar(filtros)">
+          <ion-list>
+            <ion-item>
+              <ion-select label="Tipo de Programa" labelPlacement="stacked" placeholder="Seleccione..."
+                formControlName="tipo" [multiple]="true" okText="Aceptar" cancelText="Cancelar">
+                <ion-select-option [value]="item" *ngFor="let item of tiposPrograma">
+                  {{item.nombre}}
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-item>
+              <ion-select label="Modalidad" labelPlacement="stacked" placeholder="Seleccione..."
+                formControlName="modalidad" [multiple]="true" okText="Aceptar" cancelText="Cancelar">
+                <ion-select-option [value]="item" *ngFor="let item of modalidades">
+                  {{item.nombre}}
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-item>
+              <ion-select label="Área" labelPlacement="stacked" placeholder="Seleccione..." formControlName="areas"
+                [multiple]="true" okText="Aceptar" cancelText="Cancelar">
+                <ion-select-option *ngFor="let item of areasCursos" [value]="item">
+                  {{item.nombre}}
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-item>
+              <ion-select label="Sedes" labelPlacement="stacked" placeholder="Seleccione..." formControlName="sedes"
+                [multiple]="true" okText="Aceptar" cancelText="Cancelar">
+                <ion-select-option *ngFor="let item of sedesCursos" [value]="item">
+                  {{item.nombre}}
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-item>
+              <ion-select label="Ordenar por" labelPlacement="stacked" placeholder="Seleccione..."
+                formControlName="ordenar" okText="Aceptar" cancelText="Cancelar">
+                <ion-select-option value="1">De A a Z</ion-select-option>
+                <ion-select-option value="2">Fecha más cercana</ion-select-option>
+                <ion-select-option value="3">Precio de menor a mayor</ion-select-option>
+                <ion-select-option value="4">Precio de mayor a menor</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-list>
+          <ion-button color="primary" shape="round" expand="block" type="submit" style="margin-top: 15px">
+            Filtrar
+          </ion-button>
+        </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+</ng-container>
+
+<ion-list [inset]="true" *ngIf="!mostrarData">
+  <ion-item>
+    <ion-label>
+      <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+    </ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label>
+      <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+    </ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label>
+      <ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
+    </ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label>
+      <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+    </ion-label>
+  </ion-item>
+</ion-list>
+
+<ng-container *ngIf="mostrarError">
+  <section class="first-empty empty-state">
+    <div>
+      <ion-icon src="assets/icon/search.svg"></ion-icon>
+      <p>Información no disponible en estos momentos.</p>
+      <ion-button color="info" shape="round" (click)="recargar()">Volver a cargar</ion-button>
+    </div>
+  </section>
+</ng-container>

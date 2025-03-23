@@ -1,0 +1,112 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="backPath" text="Ed. Continua"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ng-container *ngIf="data">
+
+    <div class="header" style="background: url('{{imgSrc}}') no-repeat 100% center/cover">
+      <div>
+        <span class="title">{{data.nomcurso}}</span>
+        <div class="ion-text-wrap subtitle">{{data.area}}</div>
+      </div>
+      <div class="buttons">
+        <ion-button shape="round" color="white" *ngIf="data.codTipoCurso == 1 || data.codTipoCurso == 41" (click)="matricular()">
+          Matricúlate
+        </ion-button>
+        <ion-button shape="round" color="white" *ngIf="data.codTipoCurso == 5" (click)="postular()">
+          Postular
+        </ion-button>
+        <ion-button shape="round" fill="outline" color="white" class="info" (click)="info()">
+          Solicitar más información
+        </ion-button>
+      </div>
+    </div>
+
+    <ion-card color="white" class="content">
+      <ion-card-content>
+        <div class="sedes" *ngIf="sedeFechas">
+          <ion-item lines="none">
+            <ion-icon src="assets/icon/room.svg" slot="start"></ion-icon>
+            <select [(ngModel)]="codigoInstancia" (ngModelChange)="sedeFechaChange()">
+              <optgroup label="{{fecha.label}}" *ngFor="let fecha of sedeFechas">
+                <option [value]="sede.codinstancia" *ngFor="let sede of fecha.items">{{sede.sede}}</option>
+              </optgroup>
+            </select>
+          </ion-item>
+        </div>
+        <div class="precio">
+          <!-- <h2>CLP ${{data.informacion[0].precio | numberSeparator}}</h2> -->
+          <h2 *ngIf="sedeFecha">CLP ${{sedeFecha.precioins | numberSeparator}}</h2>
+          <p>Precio del Curso/Diplomado</p>
+        </div>
+        <div class="informacion">
+          <h3>Información</h3>
+          <div class="fecha">
+            <ion-icon name="calendar"></ion-icon>
+            <span>Fecha: {{!sedeFecha ? 'Seleccione una sede':  resolverFecha(sedeFecha.fecha)}}</span>
+          </div>
+          <div class="fecha">
+            <ion-icon src="assets/icon/room.svg"></ion-icon>
+            <span>Sede: {{sedeFecha.sede}}</span>
+          </div>
+          <div class="horas">
+            <ion-icon name="time-outline"></ion-icon>
+            <span>{{data.informacion[0].hora}}</span>
+          </div>
+          <div class="fecha" *ngIf="data.informacion[0].codsence">
+            <ion-icon src="assets/icon/subtitles.svg"></ion-icon>
+            <span>Código Sence: {{data.informacion[0].codsence}}</span>
+          </div>
+          <div class="fecha">
+            <ion-icon src="assets/icon/join_left.svg"></ion-icon>
+            <span>Modalidad: {{data.informacion[0].modalidad}}</span>
+          </div>
+          <h3>Descuentos</h3>
+          <div class="descuentos">
+            <div>
+              <span *ngFor="let item of data.descuentos"> • {{item.descuento|stripHtml}}</span>
+            </div>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card color="white" class="detalle">
+      <ion-card-content>
+        <ion-accordion-group expand="inset" style="margin: 0">
+          <ion-accordion value="desc">
+            <ion-item slot="header" color="light">
+              <ion-label>Descripción</ion-label>
+            </ion-item>
+            <div class="ion-padding" slot="content" [innerHTML]="data.descripcion"></div>
+          </ion-accordion>
+          <ion-accordion value="mod">
+            <ion-item slot="header" color="light">
+              <ion-label>Módulos</ion-label>
+            </ion-item>
+            <div class="ion-padding" slot="content">
+              <div class="modulo" *ngFor="let item of data.contenido">
+                <h2>{{item.nombre}}</h2>
+                <div [innerHTML]="data.descripcion"></div>
+              </div>
+            </div>
+          </ion-accordion>
+          <ion-accordion value="req">
+            <ion-item slot="header" color="light">
+              <ion-label>Requisitos de Ingreso</ion-label>
+            </ion-item>
+            <div class="ion-padding" slot="content" [innerHTML]="data.requisito"></div>
+          </ion-accordion>
+        </ion-accordion-group>
+      </ion-card-content>
+    </ion-card>
+
+  </ng-container>
+
+</ion-content>

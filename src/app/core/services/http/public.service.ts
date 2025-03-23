@@ -16,7 +16,7 @@ export class PublicService {
   constructor() {
     this.baseUrl = `${this.global.Api}/api`;
   }
-  private get = async (url: string) => {
+  public get = async (url: string) => {
     const options: HttpOptions = {
       url: url,
       responseType: 'json',
@@ -135,6 +135,17 @@ export class PublicService {
   }
   getDetalleInacap() {
     return this.get(`${this.baseUrl}/v5/detalle-inacap`);
+  }
+  getOferta() {
+    return this.get(`${this.baseUrl}/v3/oferta`);
+  }
+  getCarrera(carrCcod: any) {
+    carrCcod = encodeURIComponent(carrCcod);
+    return this.get(`${this.baseUrl}/v5/carrera?carrCcod=${carrCcod}`);
+  }
+  getMalla(planTdesc: string) {
+    planTdesc = encodeURIComponent(planTdesc);
+    return this.get(`${this.baseUrl}/v5/malla-curricular?planTdesc=${planTdesc}`);
   }
   getZonas() {
     return this.get(`${this.baseUrl}/v3/sedes-zonas`);

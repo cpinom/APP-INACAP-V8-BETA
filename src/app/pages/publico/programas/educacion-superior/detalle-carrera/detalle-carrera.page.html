@@ -1,0 +1,108 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="" text="Pregrado"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ng-container *ngIf="data">
+
+    <ion-card color="white primary-card">
+      <ion-card-header>
+        <ion-card-title [innerHTML]="data.nombre"></ion-card-title>
+        <ion-card-subtitle>Código {{data.cod_carrera}}{{data.espe_plan}}</ion-card-subtitle>
+        <ion-card-subtitle [innerHTML]="data.nombre_area"></ion-card-subtitle>
+      </ion-card-header>
+    </ion-card>
+
+    <section style="margin-inline: 15px;">
+      <ion-button expand="block" *ngIf="matricula" color="primary" shape="round" (click)="fup()">
+        <ion-label>Inicia tu postulación aquí</ion-label>
+      </ion-button>
+    </section>
+
+    <ion-card class="white secondary-card">
+      <ion-list class="ion-no-margin">
+        <ion-item>
+          <ion-label>
+            <p class="label">Título</p>
+            <h2 [innerHTML]="data.titulo"></h2>
+          </ion-label>
+        </ion-item>
+        <ion-item class="modalidad">
+          <ion-label>
+            <p>Modalidad</p>
+            <h2>
+              <span *ngIf="modalidad.diurna">
+                <ion-icon src="assets/images/sol.svg"></ion-icon>
+                Diurna
+              </span>
+              <span *ngIf="modalidad.vespertina">
+                <ion-icon src="assets/images/luna.svg"></ion-icon>
+                Vespertina
+              </span>
+              <span *ngIf="modalidad.online">
+                <ion-icon src="assets/icon/laptop.svg"></ion-icon>
+                Online
+              </span>
+            </h2>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <p>Duración</p>
+            <h2 [innerHTML]="data.duracion"></h2>
+          </ion-label>
+        </ion-item>
+        <ion-item *ngIf="data.continuidad.length">
+          <ion-label>
+            <p>Continuidad de estudios</p>
+            <h2 [innerHTML]="data.continuidad"></h2>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <p>Institución que otorga el título</p>
+            <h2 [innerHTML]="data.institucion"></h2>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card>
+
+    <section>
+      <div class="section-header">Información Adicional</div>
+      <div class="section-content">
+        <ion-list>
+          <ion-item (click)="detalle(1, $event)" detail="true">
+            <ion-label>Descripción</ion-label>
+          </ion-item>
+          <ion-item (click)="detalle(2, $event)" detail="true">
+            <ion-label>Perfil de Egreso</ion-label>
+          </ion-item>
+          <ion-item (click)="detalle(3, $event)" detail="true">
+            <ion-label>Campo Ocupacional</ion-label>
+          </ion-item>
+          <ion-item (click)="malla()" detail="true">
+            <ion-label>Malla Curricular</ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+    </section>
+
+    <section *ngIf="data.sedes && data.sedes.length > 0">
+      <div class="section-header">Sedes en que se dicta</div>
+      <div class="section-content">
+        <ion-list class="ion-no-margin">
+          <ion-item *ngFor="let item of data.sedes" detail="true" [routerLink]="item.sedeCcod">
+            <ion-label [innerHTML]="item.sedeTdesc"></ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+    </section>
+
+  </ng-container>
+
+</ion-content>

@@ -22,3 +22,12 @@ section.image {
     text-align: center;
   }
 }
+ion-segment-view {
+  height: calc(100% - 220px);
+  overflow: hidden;
+
+  ion-segment-content {
+    height: 100%;
+    overflow: scroll;
+  }
+}

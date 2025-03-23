@@ -1,0 +1,137 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrar()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Malla Curricular</ion-title>
+  </ion-toolbar>
+  <ion-card class="primary-card" color="white">
+    <ion-card-header *ngIf="!mostrarData">
+      <ion-card-title>
+        <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+      </ion-card-title>
+      <ion-card-subtitle>
+        <ion-skeleton-text animated style="width: 40%"></ion-skeleton-text>
+      </ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-header *ngIf="mostrarData">
+      <ion-card-title [innerHTML]="carrTdesc"></ion-card-title>
+      <ion-card-subtitle>Código {{carrCcod}}{{espePlan}}</ion-card-subtitle>
+      <ion-card-subtitle>Cantidad de horas plan - <strong>{{totalHorasPlan}}</strong></ion-card-subtitle>
+      <ion-card-subtitle>Cantidad de Asignaturas - <strong>{{totalAsignaturas}}</strong></ion-card-subtitle>
+    </ion-card-header>
+  </ion-card>
+</ion-header>
+
+<ion-content>
+
+  <ng-container *ngIf="!mostrarData">
+
+    <section class="malla classic">
+      <div class="section-header">
+        <ion-skeleton-text animated style="width: 40%"></ion-skeleton-text>
+      </div>
+      <ion-row>
+        <ion-col size="12">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>
+                <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+              </ion-card-title>
+            </ion-card-header>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>
+                <ion-skeleton-text animated style="width: 40%"></ion-skeleton-text>
+              </ion-card-title>
+            </ion-card-header>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>
+                <ion-skeleton-text animated style="width: 90%"></ion-skeleton-text>
+              </ion-card-title>
+            </ion-card-header>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>
+                <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+              </ion-card-title>
+            </ion-card-header>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </section>
+
+  </ng-container>
+
+  <ng-container *ngIf="mostrarData">
+
+    <ng-container *ngFor="let item of niveles; let i = index;">
+      <section class="malla classic" [class.first]="i == 0">
+        <div class="section-header">{{item.niveTnombre}}</div>
+        <ion-row *ngFor="let asig of item.malla">
+          <ion-col size="12" *ngIf="!asig.asigCcodRe">
+            <ion-card (click)="asignaturaTap(asig)">
+              <ion-card-header>
+                <ion-card-title>
+                  <b>{{asig.asigTdesc}}</b>
+                  <p>{{asig.asigCcod}}</p>
+                </ion-card-title>
+              </ion-card-header>
+            </ion-card>
+          </ion-col>
+
+          <ng-container *ngIf="asig.asigCcodRe">
+            <ion-col size="6">
+              <ion-card (click)="asignaturaTap(asig)">
+                <ion-card-header>
+                  <ion-card-title>
+                    <b>{{asig.asigTdesc}}</b>
+                    <p>{{asig.asigCcod}}</p>
+                  </ion-card-title>
+                </ion-card-header>
+              </ion-card>
+            </ion-col>
+            <ion-col size="6">
+              <ion-card (click)="asignaturaTap(asig)">
+                <ion-card-header>
+                  <ion-card-title>
+                    <b>{{asig.asigTdescRe}}</b>
+                    <p>{{asig.asigCcodRe}}</p>
+                  </ion-card-title>
+                </ion-card-header>
+              </ion-card>
+            </ion-col>
+          </ng-container>
+        </ion-row>
+      </section>
+    </ng-container>
+
+    <section class="empty-state" *ngIf="niveles.length == 0">
+      <div>
+        <ion-icon src="assets/icon/info.svg"></ion-icon>
+        <p>No hay información disponible en este momento.</p>
+      </div>
+    </section>
+
+  </ng-container>
+
+
+</ion-content>

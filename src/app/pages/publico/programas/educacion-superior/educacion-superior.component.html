@@ -1,3 +1,40 @@
-<p>
-  educacion-superior works!
-</p>
+<!-- <ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
+  <ion-refresher-content></ion-refresher-content>
+</ion-refresher> -->
+
+<div class="carreras">
+  <div class="searchbar-container">
+    <ion-searchbar color="white" placeholder="Buscar" [disabled]="mostrarError"
+      [(ngModel)]="carrerasFiltro" (ionInput)="filtrarCarreras()" (ionClear)="resetCarreras()">
+    </ion-searchbar>
+  </div>
+
+  <ion-list [inset]="true" class="carrerasList" class="ion-no-margin" role="list">
+    <ion-item *ngFor="let item of carrerasFiltradas"
+      [routerLink]="['detalle-carrera', item.areaCcod, item.espeCcod]" detail="true">
+      <ion-label [innerHTML]="resaltarTexto(item.nombre)"></ion-label>
+      <ion-icon *ngIf="resolverInstitucion(item, true)" slot="end"
+        src="assets/images/{{resolverInstitucion(item)}}.svg"></ion-icon>
+      <ion-icon *ngIf="resolverRegimen(item, 'diurna')" class="icons" slot="end"
+        src="assets/images/sol.svg"></ion-icon>
+      <ion-icon *ngIf="resolverRegimen(item, 'vespertina')" class="icons" slot="end"
+        src="assets/images/luna.svg"></ion-icon>
+      <ion-icon *ngIf="resolverRegimen(item, 'online')" class="icons" slot="end"
+        src="assets/icon/laptop.svg"></ion-icon>
+    </ion-item>
+  </ion-list>
+
+  <section class="first-empty empty-state" *ngIf="carrerasFiltro && carrerasFiltradas.length == 0">
+    <div>
+      <ion-icon src="assets/icon/search.svg"></ion-icon>
+      <p>No se encontraron carreras.</p>
+    </div>
+  </section>
+
+  <section style="margin: 15px;">
+    <ion-button color="primary" shape="round" expand="block" (click)="linkInfo()">
+      Recibir Más Información
+    </ion-button>
+  </section>
+
+</div>

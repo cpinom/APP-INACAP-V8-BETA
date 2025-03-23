@@ -10,6 +10,14 @@ const routes: Routes = [
   {
     path: 'notificaciones',
     loadChildren: () => import('./../notificaciones/notificaciones.module').then(m => m.NotificacionesPageModule)
+  },
+  {
+    path: 'detalle-carrera/:areaCcod/:espeCcod',
+    loadChildren: () => import('./educacion-superior/detalle-carrera/detalle-carrera.module').then( m => m.DetalleCarreraPageModule)
+  },
+  {
+    path: 'detalle-curso',
+    loadChildren: () => import('./educacion-continua/detalle-curso/detalle-curso.module').then( m => m.DetalleCursoPageModule)
   }
 ];
 

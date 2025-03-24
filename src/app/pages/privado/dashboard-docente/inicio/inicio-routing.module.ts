@@ -48,10 +48,10 @@ const routes: Routes = [
     path: 'sede',
     loadChildren: () => import('src/app/pages/privado/dashboard-docente/perfil/sedes/sedes.module').then(m => m.SedesPageModule)
   },
-  {
-    path: 'comunicaciones',
-    loadChildren: () => import('./comunicaciones/comunicaciones.module').then(m => m.ComunicacionesPageModule)
-  }
+  // {
+  //   path: 'comunicaciones',
+  //   loadChildren: () => import('./comunicaciones/comunicaciones.module').then(m => m.ComunicacionesPageModule)
+  // }
 
 ];
 

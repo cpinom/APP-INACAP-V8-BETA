@@ -12,10 +12,16 @@
     <ion-card-header>
       <ion-card-title>Estudiantes en Tutoría</ion-card-title>
     </ion-card-header>
-    @if (mostrarCargando) {
+    <!-- @if (mostrarCargando) {
     <ion-progress-bar type="indeterminate"></ion-progress-bar>
-    }
+    } -->
   </ion-card>
+
+  @if (mostrarCargando) {
+  <div class="loaderInacap">
+    <ion-spinner name="lines" color="primary"></ion-spinner>
+  </div>
+  }
 
   @if (mostrarData && displayedItems) {
   @if (displayedItems.length > 0) {

@@ -173,89 +173,86 @@
       </div>
     </section>
 
-    <!-- ACCESOS DIRECTOS -->
-    <ion-grid class="botones">
+    <section class="accesos-directos">
+      <ion-row class="directos">
+        <ion-col>Accesos Directos</ion-col>
+      </ion-row>
       <ion-row>
-        <ion-col size-xs="6" size-sm="4" class="ion-no-padding">
-          <ion-button color="white" expand="block" (click)="moodleTap()">
-            <div>
-              <ion-icon slot="start" src="assets/icon/cast.svg" color="medium"></ion-icon>
-              <span>Ambiente de Aprendizaje</span>
+        <ion-col size="6">
+          <ion-button class="color-1" (click)="moodleTap()">
+            <div class="btn-inner">
+              <ion-icon src="assets/icon/cast.svg" class="rounded"></ion-icon>
+              <ion-label>
+                <h2>Ambiente de Aprendizaje</h2>
+              </ion-label>
+              <ion-icon src="assets/icon/arrow_forward.svg" class="launch"></ion-icon>
             </div>
           </ion-button>
         </ion-col>
-        <ion-col size-xs="6" size-sm="4" class="ion-no-padding">
-          <ion-button color="white" expand="block" (click)="credencialVirtual()">
-            <div>
-              <ion-icon slot="start" src="assets/icon/account_circle.svg" color="medium"></ion-icon>
-              <span>Credencial Virtual</span>
+        <ion-col size="6">
+          <ion-button class="color-2" (click)="credencialVirtual()">
+            <div class="btn-inner">
+              <ion-icon src="assets/icon/qr_code_2.svg" class="rounded"></ion-icon>
+              <ion-label>
+                <h2>Credencial Virtual</h2>
+              </ion-label>
+              <ion-icon src="assets/icon/arrow_forward.svg" class="launch"></ion-icon>
             </div>
           </ion-button>
         </ion-col>
-        <ion-col size-xs="6" size-sm="4" class="ion-no-padding">
-          <ion-button color="white" expand="block" routerLink="inacapmail">
-            <!-- <div [matBadge]="inacapMail && (inacapMail.unReadTotal < 99 ? inacapMail.unReadTotal : '99+')"
-              matBadgePosition="after" matBadgeColor="accent"
-              [matBadgeHidden]="!(inacapMail && inacapMail.unReadTotal > 0)">
-              <ion-icon slot="start" src="assets/icon/mail_outline.svg" color="medium"></ion-icon>
-              <span>INACAPMail</span>
-            </div> -->
-            <div>
-              <ion-icon slot="start" src="assets/icon/mail_outline.svg" color="medium"></ion-icon>
-              <span>INACAPMail</span>
+        <ion-col size="6">
+          <ion-button class="color-3" routerLink="inacapmail">
+            <div class="btn-inner">
+              <ion-icon src="assets/icon/mail_outline.svg" class="rounded"></ion-icon>
+              <ion-label>
+                <h2>INACAPMail</h2>
+                @if (inacapMail) {
+                <i *ngIf="inacapMail.unReadTotal && (inacapMail.unReadTotal > 0)">{{inacapMail?.unReadTotal}}</i>
+                }
+              </ion-label>
+              <ion-icon src="assets/icon/arrow_forward.svg" class="launch"></ion-icon>
             </div>
           </ion-button>
         </ion-col>
-        <ion-col size="6" class="ion-no-padding">
-          <ion-button color="white" expand="block" routerLink="onedrive">
-            <div>
-              <ion-icon slot="start" src="assets/icon/cloud.svg" color="medium"></ion-icon>
-              <span>OneDrive</span>
+        <ion-col size="6">
+          <ion-button class="color-4" routerLink="onedrive">
+            <div class="btn-inner">
+              <ion-icon src="assets/icon/cloud.svg" class="rounded"></ion-icon>
+              <ion-label>
+                <h2>OneDrive</h2>
+              </ion-label>
+              <ion-icon src="assets/icon/arrow_forward.svg" class="launch"></ion-icon>
             </div>
           </ion-button>
         </ion-col>
-        <ion-col size="6" class="ion-no-padding">
-          <ion-button color="white" expand="block" routerLink="comunicaciones">
-            <div>
-              <ion-icon slot="start" src="assets/icon/send.svg" color="medium"></ion-icon>
-              <span>Enviar Mensaje</span>
+        <ion-col size="6">
+          <ion-button class="color-5" routerLink="reserva-espacios">
+            <div class="btn-inner">
+              <ion-icon src="assets/icon/cloud.svg" class="rounded"></ion-icon>
+              <ion-label>
+                <h2>Reserva de Espacios</h2>
+              </ion-label>
+              <ion-icon src="assets/icon/arrow_forward.svg" class="launch"></ion-icon>
             </div>
           </ion-button>
         </ion-col>
-        <ion-col size="6" class="ion-no-padding" *ngIf="mostrarTutorias">
-          <ion-button color="white" expand="block" routerLink="tutoria">
-            <div>
-              <ion-icon slot="start" src="assets/icon/school.svg" color="medium"></ion-icon>
-              <span>Tutorías</span>
-            </div>
-          </ion-button>
-        </ion-col>
-        <ion-col size="6" class="ion-no-padding" *ngIf="sedeCcod">
-          <ion-button color="white" expand="block" routerLink="sede">
-            <div>
-              <ion-icon slot="start" name="business" color="medium"></ion-icon>
-              <span>Mi Sede</span>
-            </div>
-          </ion-button>
-        </ion-col>
-        <ion-col size="6" class="ion-no-padding" *ngIf="mostrarReservaEspacios">
-          <ion-button color="white" expand="block" routerLink="reserva-espacios">
-            <div>
-              <ion-icon slot="start" src="assets/icon/today.svg" color="medium"></ion-icon>
-              <span>Reserva de Espacios</span>
+        <ion-col size="6">
+          <ion-button class="color-6" routerLink="tutoria">
+            <div class="btn-inner">
+              <ion-icon src="assets/icon/school.svg" class="rounded"></ion-icon>
+              <ion-label>
+                <h2>Tutorías</h2>
+              </ion-label>
+              <ion-icon src="assets/icon/arrow_forward.svg" class="launch"></ion-icon>
             </div>
           </ion-button>
         </ion-col>
       </ion-row>
-    </ion-grid>
+    </section>
 
-    <ion-grid class="botones cerrar-sesion">
-      <ion-row>
-        <ion-col size="12">
-          <ion-button color="white" (click)="logout()">Cerrar Sesión</ion-button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+    <section class="cerrar-sesion">
+      <ion-button shape="round" expand="block" color="white" (click)="logout()">Cerrar Sesión</ion-button>
+    </section>
 
   </ng-container>
 

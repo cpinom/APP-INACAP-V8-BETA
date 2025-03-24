@@ -3,8 +3,8 @@ ion-accordion-group {
     margin: 10px;
 
     ion-item[slot="header"] {
-        --ion-item-background: var(--ion-color-dark);
-        --color: white;
+        // --ion-item-background: var(--ion-color-dark);
+        // --color: white;
         --padding-start: 15px;
     }
 
@@ -29,7 +29,7 @@ ion-accordion-group {
             .text-title {
                 font-size: 14px;
                 font-weight: bold;
-                color: #4a4a4a;
+                color: var(--ion-color-text);
             }
 
             .text-right {
@@ -38,7 +38,7 @@ ion-accordion-group {
 
             .text-normal {
                 white-space: normal;
-                color: #4a4a4a;
+                color: var(--ion-color-text);
 
                 span {
                     display: inline-block;
@@ -88,7 +88,7 @@ ion-accordion-group {
                 border: 1px solid #dee2e6;
                 padding: 8px 4px;
                 font-size: 14px;
-                color: #4a4a4a;
+                color: var(--ion-color-text);
                 vertical-align: top;
                 // word-break: break-word;
             }
@@ -121,7 +121,7 @@ ion-accordion-group {
 ::ng-deep body.dark {
     ion-accordion-group {
         ion-accordion div[slot="content"] {
-            background-color: var(--ion-color-dark-shade) !important;
+            //background-color: var(--ion-color-dark-shade) !important;
         }
 
         section.tabla {

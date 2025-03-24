@@ -12,13 +12,16 @@
       <ion-card-subtitle>Sección {{seccion.seccCompleta}}</ion-card-subtitle>
       }
     </ion-card-header>
-    @if (mostrarCargando) {
-    <ion-progress-bar type="indeterminate"></ion-progress-bar>
-    }
   </ion-card>
 </ion-header>
 
 <ion-content>
+
+  @if (mostrarCargando) {
+  <div class="loaderInacap">
+    <ion-spinner name="lines" color="primary"></ion-spinner>
+  </div>
+  }
 
   @if (mostrarData && data) {
 
@@ -195,17 +198,27 @@
   <section>
     <div class="section-content">
       <ion-list>
-        <ion-item detail="true" class="ion-activatable" (click)="descriptorTap()">
-          <ion-icon color="medium" slot="start" src="assets/icon/list_alt.svg"></ion-icon>
-          <ion-label>Descriptor</ion-label>
+        @if (mostrarTutorIA) {
+        <ion-item detail="false" class="ion-activatable" (click)="tutorIATap()">
+          <ion-icon slot="start" src="assets/icon/mingcute_ai-line.svg"></ion-icon>
+          <ion-label>Tutor IA</ion-label>
+          <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
         </ion-item>
-        <ion-item detail="true" class="ion-activatable" (click)="alumnosTap()">
+        }
+        <ion-item detail="false" class="ion-activatable" (click)="descriptorTap()">
+          <ion-icon slot="start" src="assets/icon/list_alt.svg"></ion-icon>
+          <ion-label>Descriptor</ion-label>
+          <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
+        </ion-item>
+        <ion-item detail="false" class="ion-activatable" (click)="alumnosTap()">
           <ion-icon slot="start" src="assets/icon/groups.svg"></ion-icon>
           <ion-label>Estudiantes</ion-label>
+          <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
         </ion-item>
-        <ion-item detail="true" class="ion-activatable" (click)="evaluacionesTap()">
+        <ion-item detail="false" class="ion-activatable" (click)="evaluacionesTap()">
           <ion-icon slot="start" src="assets/icon/access_time.svg"></ion-icon>
           <ion-label button="true">Evaluaciones</ion-label>
+          <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
         </ion-item>
       </ion-list>
     </div>

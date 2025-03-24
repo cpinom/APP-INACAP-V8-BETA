@@ -143,6 +143,7 @@ ion-card.destacado-list {
                         margin: 0;
                         border-left: 3px solid;
                         padding-left: 5px;
+                        font-size: var(--FS11);
 
                         .nota-number,
                         .asistencia-number {
@@ -183,12 +184,12 @@ ion-card.destacado-list {
 }
 
 .horario {
-    border-top: var(--border);
+    //border-top: var(--border);
 
     .section-content {
         margin-inline: 0;
         border-radius: 0;
-        border-bottom: var(--border);
+        //border-bottom: var(--border);
     }
 
     .dia-selector {
@@ -338,20 +339,20 @@ mbsc-datepicker {
     }
 }
 
-section.cerrar-sesion {
-    width: 100%;
-    margin: 0;
-    background-color: var(--ion-color-white);
-    margin-bottom: 20px;
+// section.cerrar-sesion {
+//     width: 100%;
+//     margin: 0;
+//     background-color: var(--ion-color-white);
+//     margin-bottom: 20px;
 
-    ion-button {
-        border-top: var(--border);
-        border-bottom: var(--border);
-        font-weight: 500;
-        font-size: var(--FS18);
-        margin: 0;
-    }
-}
+//     ion-button {
+//         border-top: var(--border);
+//         border-bottom: var(--border);
+//         font-weight: 500;
+//         font-size: var(--FS18);
+//         margin: 0;
+//     }
+// }
 
 ion-modal.modal-calendario {
     --width: 290px;
@@ -547,6 +548,231 @@ ion-modal.estacionamiento-modal {
 
                     &.selected {
                         background-color: var(--ion-color-primary);
+                    }
+                }
+            }
+        }
+    }
+}
+
+section.cerrar-sesion {
+    margin: 10px;
+
+    ion-button {
+        --box-shadow: 0px 4px 8px 0px rgba(56, 59, 83, 0.15); //var(--ion-box-shadow);
+        --ion-color-contrast: var(--ion-color-danger);
+        --ion-color-base: var(--ion-item-background);
+        font-size: 16px;
+        font-weight: 500;
+    }
+}
+
+section.accesos-directos {
+    margin-inline: 3px;
+
+    ion-row {
+        ion-col {
+            ion-button {
+                --background-focused: transparent;
+                width: 100%;
+                height: 112px;
+                --border-radius: 8px;
+                --padding-bottom: 11px;
+                --padding-end: 11px;
+                --padding-start: 11px;
+                --padding-top: 11px;
+                --box-shadow: none;
+                margin-top: 0;
+                margin-bottom: 0;
+
+                .btn-inner {
+                    display: flex;
+                    flex-direction: column;
+                    height: 100%;
+                    width: 100%;
+                    text-align: left;
+                    position: relative;
+                    justify-content: space-between;
+                    text-transform: none;
+
+                    .rounded {
+                        padding: 10px;
+                        margin: 0 0 10px;
+                        flex: 0 0 24px;
+                    }
+
+                    .launch {
+                        position: absolute;
+                        right: 0;
+                        top: 0;
+                        font-size: 18px;
+                    }
+
+                    ion-label {
+                        color: var(--ion-text-color);
+                        flex: 1;
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+
+                        h1 {
+                            font-size: 24px;
+                            font-weight: 700;
+                            margin: 0;
+                        }
+                        h2 {
+                            font-size: 16px;
+                            font-weight: 700;
+                        }
+                        p {
+                            font-size: 14px;
+                        }
+                        i {
+                            font-size: 12px;
+                            font-style: normal;
+                            line-height: 14px;
+                            padding: 7px 3px;
+                            background: #1d78bf;
+                            color: #fff;
+                            border-radius: 50%;
+                            width: 27px;
+                            height: 27px;
+                            text-align: center;
+                        }
+                    }
+
+                    ion-progress-bar {
+                        --background: #fff;
+                        height: 8px;
+                    }
+                }
+
+                &.color-1,
+                &.color-8,
+                &.color-15 {
+                    --background: var(--ion-color-1-background);
+                    --background-activated: var(--ion-color-1-background);
+
+                    ion-icon {
+                        &.rounded {
+                            background-color: var(--ion-color-1-primary);
+                        }
+                        &.launch {
+                            color: var(--ion-color-1-foreground);
+                        }
+                    }
+
+                    ion-progress-bar {
+                        --progress-background: var(--ion-color-1-foreground);
+                    }
+                }
+                &.color-2,
+                &.color-9,
+                &.color-16 {
+                    --background: var(--ion-color-2-background);
+                    --background-activated: var(--ion-color-2-background);
+
+                    ion-icon {
+                        &.rounded {
+                            background-color: var(--ion-color-2-primary);
+                        }
+                        &.launch {
+                            color: var(--ion-color-2-foreground);
+                        }
+                    }
+
+                    ion-progress-bar {
+                        --progress-background: var(--ion-color-2-foreground);
+                    }
+                }
+                &.color-3,
+                &.color-10 {
+                    --background: var(--ion-color-3-background);
+                    --background-activated: var(--ion-color-3-background);
+
+                    ion-icon {
+                        &.rounded {
+                            background-color: var(--ion-color-3-primary);
+                        }
+                        &.launch {
+                            color: var(--ion-color-3-foreground);
+                        }
+                    }
+
+                    ion-progress-bar {
+                        --progress-background: var(--ion-color-3-foreground);
+                    }
+                }
+                &.color-4,
+                &.color-11 {
+                    --background: var(--ion-color-4-background);
+                    --background-activated: var(--ion-color-4-background);
+
+                    ion-icon {
+                        &.rounded {
+                            background-color: var(--ion-color-4-primary);
+                        }
+                        &.launch {
+                            color: var(--ion-color-4-foreground);
+                        }
+                    }
+
+                    ion-progress-bar {
+                        --progress-background: var(--ion-color-4-foreground);
+                    }
+                }
+                &.color-5,
+                &.color-12 {
+                    --background: var(--ion-color-5-background);
+                    --background-activated: var(--ion-color-5-background);
+
+                    ion-icon {
+                        &.rounded {
+                            background-color: var(--ion-color-5-primary);
+                        }
+                        &.launch {
+                            color: var(--ion-color-5-foreground);
+                        }
+                    }
+
+                    ion-progress-bar {
+                        --progress-background: var(--ion-color-5-foreground);
+                    }
+                }
+                &.color-6,
+                &.color-13 {
+                    --background: var(--ion-color-6-background);
+                    --background-activated: var(--ion-color-6-background);
+
+                    ion-icon {
+                        &.rounded {
+                            background-color: var(--ion-color-6-primary);
+                        }
+                        &.launch {
+                            color: var(--ion-color-6-foreground);
+                        }
+                    }
+
+                    ion-progress-bar {
+                        --progress-background: var(--ion-color-6-foreground);
+                    }
+                }
+                &.color-7,
+                &.color-14 {
+                    --background: var(--ion-color-7-background);
+                    --background-activated: var(--ion-color-7-background);
+
+                    ion-icon {
+                        &.rounded {
+                            background-color: var(--ion-color-7-primary);
+                        }
+                        &.launch {
+                            color: var(--ion-color-7-foreground);
+                        }
+                    }
+
+                    ion-progress-bar {
+                        --progress-background: var(--ion-color-7-foreground);
                     }
                 }
             }

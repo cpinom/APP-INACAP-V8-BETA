@@ -44,6 +44,14 @@ ion-card-content {
     box-shadow: none !important;
     border-radius: 8px !important;
     overflow: hidden;
+
+    ion-card-header {
+        padding: 8px;
+
+        ion-card-title {
+            font-size: var(--FS16);
+        }
+    }
 }
 
 ion-card > ion-list {

@@ -195,6 +195,9 @@ export class CursoPage implements OnInit {
   async recuperacionTap() {
     await this.nav.navigateForward(`${this.router.url}/recuperacion`, { state: this.data });
   }
+  async tutorIATap() {
+    debugger
+  }
   get semanaHorario() {
     let fechaInicio = moment().startOf('isoWeek');
     let fechaTermino = fechaInicio.clone().add(5, 'day');
@@ -229,6 +232,18 @@ export class CursoPage implements OnInit {
   get backUrl() {
     const { url } = this.router;
     return url.startsWith('/dashboard-docente/inicio') ? '/dashboard-docente/inicio' : '/dashboard-docente/cursos';
+  }
+
+  get mostrarTutorIA() {
+    return true;
+    
+    if (this.seccion) {
+      const asignaturas = 'TEAF01|MIA301|MAEA32'.split("|");
+      const existe = asignaturas.includes(this.seccion.asigCcod);
+      return existe;
+    }
+
+    return false;
   }
 
 }

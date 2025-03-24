@@ -31,7 +31,7 @@ export class AgenteSocraticoPage implements OnInit {
       this.procesando = true;
 
       const params = {
-        asigCcod: 'MAEA32',//this.seccion.asigCcod,
+        asigCcod: this.seccion.asigCcod,
         mensaje: this.mensaje
       };
 
@@ -39,7 +39,7 @@ export class AgenteSocraticoPage implements OnInit {
 
       if (!this.conversacionId) {
 
-        const result = await this.api.iniciarAgentePractico(params);
+        const result = await this.api.iniciarAgenteSocratico(params);
 
         if (result.success) {
           this.conversacionId = result.data.thread_id;
@@ -49,7 +49,7 @@ export class AgenteSocraticoPage implements OnInit {
 
       }
       else {
-        const result = await this.api.mensajeAgentePractico({ ...params, conversacionId: this.conversacionId });
+        const result = await this.api.mensajeAgenteSocratico({ ...params, conversacionId: this.conversacionId });
 
         if (result.success) {
           this.mensajes.push({ user: 'tutor', message: result.data.assistant_message });

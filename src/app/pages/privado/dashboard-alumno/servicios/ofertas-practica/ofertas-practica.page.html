@@ -4,7 +4,7 @@
       <ion-back-button [text]="backText" [defaultHref]="backUrl"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
-  <ion-card class="primary-card" style="margin-bottom: 0 !important;">
+  <!-- <ion-card class="primary-card" style="margin-bottom: 0 !important;">
     <ion-card-header>
       <ion-card-title>Ofertas de Práctica Profesional</ion-card-title>
       <div *ngIf="programas && programas.length > 1" class="select-container">
@@ -19,26 +19,44 @@
       </ion-card-subtitle>
     </ion-card-header>
     <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar>
-  </ion-card>
+  </ion-card> -->
 </ion-header>
 
 <ion-content>
+
+  <ion-list inset="true" class="card-list">
+    <ion-item detail="false">
+      <ion-icon slot="start" src="assets/icon/assignment_ind.svg" class="rounded variant-1"></ion-icon>
+      <ion-label>
+        <h2>Práctica Profesional</h2>
+        @if (programa) {
+        <p>{{programa.carrTdesc}}</p>
+        }
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  @if (mostrarCargando) {
+  <div class="loaderInacap">
+    <ion-spinner name="lines" color="primary"></ion-spinner>
+  </div>
+  }
 
   <ng-container *ngIf="mostrarData && data">
 
     <ion-list inset="true">
       <ion-item class="ion-activatable" detail="false" (click)="mostrarInfoPracticas()">
-        <ion-icon slot="start" color="medium" src="assets/icon/info.svg"></ion-icon>
+        <ion-icon slot="start" src="assets/icon/info.svg"></ion-icon>
         <ion-label>Información de Prácticas</ion-label>
         <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
       </ion-item>
       <ion-item class="ion-activatable" detail="false" (click)="mostrarSolicitudPractica()">
-        <ion-icon slot="start" color="medium" src="assets/icon/access_time.svg"></ion-icon>
+        <ion-icon slot="start" src="assets/icon/access_time.svg"></ion-icon>
         <ion-label>Sol. de Inscripción de Práctica</ion-label>
         <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
       </ion-item>
       <ion-item class="ion-activatable" detail="false" (click)="mostrarCertificadoPractica()">
-        <ion-icon slot="start" color="medium" src="assets/icon/file_copy.svg"></ion-icon>
+        <ion-icon slot="start" src="assets/icon/file_copy.svg"></ion-icon>
         <ion-label>Sol. Certificado Seguro - Prácticas</ion-label>
         <ion-icon slot="end" src="assets/icon/launch.svg"></ion-icon>
       </ion-item>
@@ -54,7 +72,8 @@
           <ion-item *ngIf="ofertas.length == 0">
             <ion-label color="medium">No se encontraron ofertas.</ion-label>
           </ion-item>
-          <ion-item *ngFor="let item of ofertas" (click)="detalleEmpleo(item)" lines="full" detail="true" class="ion-activatable">
+          <ion-item *ngFor="let item of ofertas" (click)="detalleEmpleo(item)" lines="full" detail="true"
+            class="ion-activatable">
             <ion-avatar slot="start">
               <img [src]="'https:' + item.logo" />
             </ion-avatar>
@@ -69,7 +88,7 @@
             <ion-label>Ver toda la oferta</ion-label>
           </ion-item>
         </ion-list>
-     </div>
+      </div>
     </section>
 
   </ng-container>

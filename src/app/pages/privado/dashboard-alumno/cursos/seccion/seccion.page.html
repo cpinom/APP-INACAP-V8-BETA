@@ -29,8 +29,8 @@
   @if (data.seccion.notificacion) {
   <ion-card class="notificacion">
     <ion-card-content>
-      <ion-icon src="assets/icon/error_outline.svg"></ion-icon>
       <span>{{data.seccion.notificacion}}</span>
+      <ion-icon class="rounded" src="assets/icon/error_outline.svg"></ion-icon>
     </ion-card-content>
   </ion-card>
   }
@@ -135,7 +135,7 @@
   <ng-container *ngIf="mostrarData && data">
 
     <ion-list inset="true">
-      <ion-item detail="false" class="ion-activatable" (click)="tutorIATap()">
+      <ion-item detail="false" class="ion-activatable" (click)="tutorIATap()" *ngIf="data.tutorIA">
         <ion-icon slot="start" src="assets/icon/mingcute_ai-line.svg"></ion-icon>
         <ion-label>Tutor IA</ion-label>
         <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>

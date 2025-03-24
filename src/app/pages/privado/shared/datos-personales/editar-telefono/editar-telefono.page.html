@@ -39,11 +39,9 @@
         <ion-grid>
           <ion-row>
             <ion-col>
-              <ion-nav-link router-direction="back">
-                <ion-button ion-nav-link color="primary" shape="round" expand="full" fill="outline">
-                  {{textoBtnCancelar}}
-                </ion-button>
-              </ion-nav-link>
+              <ion-button color="primary" shape="round" expand="full" fill="outline" (click)="volver()">
+                {{textoBtnCancelar}}
+              </ion-button>
             </ion-col>
             <ion-col>
               <ion-button color="primary" shape="round" expand="full" (click)="validar()">

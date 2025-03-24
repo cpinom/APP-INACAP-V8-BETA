@@ -25,6 +25,7 @@
   }
 
   @if (mostrarData && beneficios) {
+  @if (beneficios.length) {
   <ion-list inset="true">
     @for (item of beneficios; track $index) {
     <ion-item detail="false" class="ion-activatable">
@@ -40,6 +41,15 @@
     </ion-item>
     }
   </ion-list>
+  }
+  @else {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>No hay beneficios disponibles en este momento.</p>
+    </div>
+  </section>
+  }
   }
 
   @if (mostrarData && !beneficios) {

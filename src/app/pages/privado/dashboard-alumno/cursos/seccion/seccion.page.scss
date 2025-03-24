@@ -98,7 +98,7 @@ ion-content.detalle-seccion {
                 }
 
                 ion-progress-bar {
-                    --background: var(--ion-color-2-primary);;
+                    --background: var(--ion-color-2-primary);
                     height: 6px;
                 }
 
@@ -231,9 +231,10 @@ ion-card.notificacion {
         align-items: center;
         padding: 12px !important;
         font-size: var(--FS14);
+        justify-content: space-between;
 
-        span {
-            padding-left: 10px;
+        ion-icon {
+            margin: 0 0 0 5px;
         }
     }
 }

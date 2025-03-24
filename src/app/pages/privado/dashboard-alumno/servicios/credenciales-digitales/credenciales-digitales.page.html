@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button text="Servicios" defaultHref="/dashboard-alumno/servicios"></ion-back-button>
+      <ion-back-button [text]="backText" [defaultHref]="backUrl"></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="end">
       <ion-button (click)="recargar()">
@@ -16,11 +16,17 @@
   <ion-card class="periodos primary-card" color="white">
     <ion-card-header>
       <ion-card-title>Mis Certificados Intermedios</ion-card-title>
-      <ion-card-subtitle>Credenciales disponibles</ion-card-subtitle>
+      <!-- <ion-card-subtitle>Credenciales disponibles</ion-card-subtitle> -->
       <!-- <ion-card-subtitle *ngIf="periodo">{{periodo.periTdesc}}</ion-card-subtitle> -->
     </ion-card-header>
-    <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar>
+    <!-- <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar> -->
   </ion-card>
+
+  @if (mostrarCargando) {
+  <div class="loaderInacap">
+    <ion-spinner name="lines" color="primary"></ion-spinner>
+  </div>
+  }
 
   <section class="carreras first" *ngIf="carreras && carreras.length">
     <div class="section-header">Mis Carreras</div>

@@ -1,0 +1,38 @@
+ion-header {
+    .primary-card {
+      box-shadow: none;
+      margin-bottom: 0 !important;
+  
+      ion-card-header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+  
+        ion-icon {
+          padding: 8px;
+        }
+  
+        ion-card-title {
+          flex: 1;
+  
+          h2 {
+            font-size: var(--FS22);
+            margin: 0;
+          }
+  
+          p {
+            font-size: var(--FS14);
+            margin: 0;
+          }
+        }
+  
+        ion-button {
+          --padding-start: 16px;
+          --padding-end: 16px;
+          font-size: 12px;
+          min-height: 40px;
+        }
+      }
+    }
+  }

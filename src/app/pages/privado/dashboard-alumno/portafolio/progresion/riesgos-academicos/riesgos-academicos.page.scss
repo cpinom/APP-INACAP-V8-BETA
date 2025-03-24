@@ -1,0 +1,11 @@
+section.riesgos {
+    p.riesgo {
+        display: flex;
+        gap: 5px;
+        align-items: center;
+
+        ion-icon {
+            font-size: var(--FS16);
+        }
+    }
+}

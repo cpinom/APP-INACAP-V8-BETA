@@ -116,11 +116,11 @@
           placeholder="Selecciona una sala..."></ion-input>
       </ion-item>
       <div class="invalid" *ngIf="submitted && sala?.invalid">Seleccione una sala.</div>
-      <ion-item (click)="escanearSala()" [disabled]="disabledQR" detail="false"
+      <!-- <ion-item (click)="escanearSala()" [disabled]="disabledQR" detail="false"
         class="has-icon codigo-qr ion-activatable">
         <ion-icon slot="start" src="assets/icon/camera_alt.svg" color="medium"></ion-icon>
         <ion-label>Buscar con código QR</ion-label>
-      </ion-item>
+      </ion-item> -->
     </ion-list>
   </form>
   <ion-modal trigger="select-salas" #modal [presentingElement]="routerOutlet">

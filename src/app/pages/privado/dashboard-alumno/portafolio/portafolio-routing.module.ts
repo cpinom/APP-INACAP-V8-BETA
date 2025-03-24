@@ -17,11 +17,11 @@ const routes: Routes = [
   },
   {
     path: 'practica-profesional',
-    loadChildren: () => import('src/app/pages/privado/shared/practica-profesional/practica-profesional.module').then( m => m.PracticaProfesionalPageModule)
+    loadChildren: () => import('./../servicios/ofertas-practica/ofertas-practica.module').then( m => m.OfertasPracticaPageModule)
   },
   {
     path: 'certificados-intermedios',
-    loadChildren: () => import('./certificados-intermedios/certificados-intermedios.module').then( m => m.CertificadosIntermediosPageModule)
+    loadChildren: () => import('./../servicios/credenciales-digitales/credenciales-digitales.module').then( m => m.CredencialesDigitalesPageModule)
   },
   {
     path: 'progresion',

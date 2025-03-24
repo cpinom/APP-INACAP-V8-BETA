@@ -4,13 +4,15 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { AgentePracticoPageRoutingModule } from './agente-practico-routing.module';
 import { AgentePracticoPage } from './agente-practico.page';
+import { PipesModule } from 'src/app/core/pipes/pipes.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    AgentePracticoPageRoutingModule
+    AgentePracticoPageRoutingModule,
+    PipesModule
   ],
   declarations: [AgentePracticoPage]
 })

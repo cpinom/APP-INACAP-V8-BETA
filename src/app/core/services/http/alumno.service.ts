@@ -150,4 +150,7 @@ export class AlumnoService extends PrivateService {
   actualizarFotoPerfil(params: any) {
     return this.post(`${this.baseUrl}/v5/alumno/actualizar-foto-perfil`, params);
   }
+  guardarSolicitudFoto(params: any) {
+    return this.post(`${this.baseUrl}/v5/alumno/guardar-solicitud-foto`, params);
+  }
 }

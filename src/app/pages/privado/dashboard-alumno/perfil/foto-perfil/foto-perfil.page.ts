@@ -3,6 +3,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Directory, Filesystem } from '@capacitor/filesystem';
 import { ActionSheetController, NavController, Platform } from '@ionic/angular';
 import { AppGlobal } from 'src/app/app.global';
+import { VISTAS_ALUMNO } from 'src/app/core/constants/alumno';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { DialogService } from 'src/app/core/services/dialog.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
@@ -217,36 +218,28 @@ export class FotoPerfilPage implements OnInit {
           inputEl.click();
         }
         else {
-          const file = await this.media.getMedia(true);
+          const media = await this.media.getMedia();
 
-          if (file) {
-            // const fileSize = file.size / 1024 / 1024;
+          if (media) {
+            const fileSize = media.size / 1024 / 1024;
+            const base64String = media.data;
 
-            // if (fileSize <= 3) {
-            //   const loading = await this.dialog.showLoading({ message: 'Verificando Foto...' });
+            if (fileSize >= 150) {
+              await this.snackbar.showToast('La imagen no pueden exceder los 3 MB.', 2000, 'danger');
+              return;
+            }
 
-            //   try {
-            //     const params = { solicitudId: this.solicitudId };
-            //     const response: any = await this.api.cargarFotoPerfil(file.path, file.name, params);
-            //     const result = response.data;
+            try {
+              await this.uploadBase64Fragmented(base64String, media.name, 'fotoperfil');
+            }
+            catch (error: any) {
+              if (error && error.status == 401) {
+                await this.error.handle(error);
+                return
+              }
 
-            //     if (result.success) {
-            //       this.fotoPerfil = 'data:image/jpeg;base64,' + result.data;
-            //     }
-            //     else {
-            //       await this.presentAlert(result.message);
-            //     }
-            //   }
-            //   catch (error) {
-            //     this.snackbar.showToast('No fue posible cargar la imagen.', 2000);
-            //   }
-            //   finally {
-            //     await loading.dismiss();
-            //   }
-            // }
-            // else {
-            //   this.snackbar.showToast('La imagen no pueden exceder los 3 MB.', 2000);
-            // }
+              await this.snackbar.showToast('No se pudo procesar el archivo. Vuelve a intentarlo.', 2000, 'danger');
+            }
           }
         }
       }
@@ -263,58 +256,35 @@ export class FotoPerfilPage implements OnInit {
         const file = await this.media.getMedia(true);
 
         if (file) {
-          // const fileSize = file.size / 1024 / 1024;
+          const media = await this.media.getMedia();
 
-          // if (fileSize <= 3) {
-          //   const loading = await this.dialog.showLoading({ message: 'Verificando Foto...' });
+          if (media) {
+            const fileSize = media.size / 1024 / 1024;
+            const base64String = media.data;
 
-          //   try {
-          //     const params = { solicitudId: this.solicitudId };
-          //     const response: any = await this.api.cargarFotoCedula(file.path, file.name, params);
-          //     const result = response.data;
+            if (fileSize >= 150) {
+              await this.snackbar.showToast('La imagen no pueden exceder los 3 MB.', 2000, 'danger');
+              return;
+            }
 
-          //     if (result.success) {
-          //       this.fotoCelula = 'data:image/jpeg;base64,' + result.data;
-          //       this.fotoCelulaRostro = 'data:image/jpeg;base64,' + result.face;
-          //       this.pasoActual = Pasos.capturarFotoCedula;
+            try {
+              await this.uploadBase64Fragmented(base64String, media.name, 'fotocedula');
+            }
+            catch (error: any) {
+              if (error && error.status == 401) {
+                await this.error.handle(error);
+                return
+              }
 
-          //       if (!this.modelsLoaded) {
-          //         this.modelsLoaded = await this.loadModels();
-          //       }
-
-          //       if (this.modelsLoaded) {
-          //         await this.compararRostros(this.fotoPerfil, this.fotoCelula);
-          //       }
-          //       else {
-          //         await this.presentAlert('Ha ocurrido un error mientras procesamos tu solicitud. Vuelve a intentarlo', () => {
-          //           this.fotoPerfil = '';
-          //           this.fotoCelula = '';
-          //           this.fotoCelulaRostro = '';
-          //           this.pasoActual = Pasos.inicial;
-          //         })
-          //       }
-          //     }
-          //     else {
-          //       await this.presentAlert(result.message);
-          //     }
-          //   }
-          //   catch (error) {
-          //     this.snackbar.showToast('No fue posible cargar la imagen.', 2000);
-          //   }
-          //   finally {
-          //     await loading.dismiss();
-          //   }
-          // }
-          // else {
-          //   this.snackbar.showToast('La imagen no pueden exceder los 3 MB.', 2000);
-          // }
+              await this.snackbar.showToast('No se pudo procesar el archivo. Vuelve a intentarlo.', 2000, 'danger');
+            }
+          }
         }
       }
     }
 
   }
   async procesarFotoPerfil() {
-    debugger
     const loading = await this.dialog.showLoading({ message: 'Actualizando Foto...' });
     const base64 = this.fotoPerfil.replace(/^data:(.*,)?/, '');
     const params = { fotoPerfil: base64, token: this.token };
@@ -343,18 +313,48 @@ export class FotoPerfilPage implements OnInit {
       await loading.dismiss();
     }
   }
+  protected async procesarSolicitud() {
+    const loading = await this.dialog.showLoading({ message: 'Procesando...' });
+    const params = {
+      solicitudId: this.solicitudId,
+      fotoPerfil: this.fotoPerfil.replace(/^data:(.*,)?/, ''),
+      fotoCedula: this.fotoCelula.replace(/^data:(.*,)?/, ''),
+      token: this.token
+    };
+
+    try {
+      const result = await this.api.guardarSolicitudFoto(params);
+
+      if (result.success) {
+        this.events.app.next({ action: 'app:foto-perfil-enviada' });
+        this.snackbar.showToast('La solicitud ha sido enviada correctamente para ser revisada por el DAE de su sede.', 3000, 'success');
+        this.nav.pop();
+      }
+      else {
+        this.snackbar.showToast(result.message);
+      }
+    }
+    catch (error) {
+      console.log(error);
+      this.snackbar.showToast('Ha ocurrido un error mientras se procesaba su fotografía.', 3000, 'danger');
+    }
+    finally {
+      await loading.dismiss();
+      this.api.marcarVista(VISTAS_ALUMNO.ENVIA_FOTO_PERFIL);
+    }
+  }
   async enviarSolicitud() {
     const confirm = await this.confirmarSolicitud();
-    debugger
-    // if (confirm) {
-    //   await this.procesarSolicitud();
-    // }
-    // else {
-    //   this.fotoPerfil = undefined;
-    //   this.fotoCelula = undefined;
-    //   this.fotoCelulaRostro = undefined;
-    //   this.pasoActual = Pasos.inicial;
-    // }
+
+    if (confirm) {
+      await this.procesarSolicitud();
+    }
+    else {
+      this.fotoPerfil = '';
+      this.fotoCelula = '';
+      this.fotoCelulaRostro = '';
+      this.pasoActual = Pasos.inicial;
+    }
   }
   async confirmarSolicitud(): Promise<boolean> {
     return new Promise((resolve) => {
@@ -435,7 +435,7 @@ export class FotoPerfilPage implements OnInit {
           text: 'Enviar solicitud al DAE',
           role: 'cancel',
           handler: () => {
-            //this.enviarSolicitud();
+            this.enviarSolicitud();
           }
         }
       ]

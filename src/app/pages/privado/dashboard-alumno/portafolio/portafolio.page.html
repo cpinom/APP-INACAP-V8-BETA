@@ -72,10 +72,10 @@
       </ion-col>
       <ion-col size="6">
         <ion-button class="color-2">
-          <div class="btn-inner" routerLink="progresion/riesgos-academicos">
+          <div class="btn-inner" (click)="riesgosAcademicosTap()">
             <ion-icon src="assets/icon/report_gmailerrorred.svg" class="rounded"></ion-icon>
             <ion-label>
-              <h1>67%</h1>
+              <h1>{{resolverRiesgos()}}</h1>
               <p>Avance programa de estudios</p>
             </ion-label>
             <!-- <ion-progress-bar [value]="30"></ion-progress-bar> -->

@@ -479,10 +479,11 @@ ion-card.primary-card {
 
             article {
                 .schedule-header {
-                    background-color: #f7f7f7;
+                    //background-color: #f7f7f7;
                     padding: 10px 15px;
-                    border-top: 1px solid #ccc;
+                    border-top: 1px solid var(--ion-toolbar-border-color);
                     border-bottom: 1px solid #ccc;
+                    //--ion-toolbar-border-color: #2b2c33;
 
                     h2 {
                         text-transform: capitalize;
@@ -773,4 +774,18 @@ ion-card.primary-card {
 
 .no-padding {
     padding: 0 !important;
+}
+
+::ng-deep body.dark {
+    .schedule {
+        &.portrait {
+            .schedule-header {
+                border-top-color: #41424d !important; 
+                border-bottom-color: #41424d !important;
+            }
+            .schedule-item {
+                border-bottom-color: #41424d !important;
+            }
+        }
+    }
 }

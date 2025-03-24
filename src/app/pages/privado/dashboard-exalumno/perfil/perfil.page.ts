@@ -61,6 +61,8 @@ export class PerfilPage implements OnInit, OnDestroy {
         return;
       }
 
+      await this.presentError('Foto Perfil', 'Funcionalidad no disponible temporalmente.');
+
     }
   }
   async actualizarDatosTap() {

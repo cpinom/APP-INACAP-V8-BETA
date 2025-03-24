@@ -236,8 +236,7 @@ body {
   }
 
   ion-buttons {
-
-    &.buttons-first-slot.md + ion-title{
+    &.buttons-first-slot.md + ion-title {
       text-align: left;
     }
 
@@ -744,6 +743,13 @@ body {
     --ion-color-white-contrast-rgb: 255, 255, 255;
     --ion-color-white-shade: #26272d;
     --ion-color-white-tint: #404147;
+
+    --ion-color-dark: #ffffff;
+    --ion-color-dark-rgb: 255, 255, 255;
+    --ion-color-dark-contrast: #000000;
+    --ion-color-dark-contrast-rgb: 0, 0, 0;
+    --ion-color-dark-shade: #e0e0e0;
+    --ion-color-dark-tint: #ffffff;
 
     --ion-color-danger: #e06666;
     --ion-color-danger-rgb: 224, 102, 102;

@@ -359,7 +359,8 @@ export class CredencialesDigitalesPage implements OnInit {
       await loading.dismiss();
     }
   }
-  get backUrl() { return this.router.url.replace('/credenciales-digitales', ''); }
+  get backUrl() { return this.router.url.includes('portafolio') ? this.router.url.replace('/certificados-intermedios', '') : this.router.url.replace('/credenciales-digitales', ''); }
+  get backText() { return this.router.url.includes('portafolio') ? 'Portafolio' : 'Servicios'; }
   get carrera() { return this.carreraForm.get('carrera'); }
 
 }

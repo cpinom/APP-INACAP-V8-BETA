@@ -4,7 +4,64 @@
       <ion-back-button text="Tutor IA" defaultHref=""></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
+  <ion-card color="white" class="primary-card">
+    <ion-card-header>
+      <ion-icon src="assets/icon/mingcute_ai-line.svg" class="rounded variant-1"></ion-icon>
+      <ion-card-title>
+        <h2>Tutor IA</h2>
+        <p>Ponme a prueba</p>
+      </ion-card-title>
+      <!-- <ion-button shape="round" color="primary" fill="outline" (click)="reiniciar()">Reiniciar chat</ion-button> -->
+    </ion-card-header>
+  </ion-card>
 </ion-header>
 
 <ion-content>
+
+  @if (mostrarCargando) {
+  <div class="loaderInacap">
+    <ion-spinner name="lines" color="primary"></ion-spinner>
+  </div>
+  }
+
+  @if (mostrarData && temas) {
+
+  @if (vista == 0) {
+  <form [formGroup]="preguntaForm" (ngSubmit)="iniciarTest()">
+    <ion-list inset="true">
+      <ion-item>
+        <ion-select label="Tema" labelPlacement="stacked" formControlName="tema"
+          placeholder="Selecciona el tipo de pregunta">
+          @for (item of temas; track $index) {
+          <ion-select-option [value]="item.name">{{item.name}}</ion-select-option>
+          }
+        </ion-select>
+      </ion-item>
+      <div class="invalid" *ngIf="temaCtrl?.hasError('required')">El campo es olbigatorio</div>
+      <ion-item>
+        <ion-select label="Cantidad de preguntas" labelPlacement="stacked" formControlName="preguntas"
+          placeholder="Selecciona el número de preguntas">
+          @for (item of [5,6,7,8,9,10,11,12,13,14,15]; track $index) {
+          <ion-select-option [value]="item">{{item}}</ion-select-option>
+          }
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-select label="Nivel" labelPlacement="stacked" formControlName="nivel"
+          placeholder="Selecciona el nivel de dificultad">
+          @for (item of [{key:1,label:'Básico'},{key:5,label:'Intermedio'},{key:10,label:'Avanzado'}]; track $index) {
+          <ion-select-option [value]="item.key">{{item.label}}</ion-select-option>
+          }
+        </ion-select>
+      </ion-item>
+    </ion-list>
+    <ion-button style="margin: 15px;" type="submit" shape="round" color="primary" expand="block">Comenzar</ion-button>
+  </form>
+  }
+  @else if (vista == 1) {
+
+  }
+
+  }
+
 </ion-content>

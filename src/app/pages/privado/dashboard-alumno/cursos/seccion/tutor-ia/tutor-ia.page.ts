@@ -24,6 +24,12 @@ export class TutorIaPage implements OnInit {
   agenteSocraticoTap() {
     this.nav.navigateForward(`${this.router.url}/agente-socratico`, { state: this.seccion });
   }
+  agentePracticoTap() {
+    this.nav.navigateForward(`${this.router.url}/agente-practico`, { state: this.seccion });
+  }
+  iniciarTestTap() {
+    this.nav.navigateForward(`${this.router.url}/test`, { state: this.seccion });
+  }
   get backUrl() {
     return this.router.url.replace('/tutor-ia', '');
   }

@@ -1,37 +1,67 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { AppGlobal } from 'src/app/app.global';
 import { DialogService } from 'src/app/core/services/dialog.service';
 import { EventsService } from 'src/app/core/services/events.service';
 import { ProfileService } from 'src/app/core/services/profile.service';
 import { CredencialVirtualPage } from './credencial-virtual/credencial-virtual.page';
 import { NavController } from '@ionic/angular';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { Subscription } from 'rxjs';
+import { AlumnoService } from 'src/app/core/services/http/alumno.service';
 
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.page.html',
   styleUrls: ['./perfil.page.scss'],
 })
-export class PerfilPage implements OnInit {
+export class PerfilPage implements OnInit, OnDestroy {
 
   private events = inject(EventsService);
   private global = inject(AppGlobal);
   private profile = inject(ProfileService);
   private dialog = inject(DialogService);
   private nav = inject(NavController);
+  private auth = inject(AuthService);
+  private api = inject(AlumnoService);
 
   avatarConfig = { show: true, icon: 'edit', color: '' };
   perfil: any;
   programa: any;
   activeTab = 0;
+  subscription: Subscription;
 
-  constructor() { }
-
+  constructor() {
+    this.subscription = this.events.app.subscribe((event) => {
+      if (event.action == 'app:alumno-datos-refresca') {
+        this.recargar();
+      }
+    });
+  }
   async ngOnInit() {
     await this.cargar();
+  }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
   async cargar() {
     this.programa = await this.profile.getPrograma();
     this.perfil = await this.profile.getPrincipal();
+  }
+  async recargar() {
+    debugger
+    try {
+      const result = await this.api.getPerfilV5(this.programa.sedeCcod);
+
+      if (result.success) {
+        this.perfil = result.perfil;
+        await this.profile.setPrincipal(this.perfil);
+
+        if (this.perfil.estadoSolicitudFoto == 0) {
+          this.events.app.next({ action: 'app:foto-perfil-enviada' });
+        }
+      }
+    }
+    catch { }
   }
   async fotoPerfil() {
     await this.nav.navigateForward('/dashboard-alumno/perfil/foto-perfil');
@@ -45,6 +75,12 @@ export class PerfilPage implements OnInit {
   }
   notificacionesTap() {
     this.events.app.next({ action: 'app:alumno-notificaciones' });
+  }
+  async publicoTap() {
+    await this.nav.navigateRoot('publico');
+  }
+  async logoutTap() {
+    await this.auth.tryLogout();
   }
   get nombreCompleto() {
     if (this.perfil) {

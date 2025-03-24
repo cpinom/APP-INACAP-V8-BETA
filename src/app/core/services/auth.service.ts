@@ -284,8 +284,3 @@ export class AuthService {
   }
 
 }
-
-// export function getRouterOutlet() {
-//   // if(this.global.PublicOutlet) {}
-//   return document.getElementById('ion-router-outlet-content') || undefined;
-// }

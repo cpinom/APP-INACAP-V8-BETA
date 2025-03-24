@@ -12,10 +12,16 @@
       </ion-button>
     </div>
   </div>
-  <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar>
+  <!-- <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar> -->
 </ion-header>
 
 <ion-content>
+
+  @if (mostrarCargando) {
+    <div class="loaderInacap">
+      <ion-spinner name="lines" color="primary"></ion-spinner>
+    </div>
+    }
 
   <ng-container *ngIf="mostrarData && ofertas">
     <section class="first">

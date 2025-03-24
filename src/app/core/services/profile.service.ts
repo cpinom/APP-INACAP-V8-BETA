@@ -102,6 +102,7 @@ export class ProfileService {
     await Preferences.remove({ key: `${this.storagePrefix}-status` });
     await Preferences.remove({ key: `${this.storagePrefix}-principal` });
     await Preferences.remove({ key: `${this.storagePrefix}-perfil` });
+    await Preferences.remove({ key: `${this.storagePrefix}-profile` });
     await Preferences.remove({ key: `${this.storagePrefix}-preferencias` });
     await Preferences.remove({ key: `${this.storagePrefix}-privacyMode` });
     await Preferences.remove({ key: `${this.storagePrefix}-buscadorDocentes` });

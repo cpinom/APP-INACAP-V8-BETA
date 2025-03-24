@@ -420,7 +420,10 @@ export class ConfiguracionesPage implements OnInit {
   }
   get mostrarCalendario() { return false; }
   get mostrarNotificaciones() { return this.router.url.startsWith('/dashboard-alumno'); }
-  get mostrarFaceID() { return this.pt.is('ios'); }
+  get mostrarFaceID() { 
+    return false;
+    // return this.pt.is('ios');
+  }
   get backUrl() { return this.router.url.replace('/configuraciones', ''); }
   get Vista() {
     return this.router.url.startsWith('/dashboard-alumno')

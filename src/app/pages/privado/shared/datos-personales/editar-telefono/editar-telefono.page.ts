@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProfileService } from 'src/app/core/services/profile.service';
 import { CodeInputComponent } from 'angular-code-input';
-import { /*IonNav,*/ ModalController } from '@ionic/angular';
+import { /*IonNav,*/ ModalController, NavController } from '@ionic/angular';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { DocenteService } from 'src/app/core/services/http/docente.service';
@@ -42,7 +42,8 @@ export class EditarTelefonoPage implements OnInit {
     private error: ErrorHandlerService,
     private events: EventsService,
     private modalCtrl: ModalController,
-    private router: Router) {
+    private router: Router,
+    private nav: NavController) {
 
     this.form = this.fb.group({
       persTcelular: ['', Validators.compose([
@@ -126,7 +127,7 @@ export class EditarTelefonoPage implements OnInit {
           }
           else {
             await this.presentSuccess(() => {
-              // this.nav.pop();
+              this.volver();
               this.events.app.next({ action: 'app:alumno-datos-refresca' });
               this.events.app.next({ action: 'app:docente-datos-refresca' });
             });
@@ -169,6 +170,9 @@ export class EditarTelefonoPage implements OnInit {
         }
       ]
     });
+  }
+  async volver() {
+    await this.nav.navigateBack(this.backUrl);
   }
   get celular() { return this.form.get('persTcelular') }
   get celularConfirma() { return this.form.get('persTcelularConfirma') }

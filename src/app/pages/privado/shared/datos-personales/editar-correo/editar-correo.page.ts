@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { /*IonNav,*/ ModalController, Platform } from '@ionic/angular';
+import { /*IonNav,*/ ModalController, NavController, Platform } from '@ionic/angular';
 import { CodeInputComponent } from 'angular-code-input';
 import { AlumnoService } from 'src/app/core/services/http/alumno.service';
 import { DialogService } from 'src/app/core/services/dialog.service';
@@ -42,7 +42,8 @@ export class EditarCorreoPage implements OnInit {
     private events: EventsService,
     private pt: Platform,
     private modalCtrl: ModalController,
-    private router: Router) {
+    private router: Router,
+    private nav: NavController) {
 
     this.form = this.fb.group({
       persTemail: ['', Validators.compose([Validators.required, Validators.email])],
@@ -136,7 +137,7 @@ export class EditarCorreoPage implements OnInit {
         if (response.success) {
           await loading.dismiss();
           await this.presentSuccess(() => {
-            // this.nav.pop();
+            this.volver();
             this.events.app.next({ action: 'app:alumno-datos-refresca' });
             this.events.app.next({ action: 'app:docente-datos-refresca' });
           });
@@ -175,6 +176,9 @@ export class EditarCorreoPage implements OnInit {
         }
       ]
     });
+  }
+  async volver() {
+    await this.nav.navigateBack(this.backUrl);
   }
   get correo() { return this.form.get('persTemail') }
   get correoConfirma() { return this.form.get('persTemailConfirma') }

@@ -1,13 +1,66 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>riesgos-academicos</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button text="Mi Progresión" defaultHref="/dashboard-alumno/portafolio/progresion"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">riesgos-academicos</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+
+  <ion-list inset="true" class="card-list">
+    <ion-item detail="false">
+      <ion-icon slot="start" src="assets/icon/school.svg" class="rounded variant-5"></ion-icon>
+      <ion-label>
+        <h2>Avance Periodo Académico</h2>
+        <p>Resumen actual de los riegos académicos que tienes.</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  @if (mostrarCargando) {
+  <div class="loaderInacap">
+    <ion-spinner name="lines" color="primary"></ion-spinner>
+  </div>
+  }
+
+
+  @if (mostrarData && data) {
+  <section class="riesgos">
+    <div class="section-header">Riesgos Académicos</div>
+    <div class="section-content">
+      <ion-list>
+        @for (item of data.riesgosAcademicos; track $index) {
+        <ion-item detail="false">
+          <ion-label>
+            <p>{{item.asigCcod}}</p>
+            <h2>{{item.asigTdesc}}</h2>
+            <p class="riesgo">
+              Riesgo Asistencia
+              <ion-icon *ngIf="item.riesgoasistencia == 0" color="success" src="assets/icon/check_circle.svg"></ion-icon>
+              <ion-icon *ngIf="item.riesgoasistencia != 0" color="danger" src="assets/icon/highlight_off.svg"></ion-icon>
+            </p>
+            <p class="riesgo">
+              Riesgo Notas
+              <ion-icon *ngIf="item.riesgonota == 0" color="success" src="assets/icon/check_circle.svg"></ion-icon>
+              <ion-icon *ngIf="item.riesgonota != 0" color="danger" src="assets/icon/highlight_off.svg"></ion-icon>
+            </p>
+          </ion-label>
+        </ion-item>
+        }
+      </ion-list>
+    </div>
+  </section>
+  }
+
+  @if (mostrarData && !data) {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Información no disponible en este momento.</p>
+      <ion-button color="primary" shape="round" (click)="recargar()">Recargar</ion-button>
+    </div>
+  </section>
+  }
+
 </ion-content>

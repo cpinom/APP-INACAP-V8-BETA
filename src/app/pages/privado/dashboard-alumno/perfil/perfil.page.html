@@ -159,17 +159,17 @@
       <ion-label>
         <h2>Nombre Contacto: <span>{{perfil.persTnombreEmergencia}}</span></h2>
       </ion-label>
-      <ion-button icon-only slot="end" fill="clear" color="medium" routerLink="datos-emergencia">
+      <!-- <ion-button icon-only slot="end" fill="clear" color="medium" routerLink="datos-emergencia">
         <ion-icon src="assets/icon/edit.svg"></ion-icon>
-      </ion-button>
+      </ion-button> -->
     </ion-item>
     <ion-item>
       <ion-label>
         <h2>Correo Contacto: <span>{{perfil.persTfonoEmergencia}}</span></h2>
       </ion-label>
-      <ion-button icon-only slot="end" fill="clear" color="medium" routerLink="datos-emergencia">
+      <!-- <ion-button icon-only slot="end" fill="clear" color="medium" routerLink="datos-emergencia">
         <ion-icon src="assets/icon/edit.svg"></ion-icon>
-      </ion-button>
+      </ion-button> -->
     </ion-item>
   </ion-list>
   }
@@ -177,8 +177,8 @@
   }
 
   <section class="cerrar-sesion">
-    <ion-button expand="block" color="primary" shape="round">Volver al Ambiente Público</ion-button>
-    <ion-button expand="block" color="white" shape="round" class="logout">Cerrar Sesión</ion-button>
+    <ion-button expand="block" color="primary" shape="round" (click)="publicoTap()">Volver al Ambiente Público</ion-button>
+    <ion-button expand="block" color="white" shape="round" class="logout" (click)="logoutTap()">Cerrar Sesión</ion-button>
   </section>
 
 </ion-content>

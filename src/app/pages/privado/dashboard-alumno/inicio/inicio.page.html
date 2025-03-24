@@ -275,7 +275,7 @@
             <ion-icon [src]="item.icon" class="rounded"></ion-icon>
             <ion-label>
               <h2>{{item.label}}</h2>
-              <i *ngIf="item.count && (item.count > 0)">{{item?.count}}</i>
+              <i *ngIf="item!.count && (item!.count > 0)">{{item!.count > 99 ? '99+' : item!.count}}</i>
             </ion-label>
             <ion-icon src="assets/icon/arrow_forward.svg" class="launch"></ion-icon>
           </div>

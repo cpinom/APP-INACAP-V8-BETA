@@ -11,6 +11,7 @@ import { EventsService } from 'src/app/core/services/events.service';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
 import * as moment from 'moment';
 import { ReservasEspacioService } from 'src/app/core/services/http/reservas-espacio.service';
+import { ProfileService } from 'src/app/core/services/profile.service';
 
 @Component({
   selector: 'app-nueva-reserva',
@@ -32,6 +33,7 @@ export class NuevaReservaPage implements OnInit {
   fechaConsulta: any;
   slots: any;
   user: any;
+  themeVariant: any;
 
   private router = inject(Router);
   private api = inject(ReservasEspacioService);
@@ -42,7 +44,7 @@ export class NuevaReservaPage implements OnInit {
   private snackbar = inject(SnackbarService);
   private error = inject(ErrorHandlerService);
   private auth = inject(AuthService);
-
+  private profile = inject(ProfileService);
 
   constructor() {
 
@@ -67,6 +69,8 @@ export class NuevaReservaPage implements OnInit {
         this.cargarDisponibilidad();
       }
     });
+
+    this.themeVariant = this.profile.isDarkMode() ? 'dark' : 'light';
 
   }
   async ngOnInit() {

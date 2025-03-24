@@ -8,6 +8,7 @@ import { NavController } from '@ionic/angular';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { Subscription } from 'rxjs';
 import { AlumnoService } from 'src/app/core/services/http/alumno.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-perfil',
@@ -23,6 +24,7 @@ export class PerfilPage implements OnInit, OnDestroy {
   private nav = inject(NavController);
   private auth = inject(AuthService);
   private api = inject(AlumnoService);
+  private router = inject(Router);
 
   avatarConfig = { show: true, icon: 'edit', color: '' };
   perfil: any;
@@ -77,7 +79,7 @@ export class PerfilPage implements OnInit, OnDestroy {
     this.events.app.next({ action: 'app:alumno-notificaciones' });
   }
   async publicoTap() {
-    await this.nav.navigateRoot('publico');
+    await this.router.navigate(['/publico'], { replaceUrl: true });
   }
   async logoutTap() {
     await this.auth.tryLogout();

@@ -98,7 +98,7 @@ ion-content.detalle-seccion {
                 }
 
                 ion-progress-bar {
-                    --background: var(--ion-color-2-primary);
+                    //--background: var(--ion-color-2-primary);
                     height: 6px;
                 }
 
@@ -133,6 +133,7 @@ ion-content.detalle-seccion {
                 }
 
                 ion-progress-bar {
+                    --background: var(--ion-color-2-primary);
                     --progress-background: var(--ion-color-2-foreground);
                 }
             }
@@ -150,6 +151,7 @@ ion-content.detalle-seccion {
                 }
 
                 ion-progress-bar {
+                    --background: var(--ion-color-7-primary);
                     --progress-background: var(--ion-color-7-foreground);
                 }
             }

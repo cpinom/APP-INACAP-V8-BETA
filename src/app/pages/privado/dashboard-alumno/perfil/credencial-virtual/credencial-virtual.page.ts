@@ -69,11 +69,13 @@ export class CredencialVirtualPage implements OnInit {
       lineColor: '#040B15'
     });
   }
-  async wallet() {
-    let programa = await this.profile.getPrograma();
-    let perfil = await this.profile.getPrincipal();
+  async walletTap() {
+    const programa = await this.profile.getPrograma();
+    const perfil = await this.profile.getPrincipal();
 
     if (perfil) {
+      const loading = await this.dialog.showLoading({message:'Generando Wallet...'});
+
       try {
         this.generandoPassbook = true;
 
@@ -86,6 +88,7 @@ export class CredencialVirtualPage implements OnInit {
         const result = await this.api.getPassbook(params);
 
         if (result.success) {
+          await loading.dismiss();
           const base64 = result.data;
           const passbook = await CapacitorPassToWallet.addToWallet({ base64: base64 });
         }
@@ -108,6 +111,7 @@ export class CredencialVirtualPage implements OnInit {
       }
       finally {
         this.generandoPassbook = false;
+        await loading.dismiss();
       }
     }
   }

@@ -92,8 +92,5 @@ export class CredencialVirtualPage implements OnInit {
       return this.perfil.qrCode;
     return 'invalid';
   }
-  get mostrarPassbook() {
-    return this.pt.is('ios');
-  }
 
 }

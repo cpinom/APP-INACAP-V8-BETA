@@ -229,9 +229,10 @@
               <ion-icon src="assets/icon/mail_outline.svg" class="rounded"></ion-icon>
               <ion-label>
                 <h2>INACAPMail</h2>
-                @if (inacapMail) {
+                <i *ngIf="inacapMail && (inacapMail!.unReadTotal > 0)">{{inacapMail!.unReadTotal > 99 ? '99+' : inacapMail!.unReadTotal}}</i>
+                <!-- @if (inacapMail) {
                 <i *ngIf="inacapMail.unReadTotal && (inacapMail.unReadTotal > 0)">{{inacapMail?.unReadTotal}}</i>
-                }
+                } -->
               </ion-label>
               <ion-icon src="assets/icon/arrow_forward.svg" class="launch"></ion-icon>
             </div>

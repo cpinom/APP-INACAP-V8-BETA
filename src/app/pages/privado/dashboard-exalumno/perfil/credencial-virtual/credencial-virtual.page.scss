@@ -5,9 +5,12 @@
 }
 
 ion-header.credencial-virtual-header {
+  box-shadow: none;
+  
   ion-toolbar {
     --background: #fff;
     --border-color: #fff;
+    // padding-top: 0 !important;
 
     ion-icon {
       color: #040b15;
@@ -118,8 +121,10 @@ ion-footer {
     display: flex;
     flex-direction: column;
 
-    // ion-button {
-    //   --background: #040B15;
-    // }
+    .close-button {
+      color: #000;
+      --background-activated: transparent;
+      --border-color: #000;
+    }
   }
 }

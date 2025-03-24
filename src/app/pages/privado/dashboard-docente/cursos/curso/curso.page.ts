@@ -5,7 +5,7 @@ import { ErrorHandlerService } from 'src/app/core/services/error-handler.service
 import Chart from 'chart.js/auto';
 import 'jquery-knob';
 import * as moment from 'moment';
-import { NavController } from '@ionic/angular';
+import { NavController, Platform } from '@ionic/angular';
 import { VISTAS_DOCENTE } from 'src/app/core/constants/docente';
 
 @Component({
@@ -35,7 +35,8 @@ export class CursoPage implements OnInit {
   constructor(private api: DocenteService,
     private error: ErrorHandlerService,
     private router: Router,
-    private nav: NavController) {
+    private nav: NavController,
+    private pt: Platform) {
     moment.locale('es');
     this.seccion = this.router.getCurrentNavigation()?.extras.state;
     console.log(this.seccion);
@@ -235,8 +236,10 @@ export class CursoPage implements OnInit {
   }
 
   get mostrarTutorIA() {
-    return true;
-    
+    if (this.pt.is('mobileweb')) {
+      return true;
+    }
+
     if (this.seccion) {
       const asignaturas = 'TEAF01|MIA301|MAEA32'.split("|");
       const existe = asignaturas.includes(this.seccion.asigCcod);

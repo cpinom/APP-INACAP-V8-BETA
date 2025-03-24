@@ -23,6 +23,17 @@ section.image {
   }
 }
 
+.container {
+  height: calc(100% - 220px);
+  overflow: scroll;
+  margin: 0;
+  // overflow: hidden;
+
+  > section {
+    margin: 0;
+  }
+}
+
 ion-segment-view {
   height: calc(100% - 220px);
   overflow: hidden;

@@ -1,6 +1,5 @@
 @import "../dashboard-docente.page.scss";
 
-
 ion-card.destacado-list {
     margin: 10px 10px 5px;
     box-shadow: var(--ion-box-shadow) !important;
@@ -190,133 +189,181 @@ ion-card.destacado-list {
         margin-inline: 0;
         border-radius: 0;
         //border-bottom: var(--border);
-    }
 
-    .dia-selector {
-        height: 46px;
-        background-color: var(--ion-color-light);
-        border-bottom: var(--border);
-        display: flex;
-        padding: 13px 15px;
-        box-sizing: border-box;
+        mbsc-eventcalendar ::ng-deep {
+            .mbsc-list-item {
+                display: block;
+                padding: 0 !important;
 
-        .arrow {
-            width: 10%;
-            text-align: center;
+                ion-item {
+                    --padding-start: 15px;
+                    --padding-top: 10px;
+                    --padding-bottom: 10px;
 
-            ion-icon {
-                font-size: 19px;
-                height: 19px;
-                width: 19px;
-            }
-        }
+                    div[slot="start"] {
+                        width: 105px;
+                        background: #eee;
+                        border-radius: 4px;
+                        padding: 5px 10px;
+                        display: flex;
+                        flex-direction: column;
+                        margin: 0 16px 0 0;
 
-        .nombre-dia {
-            flex: 1;
-            text-align: center;
-            font-size: var(--FS14);
-            font-weight: bold;
+                        ion-icon {
+                            font-size: 20px;
+                        }
 
-            ion-datetime {
-                display: none;
-            }
-        }
-    }
+                        h2 {
+                            font-size: var(--FS14);
+                            font-weight: 700;
+                            margin: 5px 0;
+                        }
 
-    .clasesList {
-        margin: 0;
-
-        .text-center {
-            padding: 15px;
-            text-align: center;
-        }
-
-        ion-item {
-            ion-label {
-                display: flex;
-                margin-top: 4px;
-                margin-bottom: 4px;
-
-                .horario-hora {
-                    flex: 0 0 35px;
-                    font-size: var(--FS12);
-                    text-align: right;
-                    padding-right: 4px;
-
-                    span {
-                        display: block;
-                        font-weight: bold;
-                    }
-
-                    .inicio {
-                        line-height: 20px;
-                    }
-                }
-
-                .horario-ramo {
-                    flex: 1;
-                    white-space: normal;
-                    margin-left: 9px;
-                    padding-left: 10px;
-                    border-left: var(--border);
-                    position: relative;
-
-                    h3 {
-                        font-size: var(--FS14);
-                        //line-height: 20px;
-                        line-height: 1.4em;
-                        font-weight: bold;
-                    }
-
-                    p {
-                        font-size: var(--FS12);
-                        color: var(--ion-color-medium);
-                        margin-top: 0;
-                        margin-bottom: 2px;
-                    }
-                    p.estado {
-                        color: var(--ion-color-danger);
-                        margin: 0;
-                        position: absolute;
-                        top: -4px;
-                        font-style: italic;
-                        font-size: var(--FS10);
-
-                        i {
-                            background-color: var(--ion-color-danger);
-                            height: 6px;
-                            width: 6px;
-                            border-radius: 50%;
-                            display: inline-block;
-                            margin-right: 3px;
+                        p {
+                            margin: 5px 0 0 0;
+                            font-size: var(--FS12);
                         }
                     }
 
-                    &.green {
-                        border-color: var(--ion-color-success);
-                    }
-                    &.blue {
-                        border-color: var(--ion-color-primary);
-                    }
-                }
-                &.ion-text-center {
-                    display: block;
-                }
-            }
-
-            &.suspendida {
-                // --background: #fbe4e2;
-                ion-label {
-                    > div {
-                        padding-top: 10px;
-                    }
-                    .horario-ramo {
-                        border-color: var(--ion-color-danger);
+                    ion-label {
+                        h2 {
+                            font-size: var(--FS14);
+                            font-weight: 700;
+                        }
+                        p.desc {
+                            font-size: var(--FS12);
+                        }
                     }
                 }
             }
         }
     }
+
+    // .dia-selector {
+    //     height: 46px;
+    //     background-color: var(--ion-color-light);
+    //     border-bottom: var(--border);
+    //     display: flex;
+    //     padding: 13px 15px;
+    //     box-sizing: border-box;
+
+    //     .arrow {
+    //         width: 10%;
+    //         text-align: center;
+
+    //         ion-icon {
+    //             font-size: 19px;
+    //             height: 19px;
+    //             width: 19px;
+    //         }
+    //     }
+
+    //     .nombre-dia {
+    //         flex: 1;
+    //         text-align: center;
+    //         font-size: var(--FS14);
+    //         font-weight: bold;
+
+    //         ion-datetime {
+    //             display: none;
+    //         }
+    //     }
+    // }
+
+    // .clasesList {
+    //     margin: 0;
+
+    //     .text-center {
+    //         padding: 15px;
+    //         text-align: center;
+    //     }
+
+    //     ion-item {
+    //         ion-label {
+    //             display: flex;
+    //             margin-top: 4px;
+    //             margin-bottom: 4px;
+
+    //             .horario-hora {
+    //                 flex: 0 0 35px;
+    //                 font-size: var(--FS12);
+    //                 text-align: right;
+    //                 padding-right: 4px;
+
+    //                 span {
+    //                     display: block;
+    //                     font-weight: bold;
+    //                 }
+
+    //                 .inicio {
+    //                     line-height: 20px;
+    //                 }
+    //             }
+
+    //             .horario-ramo {
+    //                 flex: 1;
+    //                 white-space: normal;
+    //                 margin-left: 9px;
+    //                 padding-left: 10px;
+    //                 border-left: var(--border);
+    //                 position: relative;
+
+    //                 h3 {
+    //                     font-size: var(--FS14);
+    //                     //line-height: 20px;
+    //                     line-height: 1.4em;
+    //                     font-weight: bold;
+    //                 }
+
+    //                 p {
+    //                     font-size: var(--FS12);
+    //                     color: var(--ion-color-medium);
+    //                     margin-top: 0;
+    //                     margin-bottom: 2px;
+    //                 }
+    //                 p.estado {
+    //                     color: var(--ion-color-danger);
+    //                     margin: 0;
+    //                     position: absolute;
+    //                     top: -4px;
+    //                     font-style: italic;
+    //                     font-size: var(--FS10);
+
+    //                     i {
+    //                         background-color: var(--ion-color-danger);
+    //                         height: 6px;
+    //                         width: 6px;
+    //                         border-radius: 50%;
+    //                         display: inline-block;
+    //                         margin-right: 3px;
+    //                     }
+    //                 }
+
+    //                 &.green {
+    //                     border-color: var(--ion-color-success);
+    //                 }
+    //                 &.blue {
+    //                     border-color: var(--ion-color-primary);
+    //                 }
+    //             }
+    //             &.ion-text-center {
+    //                 display: block;
+    //             }
+    //         }
+
+    //         &.suspendida {
+    //             // --background: #fbe4e2;
+    //             ion-label {
+    //                 > div {
+    //                     padding-top: 10px;
+    //                 }
+    //                 .horario-ramo {
+    //                     border-color: var(--ion-color-danger);
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 }
 
 mbsc-datepicker {
@@ -386,7 +433,7 @@ p.last-update {
     font-weight: bold;
 }
 p.last-update {
-    margin: 10px 0 0;;
+    margin: 10px 0 0;
 }
 
 mbsc-eventcalendar {
@@ -541,7 +588,7 @@ ion-modal.estacionamiento-modal {
                 .circulo {
                     height: 8px;
                     width: 8px;
-                    background-color: #DCDFFC;
+                    background-color: #dcdffc;
                     border-radius: 50%;
                     padding: 0px;
                     margin: 0px 8px 0 0;

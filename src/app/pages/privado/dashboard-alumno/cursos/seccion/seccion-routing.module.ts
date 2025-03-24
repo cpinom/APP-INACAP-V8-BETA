@@ -9,22 +9,23 @@ const routes: Routes = [
   },
   {
     path: 'estudiantes',
-    loadChildren: () => import('./estudiantes/estudiantes.module').then( m => m.EstudiantesPageModule)
+    loadChildren: () => import('./estudiantes/estudiantes.module').then(m => m.EstudiantesPageModule)
   },
   {
     path: 'evaluaciones',
-    loadChildren: () => import('./evaluaciones/evaluaciones.module').then( m => m.EvaluacionesPageModule)
+    loadChildren: () => import('./evaluaciones/evaluaciones.module').then(m => m.EvaluacionesPageModule)
   },
   {
     path: 'asistencia',
-    loadChildren: () => import('./asistencia/asistencia.module').then( m => m.AsistenciaPageModule)
+    loadChildren: () => import('./asistencia/asistencia.module').then(m => m.AsistenciaPageModule)
   },
   {
     path: 'bibliografia',
-    loadChildren: () => import('./bibliografia/bibliografia.module').then( m => m.BibliografiaPageModule)
-  },  {
+    loadChildren: () => import('./bibliografia/bibliografia.module').then(m => m.BibliografiaPageModule)
+  },
+  {
     path: 'tutor-ia',
-    loadChildren: () => import('./tutor-ia/tutor-ia.module').then( m => m.TutorIaPageModule)
+    loadChildren: () => import('src/app/pages/privado/shared/tutor-ia/tutor-ia.module').then(m => m.TutorIaPageModule)
   }
 
 ];
@@ -33,4 +34,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class SeccionPageRoutingModule {}
+export class SeccionPageRoutingModule { }

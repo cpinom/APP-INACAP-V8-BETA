@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProfileService } from 'src/app/core/services/profile.service';
 import { CodeInputComponent } from 'angular-code-input';
-import { /*IonNav,*/ ModalController, NavController } from '@ionic/angular';
+import { /*IonNav,*/ IonNav, ModalController, NavController } from '@ionic/angular';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { DocenteService } from 'src/app/core/services/http/docente.service';
@@ -36,7 +36,7 @@ export class EditarTelefonoPage implements OnInit {
   constructor(private fb: FormBuilder,
     private profile: ProfileService,
     private api: PrivateService,
-    //private nav: IonNav,
+    private ionNav: IonNav,
     private snackbar: SnackbarService,
     private dialog: DialogService,
     private error: ErrorHandlerService,
@@ -172,7 +172,12 @@ export class EditarTelefonoPage implements OnInit {
     });
   }
   async volver() {
-    await this.nav.navigateBack(this.backUrl);
+    if (this.esDocente) {
+      await this.ionNav.pop();
+    }
+    else {
+      await this.nav.navigateBack(this.backUrl);
+    }
   }
   get celular() { return this.form.get('persTcelular') }
   get celularConfirma() { return this.form.get('persTcelularConfirma') }
@@ -195,6 +200,9 @@ export class EditarTelefonoPage implements OnInit {
   }
   get backUrl() {
     return this.router.url.startsWith('/dashboard-alumno') ? '/dashboard-alumno/perfil' : '/dashboard-docente/perfil';
+  }
+  get esDocente() {
+    return this.router.url.startsWith('/dashboard-docente');
   }
 
 }

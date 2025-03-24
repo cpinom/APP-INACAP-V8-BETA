@@ -22,6 +22,10 @@ const routes: Routes = [
   {
     path: 'descriptor-asignatura',
     loadChildren: () => import('./descriptor-asignatura/descriptor-asignatura.module').then(m => m.DescriptorAsignaturaPageModule)
+  },
+  {
+    path: 'tutor-ia',
+    loadChildren: () => import('src/app/pages/privado/shared/tutor-ia/tutor-ia.module').then(m => m.TutorIaPageModule)
   }
 ];
 

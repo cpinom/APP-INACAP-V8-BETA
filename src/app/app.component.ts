@@ -506,8 +506,8 @@ export class AppComponent {
     catch { }
   }
   compararVersion(myVersion: string, minimumVersion: string) {
-    let v1 = myVersion.split(".");
-    let v2 = minimumVersion.split(".");
+    const v1 = myVersion.split(".");
+    const v2 = minimumVersion.split(".");
     let minLength;
 
     minLength = Math.min(v1.length, v2.length);

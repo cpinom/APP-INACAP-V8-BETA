@@ -30,6 +30,7 @@ export class TestPage implements OnInit {
   respuestas: { [key: string]: string } = {}; // Almacena las respuestas seleccionadas
   resultado: any;
   mostrarResultados: boolean = false;
+  formulario: FormGroup | undefined;
 
   constructor() {
     this.seccion = this.router.getCurrentNavigation()?.extras.state;
@@ -77,12 +78,12 @@ export class TestPage implements OnInit {
           topico: this.temaCtrl?.value
         };
         const result = await this.api.iniciarTest(params);
-        debugger
 
         if (result.success) {
           await loading.dismiss();
           this.preguntas = result.data;
           this.vista = 1;
+          this.generarFormulario();
         }
       }
       catch (error: any) {
@@ -93,44 +94,61 @@ export class TestPage implements OnInit {
       }
     }
   }
+  generarFormulario() {
+    const group: any = {};
+
+    this.preguntas.forEach((_: any, index: any) => {
+      group[`pregunta_${index}`] = ['', Validators.required]; // valor inicial vacío
+    });
+
+    this.formulario = this.fb.group(group);
+  }
   async finalizarTest() {
-    const todasRespondidas = this.preguntas.every((pregunta: any, index: number) => this.respuestas[index] !== undefined);
+    if (this.formulario?.valid) {
+      const respuestas = this.formulario.value;
+      let respuestasArray: any = {};
+      let index = 0;
 
-    console.log(this.respuestas);
-
-    if (!todasRespondidas) {
-      //this.snackbar.open('Debes elegir una respuesta de cada pregunta.', 'Cerrar', { duration: 3000 });
-      return;
-    }
-
-    const loading = await this.dialog.showLoading({ message: 'Procesando test...' });
-
-    try {
-      const result = await this.api.procesarTest(this.respuestas);
-
-      if (result.success) {
-        this.resultado = result.data;
+      for (let key in respuestas) {
+        respuestasArray[index] = `${this.preguntas[index].token}|${respuestas[key]}`;
+        index++;
       }
 
+      console.log(respuestasArray);
 
-    }
-    catch (error: any) {
-      if (error && error.status == 401) {
-        await this.error.handle(error);
-        return;
+      const loading = await this.dialog.showLoading({ message: 'Procesando test...' });
+
+      try {
+        const result = await this.api.procesarTest(respuestasArray);
+
+        if (result.success) {
+          this.resultado = result.data;
+          this.presentTestAlert();
+        }
+        else {
+          throw Error();
+        }
       }
+      catch (error: any) {
+        if (error && error.status == 401) {
+          await this.error.handle(error);
+          return;
+        }
 
-      await this.snackbar.showToast('Ocurrió un error al procesar el test.', 3000, 'danger');
-    }
-    finally {
-      await loading.dismiss();
+        await this.snackbar.showToast('Ocurrió un error al procesar el test.', 3000, 'danger');
+      }
+      finally {
+        await loading.dismiss();
+      }
     }
   }
   cerraTest() {
+    this.formulario = undefined;
     this.preguntas = [];
     this.respuestas = {};
     this.resultado = null;
     this.mostrarResultados = false;
+    this.vista = 0;
   }
   mostrarCorrecta(i: number, j: number) {
 
@@ -144,7 +162,6 @@ export class TestPage implements OnInit {
 
   }
   mostrarIncorrecta(i: number, j: number) {
-
     const part = this.resultado.respuestas[i].split('|');
 
     if (j == part[1] && part[0] != part[1]) {
@@ -153,6 +170,30 @@ export class TestPage implements OnInit {
 
     return false;
 
+  }
+  async presentTestAlert() {
+    await this.dialog.showAlert({
+      header: 'Resultado del Test',
+      message: `Has obtenido ${this.resultado.correctas} correctas y ${this.resultado.incorrectas} incorrectas.`,
+      backdropDismiss: false,
+      keyboardClose: false,
+      buttons: [
+        {
+          text: 'Cerrar',
+          role: 'cancel',
+          handler: () => {
+            this.cerraTest();
+          }
+        },
+        {
+          text: 'Ver Resultados',
+          role: 'destructive',
+          handler: () => {
+            this.mostrarResultados = true;
+          }
+        }
+      ]
+    });
   }
 
   get temaCtrl() { return this.preguntaForm.get('tema'); }

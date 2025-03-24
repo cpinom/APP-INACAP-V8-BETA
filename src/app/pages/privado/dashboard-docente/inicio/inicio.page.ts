@@ -384,6 +384,34 @@ export class InicioPage implements OnInit {
     this.cargarHorario();
   }
   async onSeccionClick(args: MbscEventClickEvent) { }
+  resolverDuracion(evento: any) {
+    // debugger
+    // Convertir las horas a objetos Date
+    const [horaInicioHoras, horaInicioMinutos] = evento.horaInicio.split(':').map(Number);
+    const [horaTerminoHoras, horaTerminoMinutos] = evento.horaTermino.split(':').map(Number);
+
+    // Crear las fechas con las horas establecidas
+    const fechaInicio = new Date();
+    fechaInicio.setHours(horaInicioHoras, horaInicioMinutos, 0, 0);
+
+    const fechaTermino = new Date();
+    fechaTermino.setHours(horaTerminoHoras, horaTerminoMinutos, 0, 0);
+
+    // Calcular la diferencia en milisegundos
+    let diferenciaMs = fechaTermino.getTime() - fechaInicio.getTime();
+
+    // Si la diferencia es negativa, significa que el término es al día siguiente
+    if (diferenciaMs < 0) {
+      diferenciaMs += 24 * 60 * 60 * 1000; // Agregar un día completo en milisegundos
+    }
+
+    // Convertir la diferencia a horas y minutos
+    const horas = Math.floor(diferenciaMs / (1000 * 60 * 60));
+    const minutos = Math.floor((diferenciaMs % (1000 * 60 * 60)) / (1000 * 60));
+
+    // Construir el resultado en el formato "3 h 15 m"
+    return `${horas} h ${minutos} m`;
+  }
   async logout() {
     await this.auth.tryLogout();
   }

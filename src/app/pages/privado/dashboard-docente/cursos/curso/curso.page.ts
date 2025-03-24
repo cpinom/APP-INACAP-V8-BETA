@@ -198,6 +198,7 @@ export class CursoPage implements OnInit {
   }
   async tutorIATap() {
     debugger
+    await this.nav.navigateForward(`${this.router.url}/tutor-ia`, { state: this.seccion });
   }
   get semanaHorario() {
     let fechaInicio = moment().startOf('isoWeek');
@@ -236,17 +237,15 @@ export class CursoPage implements OnInit {
   }
 
   get mostrarTutorIA() {
-    if (this.pt.is('mobileweb')) {
-      return true;
-    }
-
-    if (this.seccion) {
-      const asignaturas = 'TEAF01|MIA301|MAEA32'.split("|");
-      const existe = asignaturas.includes(this.seccion.asigCcod);
-      return existe;
-    }
-
     return false;
+
+    // if (this.seccion) {
+    //   const asignaturas = 'TEAF01|MIA301|MAEA32'.split("|");
+    //   const existe = asignaturas.includes(this.seccion.asigCcod);
+    //   return existe;
+    // }
+
+    // return false;
   }
 
 }

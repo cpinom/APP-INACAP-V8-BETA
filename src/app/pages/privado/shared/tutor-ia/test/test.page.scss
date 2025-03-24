@@ -36,3 +36,9 @@ ion-header {
       }
     }
   }
+
+  .test-content {
+    ion-item-divider {
+      --background: var(--ion-item-background);
+    }
+  }

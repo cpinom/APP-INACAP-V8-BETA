@@ -724,6 +724,7 @@ body {
   &.dark {
     --color: #ffffff;
     --ion-text-color: #ffffff;
+    --ion-text-color-rgb: #000000;
     --ion-color-light: #2b2c33;
     --ion-background-color: #161619;
     --ion-color-dark: #ffffff;
@@ -758,9 +759,11 @@ body {
     --ion-color-danger-shade: #c55a5a;
     --ion-color-danger-tint: #e37575;
 
+    --ion-color-step-50: #2b2c33;
     --ion-color-step-100: #fff;
     --ion-color-step-400: #fff;
     --ion-color-step-700: #fff;
+    --ion-color-step-850: #fff;
     // --ion-color-step-400: #828599;
 
     // tabbar

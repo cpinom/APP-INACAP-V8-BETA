@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { /*IonNav,*/ ModalController, NavController, Platform } from '@ionic/angular';
+import { /*IonNav,*/ IonNav, ModalController, NavController, Platform } from '@ionic/angular';
 import { CodeInputComponent } from 'angular-code-input';
 import { AlumnoService } from 'src/app/core/services/http/alumno.service';
 import { DialogService } from 'src/app/core/services/dialog.service';
@@ -38,7 +38,7 @@ export class EditarCorreoPage implements OnInit {
     private api: AlumnoService,
     private snackbar: SnackbarService,
     private error: ErrorHandlerService,
-    // private nav: IonNav,
+    private ionNav: IonNav,
     private events: EventsService,
     private pt: Platform,
     private modalCtrl: ModalController,
@@ -178,7 +178,13 @@ export class EditarCorreoPage implements OnInit {
     });
   }
   async volver() {
-    await this.nav.navigateBack(this.backUrl);
+    debugger
+    if (this.esDocente) {
+      await this.ionNav.pop();
+    }
+    else {
+      await this.nav.navigateBack(this.backUrl);
+    }
   }
   get correo() { return this.form.get('persTemail') }
   get correoConfirma() { return this.form.get('persTemailConfirma') }
@@ -201,6 +207,9 @@ export class EditarCorreoPage implements OnInit {
   }
   get backUrl() {
     return this.router.url.startsWith('/dashboard-alumno') ? '/dashboard-alumno/perfil' : '/dashboard-docente/perfil';
+  }
+  get esDocente() {
+    return this.router.url.startsWith('/dashboard-docente');
   }
 
 }

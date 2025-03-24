@@ -71,19 +71,19 @@ export class HorarioComponent implements OnInit {
   async ngOnInit() {
     this.fecha = moment().startOf('isoWeek').toDate();
 
-    if (this.pt.is('mobileweb')) {
-      // this.fecha = moment('30/09/2024', 'DD/MM/YYYY').toDate();
+    // if (this.pt.is('mobileweb')) {
+    //   // this.fecha = moment('30/09/2024', 'DD/MM/YYYY').toDate();
 
-      if (this.rol == Rol.Docente) {
-        const principal = await this.profile.getStorage('principal');
-        const periodo = principal.periodos.find((t: any) => t.periCcod == principal.periodo);
+    //   if (this.rol == Rol.Docente) {
+    //     const principal = await this.profile.getStorage('principal');
+    //     const periodo = principal.periodos.find((t: any) => t.periCcod == principal.periodo);
 
-        if (periodo) {
-          this.fecha = moment(periodo.acpeFinicio, 'DD/MM/YYYY').toDate();
-        }
-      }
+    //     if (periodo) {
+    //       this.fecha = moment(periodo.acpeFinicio, 'DD/MM/YYYY').toDate();
+    //     }
+    //   }
 
-    }
+    // }
 
     await this.cargar();
   }
@@ -143,6 +143,38 @@ export class HorarioComponent implements OnInit {
 
         if (result.success) {
           horario = result.data;
+
+          let eventos: any[] = [];
+
+          if (horario && horario.length) {
+            horario.forEach((dia: any) => {
+              dia.eventos.forEach((bloque: any) => {
+                let cssClass = '';
+
+                if (bloque.estado == 1) cssClass = 'suspendida';
+                if (bloque.estado == 2 || bloque.estado == 4) cssClass = 'progreso';
+                if (bloque.estado == 3) cssClass = 'realizada';
+
+                let titulo = `${bloque.asignatura}<br/>Docente: ${bloque.profesor}<br/>Sala: ${bloque.sala}`;
+
+                if (this.esDocente) {
+                  titulo = `${bloque.asignatura}<br/>Sección: ${bloque.seccion}<br/>Sala: ${bloque.sala}`;
+                }
+
+                eventos.push({
+                  title: titulo,
+                  start: moment(`${dia.fecha} ${bloque.horaInicio}`, 'DD/MM/YYYY HH:mi').toDate(),
+                  end: moment(`${dia.fecha} ${bloque.horaTermino}`, 'DD/MM/YYYY HH:mi').toDate(),
+                  cssClass: cssClass,
+                  data: bloque
+                })
+
+              });
+            })
+          }
+
+          this.eventos = eventos;
+
         }
       }
       else {
@@ -194,39 +226,70 @@ export class HorarioComponent implements OnInit {
   resolverDuracion(evento: any) {
     // debugger
     // Convertir las horas a objetos Date
-    const [horaInicioHoras, horaInicioMinutos] = evento.horaHinicio.split(':').map(Number);
-    const [horaTerminoHoras, horaTerminoMinutos] = evento.horaHtermino.split(':').map(Number);
+    if (this.esAlumno) {
+      const [horaInicioHoras, horaInicioMinutos] = evento.horaHinicio.split(':').map(Number);
+      const [horaTerminoHoras, horaTerminoMinutos] = evento.horaHtermino.split(':').map(Number);
 
-    // Crear las fechas con las horas establecidas
-    const fechaInicio = new Date();
-    fechaInicio.setHours(horaInicioHoras, horaInicioMinutos, 0, 0);
+      // Crear las fechas con las horas establecidas
+      const fechaInicio = new Date();
+      fechaInicio.setHours(horaInicioHoras, horaInicioMinutos, 0, 0);
 
-    const fechaTermino = new Date();
-    fechaTermino.setHours(horaTerminoHoras, horaTerminoMinutos, 0, 0);
+      const fechaTermino = new Date();
+      fechaTermino.setHours(horaTerminoHoras, horaTerminoMinutos, 0, 0);
 
-    // Calcular la diferencia en milisegundos
-    let diferenciaMs = fechaTermino.getTime() - fechaInicio.getTime();
+      // Calcular la diferencia en milisegundos
+      let diferenciaMs = fechaTermino.getTime() - fechaInicio.getTime();
 
-    // Si la diferencia es negativa, significa que el término es al día siguiente
-    if (diferenciaMs < 0) {
-      diferenciaMs += 24 * 60 * 60 * 1000; // Agregar un día completo en milisegundos
+      // Si la diferencia es negativa, significa que el término es al día siguiente
+      if (diferenciaMs < 0) {
+        diferenciaMs += 24 * 60 * 60 * 1000; // Agregar un día completo en milisegundos
+      }
+
+      // Convertir la diferencia a horas y minutos
+      const horas = Math.floor(diferenciaMs / (1000 * 60 * 60));
+      const minutos = Math.floor((diferenciaMs % (1000 * 60 * 60)) / (1000 * 60));
+
+      // Construir el resultado en el formato "3 h 15 m"
+      return `${horas} h ${minutos} m`;
     }
+    else {
+      const [horaInicioHoras, horaInicioMinutos] = evento.horaInicio.split(':').map(Number);
+      const [horaTerminoHoras, horaTerminoMinutos] = evento.horaTermino.split(':').map(Number);
 
-    // Convertir la diferencia a horas y minutos
-    const horas = Math.floor(diferenciaMs / (1000 * 60 * 60));
-    const minutos = Math.floor((diferenciaMs % (1000 * 60 * 60)) / (1000 * 60));
+      // Crear las fechas con las horas establecidas
+      const fechaInicio = new Date();
+      fechaInicio.setHours(horaInicioHoras, horaInicioMinutos, 0, 0);
 
-    // Construir el resultado en el formato "3 h 15 m"
-    return `${horas} h ${minutos} m`;
+      const fechaTermino = new Date();
+      fechaTermino.setHours(horaTerminoHoras, horaTerminoMinutos, 0, 0);
+
+      // Calcular la diferencia en milisegundos
+      let diferenciaMs = fechaTermino.getTime() - fechaInicio.getTime();
+
+      // Si la diferencia es negativa, significa que el término es al día siguiente
+      if (diferenciaMs < 0) {
+        diferenciaMs += 24 * 60 * 60 * 1000; // Agregar un día completo en milisegundos
+      }
+
+      // Convertir la diferencia a horas y minutos
+      const horas = Math.floor(diferenciaMs / (1000 * 60 * 60));
+      const minutos = Math.floor((diferenciaMs % (1000 * 60 * 60)) / (1000 * 60));
+
+      // Construir el resultado en el formato "3 h 15 m"
+      return `${horas} h ${minutos} m`;
+    }
   }
   resolverIconoAgenda(item: any, type: number) {
     if (type == 0) {
-      if (item.bloqTipo == 'evaluacion')
-        return 'notas';
-      if (item.bloqTipo == 'seccion' || item.bloqTipo == 'subseccion')
-        return 'school';
-      if (item.bloqTipo == 'recuperacion')
-        return 'schedule';
+      if (this.esAlumno) {
+        if (item.bloqTipo == 'evaluacion')
+          return 'notas';
+        if (item.bloqTipo == 'seccion' || item.bloqTipo == 'subseccion')
+          return 'school';
+        if (item.bloqTipo == 'recuperacion')
+          return 'schedule';
+      }
+      return 'school';
     }
     else if (type == 1) {
       if (item.bloqTipo == 'evaluacion')
@@ -240,11 +303,15 @@ export class HorarioComponent implements OnInit {
     return '';
   }
   resolverTipoAgenda(item: any) {
-    if (item.bloqTipo == 'evaluacion')
-      return `Evaluación - ${item.asigTdesc}`;
-    if (item.bloqTipo == 'seccion' || item.bloqTipo == 'subseccion')
-      return `Clases - ${item.asigTdesc}`;
-    return item.asigTdesc;
+    if (this.esAlumno) {
+      if (item.bloqTipo == 'evaluacion')
+        return `Evaluación - ${item.asigTdesc}`;
+      if (item.bloqTipo == 'seccion' || item.bloqTipo == 'subseccion')
+        return `Clases - ${item.asigTdesc}`;
+      return item.asigTdesc;
+    }
+
+    return item.asignatura;
   }
   onSelectedDateChange(args: MbscPageChangeEvent) {
     this.fecha = args.firstDay;

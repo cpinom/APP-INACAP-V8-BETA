@@ -161,7 +161,32 @@
       <div class="section-content">
         <mbsc-eventcalendar [theme]="theme" [themeVariant]="themeVariant" [view]="myView" [data]="eventosHorario"
           [locale]="pickerLocale" [(selectedDate)]="fechaHorario" (onPageChange)="onHorarioChange($event)" templa
-          [agendaEmptyTemplate]="horarioEmptyTpl" (onEventClick)="onSeccionClick($event)">
+          [agendaEmptyTemplate]="horarioEmptyTpl" [eventTemplate]="eventTemplate" (onEventClick)="onSeccionClick($event)">
+          
+          <ng-template #eventTemplate let-data>
+            <ion-item lines="none" *ngIf="data.original.data as item">
+              <div slot="start">
+                <ion-icon src="assets/icon/school.svg"></ion-icon>
+                <h2>{{item.hora}}</h2>
+                <p>{{resolverDuracion(item)}}</p>
+              </div>
+              <ion-label>
+                <!-- @if (item.bloqNestado == 1) {
+                <p class="danger estado-actividad">Clase Suspendida</p>
+                }
+                @if (item.bloqNestado == 2 || item.bloqNestado == 4) {
+                <p class="success estado-actividad">Clase en Progreso</p>
+                }
+                @if (item.bloqNestado == 3) {
+                <p class="info estado-actividad">Clase Realizada</p>
+                } -->
+                <h2>{{item.asignatura}}</h2>
+                <p class="desc">Docente: {{item.profesor}}</p>
+                <p class="desc">Sala: {{item.sala}}</p>
+              </ion-label>
+            </ion-item>
+          </ng-template>
+          
           <ng-template #horarioEmptyTpl>
             <div class="mbsc-align-center mbsc-padding">
               <ion-spinner name="lines" color="primary" *ngIf="cargandoClases"></ion-spinner>
@@ -174,9 +199,7 @@
     </section>
 
     <section class="accesos-directos">
-      <ion-row class="directos">
-        <ion-col>Accesos Directos</ion-col>
-      </ion-row>
+      <div class="section-header">Accesos Directos</div>
       <ion-row>
         <ion-col size="6">
           <ion-button class="color-1" (click)="moodleTap()">

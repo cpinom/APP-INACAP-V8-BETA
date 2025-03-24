@@ -7,6 +7,9 @@ ion-header {
 }
 
 ion-card-content {
+    ul {
+        padding: 0;
+    }
     &.has-chart {
         ul {
             li {

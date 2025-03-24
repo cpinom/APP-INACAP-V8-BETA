@@ -9,6 +9,26 @@
 
   <div class="tabs">
     <ion-segment [(ngModel)]="tabsModel" [swipeGesture]="false" (ionChange)="segmentChanged($event)" mode="ios">
+      <ion-segment-button [value]="0">
+        <ion-label>Ed. Superior</ion-label>
+      </ion-segment-button>
+      <ion-segment-button [value]="1">
+        <ion-label>Ed. Continua</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
+  <div class="container">
+    <section [hidden]="tabsModel == 1">
+      <app-educacion-superior></app-educacion-superior>
+    </section>
+    <section [hidden]="tabsModel == 0">
+      <app-educacion-continua></app-educacion-continua>
+    </section>
+  </div>
+
+  <!-- <div class="tabs">
+    <ion-segment [(ngModel)]="tabsModel" [swipeGesture]="false" (ionChange)="segmentChanged($event)" mode="ios">
       <ion-segment-button [value]="0" content-id="educacion-superior">
         <ion-label>Ed. Superior</ion-label>
       </ion-segment-button>
@@ -25,6 +45,6 @@
     <ion-segment-content id="educacion-continua">
       <app-educacion-continua></app-educacion-continua>
     </ion-segment-content>
-  </ion-segment-view>
+  </ion-segment-view> -->
 
 </ion-content>

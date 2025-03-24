@@ -9,6 +9,98 @@
 
   <div class="tabs">
     <ion-segment [(ngModel)]="tabsModel" [swipeGesture]="false" (ionChange)="segmentChanged($event)" mode="ios">
+      <ion-segment-button [value]="0">
+        <ion-label>Cercanas a mí</ion-label>
+      </ion-segment-button>
+      <ion-segment-button [value]="1">
+        <ion-label>Todas</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
+  <div class="container">
+    <section [hidden]="tabsModel == 1">
+      @if (mostrarCargando) {
+      <div class="loaderInacap">
+        <ion-spinner name="lines" color="primary"></ion-spinner>
+      </div>
+      }
+      @if (mostrarSedes && cercanas) {
+      <ion-list inset="true" class="cercanas">
+        <ion-item *ngFor="let item of cercanas" [routerLink]="['detalle-sede', item.sedeCcod]" detail="false">
+          <ion-thumbnail slot="start">
+            <ion-spinner name="lines" color="info"></ion-spinner>
+            <img [src]="item.sedeBarchivo" alt="Sede INACAP" appImage [hideViewer]="true" />
+          </ion-thumbnail>
+          <ion-label>
+            <h2>{{item.sedeTdesc}}</h2>
+            <p>{{item.sedeTdireccion}}</p>
+            <p>{{item.km}}</p>
+          </ion-label>
+          <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
+        </ion-item>
+      </ion-list>
+      @if (online) {
+      <ion-list inset="true" class="cercanas">
+        <ion-item [routerLink]="['detalle-sede', online.sedeCcod]" detail="false">
+          <ion-thumbnail slot="start">
+            <ion-spinner name="lines" color="info"></ion-spinner>
+            <img [src]="online.sedeBarchivo" alt="Sede INACAP" appImage [hideViewer]="true" />
+          </ion-thumbnail>
+          <ion-label>
+            <h2>{{online.sedeTdesc}}</h2>
+            <p>Disponible 24/7 desde cualquier lugar de Chile</p>
+          </ion-label>
+          <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
+        </ion-item>
+      </ion-list>
+      }
+      }
+      @if (mostrarSedes && !cercanas) {
+      <div class="empty-state">
+        <div>
+          <ion-icon src="assets/icon/location_off.svg"></ion-icon>
+          <p>Para mostrar las sedes cercanas debes activar tu localización.</p>
+        </div>
+      </div>
+      }
+    </section>
+    <section [hidden]="tabsModel == 0">
+      <div class="searchbar-container">
+        <ion-searchbar color="white" placeholder="Buscar" [(ngModel)]="sedesFiltro"
+          (ionInput)="filtrarSedes()" (ionClear)="resetSedes()">
+        </ion-searchbar>
+      </div>
+      @if (sedesFiltro.length == 0) {
+      <section *ngFor="let item of zonas">
+        <div class="section-header">{{item.zonaTdesc}}</div>
+        <div class="section-content">
+          <ion-list>
+            <ion-item *ngFor="let sede of item.sedes" [routerLink]="['detalle-sede', sede.sedeCcod]" detail="false">
+              <ion-label>{{sede.sedeTdesc}}</ion-label>
+              <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
+            </ion-item>
+          </ion-list>
+        </div>
+      </section>
+      }
+      @if (sedesFiltro.length) {
+      <section>
+        <div class="section-content">
+          <ion-list>
+            <ion-item *ngFor="let item of sedesFiltradas" [routerLink]="['detalle-sede', item.sedeCcod]" detail="false">
+              <ion-label>{{item.sedeTdesc}}</ion-label>
+              <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
+            </ion-item>
+          </ion-list>
+        </div>
+      </section>
+      }
+    </section>
+  </div>
+
+  <!-- <div class="tabs">
+    <ion-segment [(ngModel)]="tabsModel" [swipeGesture]="false" (ionChange)="segmentChanged($event)" mode="ios">
       <ion-segment-button [value]="0" content-id="cercanas">
         <ion-label>Cercanas a mí</ion-label>
       </ion-segment-button>
@@ -16,9 +108,9 @@
         <ion-label>Todas</ion-label>
       </ion-segment-button>
     </ion-segment>
-  </div>
+  </div> -->
 
-  <ion-segment-view>
+  <!-- <ion-segment-view>
     <ion-segment-content id="cercanas">
       @if (mostrarCargando) {
       <div class="loaderInacap">
@@ -67,13 +159,11 @@
 
     </ion-segment-content>
     <ion-segment-content id="todas">
-      <!-- Buscador -->
       <div class="searchbar-container">
         <ion-searchbar color="white" placeholder="Buscar" [(ngModel)]="sedesFiltro"
           (ionInput)="filtrarSedes()" (ionClear)="resetSedes()">
         </ion-searchbar>
       </div>
-      <!-- Listado Zonas y Sedes -->
       @if (sedesFiltro.length == 0) {
       <section *ngFor="let item of zonas">
         <div class="section-header">{{item.zonaTdesc}}</div>
@@ -87,7 +177,6 @@
         </div>
       </section>
       }
-      <!-- Sedes filtradas -->
       @if (sedesFiltro.length) {
       <section>
         <div class="section-content">
@@ -101,6 +190,6 @@
       </section>
       }
     </ion-segment-content>
-  </ion-segment-view>
+  </ion-segment-view> -->
 
 </ion-content>

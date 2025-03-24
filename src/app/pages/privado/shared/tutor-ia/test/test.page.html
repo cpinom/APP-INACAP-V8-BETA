@@ -16,7 +16,7 @@
   </ion-card>
 </ion-header>
 
-<ion-content>
+<ion-content class="test-content">
 
   @if (mostrarCargando) {
   <div class="loaderInacap">
@@ -59,6 +59,51 @@
   </form>
   }
   @else if (vista == 1) {
+
+  @if (!mostrarResultados) {
+  <form *ngIf="formulario" [formGroup]="formulario" (ngSubmit)="finalizarTest()">
+    <ion-list inset="true">
+      <ng-container *ngFor="let item of preguntas; let i = index">
+        <ion-item-divider>
+          <ion-label>
+            {{i + 1}}. {{item.pregunta}}
+          </ion-label>
+        </ion-item-divider>
+        <ion-radio-group [formControlName]="'pregunta_' + i">
+          <ion-item *ngFor="let alternativa of item.alertnativas; let j = index" lines="full">
+            <ion-radio slot="start" [value]="j" labelPlacement="end">{{alternativa}}</ion-radio>
+          </ion-item>
+        </ion-radio-group>
+      </ng-container>
+    </ion-list>
+    <section style="margin: 15px;">
+      <ion-button expand="block" color="primary" shape="round" type="submit" [disabled]="formulario.invalid">
+        Enviar
+      </ion-button>
+    </section>
+  </form>
+  }
+  @else {
+    <ion-list inset="true">
+      <ng-container *ngFor="let item of preguntas; let i = index">
+        <ion-item-divider>
+          <ion-label>
+            {{i + 1}}. {{item.pregunta}}
+          </ion-label>
+        </ion-item-divider>
+        <ion-item *ngFor="let alternativa of item.alertnativas; let j = index" lines="full">
+          <ion-icon slot="end"*ngIf="mostrarCorrecta(i, j)" src="assets/icon/check_circle_outline.svg" color="success"></ion-icon>
+          <ion-icon slot="end"*ngIf="mostrarIncorrecta(i, j)" src="assets/icon/highlight_off.svg" color="danger"></ion-icon>
+          <ion-label>{{alternativa}}</ion-label>
+        </ion-item>
+      </ng-container>
+    </ion-list>
+    <section style="margin: 15px;">
+      <ion-button expand="block" color="primary" shape="round" (click)="cerraTest()">
+        Fianlizar Test
+      </ion-button>
+    </section>
+  }
 
   }
 

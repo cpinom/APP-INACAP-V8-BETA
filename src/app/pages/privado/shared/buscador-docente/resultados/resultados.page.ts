@@ -58,7 +58,7 @@ export class ResultadosPage implements OnInit {
   constructor() {
 
     this.data = this.router.getCurrentNavigation()?.extras.state;
-    this.theme = this.pt.is('ios') ? 'ios' : 'material';
+    this.theme = 'ios';
     this.themeVariant = this.profile.isDarkMode() ? 'dark' : 'light';
 
     screen.orientation.addEventListener("change", () => {

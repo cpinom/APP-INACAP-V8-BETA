@@ -97,7 +97,7 @@ export class InicioPage implements OnInit {
       await this.guardarPeriodo(value);
     });
 
-    this.theme = this.pt.is('ios') || this.pt.is('mobileweb') ? 'ios' : 'material';
+    this.theme = 'ios'; //this.pt.is('ios') || this.pt.is('mobileweb') ? 'ios' : 'material';
     this.themeVariant = this.profile.isDarkMode() ? 'dark' : 'light';
   }
   async ngOnInit() {

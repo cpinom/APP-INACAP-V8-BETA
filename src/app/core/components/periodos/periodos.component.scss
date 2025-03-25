@@ -1,13 +1,25 @@
 ion-toolbar.periodos {
   --border-width: 0px 0px 0px 0px;
   --border-color: var(--ion-color-dark-tint);
-  --min-height: 30px;
+  --min-height: 20px;
   border-radius: 0 0 5px 5px;
   padding-top: 0 !important;
 
+  &.md {
+    --border-width: 1px 0px 0px 0px;
+  }
+
   ion-button {
+    &.md {
+      min-height: 20px;
+      height: 20px;
+    }
     ion-icon {
       color: #fff;
     }
   }
+}
+
+::ng-deep body.dark ion-toolbar.periodos.md {
+  --border-color: var(--ion-toolbar-border-color);
 }

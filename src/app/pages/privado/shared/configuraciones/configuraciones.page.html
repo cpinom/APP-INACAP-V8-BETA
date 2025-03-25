@@ -97,7 +97,7 @@
           <ion-item>
             <ion-icon slot="start" src="assets/icon/palette.svg"></ion-icon>
             <ion-radio [value]="item">
-              Paleta {{$index + 1}}
+              Paleta {{$index + 1}} -- {{item}}
             </ion-radio>
           </ion-item>
           }
@@ -138,5 +138,7 @@
       </ion-list>
     </div>
   </section>
+
+  <ion-button color="primary" shape="round" expand="full" style="margin-inline: 15px;">test</ion-button>
 
 </ion-content>

@@ -203,6 +203,7 @@ ion-card.destacado-list {
                     div[slot="start"] {
                         width: 105px;
                         background: #eee;
+                        color: #040B15;
                         border-radius: 4px;
                         padding: 5px 10px;
                         display: flex;
@@ -366,6 +367,10 @@ ion-card.destacado-list {
     // }
 }
 
+::ng-deep body.dark section.horario {
+
+}
+
 mbsc-datepicker {
     ::ng-deep .mbsc-calendar-header {
         &.mbsc-material {
@@ -436,114 +441,114 @@ p.last-update {
     margin: 10px 0 0;
 }
 
-mbsc-eventcalendar {
-    ::ng-deep .mbsc-calendar-header {
-        //display: none;
-        background: var(--bg-color-card2);
+// mbsc-eventcalendar {
+//     ::ng-deep .mbsc-calendar-header {
+//         //display: none;
+//         background: var(--bg-color-card2);
 
-        .mbsc-calendar-controls {
-            padding: 0 5px;
-            min-height: 25px;
+//         .mbsc-calendar-controls {
+//             padding: 0 5px;
+//             min-height: 25px;
 
-            .mbsc-ios.mbsc-button {
-                color: var(--ion-color-primary);
-            }
+//             .mbsc-ios.mbsc-button {
+//                 color: var(--ion-color-primary);
+//             }
 
-            .mbsc-material.mbsc-button {
-                font-size: 10px;
-            }
-        }
-    }
-    ::ng-deep .mbsc-calendar-body {
-        .mbsc-ios.mbsc-selected .mbsc-calendar-cell-text {
-            background: var(--ion-color-primary);
-            border-color: var(--ion-color-primary);
-        }
-    }
-    ::ng-deep .mbsc-event-list-empty {
-        margin: 15px;
-        font-size: var(--FS14);
-    }
-    ::ng-deep .mbsc-schedule-event {
-        color: var(--ion-color-primary) !important;
+//             .mbsc-material.mbsc-button {
+//                 font-size: 10px;
+//             }
+//         }
+//     }
+//     ::ng-deep .mbsc-calendar-body {
+//         .mbsc-ios.mbsc-selected .mbsc-calendar-cell-text {
+//             background: var(--ion-color-primary);
+//             border-color: var(--ion-color-primary);
+//         }
+//     }
+//     ::ng-deep .mbsc-event-list-empty {
+//         margin: 15px;
+//         font-size: var(--FS14);
+//     }
+//     ::ng-deep .mbsc-schedule-event {
+//         color: var(--ion-color-primary) !important;
 
-        .progreso {
-            color: var(--ion-color-success) !important;
-        }
+//         .progreso {
+//             color: var(--ion-color-success) !important;
+//         }
 
-        .suspendida {
-            color: var(--ion-color-danger) !important;
-        }
-    }
-    // ::ng-deep .mbsc-ios-dark.mbsc-schedule-event {
-    //     color: var(--ion-color-primary) !important;
-    // }
-    ::ng-deep .mbsc-material.mbsc-colored-event.mbsc-list-item {
-        background-color: var(--ion-color-primary) !important;
-        // color: var(--ion-color-step-950) !important;
+//         .suspendida {
+//             color: var(--ion-color-danger) !important;
+//         }
+//     }
+//     // ::ng-deep .mbsc-ios-dark.mbsc-schedule-event {
+//     //     color: var(--ion-color-primary) !important;
+//     // }
+//     ::ng-deep .mbsc-material.mbsc-colored-event.mbsc-list-item {
+//         background-color: var(--ion-color-primary) !important;
+//         // color: var(--ion-color-step-950) !important;
 
-        .progreso {
-            background-color: var(--ion-color-success) !important;
-        }
+//         .progreso {
+//             background-color: var(--ion-color-success) !important;
+//         }
 
-        .suspendida {
-            background-color: var(--ion-color-danger) !important;
-        }
-    }
-    ::ng-deep .mbsc-material.mbsc-selected .mbsc-calendar-cell-text {
-        background-color: var(--ion-color-primary) !important;
-        border-color: var(--ion-color-primary) !important;
-    }
+//         .suspendida {
+//             background-color: var(--ion-color-danger) !important;
+//         }
+//     }
+//     ::ng-deep .mbsc-material.mbsc-selected .mbsc-calendar-cell-text {
+//         background-color: var(--ion-color-primary) !important;
+//         border-color: var(--ion-color-primary) !important;
+//     }
 
-    ::ng-deep .mbsc-ios-dark.mbsc-selected .mbsc-calendar-cell-text,
-    ::ng-deep .mbsc-material.mbsc-selected .mbsc-calendar-cell-text {
-        background-color: var(--ion-color-primary) !important;
-        border-color: var(--ion-color-primary) !important;
-        // color: var(--ion-text-color) !important;
-        color: var(--ion-color-primary-contrast) !important;
-    }
+//     ::ng-deep .mbsc-ios-dark.mbsc-selected .mbsc-calendar-cell-text,
+//     ::ng-deep .mbsc-material.mbsc-selected .mbsc-calendar-cell-text {
+//         background-color: var(--ion-color-primary) !important;
+//         border-color: var(--ion-color-primary) !important;
+//         // color: var(--ion-text-color) !important;
+//         color: var(--ion-color-primary-contrast) !important;
+//     }
 
-    ::ng-deep .mbsc-ios.mbsc-event-color {
-        background-color: var(--ion-color-primary) !important;
-    }
+//     ::ng-deep .mbsc-ios.mbsc-event-color {
+//         background-color: var(--ion-color-primary) !important;
+//     }
 
-    ::ng-deep .mbsc-ios.mbsc-event.mbsc-list-item {
-        .mbsc-ios.mbsc-event-color {
-            background: var(--ion-color-primary) !important;
-        }
-        &.suspendida {
-            .mbsc-ios.mbsc-event-color {
-                background: var(--ion-color-danger) !important;
-            }
-        }
-        &.progreso {
-            .mbsc-ios.mbsc-event-color {
-                background: var(--ion-color-success) !important;
-            }
-        }
-        &.realizada {
-            .mbsc-ios.mbsc-event-color {
-                background: var(--ion-color-medium) !important;
-            }
-            .mbsc-ios.mbsc-event-text {
-                color: var(--ion-color-medium);
-            }
-        }
-    }
-    ::ng-deep .mbsc-material.mbsc-colored-event.mbsc-list-item {
-        background: var(--ion-color-primary) !important;
+//     ::ng-deep .mbsc-ios.mbsc-event.mbsc-list-item {
+//         .mbsc-ios.mbsc-event-color {
+//             background: var(--ion-color-primary) !important;
+//         }
+//         &.suspendida {
+//             .mbsc-ios.mbsc-event-color {
+//                 background: var(--ion-color-danger) !important;
+//             }
+//         }
+//         &.progreso {
+//             .mbsc-ios.mbsc-event-color {
+//                 background: var(--ion-color-success) !important;
+//             }
+//         }
+//         &.realizada {
+//             .mbsc-ios.mbsc-event-color {
+//                 background: var(--ion-color-medium) !important;
+//             }
+//             .mbsc-ios.mbsc-event-text {
+//                 color: var(--ion-color-medium);
+//             }
+//         }
+//     }
+//     ::ng-deep .mbsc-material.mbsc-colored-event.mbsc-list-item {
+//         background: var(--ion-color-primary) !important;
 
-        &.suspendida {
-            background: var(--ion-color-danger) !important;
-        }
-        &.progreso {
-            background: var(--ion-color-success) !important;
-        }
-        &.realizada {
-            background: var(--ion-color-medium) !important;
-        }
-    }
-}
+//         &.suspendida {
+//             background: var(--ion-color-danger) !important;
+//         }
+//         &.progreso {
+//             background: var(--ion-color-success) !important;
+//         }
+//         &.realizada {
+//             background: var(--ion-color-medium) !important;
+//         }
+//     }
+// }
 
 ::ng-deep body.dark {
     .mbsc-material.mbsc-colored-event.mbsc-list-item {

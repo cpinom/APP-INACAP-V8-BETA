@@ -8,6 +8,7 @@ import { IonContent, NavController } from '@ionic/angular';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { EventsService } from 'src/app/core/services/events.service';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-perfil',
@@ -23,6 +24,7 @@ export class PerfilPage implements OnInit, OnDestroy {
   private nav = inject(NavController);
   private auth = inject(AuthService);
   private events = inject(EventsService);
+  private router = inject(Router);
 
   @ViewChild(IonContent) content!: IonContent;
   scrollObs: Subscription;
@@ -76,7 +78,7 @@ export class PerfilPage implements OnInit, OnDestroy {
     });
   }
   async publicoTap() {
-    await this.nav.navigateRoot('publico');
+    await this.router.navigate(['/publico'], { replaceUrl: true });
   }
   async logoutTap() {
     await this.auth.tryLogout();

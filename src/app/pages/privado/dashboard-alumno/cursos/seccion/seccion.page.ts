@@ -189,8 +189,10 @@ export class SeccionPage implements OnInit, OnDestroy {
     await this.nav.navigateForward(`${this.router.url}/evaluaciones`, { state: this.data });
   }
   async asistenciaTap() {
-    let params = await this.parametros();
-    await this.nav.navigateForward(`${this.router.url}/asistencia`, { state: params });
+    debugger
+    const params = await this.parametros();
+    const { tsseCcod } = this.data.seccion;
+    await this.nav.navigateForward(`${this.router.url}/asistencia`, { state: { ...params, tsseCcod: tsseCcod } });
   }
   async alumnosTap() {
     let params = await this.parametros();

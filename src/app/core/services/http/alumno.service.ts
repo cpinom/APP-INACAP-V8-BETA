@@ -80,6 +80,9 @@ export class AlumnoService extends PrivateService {
   getAsistenciaV6(matrNcorr: any, seccCcod: any, ssecNcorr: any, periCcod: any) {
     return this.get(`${this.baseUrl}/v6/alumno/detalle-curso/asistencia?matrNcorr=${matrNcorr}&seccCcod=${seccCcod}&ssecNcorr=${ssecNcorr}&periCcod=${periCcod}`);
   }
+  registrarAsistenciaCC(params: any) {
+    return this.post(`${this.baseUrl}/v5/alumno/detalle-curso/registrar-asistencia-cc`, params);
+  }
   getBibliografia(asigCcod: any) {
     return this.get(`${this.baseUrl}/v5/alumno/detalle-curso/bibliografia?asigCcod=${asigCcod}`);
   }

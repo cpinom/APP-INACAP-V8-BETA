@@ -22,7 +22,98 @@
   </div>
   }
 
-  @if (mostrarData && asistencia) {
+  @if (mostrarData) {
+  @if (mostrarAutoAsistencia) {
+  <div class="tabs">
+    <ion-segment [(ngModel)]="tabModel" color="primary" mode="ios">
+      <ion-segment-button [value]="0">
+        <ion-label>Asistencia</ion-label>
+      </ion-segment-button>
+      <ion-segment-button [value]="1">
+        <ion-label>Auto-Asistencia</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
+  @if (tabModel == 0) {
+  @if (asistencia) {
+  @if (asistencia.length) {
+  <ion-accordion-group #acordeones expand="inset">
+    @for (item of asistencia; track $index) {
+    <ion-accordion [value]="item.mes">
+      <ion-item slot="header">
+        <ion-label>{{item.mes}}</ion-label>
+        <p class="estado-actividad info" slot="end">{{item.resumen}}</p>
+      </ion-item>
+      <div slot="content">
+        @for (item of item.detalle; track $index) {
+        <ion-item>
+          <ion-label>
+            <p>{{item.fecha}}</p>
+          </ion-label>
+          @if (item.title == 'Presente') {
+          <p class="estado-actividad success" slot="end">Presente</p>
+          }
+          @else if (item.title=='Ausente') {
+          <p class="estado-actividad danger" slot="end">Ausente</p>
+          }
+          @else {
+          <p class="estado-actividad" slot="end">Sin Registro</p>
+          }
+        </ion-item>
+        }
+      </div>
+    </ion-accordion>
+    }
+  </ion-accordion-group>
+  }
+  @else {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Sin registros en este momento.</p>
+    </div>
+  </section>
+  }
+  }
+  @else {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Información no disponible en este momento.</p>
+      <ion-button color="primary" shape="round" (click)="recargar()">Recargar</ion-button>
+    </div>
+  </section>
+  }
+  }
+  @if (tabModel == 1) {
+  @if (asistenciaCC?.length) {
+  <ion-list inset="true" class="auto-asistencia">
+    @for (item of asistenciaCC; track $index) {
+    <ion-item>
+      <ion-label>{{item.apcvFmodulo}}</ion-label>
+      <ion-button slot="end" size="small" color="primary" fill="outline" *ngIf="esHoy(item.apcvFmodulo)" (click)="registrarAsistencia(item)">
+        <ion-icon slot="start" src="assets/icon/room.svg"></ion-icon>
+        Registrar
+      </ion-button>
+    </ion-item>
+    }
+  </ion-list>
+  }
+  @else {
+  <section class="empty-state">
+    <div>
+      <ion-icon src="assets/icon/info.svg"></ion-icon>
+      <p>Sin registros en este momento.</p>
+    </div>
+  </section>
+  }
+  }
+
+  }
+  @else {
+
+  @if (asistencia) {
 
   @if (asistencia.length) {
   <ion-accordion-group #acordeones expand="inset">
@@ -64,8 +155,7 @@
   }
 
   }
-
-  @if (mostrarData && !asistencia) {
+  @else {
   <section class="empty-state">
     <div>
       <ion-icon src="assets/icon/info.svg"></ion-icon>
@@ -73,6 +163,9 @@
       <ion-button color="primary" shape="round" (click)="recargar()">Recargar</ion-button>
     </div>
   </section>
+  }
+
+  }
   }
 
 </ion-content>

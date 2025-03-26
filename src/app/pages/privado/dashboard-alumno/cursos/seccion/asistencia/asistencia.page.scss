@@ -45,6 +45,14 @@ ion-accordion-group {
     }
 }
 
+ion-list.auto-asistencia {
+    ion-icon {
+        margin: 0 4px 0 0 !important;
+        font-size: 18px;
+        color: var(--ion-color-primary);
+    }
+}
+
 ion-footer {
     background: var(--ion-color-light);
 }

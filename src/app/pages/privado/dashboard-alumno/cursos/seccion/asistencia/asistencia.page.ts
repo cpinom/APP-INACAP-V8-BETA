@@ -4,7 +4,7 @@ import { AlumnoService } from 'src/app/core/services/http/alumno.service';
 import * as moment from 'moment';
 import { VISTAS_ALUMNO } from 'src/app/core/constants/alumno';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
-import { IonAccordionGroup, NavController } from '@ionic/angular';
+import { IonAccordionGroup, NavController, Platform } from '@ionic/angular';
 import { EventsService } from 'src/app/core/services/events.service';
 import { AppEvent } from 'src/app/core/interfaces/auth.interfaces';
 import { Subscription } from 'rxjs';
@@ -23,6 +23,7 @@ export class AsistenciaPage implements OnInit, OnDestroy {
   data: any;
   detalleAsistencia: any;
   asistencia: any;
+  asistenciaCC: any;
   mostrarData = false;
   tabModel = 0;
   asistenciaObs: Subscription;
@@ -34,6 +35,7 @@ export class AsistenciaPage implements OnInit, OnDestroy {
   private nav = inject(NavController);
   private events = inject(EventsService);
   private profile = inject(ProfileService);
+  private pt = inject(Platform);
 
   constructor() {
 
@@ -46,6 +48,7 @@ export class AsistenciaPage implements OnInit, OnDestroy {
   }
   async ngOnInit() {
     this.seccion = this.router.getCurrentNavigation()?.extras.state;
+    console.log(this.seccion);
     this.cargar();
     this.api.marcarVista(VISTAS_ALUMNO.ASISTENCIA);
   }
@@ -53,7 +56,6 @@ export class AsistenciaPage implements OnInit, OnDestroy {
     this.asistenciaObs.unsubscribe();
   }
   async cargar() {
-    debugger
     try {
       const programa = await this.profile.getPrograma();
       const { matrNcorr } = programa;
@@ -62,6 +64,7 @@ export class AsistenciaPage implements OnInit, OnDestroy {
 
       if (result.success) {
         this.procesarAsistenciaV2(result.data.asistencia);
+        this.asistenciaCC = result.data.asistenciaCC;
       }
 
       // if (result.success) {
@@ -243,8 +246,31 @@ export class AsistenciaPage implements OnInit, OnDestroy {
     })
   }
   async registrarAsistencia(data: any) {
-    await this.nav.navigateForward(`${this.backUrl}/auto-asistencia`, { state: data })
-    // await this.nav.navigateForward(`${this.router.url}/evaluaciones`, { state: data });
+    debugger
+
+    const { matrNcorr, apcvNcorr } = data;
+    const { ssecNcorr } = this.seccion;
+    const apesNasistencia = 1; //Asistencia del estudiante 0 ausente 1 presente
+    const apesNvalidaasistencia = 1; //Valida asistencia del estudiante al centro 0 sin asistencia 1 valida estudiante 2 valida estudiante con foto 3 valida docente
+    const apesTlatitud = '';
+    const apesTlongitud = '';
+    const params = { ...{}, ssecNcorr, matrNcorr, apcvNcorr, apesNasistencia, apesNvalidaasistencia, apesTlatitud, apesTlongitud };
+
+    try {
+      const result = await this.api.registrarAsistenciaCC(params);
+
+      if (result.success) {
+        this.asistenciaCC = result.data.asistenciaCC;
+      }
+    }
+    catch (error: any) { }
+    finally {
+
+    }
+  }
+  esHoy(fechaString: string) {
+    if (this.pt.is('mobileweb')) return true;
+    return fechaString ? moment(fechaString, 'DD/MM/YYYY').isSame(moment(), 'day') : false;
   }
   // get listado() {
   //   return this.detalleAsistencia ? this.detalleAsistencia.detalle : [];
@@ -252,6 +278,12 @@ export class AsistenciaPage implements OnInit, OnDestroy {
   // get listado() {
   //   return this.detalleAsistencia ? this.detalleAsistencia.asistencia : [];
   // }
+  get mostrarAutoAsistencia() {
+    if (this.seccion) {
+      return this.seccion.tsseCcod == 3;
+    }
+    return false;
+  }
   get asignatura() {
     return this.seccion ? this.seccion.asigTdesc : '';
   }

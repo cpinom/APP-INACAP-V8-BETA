@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlumnoService } from 'src/app/core/services/http/alumno.service';
 import * as moment from 'moment';
@@ -8,6 +8,7 @@ import { IonAccordionGroup, NavController } from '@ionic/angular';
 import { EventsService } from 'src/app/core/services/events.service';
 import { AppEvent } from 'src/app/core/interfaces/auth.interfaces';
 import { Subscription } from 'rxjs';
+import { ProfileService } from 'src/app/core/services/profile.service';
 
 @Component({
   selector: 'app-asistencia',
@@ -27,11 +28,14 @@ export class AsistenciaPage implements OnInit, OnDestroy {
   asistenciaObs: Subscription;
   mesModel = '';
 
-  constructor(private api: AlumnoService,
-    private router: Router,
-    private error: ErrorHandlerService,
-    private nav: NavController,
-    private events: EventsService) {
+  private api = inject(AlumnoService);
+  private router = inject(Router);
+  private error = inject(ErrorHandlerService);
+  private nav = inject(NavController);
+  private events = inject(EventsService);
+  private profile = inject(ProfileService);
+
+  constructor() {
 
     this.asistenciaObs = this.events.app.subscribe((event: AppEvent) => {
       if (event.action == 'app:registro-asistencia-campos-clinicos') {
@@ -49,8 +53,16 @@ export class AsistenciaPage implements OnInit, OnDestroy {
     this.asistenciaObs.unsubscribe();
   }
   async cargar() {
+    debugger
     try {
-      // let result = await this.api.getAsistenciaV6(this.seccion.matrNcorr, this.seccion.seccCcod, this.seccion.ssecNcorr, this.seccion.periCcod);
+      const programa = await this.profile.getPrograma();
+      const { matrNcorr } = programa;
+      const { seccCcod, ssecNcorr, periCcod } = this.seccion;
+      const result = await this.api.getAsistenciaV6(matrNcorr, seccCcod, ssecNcorr, periCcod);
+
+      if (result.success) {
+        this.procesarAsistenciaV2(result.data.asistencia);
+      }
 
       // if (result.success) {
       //   // debugger
@@ -61,13 +73,15 @@ export class AsistenciaPage implements OnInit, OnDestroy {
       //   throw Error();
       // }
 
-      let result = await this.api.getAsistencia(this.seccion.seccCcod, this.seccion.ssecNcorr, this.seccion.periCcod);
+      //const { seccCcod, ssecNcorr, periCcod } = this.seccion;
 
-      if (result.success) {
-        this.detalleAsistencia = result.data;
-        this.procesarAsistenciaV2();
-        // this.procesarAsistencia();
-      }
+      // let result = await this.api.getAsistencia(this.seccion.seccCcod, this.seccion.ssecNcorr, this.seccion.periCcod);
+
+      // if (result.success) {
+      //   this.detalleAsistencia = result.data;
+      //   this.procesarAsistenciaV2();
+      //   // this.procesarAsistencia();
+      // }
       else {
         throw Error();
       }
@@ -89,7 +103,7 @@ export class AsistenciaPage implements OnInit, OnDestroy {
       this.cargar();
     }, 500);
   }
-  procesarAsistenciaV2() {
+  procesarAsistenciaV2(listado: any[]) {
     const meses: string[] = [
       'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
       'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
@@ -100,7 +114,7 @@ export class AsistenciaPage implements OnInit, OnDestroy {
 
     const grupos = new Map<string, any[]>();
 
-    for (const clase of this.listado) {
+    for (const clase of listado) {
       const [dia, mes, anioCorto] = clase.fecha.split('/');
       const anio = +anioCorto < 50 ? 2000 + +anioCorto : 1900 + +anioCorto; // ← Aquí corregimos el año
 
@@ -170,42 +184,42 @@ export class AsistenciaPage implements OnInit, OnDestroy {
       }
     }, 250);
   }
-  procesarAsistencia() {
-    let proximas: any[] = [];
-    let semanales: any[] = [];
-    let mensuales: any[] = [];
-    let antiguas: any[] = [];
+  // procesarAsistencia() {
+  //   let proximas: any[] = [];
+  //   let semanales: any[] = [];
+  //   let mensuales: any[] = [];
+  //   let antiguas: any[] = [];
 
-    this.listado.forEach((item: any) => {
-      let fechaAsistencia = moment(item.fecha, 'DD/MM/YYYY');
-      let primerDiaSemana = moment().startOf('isoweek' as moment.unitOfTime.StartOf);
-      let primerDiaMes = moment().startOf('month');
+  //   this.listado.forEach((item: any) => {
+  //     let fechaAsistencia = moment(item.fecha, 'DD/MM/YYYY');
+  //     let primerDiaSemana = moment().startOf('isoweek' as moment.unitOfTime.StartOf);
+  //     let primerDiaMes = moment().startOf('month');
 
-      if (fechaAsistencia.isSameOrBefore(moment())) {
+  //     if (fechaAsistencia.isSameOrBefore(moment())) {
 
-        if (fechaAsistencia.isSameOrAfter(primerDiaSemana)) {
-          semanales.push(item);
-        }
-        else if (fechaAsistencia.isSameOrAfter(primerDiaMes)) {
-          mensuales.push(item);
-        }
-        else {
-          antiguas.push(item);
-        }
+  //       if (fechaAsistencia.isSameOrAfter(primerDiaSemana)) {
+  //         semanales.push(item);
+  //       }
+  //       else if (fechaAsistencia.isSameOrAfter(primerDiaMes)) {
+  //         mensuales.push(item);
+  //       }
+  //       else {
+  //         antiguas.push(item);
+  //       }
 
-      }
-      else {
-        proximas.push(item);
-      }
-    });
+  //     }
+  //     else {
+  //       proximas.push(item);
+  //     }
+  //   });
 
-    this.asistencia = {};
-    this.asistencia[0] = this.resolverOrden(semanales);
-    this.asistencia[1] = this.resolverOrden(mensuales);
-    this.asistencia[2] = this.resolverOrden(antiguas);
-    this.asistencia[3] = this.resolverOrden(proximas);
-    this.mostrarData = true;
-  }
+  //   this.asistencia = {};
+  //   this.asistencia[0] = this.resolverOrden(semanales);
+  //   this.asistencia[1] = this.resolverOrden(mensuales);
+  //   this.asistencia[2] = this.resolverOrden(antiguas);
+  //   this.asistencia[3] = this.resolverOrden(proximas);
+  //   this.mostrarData = true;
+  // }
   resolverIcon(estado: string) {
     if (estado.toUpperCase() == 'PRESENTE')
       return 'check_circle_outline';
@@ -232,9 +246,9 @@ export class AsistenciaPage implements OnInit, OnDestroy {
     await this.nav.navigateForward(`${this.backUrl}/auto-asistencia`, { state: data })
     // await this.nav.navigateForward(`${this.router.url}/evaluaciones`, { state: data });
   }
-  get listado() {
-    return this.detalleAsistencia ? this.detalleAsistencia.detalle : [];
-  }
+  // get listado() {
+  //   return this.detalleAsistencia ? this.detalleAsistencia.detalle : [];
+  // }
   // get listado() {
   //   return this.detalleAsistencia ? this.detalleAsistencia.asistencia : [];
   // }

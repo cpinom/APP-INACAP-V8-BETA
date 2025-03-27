@@ -202,8 +202,10 @@ ion-card.destacado-list {
 
                     div[slot="start"] {
                         width: 105px;
-                        background: #eee;
-                        color: #040B15;
+                        // background: #eee;
+                        background-color: var(--ion-color-1-background);
+                        // color: #040B15;
+                        color: var(ion-color-text);
                         border-radius: 4px;
                         padding: 5px 10px;
                         display: flex;

@@ -54,8 +54,8 @@ export class DocenteService extends PrivateService {
   cargarArchivoComunicaciones(messageId: string, params: any) {
     return this.post(`${this.baseUrl}/docente/v6/comunicaciones/cargar-archivo?messageId=${messageId}`, params);
   }
-  getDetalleCursoV6(seccCcod: any, ssecNcorr: any): Promise<any> {
-    return this.get(`${this.baseUrl}/docente/v6/detalle-curso?seccCcod=${seccCcod}&ssecNcorr=${ssecNcorr}`);
+  getDetalleCursoV6(seccCcod: any, ssecNcorr: any, asigCcod: string): Promise<any> {
+    return this.get(`${this.baseUrl}/docente/v6/detalle-curso?seccCcod=${seccCcod}&ssecNcorr=${ssecNcorr}&asigCcod=${asigCcod}`);
   }
   getDescriptorAsignaturaV6(asigCcod: any): Promise<any> {
     asigCcod = encodeURIComponent(asigCcod);

@@ -46,6 +46,9 @@ ion-accordion-group {
 }
 
 ion-list.auto-asistencia {
+    .estado-actividad {
+        margin: 0;
+    }
     ion-icon {
         margin: 0 4px 0 0 !important;
         font-size: 18px;

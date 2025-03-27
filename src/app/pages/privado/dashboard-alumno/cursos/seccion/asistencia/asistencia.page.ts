@@ -248,22 +248,21 @@ export class AsistenciaPage implements OnInit, OnDestroy {
     })
   }
   async registrarAsistencia(data: any) {
-    const { matrNcorr, apcvNcorr } = data;
+    const { matrNcorr, apcvNcorr, apceTlatitud, apceTlongitud, radioPermitido } = data;
     const { ssecNcorr } = this.seccion;
     const apesNasistencia = 1; //Asistencia del estudiante 0 ausente 1 presente
     const apesNvalidaasistencia = 2; //Valida asistencia del estudiante al centro 0 sin asistencia 1 valida estudiante 2 valida estudiante con foto 3 valida docente
     const apesTlatitud = '';
     const apesTlongitud = '';
-    const params = { ...{}, ssecNcorr, matrNcorr, apcvNcorr, apesNasistencia, apesNvalidaasistencia, apesTlatitud, apesTlongitud };
+    const params = { ...{}, ssecNcorr, matrNcorr, apcvNcorr, apesNasistencia, apesNvalidaasistencia, apesTlatitud, apesTlongitud, apceTlatitud, apceTlongitud, radioPermitido };
 
     const result = await this.autoAsistencia.mostrarModal(params);
-    debugger
+
     if (result) {
       this.asistenciaCC = result
     }
   }
   esHoy(fechaString: string) {
-    return true;
     if (this.pt.is('mobileweb')) return true;
     return fechaString ? moment(fechaString, 'DD/MM/YYYY').isSame(moment(), 'day') : false;
   }

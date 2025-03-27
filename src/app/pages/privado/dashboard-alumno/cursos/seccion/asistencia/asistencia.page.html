@@ -30,7 +30,7 @@
         <ion-label>Asistencia</ion-label>
       </ion-segment-button>
       <ion-segment-button [value]="1">
-        <ion-label>Auto-Asistencia</ion-label>
+        <ion-label>Auto Asistencia</ion-label>
       </ion-segment-button>
     </ion-segment>
   </div>
@@ -92,10 +92,17 @@
     @for (item of asistenciaCC; track $index) {
     <ion-item>
       <ion-label>{{item.apcvFmodulo}}</ion-label>
-      <ion-button slot="end" size="small" color="primary" fill="outline" *ngIf="esHoy(item.apcvFmodulo)" (click)="registrarAsistencia(item)">
-        <ion-icon slot="start" src="assets/icon/room.svg"></ion-icon>
-        Registrar
+      @if (item.apesNasistencia == 1) {
+      <p class="estado-actividad success" slot="end">Presente</p>
+      }
+      @else if (item.apesNasistencia == 2) {
+      <p class="estado-actividad danger" slot="end">Ausente</p>
+      }
+      @else if (item.apesNasistencia == 0 && esHoy(item.apcvFmodulo)) {
+      <ion-button slot="end" size="small" color="primary" fill="outline" (click)="registrarAsistencia(item)">
+        Registrar Asistencia
       </ion-button>
+      }
     </ion-item>
     }
   </ion-list>

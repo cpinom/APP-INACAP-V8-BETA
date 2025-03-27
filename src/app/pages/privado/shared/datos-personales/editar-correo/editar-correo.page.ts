@@ -38,7 +38,7 @@ export class EditarCorreoPage implements OnInit {
     private api: AlumnoService,
     private snackbar: SnackbarService,
     private error: ErrorHandlerService,
-    private ionNav: IonNav,
+    // private ionNav: IonNav,
     private events: EventsService,
     private pt: Platform,
     private modalCtrl: ModalController,
@@ -180,7 +180,8 @@ export class EditarCorreoPage implements OnInit {
   async volver() {
     debugger
     if (this.esDocente) {
-      await this.ionNav.pop();
+      await this.dialog.dismissModal();
+      // await this.ionNav.pop();
     }
     else {
       await this.nav.navigateBack(this.backUrl);

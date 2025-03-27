@@ -47,10 +47,10 @@ export class CursoPage implements OnInit {
   }
   async cargar() {
     const seccion = this.seccion;
-    const { seccCcod, ssecNcorr } = seccion;
+    const { seccCcod, ssecNcorr, asigCcod } = seccion;
 
     try {
-      const result = await this.api.getDetalleCursoV6(seccCcod, ssecNcorr);
+      const result = await this.api.getDetalleCursoV6(seccCcod, ssecNcorr, asigCcod);
 
       if (result.success) {
         this.data = Object.assign(seccion, result.data);
@@ -237,15 +237,11 @@ export class CursoPage implements OnInit {
   }
 
   get mostrarTutorIA() {
+    if (this.data) {
+      return this.data.tutorIA === true;
+    }
+
     return false;
-
-    // if (this.seccion) {
-    //   const asignaturas = 'TEAF01|MIA301|MAEA32'.split("|");
-    //   const existe = asignaturas.includes(this.seccion.asigCcod);
-    //   return existe;
-    // }
-
-    // return false;
   }
 
 }

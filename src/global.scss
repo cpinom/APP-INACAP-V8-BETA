@@ -46,12 +46,12 @@
   --ion-color-primary-shade: #1a6aa8;
   --ion-color-primary-tint: #3486c5;
 
-  --ion-info-primary: #1565C0;
-	--ion-info-primary-rgb: 21,101,192;
-	--ion-info-primary-contrast: #ffffff;
-	--ion-info-primary-contrast-rgb: 255,255,255;
-	--ion-info-primary-shade: #1259a9;
-	--ion-info-primary-tint: #2c74c6;
+  --ion-info-primary: #1565c0;
+  --ion-info-primary-rgb: 21, 101, 192;
+  --ion-info-primary-contrast: #ffffff;
+  --ion-info-primary-contrast-rgb: 255, 255, 255;
+  --ion-info-primary-shade: #1259a9;
+  --ion-info-primary-tint: #2c74c6;
 
   --ion-color-white: #ffffff;
   --ion-color-white-rgb: 255, 255, 255;
@@ -925,6 +925,10 @@ body {
       --border-color: #888;
     }
 
+    ion-card.primary-card {
+      box-shadow: none;
+    }
+
     &.purple {
       --ion-color-primary: #7401b8;
       --ion-color-primary-rgb: 116, 1, 184;
@@ -941,21 +945,21 @@ body {
       --ion-color-6-background: #352b3b;
       --ion-color-7-background: #2b2c3b;
 
-      --ion-color-link: #A37DB2;
+      --ion-color-link: #a37db2;
 
       ion-action-sheet {
-        --button-color: #A37DB2;
+        --button-color: #a37db2;
       }
 
       ion-alert {
         .alert-radio-label {
-          color: #A37DB2 !important;
+          color: #a37db2 !important;
         }
         .alert-radio-inner {
-          border-color: #A37DB2 !important;
+          border-color: #a37db2 !important;
         }
         .alert-button {
-          color: #A37DB2;
+          color: #a37db2;
 
           &.alert-button-role-destructive {
             color: var(--ion-color-danger);
@@ -964,13 +968,13 @@ body {
       }
 
       ion-radio {
-        --color-checked: #A37DB2;
+        --color-checked: #a37db2;
       }
 
       ion-button {
         &.button-clear,
         &.button-outline {
-          color: #A37DB2;
+          color: #a37db2;
         }
       }
     }

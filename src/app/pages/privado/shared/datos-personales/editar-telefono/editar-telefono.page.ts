@@ -36,7 +36,7 @@ export class EditarTelefonoPage implements OnInit {
   constructor(private fb: FormBuilder,
     private profile: ProfileService,
     private api: PrivateService,
-    private ionNav: IonNav,
+    // private ionNav: IonNav,
     private snackbar: SnackbarService,
     private dialog: DialogService,
     private error: ErrorHandlerService,
@@ -173,7 +173,8 @@ export class EditarTelefonoPage implements OnInit {
   }
   async volver() {
     if (this.esDocente) {
-      await this.ionNav.pop();
+      await this.dialog.dismissModal();
+      // await this.ionNav.pop();
     }
     else {
       await this.nav.navigateBack(this.backUrl);

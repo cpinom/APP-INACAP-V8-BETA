@@ -24,6 +24,7 @@ import { BibliotecaComponent } from './sede/biblioteca/biblioteca.component';
 import { CafeteriaComponent } from './sede/cafeteria/cafeteria.component';
 import { BuscadorComponent } from './emplea-inacap/buscador/buscador.component';
 import { OfertaComponent } from './emplea-inacap/oferta/oferta.component';
+import { AutoAsistenciaModalComponent } from './auto-asistencia-modal/auto-asistencia-modal.component';
 
 @NgModule({
   schemas: [],
@@ -55,7 +56,8 @@ import { OfertaComponent } from './emplea-inacap/oferta/oferta.component';
     BarcodeScanningModalComponent,
     ConsultaBipComponent,
     BuscadorComponent,
-    OfertaComponent
+    OfertaComponent,
+    AutoAsistenciaModalComponent
   ],
   exports: [
     HeaderComponent,
@@ -74,7 +76,8 @@ import { OfertaComponent } from './emplea-inacap/oferta/oferta.component';
     BarcodeScanningModalComponent,
     ConsultaBipComponent,
     BuscadorComponent,
-    OfertaComponent
+    OfertaComponent,
+    AutoAsistenciaModalComponent
   ]
 })
 export class ComponentsModule { }

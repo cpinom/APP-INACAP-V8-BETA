@@ -58,6 +58,21 @@ export class UtilsService {
       }
     })
   }
+  createImageFromBase64(base64: string): HTMLImageElement {
+    const img = new Image();
+    img.src = `data:image/jpeg;base64,${base64}`;
+    return img;
+  }
+  getBase64Size(base64: string): number {
+    // Elimina el encabezado si existe
+    const cleanedBase64 = base64.split(',')[1] || base64;
+
+    // Calcula los bytes reales
+    const padding = (cleanedBase64.match(/=+$/) || [''])[0].length;
+    const sizeInBytes = (cleanedBase64.length * 3) / 4 - padding;
+
+    return sizeInBytes;
+  }
   async openLink(url: string) {
     return await Browser.open({ url: url });
   }

@@ -9,6 +9,7 @@ import { EventsService } from 'src/app/core/services/events.service';
 import { AppEvent } from 'src/app/core/interfaces/auth.interfaces';
 import { Subscription } from 'rxjs';
 import { ProfileService } from 'src/app/core/services/profile.service';
+import { AutoAsistenciaService } from 'src/app/core/services/auto-asistencia.service';
 
 @Component({
   selector: 'app-asistencia',
@@ -36,6 +37,7 @@ export class AsistenciaPage implements OnInit, OnDestroy {
   private events = inject(EventsService);
   private profile = inject(ProfileService);
   private pt = inject(Platform);
+  private autoAsistencia = inject(AutoAsistenciaService);
 
   constructor() {
 
@@ -246,29 +248,22 @@ export class AsistenciaPage implements OnInit, OnDestroy {
     })
   }
   async registrarAsistencia(data: any) {
-    debugger
-
     const { matrNcorr, apcvNcorr } = data;
     const { ssecNcorr } = this.seccion;
     const apesNasistencia = 1; //Asistencia del estudiante 0 ausente 1 presente
-    const apesNvalidaasistencia = 1; //Valida asistencia del estudiante al centro 0 sin asistencia 1 valida estudiante 2 valida estudiante con foto 3 valida docente
+    const apesNvalidaasistencia = 2; //Valida asistencia del estudiante al centro 0 sin asistencia 1 valida estudiante 2 valida estudiante con foto 3 valida docente
     const apesTlatitud = '';
     const apesTlongitud = '';
     const params = { ...{}, ssecNcorr, matrNcorr, apcvNcorr, apesNasistencia, apesNvalidaasistencia, apesTlatitud, apesTlongitud };
 
-    try {
-      const result = await this.api.registrarAsistenciaCC(params);
-
-      if (result.success) {
-        this.asistenciaCC = result.data.asistenciaCC;
-      }
-    }
-    catch (error: any) { }
-    finally {
-
+    const result = await this.autoAsistencia.mostrarModal(params);
+    debugger
+    if (result) {
+      this.asistenciaCC = result
     }
   }
   esHoy(fechaString: string) {
+    return true;
     if (this.pt.is('mobileweb')) return true;
     return fechaString ? moment(fechaString, 'DD/MM/YYYY').isSame(moment(), 'day') : false;
   }

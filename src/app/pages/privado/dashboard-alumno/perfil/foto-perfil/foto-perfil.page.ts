@@ -1,7 +1,9 @@
 import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { Camera } from '@capacitor/camera';
 import { Directory, Filesystem } from '@capacitor/filesystem';
 import { ActionSheetController, NavController, Platform } from '@ionic/angular';
+import { AndroidSettings, IOSSettings, NativeSettings } from 'capacitor-native-settings';
 import { AppGlobal } from 'src/app/app.global';
 import { VISTAS_ALUMNO } from 'src/app/core/constants/alumno';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -56,6 +58,46 @@ export class FotoPerfilPage implements OnInit {
   constructor() { }
 
   async ngOnInit() {
+
+    if (this.pt.is('capacitor')) {
+      const loading = await this.dialog.showLoading({ message: 'Verificando...' });
+      let permiteContinuar = false;
+      let permission = await Camera.checkPermissions();
+
+      if (permission.camera == 'denied' || permission.camera == 'prompt') {
+        permission = await Camera.requestPermissions({ permissions: ['camera'] });
+      }
+
+      if (permission.camera == 'granted') {
+        permiteContinuar = true;
+      }
+
+      if (!permiteContinuar) {
+        await loading.dismiss();
+        await this.showAlertApp('INACAP', 'la cámara');
+        return;
+      }
+
+      permiteContinuar = false;
+
+      if (permission.photos == 'denied' || permission.photos == 'prompt') {
+        permission = await Camera.requestPermissions({ permissions: ['photos'] });
+      }
+
+      if (permission.photos == 'granted') {
+        permiteContinuar = true;
+      }
+
+      if (!permiteContinuar) {
+        await loading.dismiss();
+        await this.showAlertApp('INACAP', 'la galería');
+        return;
+      }
+
+      await loading.dismiss();
+    }
+
+
     await this.cargar();
   }
   async cargar() {
@@ -225,7 +267,7 @@ export class FotoPerfilPage implements OnInit {
             const base64String = media.data;
 
             if (fileSize >= 150) {
-              await this.snackbar.showToast('La imagen no pueden exceder los 3 MB.', 2000, 'danger');
+              await this.presentAlert('La imagen no pueden exceder los 150 MB.');
               return;
             }
 
@@ -238,7 +280,7 @@ export class FotoPerfilPage implements OnInit {
                 return
               }
 
-              await this.snackbar.showToast('No se pudo procesar el archivo. Vuelve a intentarlo.', 2000, 'danger');
+              await this.presentAlert(error.message || 'No se pudo procesar el archivo. Vuelve a intentarlo.');
             }
           }
         }
@@ -249,38 +291,34 @@ export class FotoPerfilPage implements OnInit {
     }
     else if (index == Pasos.capturarFotoCedula) {
 
-      if (this.pt.is('mobileweb')) {
-        inputEl.click();
-      }
-      else {
-        const file = await this.media.getMedia(true);
+      // if (this.pt.is('mobileweb')) {
+      inputEl.click();
+      // }
+      // else {
+      //   const media = await this.media.getMedia(true);
 
-        if (file) {
-          const media = await this.media.getMedia();
+      //   if (media) {
+      //     const fileSize = media.size / 1024 / 1024;
+      //     const base64String = media.data;
 
-          if (media) {
-            const fileSize = media.size / 1024 / 1024;
-            const base64String = media.data;
+      //     if (fileSize >= 150) {
+      //       await this.presentAlert('La imagen no pueden exceder los 150 MB.');
+      //       return;
+      //     }
 
-            if (fileSize >= 150) {
-              await this.snackbar.showToast('La imagen no pueden exceder los 3 MB.', 2000, 'danger');
-              return;
-            }
+      //     try {
+      //       await this.uploadBase64Fragmented(base64String, media.name, 'fotocedula');
+      //     }
+      //     catch (error: any) {
+      //       if (error && error.status == 401) {
+      //         await this.error.handle(error);
+      //         return
+      //       }
 
-            try {
-              await this.uploadBase64Fragmented(base64String, media.name, 'fotocedula');
-            }
-            catch (error: any) {
-              if (error && error.status == 401) {
-                await this.error.handle(error);
-                return
-              }
-
-              await this.snackbar.showToast('No se pudo procesar el archivo. Vuelve a intentarlo.', 2000, 'danger');
-            }
-          }
-        }
-      }
+      //       await this.presentAlert(error.message || 'No se pudo procesar el archivo. Vuelve a intentarlo.');
+      //     }
+      //   }
+      // }
     }
 
   }
@@ -526,6 +564,39 @@ export class FotoPerfilPage implements OnInit {
   compareDescriptors(descriptor1: any, descriptor2: any) {
     const distance = faceapi.euclideanDistance(descriptor1, descriptor2);
     return distance;
+  }
+  async showAlertApp(header: string = 'INACAP', option: string) {
+    const alert = await this.dialog.showAlert({
+      header: header,
+      message: `Permitir que INACAP acceda a ${option} del dispositivo.`,
+      buttons: [
+        {
+          text: '"Abrir" Configuración',
+          role: 'destructive',
+          handler: async () => {
+            if (this.pt.is('ios')) {
+              await NativeSettings.openIOS({
+                option: IOSSettings.App,
+              });
+            }
+            else {
+              await NativeSettings.openAndroid({
+                option: AndroidSettings.Application
+              });
+            }
+          }
+        },
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: async () => {
+            await this.nav.navigateBack('/dashboard-alumno/perfil');
+          }
+        }
+      ]
+    });
+
+    return alert;
   }
   private async loadModels(): Promise<boolean> {
     try {

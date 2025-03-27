@@ -1,0 +1,35 @@
+.auto-asistencia-header {
+    ion-title.md {
+        text-align: left;
+    }
+}
+.auto-asistencia-content {
+    section.botones {
+        margin: 15px;
+        display: flex;
+        gap: 10px;
+
+        ion-button {
+            flex: 1;
+        }
+    }
+
+    section.reconocimiento-facial {
+        .section-content {
+            position: relative;
+
+            video {
+                width: 100%;
+                height: auto;
+            }
+
+            canvas {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+}

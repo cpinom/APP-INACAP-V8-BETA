@@ -23,21 +23,20 @@
     <div class="section-content">
       <ion-list>
         <ion-item>
-          <ion-label>1-. Toma una foto clara de tu cédula. Asegúrate de que esté bien ilumina y sin reflejos. El sistema verificará si la cédula es válida y auténtica.</ion-label>
+          <ion-label>1-. Toma una foto clara de tu cédula de identidad. Asegúrate de que esté bien ilumina y sin reflejos. El sistema verifica si la cédula es válida y auténtica.</ion-label>
         </ion-item>
         <ion-item>
-          <ion-label>2-. Luego activaremos la cámara frontal de tu dispositivo. Mira de frente y mantén una expresión neutral mientras el sistema compara tu rostro con el de la cédula. Si no coincide no podrás continuar.</ion-label>
+          <ion-label>2-. Luego activaremos la cámara frontal de tu dispositivo. Mira de frente y mantén una expresión neutral mientras el sistema compara tu rostro con el de la cédula de identidad. Si no coinciden ambas fotos no podrás continuar.</ion-label>
         </ion-item>
         <ion-item>
-          <ion-label>3-. Una vez validado tu rostro, se comprobará que estés dentro del rango permitido y, si es así, se enviará tu ubicación actual al servidor.</ion-label>
+          <ion-label>3-. Una vez validado tu rostro, se comprobará que estés dentro del rango geográfico permitido y, si es así, se enviará tu ubicación actual al sistema de registro de asistencia.</ion-label>
         </ion-item>
       </ion-list>
     </div>
   </section>
   <section class="botones">
     <ion-button shape="round" color="primary" expand="block" fill="outline" (click)="cerrar()">Cancelar</ion-button>
-    <ion-button shape="round" color="primary" expand="block" (click)="siguientePaso(1, perfilInput)">Validar
-      Cédula</ion-button>
+    <ion-button shape="round" color="primary" expand="block" (click)="siguientePaso(1, perfilInput)">Validar Cédula</ion-button>
   </section>
   }
   @else if (pasos == 1) {
@@ -48,8 +47,7 @@
     </div>
   </section>
   <section class="botones">
-    <ion-button shape="round" color="primary" expand="block" fill="outline"
-      (click)="anteriorPaso(0)">Cancelar</ion-button>
+    <ion-button shape="round" color="primary" expand="block" fill="outline" (click)="anteriorPaso(0)">Cancelar</ion-button>
     <ion-button shape="round" color="primary" expand="block" (click)="siguientePaso(2)">Validar Rostro</ion-button>
   </section>
   }

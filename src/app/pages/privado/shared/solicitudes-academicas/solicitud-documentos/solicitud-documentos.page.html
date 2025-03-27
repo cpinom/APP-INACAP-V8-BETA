@@ -56,7 +56,7 @@
           <ion-item class="normal">
             <!-- <ion-label position="stacked" style="white-space: normal">Motivo</ion-label> -->
             <ion-textarea label="Motivo" labelPlacement="stacked" rows="4" formControlName="motivo"
-              placeholder="Ingrese motivo"></ion-textarea>
+              placeholder="Ingresa motivo"></ion-textarea>
           </ion-item>
           <div class="invalid" *ngIf="submitted && motivo?.hasError('required')">Campo obligatorio.</div>
           <div class="invalid" *ngIf="submitted && motivo?.hasError('maxlength')">El motivo no debe superar los 1000
@@ -143,7 +143,7 @@
             </div>
 
             <ion-item *ngIf="organismoAutorizado?.value == 0">
-              <ion-input label="Indique Institución" labelPlacement="stacked" placeholder="Ingrese..."
+              <ion-input label="Indique Institución" labelPlacement="stacked" placeholder="Ingresa..."
                 formControlName="otroOrganismo" clearInput></ion-input>
             </ion-item>
             <div class="invalid" *ngIf="submitted && otroOrganismo?.hasError('required')">Campo obligatorio.</div>
@@ -253,7 +253,7 @@
           <ion-item class="normal">
             <!-- <ion-label position="stacked" style="white-space: normal">Motivo</ion-label> -->
             <ion-textarea label="Motivo" labelPlacement="stacked" rows="6" formControlName="motivo"
-              placeholder="Ingrese un motivo"></ion-textarea>
+              placeholder="Ingresa un motivo"></ion-textarea>
           </ion-item>
           <div class="invalid" *ngIf="submitted && motivo?.invalid">Campo obligatorio.</div>
         </ion-list>

@@ -137,7 +137,7 @@ export class DevolucionGratuidadPage implements OnInit {
     return new Promise((resolve) => {
       this.action.create({
         header: 'Devolución Montos Pagados',
-        subHeader: 'A continuación se procesará su solicitud de devolución de montos pagados en la modalidad que ha seleccionado. ¿Desea continuar?',
+        subHeader: 'A continuación se procesará tu solicitud de devolución de montos pagados en la modalidad que ha seleccionado. ¿Deseas continuar?',
         buttons: [
           {
             text: 'Continuar',

@@ -3,44 +3,49 @@
     <ion-buttons slot="start">
       <ion-back-button text="Curso" [defaultHref]="backUrl"></ion-back-button>
     </ion-buttons>
-    <!-- <ion-buttons slot="end">
-      <ion-button (click)="compartir()" [disabled]="deshabilitarCompartir">
-        <ion-icon src="assets/icon/ios_share.svg"></ion-icon>
-      </ion-button>
-    </ion-buttons> -->
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="evaluaciones-content">
 
   <ion-card color="white" class="primary-card">
     <ion-card-header>
-      <ion-card-title>Evaluaciones</ion-card-title>
-      <ion-card-subtitle>{{asignatura}}</ion-card-subtitle>
+      <ion-card-title>
+        <h2>Evaluaciones</h2>
+        <p>{{asignatura}}</p>
+      </ion-card-title>
     </ion-card-header>
   </ion-card>
 
-  <section *ngIf="evaluaciones && evaluaciones.length > 0">
+  @if (evaluaciones) {
+  @if (evaluaciones.length > 0) {
+  <section class="evaluaciones">
+    <div class="section-header">Evaluaciones</div>
     <div class="section-content">
       <ion-list>
-        <ion-item *ngFor="let item of evaluaciones" detail="false">
+        @for (item of evaluaciones; track $index) {
+        <ion-item>
           <div slot="start" [innerHTML]="resolverFechaEvaluacion(item)"></div>
           <ion-label>
             <h2>{{item.asigTdesc}}</h2>
             <p>Evaluación: {{item.caliNevaluacion}} : {{item.caliNponderacion}}%</p>
           </ion-label>
-          <div slot="end" class="ponderacion {{resolverNota(item.calaNnota)}}">{{item.calaNnota || '-.-'}}</div>
+          <p class="estado-actividad {{resolverNota(item.calaNnota)}}" slot="end">{{item.calaNnota || '-.-'}}</p>
         </ion-item>
+        }
       </ion-list>
     </div>
   </section>
-
-  <section *ngIf="evaluaciones && evaluaciones.length === 0" class="empty-state">
+  }
+  @else {
+  <section class="empty-state">
     <div>
       <ion-icon src="assets/icon/star.svg"></ion-icon>
       <p>Sin evaluaciones en este momento</p>
     </div>
   </section>
+  }
+  }
 
 </ion-content>
 

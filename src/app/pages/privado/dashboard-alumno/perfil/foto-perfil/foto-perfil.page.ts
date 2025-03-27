@@ -365,7 +365,7 @@ export class FotoPerfilPage implements OnInit {
 
       if (result.success) {
         this.events.app.next({ action: 'app:foto-perfil-enviada' });
-        this.snackbar.showToast('La solicitud ha sido enviada correctamente para ser revisada por el DAE de su sede.', 3000, 'success');
+        this.snackbar.showToast('La solicitud ha sido enviada correctamente para ser revisada por el DAE de tu sede.', 3000, 'success');
         this.nav.pop();
       }
       else {
@@ -374,7 +374,7 @@ export class FotoPerfilPage implements OnInit {
     }
     catch (error) {
       console.log(error);
-      this.snackbar.showToast('Ha ocurrido un error mientras se procesaba su fotografía.', 3000, 'danger');
+      this.snackbar.showToast('Ha ocurrido un error mientras se procesaba tu fotografía.', 3000, 'danger');
     }
     finally {
       await loading.dismiss();

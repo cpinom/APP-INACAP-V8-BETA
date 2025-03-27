@@ -230,7 +230,7 @@ export class AppComponent {
     this.onedrive.clearStorage();
     this.accessibilitySetup();
     this.clearCacheFolder();
-    await this.snackbar.showToast('Se ha cerrado su sesión correctamente.');
+    await this.snackbar.showToast('Se ha cerrado tu sesión correctamente.');
     this.api.registrarSalida(data.uuid).catch(error => console.log(error));
   }
   async onRouterEvents(val: any) {

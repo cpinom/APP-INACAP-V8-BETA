@@ -40,7 +40,7 @@ export class MarcarAsistenciaPage implements OnInit {
         this.dialog.dismissModal(true);
       }
       else {
-        this.mostrarAlerta('Ha ocurrido un error procesando su solicitud. Vuelva a intentar.')
+        this.mostrarAlerta('Ha ocurrido un error procesando tu solicitud. Vuelve a intentar.')
       }
     }
     catch (error: any) {
@@ -51,7 +51,7 @@ export class MarcarAsistenciaPage implements OnInit {
     }
   }
   async marcarInasistencia() {
-    const confirm = await this.confirmarMarcaje('Quedará registrado que el estudiante no asistió a su hora de clínica académica.');
+    const confirm = await this.confirmarMarcaje('Quedará registrado que el estudiante no asistió a tu hora de clínica académica.');
 
     if (confirm == true) {
       const participantes = this.resolverAsistencia();

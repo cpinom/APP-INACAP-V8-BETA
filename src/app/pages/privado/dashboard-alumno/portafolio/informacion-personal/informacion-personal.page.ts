@@ -43,5 +43,8 @@ export class InformacionPersonalPage implements OnInit {
     }
     return '';
   }
+  get imageBackground() {
+    return this.profile.getBackgroundImagePath()
+  }
 
 }

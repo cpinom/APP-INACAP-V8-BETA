@@ -51,13 +51,13 @@
           </ion-item>
           <div class="invalid" *ngIf="submitted && !praticaForm.controls['tipos'].valid">Campo obligatorio.</div>
           <ion-item>
-            <ion-input label="RUT Empresa" labelPlacement="stacked" type="text" placeholder="Ingrese RUT"
+            <ion-input label="RUT Empresa" labelPlacement="stacked" type="text" placeholder="Ingresa RUT"
               formControlName="rut" clearInput></ion-input>
           </ion-item>
           <div class="invalid" *ngIf="submitted && rut?.hasError('required')">Campo obligatorio.</div>
           <div class="invalid" *ngIf="submitted && rut?.hasError('rut')">Rut inválido.</div>
           <ion-item>
-            <ion-input label="Nombre Empresa" labelPlacement="stacked" type="text" placeholder="Ingrese Nombre Empresa"
+            <ion-input label="Nombre Empresa" labelPlacement="stacked" type="text" placeholder="Ingresa Nombre Empresa"
               formControlName="nombre" clearInput></ion-input>
           </ion-item>
           <div class="invalid" *ngIf="submitted && nombre?.hasError('required')">Campo obligatorio.</div>
@@ -67,7 +67,7 @@
           </div>
           <ion-item>
             <ion-input label="Dirección Empresa" labelPlacement="stacked" type="text"
-              placeholder="Ingrese Dirección Empresa" formControlName="direccion" clearInput></ion-input>
+              placeholder="Ingresa Dirección Empresa" formControlName="direccion" clearInput></ion-input>
           </ion-item>
           <div class="invalid" *ngIf="submitted && direccion?.hasError('required')">Campo obligatorio.</div>
           <div class="invalid" *ngIf="submitted && direccion?.hasError('maxlength')">Máximo de 100 caracteres
@@ -119,7 +119,7 @@
           <ng-container *ngIf="pais?.value != 1">
             <ion-item>
               <ion-input label="Ciudad/Lugar en que realizará la práctica" labelPlacement="stacked" type="text"
-                placeholder="Ingrese Ciudad/Lugar" formControlName="ciudadExtranjera" clearInput></ion-input>
+                placeholder="Ingresa Ciudad/Lugar" formControlName="ciudadExtranjera" clearInput></ion-input>
             </ion-item>
             <div class="invalid" *ngIf="submitted && ciudadExtranjera?.hasError('required')">Campo obligatorio.
             </div>
@@ -129,14 +129,14 @@
               permitidos.</div>
           </ng-container>
           <ion-item>
-            <ion-input label="RUT Contacto" labelPlacement="stacked" type="text" placeholder="Ingrese RUT Contacto"
+            <ion-input label="RUT Contacto" labelPlacement="stacked" type="text" placeholder="Ingresa RUT Contacto"
               formControlName="rutContacto" clearInput></ion-input>
           </ion-item>
           <div class="invalid" *ngIf="submitted && rutContacto?.hasError('required')">Campo obligatorio.</div>
           <div class="invalid" *ngIf="submitted && rutContacto?.hasError('rut')">Rut inválido.</div>
           <ion-item>
             <ion-input label="Nombre Contacto" labelPlacement="stacked" type="text"
-              placeholder="Ingrese Nombre Contacto" formControlName="nombreContacto" clearInput></ion-input>
+              placeholder="Ingresa Nombre Contacto" formControlName="nombreContacto" clearInput></ion-input>
           </ion-item>
           <div class="invalid" *ngIf="submitted && nombreContacto?.hasError('required')">Campo obligatorio.</div>
           <div class="invalid" *ngIf="submitted && nombreContacto?.hasError('maxlength')">Máximo de 100 caracteres
@@ -144,7 +144,7 @@
           <div class="invalid" *ngIf="submitted && nombreContacto?.hasError('pattern')">Campo con caracteres no
             permitidos.</div>
           <ion-item>
-            <ion-input label="Cargo Contacto" labelPlacement="stacked" type="text" placeholder="Ingrese Cargo Contacto"
+            <ion-input label="Cargo Contacto" labelPlacement="stacked" type="text" placeholder="Ingresa Cargo Contacto"
               formControlName="cargoContacto" clearInput></ion-input>
           </ion-item>
           <div class="invalid" *ngIf="submitted && cargoContacto?.hasError('required')">Campo obligatorio.</div>
@@ -161,7 +161,7 @@
             +56990009000)</div>
           <ion-item>
             <ion-input label="Correo electrónico Contacto" labelPlacement="stacked" type="text" inputmode="email"
-              placeholder="Ingrese Correo electrónico" formControlName="correoContacto" clearInput></ion-input>
+              placeholder="Ingresa Correo electrónico" formControlName="correoContacto" clearInput></ion-input>
           </ion-item>
           <div class="invalid" *ngIf="submitted && correoContacto?.hasError('pattern')">Correo inválido.</div>
           <div class="invalid" *ngIf="submitted && correoContacto?.hasError('required')">Campo obligatorio.</div>
@@ -190,7 +190,7 @@
             <ng-container *ngIf="tipos?.value != 4">
               <ion-item>
                 <ion-input label="Horas de práctica" labelPlacement="stacked" type="text" inputmode="numeric"
-                  placeholder="Ingrese número de horas" formControlName="horasPracticaIngreso" clearInput></ion-input>
+                  placeholder="Ingresa número de horas" formControlName="horasPracticaIngreso" clearInput></ion-input>
               </ion-item>
               <div class="invalid" *ngIf="submitted && horasPracticaIngreso?.hasError('required')">Campo
                 obligatorio.</div>
@@ -231,13 +231,13 @@
           </ion-item>
           <div class="invalid" *ngIf="submitted && tipos?.hasError('required')">Campo obligatorio.</div>
           <ion-item>
-            <ion-input label="RUT Empresa" labelPlacement="stacked" type="text" placeholder="Ingrese RUT"
+            <ion-input label="RUT Empresa" labelPlacement="stacked" type="text" placeholder="Ingresa RUT"
               formControlName="rut" clearInput></ion-input>
           </ion-item>
           <div class="invalid" *ngIf="submitted && rut?.hasError('required')">Campo obligatorio.</div>
           <div class="invalid" *ngIf="submitted && rut?.hasError('rut')">Rut inválido.</div>
           <ion-item>
-            <ion-input label="Nombre Empresa" labelPlacement="stacked" type="text" placeholder="Ingrese Nombre Empresa"
+            <ion-input label="Nombre Empresa" labelPlacement="stacked" type="text" placeholder="Ingresa Nombre Empresa"
               formControlName="nombre" clearInput></ion-input>
           </ion-item>
           <div class="invalid" *ngIf="submitted && nombre?.hasError('required')">Campo obligatorio.</div>
@@ -247,7 +247,7 @@
           </div>
           <ion-item>
             <ion-input label="Dirección Empresa" labelPlacement="stacked" type="text"
-              placeholder="Ingrese Dirección Empresa" formControlName="direccion" clearInput></ion-input>
+              placeholder="Ingresa Dirección Empresa" formControlName="direccion" clearInput></ion-input>
           </ion-item>
           <div class="invalid" *ngIf="submitted && direccion?.hasError('required')">Campo obligatorio.</div>
           <div class="invalid" *ngIf="submitted && direccion?.hasError('maxlength')">Máximo de 100 caracteres
@@ -299,7 +299,7 @@
           <ng-container *ngIf="pais?.valid && pais?.value != 1">
             <ion-item>
               <ion-input label="Ciudad/Lugar en que realizará la práctica" labelPlacement="stacked" type="text"
-                placeholder="Ingrese Ciudad/Lugar" formControlName="ciudadExtranjera" clearInput></ion-input>
+                placeholder="Ingresa Ciudad/Lugar" formControlName="ciudadExtranjera" clearInput></ion-input>
             </ion-item>
             <div class="invalid" *ngIf="submitted && ciudadExtranjera?.hasError('required')">Campo obligatorio.
             </div>
@@ -366,7 +366,7 @@
           <ng-container *ngIf="motivo?.value == 2">
             <ion-item>
               <ion-input label="Horas de práctica" labelPlacement="stacked" type="text" inputmode="numeric"
-                placeholder="Ingrese número de horas" formControlName="horasPractica" clearInput></ion-input>
+                placeholder="Ingresa número de horas" formControlName="horasPractica" clearInput></ion-input>
             </ion-item>
             <div class="invalid" *ngIf="submitted && horasPractica?.hasError('required')">Campo obligatorio.</div>
             <div class="invalid" *ngIf="submitted && horasPractica?.hasError('pattern')">Debe ingresar sólo dígitos.

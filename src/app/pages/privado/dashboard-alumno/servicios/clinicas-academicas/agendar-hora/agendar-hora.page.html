@@ -87,7 +87,7 @@
             </div>
             <div class="section-content" [formGroupName]="$index">
               <ion-item>
-                <ion-input label="RUT (*)" labelPlacement="stacked" formControlName="rut" placeholder="Ingrese el rut"
+                <ion-input label="RUT (*)" labelPlacement="stacked" formControlName="rut" placeholder="Ingresa el rut"
                   clearInput></ion-input>
               </ion-item>
               <div class="invalid" *ngIf="submitted && item.get('rut')?.hasError('required')">Campo obligatorio.</div>
@@ -96,14 +96,14 @@
                 estudiante INACAP.</div>
               <ion-item>
                 <ion-input label="Correo electrónico (*)" labelPlacement="stacked" formControlName="correo"
-                  placeholder="Ingrese el correo" type="email" clearInput></ion-input>
+                  placeholder="Ingresa el correo" type="email" clearInput></ion-input>
               </ion-item>
               <div class="invalid" *ngIf="submitted && item.get('correo')?.hasError('required')">Campo obligatorio.
               </div>
               <div class="invalid" *ngIf="submitted && item.get('correo')?.hasError('email')">Correo inválido.</div>
               <ion-item>
                 <ion-input label="Nombre Completo" labelPlacement="stacked" formControlName="nombre"
-                  placeholder="Ingrese el nombre completo" clearInput></ion-input>
+                  placeholder="Ingresa el nombre completo" clearInput></ion-input>
               </ion-item>
               <div class="invalid" *ngIf="submitted && item.get('nombre')?.hasError('required')">Campo obligatorio.
               </div>

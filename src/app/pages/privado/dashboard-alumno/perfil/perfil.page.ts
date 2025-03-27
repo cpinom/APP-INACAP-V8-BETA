@@ -84,6 +84,9 @@ export class PerfilPage implements OnInit, OnDestroy {
   async logoutTap() {
     await this.auth.tryLogout();
   }
+  get imageBackground() {
+    return this.profile.getBackgroundImagePath()
+  }
   get nombreCompleto() {
     if (this.perfil) {
       if (this.perfil.persTnombreSocial)

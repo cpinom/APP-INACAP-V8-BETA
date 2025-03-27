@@ -74,7 +74,7 @@
           <div class="section-content">
             <ion-list>
               <ion-item>
-                <ion-select label="Banco" labelPlacement="stacked" placeholder="Seleccione su banco"
+                <ion-select label="Banco" labelPlacement="stacked" placeholder="Seleccione tu banco"
                   formControlName="bancoCtrl" okText="Aceptar" cancelText="Cancelar">
                   <ion-select-option *ngFor="let banco of bancosArray" [value]="banco">
                     {{banco}}
@@ -93,7 +93,7 @@
               <div class="invalid" *ngIf="submitAttempt && tipoCuentaCtrl?.hasError('required')">Campo obligatorio</div>
               <ion-item>
                 <ion-input label="Número de cuenta" labelPlacement="stacked" type="text" inputmode="numeric"
-                  placeholder="Ingrese número de cuenta" formControlName="numCuentaCtrl" clearInput></ion-input>
+                  placeholder="Ingresa número de cuenta" formControlName="numCuentaCtrl" clearInput></ion-input>
               </ion-item>
               <div class="invalid" *ngIf="submitAttempt && numCuentaCtrl?.hasError('required')">Campo obligatorio.</div>
               <div class="invalid" *ngIf="submitAttempt && numCuentaCtrl?.hasError('pattern')">Debe ingresar sólo

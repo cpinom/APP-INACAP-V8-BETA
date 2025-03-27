@@ -80,6 +80,19 @@ export class ProfileService {
     return preferencias;
 
   }
+  getBackgroundImagePath() {
+    if (document.body.classList.contains('blue'))
+      return 'assets/images/colors/bg-blue.png';
+    if (document.body.classList.contains('green'))
+      return 'assets/images/colors/bg-green.png';
+    if (document.body.classList.contains('orange'))
+      return 'assets/images/colors/bg-orange.png';
+    if (document.body.classList.contains('purple'))
+      return 'assets/images/colors/bg-purple.png';
+    if (document.body.classList.contains('violet'))
+      return 'assets/images/colors/bg-violet.png';
+    return 'assets/images/colors/bg-default.png';
+  }
   async setStorage(key: string, value: any) {
     this.storage.set(`${this.storagePrefix}-${key}`, value);
   }
@@ -167,5 +180,6 @@ export class ProfileService {
     this.toggleBodyClass('orange', true);
     this.toggleBodyClass('green', true);
   }
+
 
 }

@@ -232,7 +232,7 @@ export class SolicitudEstacionamientoPage implements OnInit {
     });
   }
   async presentError(text?: string) {
-    const message = text ? text : 'Hubo un error enviando su solicitud. Comuníquese con la asistencia telefónica.';
+    const message = text ? text : 'Hubo un error enviando tu solicitud. Comunícate con la asistencia telefónica.';
 
     await this.dialog.showAlert({
       backdropDismiss: false,

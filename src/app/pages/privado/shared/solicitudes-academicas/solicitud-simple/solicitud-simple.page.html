@@ -77,7 +77,7 @@
     <div class="section-content">
       <form [formGroup]="solicitudForm">
         <ion-item>
-          <ion-textarea label="Motivo" labelPlacement="stacked" rows="6" placeholder="Ingrese el motivo"
+          <ion-textarea label="Motivo" labelPlacement="stacked" rows="6" placeholder="Ingresa el motivo"
             formControlName="motivo"></ion-textarea>
         </ion-item>
         <div class="invalid" *ngIf="submitted && motivo?.invalid">Campo obligatorio</div>
@@ -100,7 +100,7 @@
           </ion-item>
           <div class="invalid" *ngIf="submitted && sede?.hasError('required')">Campo obligatorio.</div>
           <ion-item class="normal">
-            <ion-textarea label="Motivo" labelPlacement="stacked" rows="6" placeholder="Ingrese el motivo"
+            <ion-textarea label="Motivo" labelPlacement="stacked" rows="6" placeholder="Ingresa el motivo"
               formControlName="motivo"></ion-textarea>
           </ion-item>
           <div class="invalid" *ngIf="submitted && motivo?.hasError('required')">Campo obligatorio.</div>
@@ -196,7 +196,7 @@
         <ion-list>
           <ion-item class="normal">
             <ion-textarea label="Motivo" labelPlacement="stacked" rows="4" formControlName="motivo"
-              placeholder="Ingrese motivo"></ion-textarea>
+              placeholder="Ingresa motivo"></ion-textarea>
           </ion-item>
           <div class="invalid" *ngIf="submitted && motivo?.hasError('required')">Campo obligatorio.</div>
           <div class="invalid" *ngIf="submitted && motivo?.hasError('maxlength')">El motivo no debe superar los 1000

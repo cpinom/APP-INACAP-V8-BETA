@@ -83,7 +83,7 @@ export class OfertasPracticaPage implements OnInit {
     if (this.data.habilitaPractica == 0) {
       await this.dialog.showAlert({
         header: 'Práctica Profesional',
-        message: 'El módulo de práctica profesional estará disponible una vez obtenidos los créditos necesarios, según su plan de estudio.',
+        message: 'El módulo de práctica profesional estará disponible una vez obtenidos los créditos necesarios, según tu plan de estudio.',
         buttons: [{
           text: 'Aceptar'
         }]

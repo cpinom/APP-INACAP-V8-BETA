@@ -18,7 +18,7 @@
 <ion-content>
 
   <section class="avatar-container">
-    <img src="assets/images/bg-sede.png" />
+    <img [src]="imageBackground" />
     <div class="avatar">
       <ion-avatar>
         <avatar-comp [buttonConfig]="avatarConfig" (buttonFn)="fotoPerfil()"></avatar-comp>

@@ -55,7 +55,7 @@ export class PeriodosComponent implements OnInit {
     }
 
     await this.dialog.showAlert({
-      subHeader: 'Seleccione el período que desee visualizar',
+      subHeader: 'Seleccione el período que desees visualizar',
       header: 'Período Académico',
       inputs: options,
       buttons: [

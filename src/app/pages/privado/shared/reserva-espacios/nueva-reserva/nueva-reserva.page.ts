@@ -119,7 +119,7 @@ export class NuevaReservaPage implements OnInit {
       }
 
       this.categoria?.setValue('', { emitEvent: false });
-      await this.snackbar.showToast('Ha ocurrido un error mientras se procesaba su solicitud.');
+      await this.snackbar.showToast('Ha ocurrido un error mientras se procesaba tu solicitud.');
     }
     finally {
       await loading.dismiss();
@@ -194,7 +194,7 @@ export class NuevaReservaPage implements OnInit {
         return;
       }
 
-      this.snackbar.showToast('Ha ocurrido un error mientras se procesaba su solicitud.');
+      this.snackbar.showToast('Ha ocurrido un error mientras se procesaba tu solicitud.');
     }
     finally {
       await loading.dismiss();
@@ -241,7 +241,7 @@ export class NuevaReservaPage implements OnInit {
         return;
       }
 
-      this.snackbar.showToast('Ha ocurrido un error mientras se procesaba su solicitud.');
+      this.snackbar.showToast('Ha ocurrido un error mientras se procesaba tu solicitud.');
     }
     finally {
       await loading.dismiss();

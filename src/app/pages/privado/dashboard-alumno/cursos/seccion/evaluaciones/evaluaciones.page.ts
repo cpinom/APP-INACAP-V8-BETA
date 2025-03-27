@@ -31,13 +31,38 @@ export class EvaluacionesPage implements OnInit {
   resolverFechaEvaluacion(data: any) {
     return moment(data.caliFevaluacion, 'DD/MM/YYYY').locale('es').format('<b>DD</b> MMM').replace('.', '');
   }
-  resolverNota(nota: string) {
-    if (!nota)
+  resolverNota(nota: string | null | undefined) {
+    if (!nota) {
       return 'gris';
-    if (parseInt(nota) < 4) {
-      return 'rojo';
     }
-    return '';
+
+    const notaLimpia = nota.trim().toLowerCase();
+
+    if (notaLimpia === '-.-' || notaLimpia === '' || notaLimpia == null) {
+      return 'gris';
+    }
+
+    const valor = parseFloat(notaLimpia.replace(',', '.'));
+
+    if (isNaN(valor)) {
+      return 'gris';
+    }
+
+    if (valor < 4.0) {
+      return 'danger';
+    }
+
+    if (valor >= 4.0 && valor < 5.0) {
+      return 'warning';
+    }
+
+    return 'success';
+    // if (!nota)
+    //   return 'gris';
+    // if (parseInt(nota) < 4) {
+    //   return 'danger';
+    // }
+    // return '';
   }
   // async compartir() {
   //   this.deshabilitarCompartir = true;

@@ -91,7 +91,7 @@ export class NuevaSolicitudPage implements OnInit {
       let mensaje = 'El certificado solicitado no tiene costo. Quedará disponible para su descarga en la sección "Solicitados".';
 
       if (parseInt(this.data.tdetMonto) > 0) {
-        mensaje = `El costo asociado al Certificado es de CLP $${this.data.tdetMonto}, el cual será cargado a su cuenta corriente y podrá pagarlo en el Portal de Pagos electrónico o en la caja de cualquier Sede de INACAP.`;
+        mensaje = `El costo asociado al Certificado es de CLP $${this.data.tdetMonto}, el cual será cargado a tu cuenta corriente y podrá pagarlo en el Portal de Pagos electrónico o en la caja de cualquier Sede de INACAP.`;
       }
 
       const confirmar = await this.confirmarSolicitud(mensaje);

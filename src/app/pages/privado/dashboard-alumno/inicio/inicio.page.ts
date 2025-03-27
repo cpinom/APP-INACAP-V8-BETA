@@ -267,6 +267,10 @@ export class InicioPage implements OnInit, AfterViewInit {
         principal.mostrarEstacionamientos = true;
         principal.mostrarFotoPerfil = true;
 
+        if ('mostrarSaludo' in principal) {
+          principal.mostrarSaludo = principal_storaged.mostrarSaludo;
+        }
+
         if (!forzar && principal_storaged) {
           principal.programaIndex = principal_storaged.programaIndex;
           principal.mostrarDescatados = principal_storaged.mostrarDescatados;
@@ -728,14 +732,6 @@ export class InicioPage implements OnInit, AfterViewInit {
     let perfil;
 
     if (!principal) return;
-
-    // if (this.pt.is('mobileweb')) {
-    //   principal.mostrarSaludo = true;
-    // }
-    // else {
-    //   if (principal.mostrarSaludo === false) return;
-    // }
-
     if (principal.mostrarSaludo === false) return;
 
     try {
@@ -755,7 +751,7 @@ export class InicioPage implements OnInit, AfterViewInit {
 
     if (perfil && perfil.estadoCumpleanos == 1) {
 
-      const saludo = `Hola ${(perfil.persTnombreSocial || perfil.persTnombre)}.<br/>¡Te deseamos un muy feliz cumpleaños! <br/>Gracias por ser parte de INACAP.`;
+      const saludo = `Hola ${(perfil.persTnombreSocial || perfil.persTnombre)} 😊<br/>¡Te deseamos un muy feliz cumpleaños! <br/>Gracias por ser parte de INACAP.`;
 
       await this.confetti.showConfettiAlert('¡¡¡Feliz Cumpleaños!!!', saludo, 10);
       await Haptics.vibrate({ duration: 5000 });
@@ -793,7 +789,7 @@ export class InicioPage implements OnInit, AfterViewInit {
       await this.dialog.showAlert({
         cssClass: 'warning-alert',
         header: 'Práctica Profesional',
-        message: `<div class="image"><img src="./assets/images/warning.svg" /><br />El módulo de práctica profesional estará disponible una vez obtenidos los créditos necesarios, según su plan de estudio.</div>`,
+        message: `<div class="image"><img src="./assets/images/warning.svg" /><br />El módulo de práctica profesional estará disponible una vez obtenidos los créditos necesarios, según tu plan de estudio.</div>`,
         buttons: [{
           text: 'Aceptar'
         }]

@@ -90,7 +90,7 @@ export class ConsultaBipComponent implements OnInit {
         }
         else {
           this.codigo?.setValue('');
-          await this.snackbar.showToast('El código ya existe en sus tarjetas guardadas.');
+          await this.snackbar.showToast('El código ya existe en tus tarjetas guardadas.');
         }
       }
       catch (error: any) {
@@ -98,7 +98,7 @@ export class ConsultaBipComponent implements OnInit {
           await this.snackbar.showToast(error.error.error);
         }
         else {
-          await this.snackbar.showToast('Ha ocurrido un error mientras se procesaba su solicitud.');
+          await this.snackbar.showToast('Ha ocurrido un error mientras se procesaba tu solicitud.');
         }
       }
       finally {

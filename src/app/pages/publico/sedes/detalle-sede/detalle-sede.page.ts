@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PublicService } from 'src/app/core/services/http/public.service';
+import { ProfileService } from 'src/app/core/services/profile.service';
 import { UtilsService } from 'src/app/core/services/utils.service';
 
 @Component({
@@ -14,6 +15,7 @@ export class DetalleSedePage implements OnInit {
   private route = inject(ActivatedRoute);
   private api = inject(PublicService);
   private utils = inject(UtilsService);
+  private profile = inject(ProfileService);
 
   data: any;
 
@@ -70,6 +72,9 @@ export class DetalleSedePage implements OnInit {
     }
 
     return 'Sedes';
+  }
+  get imageBackground() {
+    return this.profile.getBackgroundImagePath()
   }
 
 }

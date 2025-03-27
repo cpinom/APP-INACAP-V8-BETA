@@ -196,6 +196,10 @@ export class SedeComponent implements OnInit {
   // get routerOutlet() {
   //   return getRouterOutlet(this.rol);
   // }
+
+  get imageBackground() {
+    return this.profile.getBackgroundImagePath()
+  }
 }
 
 export function getRouterOutlet(rol: string) {

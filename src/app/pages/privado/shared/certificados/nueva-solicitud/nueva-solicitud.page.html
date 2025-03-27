@@ -21,8 +21,7 @@
       <div class="section-content">
         <ion-list>
           <ion-item>
-            <ion-label>Si el certificado que necesita no se encuentra en la lista, diríjase a la Oficina Curricular de
-              su sede.</ion-label>
+            <ion-label>Si el certificado que necesita no se encuentra en la lista, diríjete a la Oficina Curricular de tu sede.</ion-label>
           </ion-item>
         </ion-list>
       </div>
@@ -83,12 +82,9 @@
     <ng-container *ngIf="data.cemeTtipo == 0">
       <section>
         <div class="section-content resolucion">
-          <p>Estimado Estudiante, ha ocurrido un error al tratar de enviar su solicitud.</p>
-          <p>Es posible que estés tratando de solicitar un certificado para un período en el cual no estuviste
-            matriculado.</p>
-          <p>Si el problema persiste debes contactar a la Mesa de Ayuda INACAP al correo ayuda&#64;inacap.cl o al
-            teléfono
-            +562-24305700.</p>
+          <p>Estimado Estudiante, ha ocurrido un error al tratar de enviar tu solicitud.</p>
+          <p>Es posible que estés tratando de solicitar un certificado para un período en el cual no estuviste matriculado.</p>
+          <p>Si el problema persiste debes contactar a la Mesa de Ayuda INACAP al correo ayuda&#64;inacap.cl o al teléfono +562-24305700.</p>
         </div>
       </section>
     </ng-container>
@@ -96,11 +92,10 @@
     <ng-container *ngIf="data.cemeTtipo == 1">
       <section>
         <div class="section-content resolucion">
-          <p>Estimado Estudiante, su certificado no tiene costo.</p>
+          <p>Estimado Estudiante, tu certificado no tiene costo.</p>
           <p>El certificado quedará disponible para su impresión o descarga en el listado de "Certificados >
             Solicitados".</p>
-          <p>Si tiene problemas para imprimir o descargar su certificado, puede dirigirse a la Oficina Curricular de
-            cualquier sede de INACAP.</p>
+          <p>Si tiene problemas para imprimir o descargar tu certificado, puede dirigirte a la Oficina Curricular de cualquier sede de INACAP.</p>
         </div>
       </section>
       <ion-button *ngIf="data.url" expand="block" shape="round" color="primary" (click)="descargar()"

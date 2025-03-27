@@ -159,7 +159,7 @@ export class NuevaSolicitudPage implements OnInit, OnDestroy {
       const result = await this.api.enviarSolicitud(params);
 
       if (result.success) {
-        await this.presentSuccess('Se ha ingresado su solicitud nº' + result.casoId + ' de manera exitosa.');
+        await this.presentSuccess('Se ha ingresado tu solicitud nº' + result.casoId + ' de manera exitosa.');
       }
       else {
         await this.presentError('Error al enviar solicitud', 'No se pudo enviar la solicitud. Vuelve a intentarlo.');

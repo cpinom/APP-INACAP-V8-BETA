@@ -70,6 +70,7 @@ export class CredencialVirtualPage implements OnInit {
     });
   }
   async walletTap() {
+    debugger
     const programa = await this.profile.getPrograma();
     const perfil = await this.profile.getPrincipal();
 
@@ -132,7 +133,8 @@ export class CredencialVirtualPage implements OnInit {
     return 'invalid';
   }
   get mostrarPassbook() {
-    return this.pt.is('ios');
+    return false;
+    // return this.pt.is('ios');
   }
   get mostrarDelegado() {
     return this.perfil && this.perfil.estadoDelegado == 1;

@@ -30,7 +30,7 @@ export class ConfiguracionesPage implements OnInit {
   darkModeText!: string;
   privacyMode: any;
   color!: string;
-  colores = ['system', 'blue', 'purple', 'violet', /*'orange',*/ 'green']
+  colores = ['system', 'blue', 'purple', 'violet', 'orange', 'green']
   notificacionCorreo: any;
   notificacionSede: any;
   mostrarIcono = false;

@@ -9,18 +9,24 @@
       <ion-card-title>Bibliografía</ion-card-title>
       <ion-card-subtitle>{{asignatura}}</ion-card-subtitle>
     </ion-card-header>
-    <ion-progress-bar *ngIf="mostrarCargando" type="indeterminate"></ion-progress-bar>
   </ion-card>
 </ion-header>
 
 <ion-content style="--padding-top: 15px;">
 
+  @if (mostrarCargando) {
+  <div class="loaderInacap">
+    <ion-spinner name="lines" color="primary"></ion-spinner>
+  </div>
+  }
+
+
   <ng-container *ngIf="mostrarData && data">
 
-    <ion-card class="notificacion" color="primary">
+    <ion-card class="notificacion">
       <ion-card-content>
-        <ion-icon src="assets/icon/error_outline.svg"></ion-icon>
         <span>Recuerda que este material no se puede descargar desde la APP INACAP.</span>
+        <ion-icon class="rounded" src="assets/icon/error_outline.svg"></ion-icon>
       </ion-card-content>
     </ion-card>
 
@@ -33,9 +39,9 @@
           <p *ngIf="item.bibl_teditorial">Editorial: {{item.bibl_teditorial}}</p>
           <p *ngIf="item.bibl_nano">Año: {{item.bibl_nano}}</p>
         </ion-label>
-        <ion-icon *ngIf="item.bibl_turl_enlace" slot="end" src="assets/icon/visibility.svg" color="medium"
+        <ion-icon *ngIf="item.bibl_turl_enlace" slot="end" src="assets/icon/launch.svg"
           (click)="abrirBibliografia(item.bibl_turl_enlace)"></ion-icon>
-        <ion-icon *ngIf="!item.bibl_turl_enlace" slot="end" src="assets/icon/error_outline.svg" color="medium"
+        <ion-icon *ngIf="!item.bibl_turl_enlace" slot="end" src="assets/icon/error_outline.svg"
           (click)="alertaLibro()"></ion-icon>
       </ion-item>
     </ion-list>

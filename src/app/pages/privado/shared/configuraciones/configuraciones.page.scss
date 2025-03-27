@@ -96,3 +96,158 @@ ion-radio-group.colores {
         }
     }
 }
+
+section.paletas {
+    ion-radio {
+        div.item {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+
+            ion-icon {
+                flex: 0 0 24px;
+                font-size: 24px;
+            }
+
+            div {
+                height: 30px;
+                width: 75px;
+                display: flex;
+                flex-direction: row;
+                overflow: hidden;
+                border-radius: 4px;
+                background: red;
+
+                i {
+                    width: 15px;
+                }
+            }
+
+            &.system {
+                div {
+                    width: 105px;
+
+                    i {
+                        &.a {
+                            background: #717FE8;
+                        }
+                        &.b {
+                            background: #A0C3D9;
+                        }
+                        &.c {
+                            background: #C1DB3A;
+                        }
+                        &.d {
+                            background: #F6D001;
+                        }
+                        &.e {
+                            background: #FA9A84;
+                        }
+                        &.f {
+                            background: #FF7E06;
+                        }
+                        &.g {
+                            background: #CE2D71;
+                        }
+                    }
+                }
+            }
+
+            &.blue {
+                i {
+                    &.a {
+                        background: #72A2F3;
+                    }
+                    &.b {
+                        background: #A7B0F1;
+                    }
+                    &.c {
+                        background: #FFED80;
+                    }
+                    &.d {
+                        background: #F9AE6C;
+                    }
+                    &.e {
+                        background: #FF8E4D;
+                    }
+                }
+            }
+            &.purple {
+                i {
+                    &.a {
+                        background: #ba94d1;
+                    }
+                    &.b {
+                        background: #9e9fe1;
+                    }
+                    &.c {
+                        background: #94caea;
+                    }
+                    &.d {
+                        background: #b0e8e8;
+                    }
+                    &.e {
+                        background: #ebefa9;
+                    }
+                }
+            }
+            &.violet {
+                i {
+                    &.a {
+                        background: #F38CC1;
+                    }
+                    &.b {
+                        background: #FDAB68;
+                    }
+                    &.c {
+                        background: #FBDA83;
+                    }
+                    &.d {
+                        background: #FD81AA;
+                    }
+                    &.e {
+                        background: #CD98C0;
+                    }
+                }
+            }
+            &.orange {
+                i {
+                    &.a {
+                        background: #BDCC66;
+                    }
+                    &.b {
+                        background: #E5B173;
+                    }
+                    &.c {
+                        background: #E57149;
+                    }
+                    &.d {
+                        background: #D1E5A5;
+                    }
+                    &.e {
+                        background: #E98177;
+                    }
+                }
+            }
+            &.green {
+                i {
+                    &.a {
+                        background: #ACD3D3;
+                    }
+                    &.b {
+                        background: #B9E4D9;
+                    }
+                    &.c {
+                        background: #D7E099;
+                    }
+                    &.d {
+                        background: #EEE6AA;
+                    }
+                    &.e {
+                        background: #B4C5DF;
+                    }
+                }
+            }
+        }
+    }
+}

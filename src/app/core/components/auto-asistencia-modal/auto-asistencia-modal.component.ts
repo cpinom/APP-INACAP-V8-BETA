@@ -4,7 +4,6 @@ import { Platform } from '@ionic/angular';
 import { UtilsService } from '../../services/utils.service';
 import { AlumnoService } from '../../services/http/alumno.service';
 import { AppGlobal } from 'src/app/app.global';
-import { MediaService } from '../../services/media.service';
 import { Camera } from '@capacitor/camera';
 import { AndroidSettings, IOSSettings, NativeSettings } from 'capacitor-native-settings';
 import { Geolocation } from '@capacitor/geolocation';
@@ -31,7 +30,6 @@ export class AutoAsistenciaModalComponent implements OnInit, AfterViewInit, OnDe
   private utils = inject(UtilsService);
   private api = inject(AlumnoService);
   private global = inject(AppGlobal);
-  private media = inject(MediaService);
 
   @ViewChild('video1', { static: false }) video1Ref!: ElementRef;
   @ViewChild('overlay1', { static: false }) overlay1Ref!: ElementRef;
@@ -165,7 +163,6 @@ export class AutoAsistenciaModalComponent implements OnInit, AfterViewInit, OnDe
     if (step == Pasos.captura) {
       await this.validarRostro();
     }
-
   }
   async validarRostro() {
     this.pasos = Pasos.captura;
@@ -367,7 +364,7 @@ export class AutoAsistenciaModalComponent implements OnInit, AfterViewInit, OnDe
 
     if (!this.validarRangoPermitido(userLat, userLng)) {
       await loading.dismiss();
-      return Promise.resolve('Debes estar dentro del rango permitido para registrar la asistencia.');
+      return Promise.resolve('Tu dispositivo está lejos del centro médico. Intenta nuevamente cuando estés más cerca.');
     }
 
     loading.message = 'Registrando Asistencia...';

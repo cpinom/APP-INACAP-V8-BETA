@@ -88,17 +88,32 @@
     </div>
   </section>
 
-  <section>
+  <section class="paletas">
     <div class="section-header">Colores</div>
     <div class="section-content">
       <ion-list>
         <ion-radio-group [(ngModel)]="color" (ionChange)="colorChanged($event)">
           @for (item of colores; track $index) {
           <ion-item>
-            <ion-icon slot="start" src="assets/icon/palette.svg"></ion-icon>
+            <ion-radio [value]="item">
+              <div class="item {{item}}">
+                <ion-icon src="assets/icon/palette.svg"></ion-icon>
+                Paleta {{$index + 1}}
+                <div>
+                  <i class="a"></i>
+                  <i class="b"></i>
+                  <i class="c"></i>
+                  <i class="d"></i>
+                  <i class="e"></i>
+                  <i *ngIf="item == 'system'" class="f"></i>
+                  <i *ngIf="item == 'system'" class="g"></i>
+                </div>
+              </div>
+            </ion-radio>
+            <!-- <ion-icon slot="start" src="assets/icon/palette.svg"></ion-icon>
             <ion-radio [value]="item">
               Paleta {{$index + 1}} -- {{item}}
-            </ion-radio>
+            </ion-radio> -->
           </ion-item>
           }
         </ion-radio-group>
@@ -138,7 +153,5 @@
       </ion-list>
     </div>
   </section>
-
-  <ion-button color="primary" shape="round" expand="full" style="margin-inline: 15px;">test</ion-button>
 
 </ion-content>

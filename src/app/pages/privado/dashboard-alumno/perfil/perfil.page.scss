@@ -40,7 +40,7 @@
     }
 
     p {
-      color: var(--ion-color-primary);
+      color: var(--ion-color-link, --ion-color-primary);
       margin: 0;
       font-size: var(--FS13);
       text-decoration: underline;
@@ -50,11 +50,6 @@
   .user-extras {
     margin: 0 15px;
     text-align: center;
-
-    ion-button {
-      --background-activated: red !important
-    ;
-    }
   }
 }
 section.accesos-directos {

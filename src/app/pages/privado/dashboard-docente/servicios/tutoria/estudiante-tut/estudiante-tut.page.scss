@@ -1,5 +1,71 @@
 // @import "src/theme/perfil.scss";
 
+.perfil-container {
+    display: flex;
+    padding: 15px;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    overflow: hidden;
+
+    .avatar-container {
+        // width: 60px !important;
+        // min-width: 60px !important;
+        margin-right: 15px;
+
+        app-cached-image {
+            height: 70px;
+            width: 70px;
+            display: block;
+        }
+
+        avatar-comp {
+            color: var(--ion-color-dark);
+            height: 70px;
+            width: 70px;
+            border-radius: 50%;
+            background: #d8d8d8;
+            text-align: center;
+            line-height: 60px;
+            font-size: 24px;
+            // display: block;
+            // overflow: hidden;
+            position: relative;
+        }
+    }
+    /*div.avatar-container {
+        width: 70px;
+        min-width: 70px;
+        overflow: hidden;
+        .image-replacer {
+            width: 100%;
+            height: 100%;
+            background-color: var(--ion-color-secondary);
+            border-radius: 50%;
+        }
+        ion-avatar {
+            width: 60px;
+            height: 60px;
+        }
+    }*/
+    div.content {
+        flex: 1;
+        h2 {
+            font-size: var(--FS22);
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+        p.correo {
+            color: var(--ion-color-medium);
+            margin-top: 0;
+            text-transform: lowercase;
+        }
+    }
+    div.end {
+        width: 24px;
+        min-width: 24px;
+    }
+}
 p.correo {
     color: var(--ion-color-primary) !important;
 }

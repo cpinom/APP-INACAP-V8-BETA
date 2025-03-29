@@ -16,22 +16,30 @@
 
 <ion-content>
 
+  @if (mostrarCargando) {
+  <div class="loaderInacap">
+    <ion-spinner name="lines" color="primary"></ion-spinner>
+  </div>
+  }
+
   @if (mostrarData && data) {
+
+  <div class="tabs">
+    <ion-segment [(ngModel)]="tabModel" mode="ios" [swipeGesture]="false">
+      <ion-segment-button [value]="0">
+        <ion-label>Horas reservadas</ion-label>
+      </ion-segment-button>
+      <ion-segment-button [value]="1">
+        <ion-label>Historial disponibles</ion-label>
+      </ion-segment-button>
+      <ion-segment-button [value]="2">
+        <ion-label>Historial de reservas</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
   <section>
     <div class="section-content">
-      <div class="tabs">
-        <ion-segment [(ngModel)]="tabModel" mode="md" [swipeGesture]="false">
-          <ion-segment-button [value]="0">
-            <ion-label>Horas<br />reservadas</ion-label>
-          </ion-segment-button>
-          <ion-segment-button [value]="1">
-            <ion-label>Horas<br />disponibles</ion-label>
-          </ion-segment-button>
-          <ion-segment-button [value]="2">
-            <ion-label>Historial de<br />reservas</ion-label>
-          </ion-segment-button>
-        </ion-segment>
-      </div>
       @if (tabModel == 0) {
       @if (data.reservadas.length) {
       <ion-list>
@@ -66,7 +74,7 @@
       @if (data.disponibles.length) {
       <ion-list>
         @for (item of data.disponibles; track $index) {
-        <ion-item detail="true" class="ion-activatable" (click)="detalleAgenda(item)">
+        <ion-item detail="false" class="ion-activatable" (click)="detalleAgenda(item)">
           <ion-icon slot="start" src="assets/icon/schedule.svg" color="warning"></ion-icon>
           <ion-label>
             <h2>{{item.acacTnombre}}</h2>
@@ -75,6 +83,7 @@
             <p>Fecha: {{item.acofFmodulo}}</p>
             <p>Hora: {{item.horaHinicio}} - {{item.horaHtermino}}</p>
           </ion-label>
+          <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
         </ion-item>
         }
       </ion-list>
@@ -92,7 +101,7 @@
       @if (data.historial.length) {
       <ion-list>
         @for (item of data.historial; track $index) {
-        <ion-item detail="true" class="ion-activatable" (click)="detalleAgenda(item)">
+        <ion-item detail="false" class="ion-activatable" (click)="detalleAgenda(item)">
           @if (item.acesCcod == 5) {
           <ion-icon slot="start" src="assets/icon/edit_document.svg" color="danger"></ion-icon>
           }
@@ -109,6 +118,7 @@
             <p>Fecha: {{item.acofFmodulo}}</p>
             <p>Hora: {{item.horaHinicio}} - {{item.horaHtermino}}</p>
           </ion-label>
+          <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
         </ion-item>
         }
       </ion-list>

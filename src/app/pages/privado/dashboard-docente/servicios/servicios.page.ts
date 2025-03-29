@@ -82,11 +82,12 @@ export class ServiciosPage implements OnInit {
     return false;
   }
   get mostrarClinicas() {
-    // if (this.pt.is('mobileweb')) return true;
+    if (this.pt.is('mobileweb')) return true;
 
-    // if (this.status) {
-    //   return this.status.clinicasAcademicas == true;
-    // }
+    if (this.status) {
+      return this.status.clinicasAcademicas == true;
+    }
+    
     return false;
   }
   get mostrarNotificaciones() {

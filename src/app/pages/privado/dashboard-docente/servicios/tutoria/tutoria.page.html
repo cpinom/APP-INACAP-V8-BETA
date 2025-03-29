@@ -30,9 +30,10 @@
     <div class="section-content">
       <ion-list>
         @for (item of displayedItems; track $index) {
-        <ion-item (click)="alumnoTap(item)" detail="true" class="ion-activatable">
+        <ion-item (click)="alumnoTap(item)" detail="false" class="ion-activatable">
           <app-cached-image slot="start" [src]="resolverFoto(item.persNcorr)"></app-cached-image>
           <ion-label>{{item.nombre}}</ion-label>
+          <ion-icon slot="end" src="assets/icon/arrow_forward.svg"></ion-icon>
         </ion-item>
         }
       </ion-list>

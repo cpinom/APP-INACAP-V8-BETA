@@ -19,3 +19,15 @@ ion-list.accesos-listado {
     color: var(--ion-color-medium);
   }
 }
+
+.accesos-directos-footer {
+  ion-toolbar {
+    &.ios {
+      padding-top: 0;
+    }
+
+    ion-buttons {
+      justify-content: center;
+    }
+  }
+}

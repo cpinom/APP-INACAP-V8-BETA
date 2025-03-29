@@ -8,6 +8,12 @@
 
 <ion-content>
 
+  @if (mostrarCargando) {
+  <div class="loaderInacap">
+    <ion-spinner name="lines" color="primary"></ion-spinner>
+  </div>
+  }
+
   @if (data) {
   <ion-card color="white" class="primary-card">
     <ion-card-content style="padding: 0;">
@@ -25,9 +31,6 @@
         </div>
       </div>
     </ion-card-content>
-    @if (mostrarCargando) {
-    <ion-progress-bar type="indeterminate"></ion-progress-bar>
-    }
   </ion-card>
   }
 

@@ -1,5 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { VISTAS_ALUMNO } from 'src/app/core/constants/alumno';
+import { VISTAS_DOCENTE } from 'src/app/core/constants/docente';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { TutorIaService } from 'src/app/core/services/http/tutor-ia.service';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
@@ -28,6 +30,7 @@ export class AgentePracticoPage implements OnInit {
   }
 
   ngOnInit() {
+    this.marcarVista();
   }
   async enviarMensaje() {
     if (this.mensaje.trim().length > 0) {
@@ -53,6 +56,7 @@ export class AgentePracticoPage implements OnInit {
             this.procesando = false;
           }
 
+          this.marcarVista(true);
         }
         else {
           const result = await this.api.mensajeAgentePractico({ ...params, conversacionId: this.conversacionId });
@@ -81,5 +85,16 @@ export class AgentePracticoPage implements OnInit {
     this.mensajes = [];
     this.mensaje = '';
   }
+  marcarVista(inicia?: boolean) {
+    if (this.esAlumno) {
+      if (inicia) this.api.marcarVista(VISTAS_ALUMNO.TUTOR_IA_INICIA_PRACTICO);
+      else this.api.marcarVista(VISTAS_ALUMNO.TUTOR_IA_PRACTICO);
+    }
+    else {
+      if (inicia) this.api.marcarVista(VISTAS_DOCENTE.TUTOR_IA_INICIA_PRACTICO);
+      else this.api.marcarVista(VISTAS_DOCENTE.TUTOR_IA_PRACTICO);
+    }
+  }
+  get esAlumno() { return this.router.url.startsWith('/dashboard-alumno'); }
 
 }

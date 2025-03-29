@@ -214,23 +214,18 @@ export class InicioPage implements OnInit, AfterViewInit {
     this.periodo?.valueChanges.subscribe((value) => {
       this.guardarPeriodo(value);
     });
-
-    // if (this.pt.is('mobileweb')) {
-    //   this.fechaHorario = moment('05/10/2024', 'DD/MM/YYYY').toDate();
-    // }
   }
   ngAfterViewInit() { }
   async ngOnInit() {
     try {
       const preferencias = await this.profile.getStorage('preferencias');
+      const { movil } = preferencias;
 
-      if (preferencias?.movil && preferencias.movil.accesos_directos) {
-        this.accesosDirectos = preferencias.movil.accesos_directos;
+      if (movil.accesos_directos && movil.accesos_directos.length > 0) {
+        this.accesosDirectos = movil.accesos_directos;
       }
     }
     catch { }
-
-    // await this.credencialVirtualTap();
   }
   ngOnDestroy() {
     this.scrollObs.unsubscribe();

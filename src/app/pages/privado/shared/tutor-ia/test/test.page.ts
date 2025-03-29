@@ -1,6 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { VISTAS_ALUMNO } from 'src/app/core/constants/alumno';
+import { VISTAS_DOCENTE } from 'src/app/core/constants/docente';
 import { DialogService } from 'src/app/core/services/dialog.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
 import { TutorIaService } from 'src/app/core/services/http/tutor-ia.service';
@@ -44,6 +46,7 @@ export class TestPage implements OnInit {
   }
   async ngOnInit() {
     await this.cargar();
+    this.marcarVista(0);
   }
   async cargar() {
     try {
@@ -84,6 +87,7 @@ export class TestPage implements OnInit {
           this.preguntas = result.data;
           this.vista = 1;
           this.generarFormulario();
+          this.marcarVista(1);
         }
       }
       catch (error: any) {
@@ -124,6 +128,7 @@ export class TestPage implements OnInit {
         if (result.success) {
           this.resultado = result.data;
           this.presentTestAlert();
+          this.marcarVista(2);
         }
         else {
           throw Error();
@@ -195,7 +200,19 @@ export class TestPage implements OnInit {
       ]
     });
   }
-
+  marcarVista(paso: number) {
+    if (this.esAlumno) {
+      if (paso == 0) this.api.marcarVista(VISTAS_ALUMNO.TUTOR_IA_TEST);
+      else if (paso == 1) this.api.marcarVista(VISTAS_ALUMNO.TUTOR_IA_INICIA_TEST);
+      else if (paso == 2) this.api.marcarVista(VISTAS_ALUMNO.TUTOR_IA_FINALIZA_TEST);
+    }
+    else {
+      if (paso == 0) this.api.marcarVista(VISTAS_DOCENTE.TUTOR_IA_TEST);
+      else if (paso == 1) this.api.marcarVista(VISTAS_DOCENTE.TUTOR_IA_INICIA_TEST);
+      else if (paso == 2) this.api.marcarVista(VISTAS_DOCENTE.TUTOR_IA_FINALIZA_TEST);
+    }
+  }
+  get esAlumno() { return this.router.url.startsWith('/dashboard-alumno'); }
   get temaCtrl() { return this.preguntaForm.get('tema'); }
   get preguntasCtrl() { return this.preguntaForm.get('preguntas'); }
   get nivelCtrl() { return this.preguntaForm.get('nivel'); }

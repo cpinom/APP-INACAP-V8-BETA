@@ -46,8 +46,6 @@ export class TutorIaPage implements OnInit {
   get backUrl() {
     return this.router.url.replace('/tutor-ia', '');
   }
-  get esAlumno() {
-    return this.router.url.includes('dashboard-alunmo');
-  }
+  get esAlumno() { return this.router.url.startsWith('/dashboard-alumno'); }
 
 }

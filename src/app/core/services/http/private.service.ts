@@ -189,21 +189,21 @@ export class PrivateService {
     return this.post(`${this.baseUrl}/v4/detalle-sede/menu-cafeteria`, params);
   }
   marcarVista(apesTevento: string, apesTdescripcion?: string, apesTvalor?: string) {
-    if (!this.global.Integration) {
-      try {
-        let params = {
-          apesTevento: apesTevento,
-          apesTdescripcion: apesTdescripcion || '',
-          apesTvalor: apesTvalor || '',
-          apesTdispositivoUuid: '', //this.device.uuid,
-          apesTdispositivoIp: '',
-          apesTdispositivoLatLng: '',
-          audiTusuario: 'MOVIL'
-        };
-        this.post(`${this.global.Api}/v3/marcar-vista-cuenta`, params);
-      }
-      catch { }
+    // if (!this.global.Integration) {
+    try {
+      let params = {
+        apesTevento: apesTevento,
+        apesTdescripcion: apesTdescripcion || '',
+        apesTvalor: apesTvalor || '',
+        apesTdispositivoUuid: '', //this.device.uuid,
+        apesTdispositivoIp: '',
+        apesTdispositivoLatLng: '',
+        audiTusuario: 'MOVIL'
+      };
+      this.post(`${this.global.Api}/api/v3/marcar-vista-cuenta`, params);
     }
+    catch { }
+    // }
   }
 
 }

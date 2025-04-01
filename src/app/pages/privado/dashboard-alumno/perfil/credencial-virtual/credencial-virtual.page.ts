@@ -27,6 +27,7 @@ export class CredencialVirtualPage implements OnInit {
   perfil: any;
   programa: any;
   generandoPassbook = false;
+  mostrarCargando = true;
 
   constructor() { }
 
@@ -34,11 +35,45 @@ export class CredencialVirtualPage implements OnInit {
     await this.cargar();
   }
   async cargar() {
-    const principal = await this.profile.getStorage('principal');
-    this.programa = principal.programas[principal.programaIndex];
-    this.perfil = await this.profile.getPrincipal();
-    this.generarCodigoQR();
-    this.generarCodigoBarra();
+    let principal = await this.profile.getStorage('principal');
+    let perfil = await this.profile.getPrincipal();
+
+    if (!principal) {
+      try {
+        let result = await this.api.getPrincipalV5();
+
+        if (result.success) {
+          principal = result.data;
+          principal.programaIndex = 0;
+        }
+      }
+      catch { }
+    }
+
+    if (principal) {
+      this.programa = principal.programas[principal.programaIndex];
+
+      if (!perfil) {
+        try {
+          let result = await this.api.getPerfilV5(this.programa.sedeCcod);
+
+          if (result.success) {
+            this.perfil = result.perfil;
+          }
+        }
+        catch { }
+      }
+      else {
+        this.perfil = perfil;
+      }
+    }
+
+    this.mostrarCargando = false;
+
+    if (this.programa && this.perfil) {
+      this.generarCodigoQR();
+      this.generarCodigoBarra();
+    }
   }
   generarCodigoQR() {
     if (!this.perfil) {
@@ -75,7 +110,7 @@ export class CredencialVirtualPage implements OnInit {
     const perfil = await this.profile.getPrincipal();
 
     if (perfil) {
-      const loading = await this.dialog.showLoading({message:'Generando Wallet...'});
+      const loading = await this.dialog.showLoading({ message: 'Generando Wallet...' });
 
       try {
         this.generandoPassbook = true;

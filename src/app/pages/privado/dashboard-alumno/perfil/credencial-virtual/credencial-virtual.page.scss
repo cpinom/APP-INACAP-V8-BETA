@@ -6,7 +6,7 @@
 
 ion-header.credencial-virtual-header {
   box-shadow: none;
-  
+
   ion-toolbar {
     --background: #fff;
     --border-color: #fff;
@@ -37,6 +37,13 @@ ion-content.credencial-virtual-content {
     .user-info {
       flex: 1;
 
+      .loaderInacap {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
       .avatar {
         position: absolute;
         right: 0;
@@ -56,14 +63,14 @@ ion-content.credencial-virtual-content {
           margin: 0;
           font-size: var(--FS20);
           font-weight: 700;
-          color: #040B15;
+          color: #040b15;
         }
 
         p {
           margin: 10px 0 0;
           font-size: var(--FS13);
           font-weight: 400;
-          color: #040B15;
+          color: #040b15;
 
           &.rut {
             font-size: var(--FS14);

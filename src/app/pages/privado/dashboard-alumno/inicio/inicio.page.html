@@ -215,8 +215,20 @@
   </section>
   }
 
+  <div class="tabs">
+    <ion-segment [(ngModel)]="tabsModel" mode="ios" value="0" [swipeGesture]="false">
+      <ion-segment-button [value]="0">
+        <ion-label>Horario</ion-label>
+      </ion-segment-button>
+      <ion-segment-button [value]="1">
+        <ion-label>Próximas Evaluaciones</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
+  @if (tabsModel == 0) {
   <section class="agenda">
-    <div class="section-header">Horario y Próximas Evaluaciones</div>
+    <!-- <div class="section-header">Horario y Próximas Evaluaciones</div> -->
     <div class="section-content">
       <div class="fecha" routerLink="horario">
         <h3>{{resolverFechaAgenda(0)}}</h3>
@@ -258,6 +270,32 @@
       }
     </div>
   </section>
+  }
+  @else if (tabsModel == 1) {
+  <ion-list class="evaluaciones" inset="true">
+    @if (evaluaciones.length) {
+    @for (item of evaluaciones | slice : 0 : 3; track $index) {
+    <ion-item>
+      <ion-icon slot="start" src="assets/icon/notas.svg" class="rounded variant-4"></ion-icon>
+      <ion-label>
+        <h2>{{item.asigTdesc}}</h2>
+        <p>{{resolverFechaEvaluacion(item.caliFevaluacion)}} | {{item.tevaTdesc}} | {{item.caliNponderacion}}%</p>
+      </ion-label>
+    </ion-item>
+    }
+    @if (evaluaciones.length > 3) {
+    <ion-item class="ion-activatable" (click)="verEvaluacionesTap()">
+      <ion-label color="primary" class="ion-text-center">Ver Todas</ion-label>
+    </ion-item>
+    }
+    }
+    @else {
+    <ion-item>
+      <ion-label color="medium" class="ion-text-center">Sin evaluaciones</ion-label>
+    </ion-item>
+    }
+  </ion-list>
+  }
 
   <section class="accesos-directos">
     <ion-row class="directos">
@@ -291,5 +329,33 @@
   </section>
 
   <p class="version">Versión - {{version}}</p>
+
+  <ion-modal #evaluacionesMdl [handle]="false" [presentingElement]="routerOutletEl">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Mis Evaluaciones</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="evaluacionesMdl.dismiss()">
+              <ion-icon name="close"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <section>
+          <ion-list [inset]="true" class="evaluacionesList" style="margin: 16px;">
+            <ion-item *ngFor="let item of evaluaciones">
+              <ion-icon slot="start" src="assets/icon/notas.svg" class="rounded variant-4"></ion-icon>
+              <ion-label>
+                <h2>{{item.asigTdesc}}</h2>
+                <p>{{resolverFechaEvaluacion(item.caliFevaluacion)}} | {{item.tevaTdesc}} | {{item.caliNponderacion}}%</p>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+        </section>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 
 </ion-content>

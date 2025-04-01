@@ -182,8 +182,12 @@ section.ramos {
     }
 }
 
+div.tabs {
+    margin: 0 10px;
+}
+
 section.agenda {
-    // margin: 0 10px 10px;
+    margin-top: 10px;
     box-shadow: var(--ion-box-shadow);
 
     .section-header {
@@ -249,6 +253,10 @@ section.agenda {
             }
         }
     }
+}
+
+ion-list.evaluaciones {
+    margin: 10px;
 }
 
 section.ramos + section.horario {

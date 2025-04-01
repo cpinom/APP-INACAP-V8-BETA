@@ -166,6 +166,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     }
   ];
   cargandoEstados = false;
+  tabsModel = 0;
 
   private api = inject(AlumnoService);
   private mailApi = inject(InacapMailService);
@@ -196,6 +197,7 @@ export class InicioPage implements OnInit, AfterViewInit {
 
     this.scrollObs = this.events.app.subscribe((event: any) => {
       if (event.action == 'scrollTop' && event.index == 0 && this.router.url == '/dashboard-alumno/inicio') {
+        this.tabsModel = 0;
         this.content?.scrollToTop(500);
         this.ramosContent && this.ramosContent.nativeElement.scrollTo({ left: 0, behavior: 'smooth' });
       }
@@ -375,6 +377,15 @@ export class InicioPage implements OnInit, AfterViewInit {
     if (item.bloqTipo == 'seccion')
       return `Clases - ${item.asigTdesc}`;
     return item.asigTdesc;
+  }
+  resolverFechaEvaluacion(fecha: string) {
+    const fechaFormateada = moment(fecha, "DD/MM/YYYY").format("dddd D [de] MMMM");
+    const fechaFinal = fechaFormateada.charAt(0).toUpperCase() + fechaFormateada.slice(1);
+
+    return fechaFinal;
+  }
+  async verEvaluacionesTap() {
+    await this.evaluacionesMdl.present();
   }
   procesarCursos(cursos: any[]) {
     if (cursos.length) {
@@ -952,6 +963,9 @@ export class InicioPage implements OnInit, AfterViewInit {
     }
 
     return false;
+  }
+  get routerOutletEl() {
+    return this.routerOutlet.nativeEl;
   }
   async logout() {
     await this.auth.tryLogout();

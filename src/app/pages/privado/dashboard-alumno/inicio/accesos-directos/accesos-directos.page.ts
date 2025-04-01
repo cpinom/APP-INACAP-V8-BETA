@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ItemReorderEventDetail } from '@ionic/angular';
 import { DialogService } from 'src/app/core/services/dialog.service';
 
@@ -17,7 +17,10 @@ interface AccesosDirectos {
 })
 export class AccesosDirectosPage implements OnInit {
 
+  private dialog = inject(DialogService);
+
   data: any;
+  backup: any;
   accesosDirectos: AccesosDirectos[] = [
     {
       key: 'MOODLE',
@@ -117,14 +120,12 @@ export class AccesosDirectosPage implements OnInit {
     }
   ];
 
-  constructor(private dialog: DialogService) { }
-
+  constructor() { }
   ngOnInit() {
+    this.backup = JSON.parse(JSON.stringify(this.data));
   }
   handleReorder(ev: CustomEvent<ItemReorderEventDetail>) {
-
     this.data = ev.detail.complete(this.data);
-
     ev.detail.complete();
   }
   handleVisibility(item: any) {
@@ -143,8 +144,30 @@ export class AccesosDirectosPage implements OnInit {
       return 'visibility_off';
     }
   }
+  existenCambios(arr1: any[], arr2: any[]) {
+    if (arr1.length !== arr2.length) return true;
+
+    for (let i = 0; i < arr1.length; i++) {
+      const obj1 = arr1[i];
+      const obj2 = arr2[i];
+
+      const claves = new Set([...Object.keys(obj1), ...Object.keys(obj2)]);
+      for (const clave of claves) {
+        if (obj1[clave] !== obj2[clave]) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
   async guardar() {
-    await this.dialog.dismissModal(this.data);
+    if (this.existenCambios(this.backup, this.data)) {
+      await this.dialog.dismissModal(this.data);
+      return;
+    }
+
+    await this.dialog.dismissModal();
   }
   async cerrar() {
     await this.dialog.dismissModal();

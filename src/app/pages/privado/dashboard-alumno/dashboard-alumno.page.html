@@ -17,7 +17,7 @@
       <ion-icon src="assets/icon/list_alt.svg"></ion-icon>
       <ion-label>Servicios</ion-label>
     </ion-tab-button>
-    <ion-tab-button tab="perfil" (click)="checkTap($event, 4)">
+    <ion-tab-button tab="perfil" (click)="checkTap($event, 4)" appLongPress (longPress)="longPressTap($event)">
       <avatar-comp></avatar-comp>
       <!-- <ion-icon src="assets/icon/account_circle.svg"></ion-icon> -->
       <ion-label>Perfil</ion-label>

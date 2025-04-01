@@ -803,6 +803,11 @@ export class InicioPage implements OnInit, AfterViewInit {
     }
 
   }
+  async longPressTap(e: any) {
+    debugger
+    e.stopPropagation();
+    const { target } = e;
+  }
   async moodleTap() {
     try {
       const auth = await this.auth.getAuth();
@@ -898,10 +903,6 @@ export class InicioPage implements OnInit, AfterViewInit {
     }
   }
   get mostrarDestacados() {
-    // if (this.pt.is('mobileweb')) {
-    //   return true;
-    // }
-
     if (this.status && this.status.destacado) {
       if (this.principal.mostrarDescatados) {
         return true;
@@ -910,10 +911,6 @@ export class InicioPage implements OnInit, AfterViewInit {
     return false;
   }
   get mostrarJustificaEvaluacion() {
-    // if (this.pt.is('mobileweb')) {
-    //   return true;
-    // }
-
     if (this.status) {
       return this.status.justificaEvaluacion === true;
     }

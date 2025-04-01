@@ -6,6 +6,7 @@ import { DashboardAlumnoPageRoutingModule } from './dashboard-alumno-routing.mod
 import { DashboardAlumnoPage } from './dashboard-alumno.page';
 import { ComponentsModule } from 'src/app/core/components/components.module';
 import { NotificacionesPageModule } from './notificaciones/notificaciones.module';
+import { DirectivesModule } from 'src/app/core/directives/directives.module';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { NotificacionesPageModule } from './notificaciones/notificaciones.module
     IonicModule,
     DashboardAlumnoPageRoutingModule,
     ComponentsModule,
-    NotificacionesPageModule
+    NotificacionesPageModule,
+    DirectivesModule
   ],
   declarations: [DashboardAlumnoPage]
 })

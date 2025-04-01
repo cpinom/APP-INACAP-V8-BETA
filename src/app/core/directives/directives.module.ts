@@ -3,12 +3,14 @@ import { NgModule } from '@angular/core';
 import { ImageDirective } from './image.directive';
 import { DelegateDirective } from './delegate.directive';
 import { KnobDirective } from './knob.directive';
+import { LongPressDirective } from './long-press.directive';
 
 @NgModule({
   declarations: [
     ImageDirective,
     DelegateDirective,
-    KnobDirective
+    KnobDirective,
+    LongPressDirective
   ],
   imports: [
     CommonModule
@@ -16,7 +18,8 @@ import { KnobDirective } from './knob.directive';
   exports: [
     ImageDirective,
     DelegateDirective,
-    KnobDirective
+    KnobDirective,
+    LongPressDirective
   ]
 })
 export class DirectivesModule { }

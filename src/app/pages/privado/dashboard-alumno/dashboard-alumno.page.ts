@@ -58,8 +58,6 @@ export class DashboardAlumnoPage implements OnInit, OnDestroy {
       presentingElement: this.routerOutlet.nativeEl
     });
   }
-  longPressTap(ev: any) {
-    debugger
-  }
+  longPressTap(ev: any) { }
 
 }

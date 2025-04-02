@@ -306,7 +306,7 @@
     </ion-row>
     <ion-row>
       @for (item of AccesosDirectos; track $index) {
-      @if (item.visible) {
+      @if (item.visible && !item.disabled) {
       <ion-col size="6">
         <ion-button class="color-{{$index + 1}}" (click)="accesoDirectoTap(item)">
           <div class="btn-inner">

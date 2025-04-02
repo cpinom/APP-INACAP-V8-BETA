@@ -22,14 +22,7 @@ import { AppGlobal } from 'src/app/app.global';
 import { VISTAS_ALUMNO } from 'src/app/core/constants/alumno';
 import { CredencialVirtualPage } from '../perfil/credencial-virtual/credencial-virtual.page';
 import { ConfettiService } from 'src/app/core/services/confetti.service';
-
-interface AccesosDirectos {
-  key: string;
-  icon: string;
-  label: string;
-  visible: boolean;
-  count?: number;
-}
+import { AccesosDirectos } from 'src/app/core/interfaces/alumnos.interfaces';
 
 @Component({
   selector: 'app-inicio',
@@ -78,6 +71,12 @@ export class InicioPage implements OnInit, AfterViewInit {
       key: 'INACAPMAIL',
       icon: 'assets/icon/outlook.svg',
       label: 'INACAPMail',
+      visible: true
+    },
+    {
+      key: 'E-CLASS',
+      icon: 'assets/icon/devices.svg',
+      label: 'Ambiente de Aprendizaje Online',
       visible: true
     },
     {
@@ -301,6 +300,14 @@ export class InicioPage implements OnInit, AfterViewInit {
       this.perfilOk = true;
       this.events.app.next({ action: 'app:alumno-principal' });
 
+      if (!this.mostrarOnline) {
+        const eClassAccess = this.accesosDirectos.find(t => t.key == 'E-CLASS');
+
+        if (eClassAccess) {
+          eClassAccess.disabled = true;
+        }
+      }
+
       await this.profile.setStorage('principal', principal);
       await this.cargarHorarioV2();
       await this.cargarStatus();
@@ -462,6 +469,9 @@ export class InicioPage implements OnInit, AfterViewInit {
         break;
       case 'INACAPMAIL':
         await this.nav.navigateForward('/dashboard-alumno/inicio/inacapmail');
+        break;
+      case 'E-CLASS':
+        await this.moodleOnlineTap();
         break;
       case 'HORARIO':
         await this.nav.navigateForward('/dashboard-alumno/inicio/horario');
@@ -804,9 +814,9 @@ export class InicioPage implements OnInit, AfterViewInit {
 
   }
   async longPressTap(e: any) {
-    debugger
-    e.stopPropagation();
-    const { target } = e;
+    // debugger
+    // e.stopPropagation();
+    // const { target } = e;
   }
   async moodleTap() {
     try {

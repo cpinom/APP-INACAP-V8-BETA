@@ -20,12 +20,16 @@
 
   <ion-list class="accesos-listado" inset="true">
     <ion-reorder-group [disabled]="false" (ionItemReorder)="handleReorder($any($event))">
-      <ion-item *ngFor="let item of data" [class.invisible]="!item.visible">
+      @for (item of data; track $index) {
+      @if (!item.disabled) {
+      <ion-item [class.invisible]="!item.visible">
         <ion-icon slot="start" [src]="item.icon"></ion-icon>
-        <ion-label>{{item.label}}</ion-label>        
+        <ion-label>{{item.label}}</ion-label>
         <ion-icon class="visible" slot="end" src="assets/icon/{{resolverIcono(item)}}.svg" (click)="handleVisibility(item)"></ion-icon>
         <ion-reorder slot="end"></ion-reorder>
       </ion-item>
+      }
+      }
     </ion-reorder-group>
   </ion-list>
 

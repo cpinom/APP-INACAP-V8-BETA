@@ -1,14 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ItemReorderEventDetail } from '@ionic/angular';
+import { AccesosDirectos } from 'src/app/core/interfaces/alumnos.interfaces';
 import { DialogService } from 'src/app/core/services/dialog.service';
-
-interface AccesosDirectos {
-  key: string;
-  icon: string;
-  label: string;
-  visible: boolean;
-  count?: number;
-}
+import { ProfileService } from 'src/app/core/services/profile.service';
 
 @Component({
   selector: 'app-accesos-directos',
@@ -18,6 +12,7 @@ interface AccesosDirectos {
 export class AccesosDirectosPage implements OnInit {
 
   private dialog = inject(DialogService);
+  private profile = inject(ProfileService);
 
   data: any;
   backup: any;
@@ -32,6 +27,12 @@ export class AccesosDirectosPage implements OnInit {
       key: 'INACAPMAIL',
       icon: 'assets/icon/outlook.svg',
       label: 'INACAPMail',
+      visible: true
+    },
+    {
+      key: 'E-CLASS',
+      icon: 'assets/icon/devices.svg',
+      label: 'Ambiente de Aprendizaje Online',
       visible: true
     },
     {
@@ -173,6 +174,16 @@ export class AccesosDirectosPage implements OnInit {
     await this.dialog.dismissModal();
   }
   async reestablecer() {
+    const programa = await this.profile.getPrograma();
+
+    if (programa && programa.sedeCcod != 47) {
+      const eClassAccess = this.accesosDirectos.find(t => t.key == 'E-CLASS');
+
+      if (eClassAccess) {
+        eClassAccess.disabled = true;
+      }
+    }
+
     await this.dialog.dismissModal(this.accesosDirectos);
   }
 

@@ -98,62 +98,32 @@ export class AppComponent {
         await Keyboard.setAccessoryBarVisible({ isVisible: true });
       }
 
-      await AppShortcuts.set({
-        shortcuts: [
-          {
-            id: 'inacapmail',
-            title: 'INACAPMail',
-            icon: 0
-          }
-          ,
-          {
-            id: 'horario',
-            title: 'Mi Horario',
-            icon: 1
-          },
-          {
-            id: 'credencial-virtual',
-            title: 'Credencial Virtual',
-            icon: 3
-          },
-          {
-            id: 'certificados',
-            title: 'Mis Certificados',
-            icon: 2
-          }
-        ]
-      });
-
       AppShortcuts.addListener('click', async (event: ClickEvent) => {
-        console.log('Shortcut clicked:', event.shortcutId);
-        //alert(JSON.stringify(event));
+        if (await this.auth.isAuthenticated()) {
+          const perfil = await this.auth.getProfile();
 
-        if (event.shortcutId == 'inacapmail') {
-          await this.nav.navigateForward('/dashboard-alumno/inicio/inacapmail');
-        }
-        if (event.shortcutId == 'horario') {
-          await this.nav.navigateForward('/dashboard-alumno/inicio/horario');
-        }
-        if (event.shortcutId == 'credencial-virtual') {
-
-          if (await this.auth.isAuthenticated()) {
-            const perfil = await this.auth.getProfile();
-
-            if (perfil == '/alumno') {
+          if (perfil == '/alumno') {
+            if (event.shortcutId == 'inacapmail') {
+              await this.nav.navigateForward('/dashboard-alumno/inicio/inacapmail');
+            }
+            if (event.shortcutId == 'horario') {
+              await this.nav.navigateForward('/dashboard-alumno/inicio/horario');
+            }
+            if (event.shortcutId == 'credencial-virtual') {
               await this.dialog.showModal({
                 cssClass: 'modal-credencial-virtual',
                 component: CredencialVirtualPage,
                 animated: false
               });
             }
+            if (event.shortcutId == 'certificados') {
+              await this.nav.navigateForward('/dashboard-alumno/inicio/certificados');
+            }
           }
-
-        }
-        if (event.shortcutId == 'certificados') {
-          await this.nav.navigateForward('/dashboard-alumno/inicio/certificados');
         }
 
       });
+
 
     }
     else {
@@ -193,6 +163,7 @@ export class AppComponent {
     }
   }
   async onAppLogin(data: Ingreso) {
+    debugger
     try {
       let preferencias = await this.api.getPreferencias();
 
@@ -224,6 +195,36 @@ export class AppComponent {
       }
 
       await this.profile.setStorage('preferencias', preferencias);
+      await AppShortcuts.clear();
+
+      if (data.diacTtipo == 'alumno') {
+        await AppShortcuts.set({
+          shortcuts: [
+            {
+              id: 'inacapmail',
+              title: 'INACAPMail',
+              icon: 0
+            }
+            ,
+            {
+              id: 'horario',
+              title: 'Mi Horario',
+              icon: 1
+            },
+            {
+              id: 'credencial-virtual',
+              title: 'Credencial Virtual',
+              icon: 3
+            },
+            {
+              id: 'certificados',
+              title: 'Mis Certificados',
+              icon: 2
+            }
+          ]
+        });
+      }
+
       const params = { uuid: data.uuid, sedeCcod: data.sedeCcod, carrCcod: data.carrCcod, diacTtipo: data.diacTtipo };
       this.api.registrarAcceso(params).catch(error => console.log(error));
 
@@ -239,7 +240,7 @@ export class AppComponent {
     this.inacapmail.clearStorage();
     this.mteams.clearStorage();
     this.docente.clearStorage();
-    // this.seguro.clearStorage();
+    this.seguro.clearStorage();
     this.solicitudes.clearStorage();
     this.certificados.clearStorage();
     this.buzon.clearStorage();
@@ -247,7 +248,10 @@ export class AppComponent {
     this.onedrive.clearStorage();
     this.accessibilitySetup();
     this.clearCacheFolder();
+
+    await AppShortcuts.clear();
     await this.snackbar.showToast('Se ha cerrado tu sesión correctamente.');
+
     this.api.registrarSalida(data.uuid).catch(error => console.log(error));
   }
   async onRouterEvents(val: any) {

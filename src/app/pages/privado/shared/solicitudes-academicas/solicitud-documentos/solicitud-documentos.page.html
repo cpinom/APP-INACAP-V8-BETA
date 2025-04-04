@@ -221,7 +221,7 @@
               <ng-template>
                 <ion-datetime presentation="date" formControlName="nacimientoPicker" locale="es-CL" [max]="fechaMaxima"
                   [firstDayOfWeek]="1" [showDefaultButtons]="true" doneText="Acpetar"
-                  cancelText="Cancelar"></ion-datetime>
+                  cancelText="Cancelar" style="max-width: 100%;"></ion-datetime>
               </ng-template>
             </ion-popover>
           </ion-item>
@@ -302,7 +302,7 @@
         </ion-item>
         <div class="ion-padding" slot="content">
           <ion-list>
-            <ion-item class="has-icon normal" *ngFor="let doc of item.archivos" (click)="verArchivo(doc)">
+            <ion-item class="has-icon normal" *ngFor="let doc of item.archivos">
               <ion-icon slot="start" src="assets/icon/insert_drive_file.svg" color="medium"></ion-icon>
               <ion-label>{{doc.soarTnombre}}</ion-label>
               <ion-button fill="outline" slot="end" size="small" color="danger" (click)="eliminarArchivo(item, doc.soarNcorr)">Eliminar</ion-button>

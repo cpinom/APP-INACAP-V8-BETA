@@ -1,9 +1,7 @@
 import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { FileOpener } from '@capacitor-community/file-opener';
-import { Directory, Filesystem } from '@capacitor/filesystem';
-import { ActionSheetController, AlertController, IonModal, IonPopover, IonRouterOutlet, NavController, Platform } from '@ionic/angular';
+import { ActionSheetController, IonModal, IonPopover, IonRouterOutlet, NavController, Platform } from '@ionic/angular';
 import * as moment from 'moment';
 import { DialogService } from 'src/app/core/services/dialog.service';
 import { ErrorHandlerService } from 'src/app/core/services/error-handler.service';
@@ -641,56 +639,6 @@ export class SolicitudDocumentosPage implements OnInit {
     }
     catch (error: any) {
       await this.error.handle(error);
-    }
-    finally {
-      await loading.dismiss();
-    }
-  }
-  async verArchivo(item: any) {
-    debugger
-    const loading = await this.dialog.showLoading({ message: 'Descargando...' });
-
-    try {
-      const result = await this.api.descargarAdjuntoV5(item.soarNcorr);
-
-      if (result.success) {
-        const { data } = result;
-        const base64 = data.soarFarchivo;
-        const fileName = data.soarTnombre;
-        const contentType = this.utils.getMimeType(fileName);
-
-        if (this.pt.is('mobileweb')) {
-          const linkSource = `data:${contentType};base64,${base64}`;
-          const downloadLink = document.createElement('a');
-          downloadLink.href = linkSource;
-          downloadLink.download = fileName;
-          downloadLink.click();
-        }
-        else {
-          const fileResult = await Filesystem.writeFile({
-            path: fileName,
-            data: base64,
-            directory: Directory.Cache
-          });
-
-          await FileOpener.open({
-            filePath: fileResult.uri,
-            contentType: contentType
-          });
-        }
-
-      }
-      else {
-        throw Error();
-      }
-    }
-    catch (error: any) {
-      if (error && error.status == 401) {
-        await this.error.handle(error);
-        return;
-      }
-
-      await this.snackbar.showToast('El archivo no se encuentra disponible.', 3000, 'danger')
     }
     finally {
       await loading.dismiss();

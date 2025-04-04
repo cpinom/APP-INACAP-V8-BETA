@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { PrivateService } from './private.service';
+import { Preferences } from '@capacitor/preferences';
 @Injectable({
   providedIn: 'root'
 })
@@ -30,6 +31,9 @@ export class SeguroAccidentesService extends PrivateService {
   }
   enviarSolicitud(params: any): Promise<any> {
     return this.post(`${this.baseUrl}/v6/seguro-accidentes/enviar-solicitud`, params);
+  }
+  override async clearStorage() {
+    await Preferences.remove({ key: `${this.storagePrefix}-principal` });
   }
 
 }

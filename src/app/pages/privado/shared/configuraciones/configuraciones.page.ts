@@ -257,18 +257,18 @@ export class ConfiguracionesPage implements OnInit {
       }
     }
   }
-  async togglePrivacy() {
-    if (this.privacyMode) {
-      const result = await this.auth.validateFaceID();
+  // async togglePrivacy() {
+  //   if (this.privacyMode) {
+  //     const result = await this.auth.validateFaceID();
 
-      if (!result) {
-        this.privacyMode = false;
-        await this.snackbar.showToast('No se pudo habilitar FaceID', 3000, 'danger');
-      }
-    }
+  //     if (!result) {
+  //       this.privacyMode = false;
+  //       await this.snackbar.showToast('No se pudo habilitar FaceID', 3000, 'danger');
+  //     }
+  //   }
 
-    await this.profile.setStorage('privacyMode', this.privacyMode);
-  }
+  //   await this.profile.setStorage('privacyMode', this.privacyMode);
+  // }
   async sincronizarPreferencias(preferencias: any): Promise<boolean> {
     const loading = await this.dialog.showLoading({ message: 'Guardando...' });
 
@@ -420,10 +420,10 @@ export class ConfiguracionesPage implements OnInit {
   }
   get mostrarCalendario() { return false; }
   get mostrarNotificaciones() { return this.router.url.startsWith('/dashboard-alumno'); }
-  get mostrarFaceID() { 
-    return false;
-    // return this.pt.is('ios');
-  }
+  // get mostrarFaceID() { 
+  //   return false;
+  //   // return this.pt.is('ios');
+  // }
   get backUrl() { return this.router.url.replace('/configuraciones', ''); }
   get Vista() {
     return this.router.url.startsWith('/dashboard-alumno')

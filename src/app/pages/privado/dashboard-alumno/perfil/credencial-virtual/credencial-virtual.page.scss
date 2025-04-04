@@ -2,6 +2,7 @@
   --height: 95%;
   --width: 92%;
   --border-radius: 10px;
+  padding-top: var(--ion-safe-area-top, 0);
 }
 
 ion-header.credencial-virtual-header {
@@ -10,7 +11,7 @@ ion-header.credencial-virtual-header {
   ion-toolbar {
     --background: #fff;
     --border-color: #fff;
-    // padding-top: 0 !important;
+    padding-top: 0 !important;
 
     ion-icon {
       color: #040b15;

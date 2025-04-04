@@ -1,6 +1,8 @@
 import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { FileOpener } from '@capacitor-community/file-opener';
+import { Directory, Filesystem } from '@capacitor/filesystem';
 import { ActionSheetController, AlertController, IonModal, IonPopover, IonRouterOutlet, NavController, Platform } from '@ionic/angular';
 import * as moment from 'moment';
 import { DialogService } from 'src/app/core/services/dialog.service';
@@ -507,38 +509,37 @@ export class SolicitudDocumentosPage implements OnInit {
       inputEl.click();
     }
     else {
-      // let file = await this.media.getMedia();
+      const media = await this.media.getMedia();
 
-      // if (file) {
-      //   let fileSize = file.size / 1024 / 1024;
+      if (media) {
+        const extensionesPermitidas = this.tipoDocumento.doctExtension.split(',').map((t: any) => t.trim());
+        const extensionArchivo = `.${this.utils.getFileExtension(media.name)}`;
 
-      //   if (fileSize <= 3) {
-      //     let loading = await this.dialog.showLoading({ message: 'Cargando archivo...' });
+        if (extensionesPermitidas.includes(extensionArchivo) == false) {
+          await this.presentError(`El archivo no tiene una extensión válida. Debes adjuntar arhcivos con las siguientes extensiones "${this.tipoDocumento.doctExtension}".`);
+          return;
+        }
 
-      //     try {
-      //       const params = { tisoCcod: this.solicitud.tisoCcod, stiaNcorr: this.tipoDocumento.stiaNcorr };
-      //       const response: any = await this.api.agregarArchivo(file.path, file.name, params);
-      //       const result = response.data;
+        const fileSize = media.size / 1024 / 1024;
+        const base64String = media.data;
 
-      //       if (result.success == false) {
-      //         await this.presentError(result.message);
-      //         return;
-      //       }
+        if (fileSize >= 150) {
+          await this.presentError('Los documentos no pueden exceder los 150 MB.');
+          return;
+        }
 
-      //       this.tipoDocumento.archivos = result.data.filter((t: any) => t.stiaNcorr == this.tipoDocumento.stiaNcorr);
-      //       this.resolverTerminos();
-      //     }
-      //     catch (error: any) {
-      //       this.presentError('No fue posible cargar el archivo.');
-      //     }
-      //     finally {
-      //       await loading.dismiss();
-      //     }
-      //   }
-      //   else {
-      //     this.presentError('El archivo no pueden exceder los 3 MB.');
-      //   }
-      // }
+        try {
+          await this.uploadBase64Fragmented(base64String, media.name);
+        }
+        catch (error: any) {
+          if (error && error.status == 401) {
+            await this.error.handle(error);
+            return;
+          }
+
+          await this.presentError('No se pudo procesar el archivo. Vuelve a intentarlo.');
+        }
+      }
     }
   }
   async adjuntarArchivoWeb(event: any) {
@@ -564,7 +565,6 @@ export class SolicitudDocumentosPage implements OnInit {
         await this.uploadBase64Fragmented(base64, file.name);
       }
       catch (error: any) {
-        debugger
         if (error && error.status == 401) {
           await this.error.handle(error);
           return;
@@ -641,6 +641,56 @@ export class SolicitudDocumentosPage implements OnInit {
     }
     catch (error: any) {
       await this.error.handle(error);
+    }
+    finally {
+      await loading.dismiss();
+    }
+  }
+  async verArchivo(item: any) {
+    debugger
+    const loading = await this.dialog.showLoading({ message: 'Descargando...' });
+
+    try {
+      const result = await this.api.descargarAdjuntoV5(item.soarNcorr);
+
+      if (result.success) {
+        const { data } = result;
+        const base64 = data.soarFarchivo;
+        const fileName = data.soarTnombre;
+        const contentType = this.utils.getMimeType(fileName);
+
+        if (this.pt.is('mobileweb')) {
+          const linkSource = `data:${contentType};base64,${base64}`;
+          const downloadLink = document.createElement('a');
+          downloadLink.href = linkSource;
+          downloadLink.download = fileName;
+          downloadLink.click();
+        }
+        else {
+          const fileResult = await Filesystem.writeFile({
+            path: fileName,
+            data: base64,
+            directory: Directory.Cache
+          });
+
+          await FileOpener.open({
+            filePath: fileResult.uri,
+            contentType: contentType
+          });
+        }
+
+      }
+      else {
+        throw Error();
+      }
+    }
+    catch (error: any) {
+      if (error && error.status == 401) {
+        await this.error.handle(error);
+        return;
+      }
+
+      await this.snackbar.showToast('El archivo no se encuentra disponible.', 3000, 'danger')
     }
     finally {
       await loading.dismiss();

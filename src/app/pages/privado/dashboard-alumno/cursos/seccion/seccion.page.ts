@@ -154,7 +154,7 @@ export class SeccionPage implements OnInit, OnDestroy {
     if (type == 0) {
       if (item.bloqTipo == 'evaluacion')
         return 'notas';
-      if (item.bloqTipo == 'seccion')
+      if (item.bloqTipo == 'seccion' || item.bloqTipo == 'subseccion')
         return 'school';
       if (item.bloqTipo == 'recuperacion')
         return 'schedule';
@@ -162,7 +162,7 @@ export class SeccionPage implements OnInit, OnDestroy {
     else if (type == 1) {
       if (item.bloqTipo == 'evaluacion')
         return 'variant-4';
-      if (item.bloqTipo == 'seccion')
+      if (item.bloqTipo == 'seccion' || item.bloqTipo == 'subseccion')
         return 'variant-3';
       if (item.bloqTipo == 'recuperacion')
         return 'variant-5';
@@ -173,7 +173,7 @@ export class SeccionPage implements OnInit, OnDestroy {
   resolverTipoAgenda(item: any) {
     if (item.bloqTipo == 'evaluacion')
       return `Evaluación - ${item.asigTdesc}`;
-    if (item.bloqTipo == 'seccion')
+    if (item.bloqTipo == 'seccion' || item.bloqTipo == 'subseccion')
       return `Clases - ${item.asigTdesc}`;
     return item.asigTdesc;
   }

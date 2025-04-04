@@ -40,6 +40,7 @@ export class AsistenciaPage implements OnInit, OnDestroy {
   private autoAsistencia = inject(AutoAsistenciaService);
 
   constructor() {
+    moment.locale('es');
 
     this.asistenciaObs = this.events.app.subscribe((event: AppEvent) => {
       if (event.action == 'app:registro-asistencia-campos-clinicos') {
@@ -189,42 +190,6 @@ export class AsistenciaPage implements OnInit, OnDestroy {
       }
     }, 250);
   }
-  // procesarAsistencia() {
-  //   let proximas: any[] = [];
-  //   let semanales: any[] = [];
-  //   let mensuales: any[] = [];
-  //   let antiguas: any[] = [];
-
-  //   this.listado.forEach((item: any) => {
-  //     let fechaAsistencia = moment(item.fecha, 'DD/MM/YYYY');
-  //     let primerDiaSemana = moment().startOf('isoweek' as moment.unitOfTime.StartOf);
-  //     let primerDiaMes = moment().startOf('month');
-
-  //     if (fechaAsistencia.isSameOrBefore(moment())) {
-
-  //       if (fechaAsistencia.isSameOrAfter(primerDiaSemana)) {
-  //         semanales.push(item);
-  //       }
-  //       else if (fechaAsistencia.isSameOrAfter(primerDiaMes)) {
-  //         mensuales.push(item);
-  //       }
-  //       else {
-  //         antiguas.push(item);
-  //       }
-
-  //     }
-  //     else {
-  //       proximas.push(item);
-  //     }
-  //   });
-
-  //   this.asistencia = {};
-  //   this.asistencia[0] = this.resolverOrden(semanales);
-  //   this.asistencia[1] = this.resolverOrden(mensuales);
-  //   this.asistencia[2] = this.resolverOrden(antiguas);
-  //   this.asistencia[3] = this.resolverOrden(proximas);
-  //   this.mostrarData = true;
-  // }
   resolverIcon(estado: string) {
     if (estado.toUpperCase() == 'PRESENTE')
       return 'check_circle_outline';
@@ -247,6 +212,31 @@ export class AsistenciaPage implements OnInit, OnDestroy {
       return fechaA.isAfter(fechaB) ? -1 : 1;
     })
   }
+  resolverFecha(fechaString: string) {
+    // Detectar formato
+    const formatoDetectado = fechaString.length === 8 ? 'DD/MM/YY' : 'DD/MM/YYYY';
+    const mostrarMes = fechaString.length === 10;
+    const fecha = moment(fechaString, formatoDetectado);
+    const hoy = moment();
+
+    // Comparar si es hoy
+    let resultado;
+
+    if (fecha.isSame(hoy, 'day')) {
+      resultado = 'Hoy';
+    } else {
+      resultado = `${fecha.format('dddd')} ${fecha.format('DD')}`;
+
+      if (mostrarMes) {
+        resultado += ` de ${fecha.format('MMMM')}`;
+      }
+    }
+
+    // Mostrar con la primera letra en mayúscula
+    resultado = resultado.charAt(0).toUpperCase() + resultado.slice(1);
+
+    return resultado;
+  }
   async registrarAsistencia(data: any) {
     const { matrNcorr, apcvNcorr, apceTlatitud, apceTlongitud, radioPermitido } = data;
     const { ssecNcorr } = this.seccion;
@@ -266,12 +256,6 @@ export class AsistenciaPage implements OnInit, OnDestroy {
     if (this.pt.is('mobileweb')) return true;
     return fechaString ? moment(fechaString, 'DD/MM/YYYY').isSame(moment(), 'day') : false;
   }
-  // get listado() {
-  //   return this.detalleAsistencia ? this.detalleAsistencia.detalle : [];
-  // }
-  // get listado() {
-  //   return this.detalleAsistencia ? this.detalleAsistencia.asistencia : [];
-  // }
   get mostrarAutoAsistencia() {
     if (this.seccion) {
       return this.seccion.tsseCcod == 3;

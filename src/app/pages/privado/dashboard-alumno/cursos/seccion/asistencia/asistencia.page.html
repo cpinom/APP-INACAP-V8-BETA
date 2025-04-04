@@ -49,7 +49,7 @@
         @for (item of item.detalle; track $index) {
         <ion-item>
           <ion-label>
-            <p>{{item.fecha}}</p>
+            <p>{{resolverFecha(item.fecha)}}</p>
           </ion-label>
           @if (item.title == 'Presente') {
           <p class="estado-actividad success" slot="end">Presente</p>
@@ -91,7 +91,7 @@
   <ion-list inset="true" class="auto-asistencia">
     @for (item of asistenciaCC; track $index) {
     <ion-item>
-      <ion-label>{{item.apcvFmodulo}}</ion-label>
+      <ion-label>{{resolverFecha(item.apcvFmodulo)}}</ion-label>
       @if (item.apesNasistencia == 1) {
       <p class="estado-actividad success" slot="end">Presente</p>
       }
@@ -134,7 +134,7 @@
         @for (item of item.detalle; track $index) {
         <ion-item>
           <ion-label>
-            <p>{{item.fecha}}</p>
+            <p>{{resolverFecha(item.fecha)}}</p>
           </ion-label>
           @if (item.title == 'Presente') {
           <p class="estado-actividad success" slot="end">Presente</p>

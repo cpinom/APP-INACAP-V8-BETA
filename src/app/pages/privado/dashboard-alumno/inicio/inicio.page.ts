@@ -111,7 +111,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     },
     {
       key: 'PRACTICA_PROFESIONAL',
-      icon: 'assets/icon/work.svg',
+      icon: 'assets/icon/assignment_ind.svg',
       label: 'Practica Profesional',
       visible: true
     },
@@ -362,7 +362,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     if (type == 0) {
       if (item.bloqTipo == 'evaluacion')
         return 'notas';
-      if (item.bloqTipo == 'seccion')
+      if (item.bloqTipo == 'seccion' || item.bloqTipo == 'subseccion')
         return 'school';
       if (item.bloqTipo == 'recuperacion')
         return 'schedule';
@@ -370,7 +370,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     else if (type == 1) {
       if (item.bloqTipo == 'evaluacion')
         return 'variant-4';
-      if (item.bloqTipo == 'seccion')
+      if (item.bloqTipo == 'seccion' || item.bloqTipo == 'subseccion')
         return 'variant-3';
       if (item.bloqTipo == 'recuperacion')
         return 'variant-5';

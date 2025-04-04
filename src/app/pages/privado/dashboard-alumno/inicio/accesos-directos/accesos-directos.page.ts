@@ -67,7 +67,7 @@ export class AccesosDirectosPage implements OnInit {
     },
     {
       key: 'PRACTICA_PROFESIONAL',
-      icon: 'assets/icon/work.svg',
+      icon: 'assets/icon/assignment_ind.svg',
       label: 'Practica Profesional',
       visible: true
     },

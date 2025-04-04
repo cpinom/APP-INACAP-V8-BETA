@@ -235,6 +235,7 @@ body {
       --box-shadow: none;
       font-size: var(--FS16);
       font-weight: 400;
+      letter-spacing: 0;;
 
       &.button-small {
         font-size: var(--FS12);
@@ -979,6 +980,14 @@ body {
     --ion-color-dark: #ffffff;
     --ion-overlay-background-color: #2b2c33;
     --ion-color-medium: #aaaaaa;
+    --ion-color-link: #1d78bf;
+
+    --ion-color-primary: #1d78bf;
+    --ion-color-primary-rgb: 29, 120, 191;
+    --ion-color-primary-contrast: #ffffff;
+    --ion-color-primary-contrast-rgb: 255, 255, 255;
+    --ion-color-primary-shade: #1a6aa8;
+    --ion-color-primary-tint: #3486c5;
 
     --ion-color-white: #2b2c33;
     --ion-color-white-rgb: 43, 44, 51;

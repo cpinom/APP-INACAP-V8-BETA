@@ -418,6 +418,10 @@ ion-item {
     .mbsc-list-item {
         background: var(--ion-item-background);
     }
+
+    section.agenda {
+        box-shadow: none;
+    }
 }
 
 ion-content {

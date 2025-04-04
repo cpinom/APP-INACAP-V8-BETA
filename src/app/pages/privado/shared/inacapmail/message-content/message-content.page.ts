@@ -67,13 +67,14 @@ export class MessageContentPage implements OnInit, AfterViewInit {
           message.data = result.data;
           message.isLoaded = true;
 
-          if (this.pt.is('capacitor')) {
+          debugger
+          // if (this.pt.is('capacitor')) {
             if (!message.isRead) {
               this.api.markReadV5(message.id).then(() => {
                 this.events.app.next({ action: 'mail:message-updated', value: message });
               });
             }
-          }
+          // }
         }
       }
 

@@ -302,14 +302,12 @@
         </ion-item>
         <div class="ion-padding" slot="content">
           <ion-list>
-            <ion-item class="has-icon normal" *ngFor="let doc of item.archivos">
+            <ion-item class="has-icon normal" *ngFor="let doc of item.archivos" (click)="verArchivo(doc)">
               <ion-icon slot="start" src="assets/icon/insert_drive_file.svg" color="medium"></ion-icon>
               <ion-label>{{doc.soarTnombre}}</ion-label>
-              <ion-button fill="outline" slot="end" size="small" color="danger"
-                (click)="eliminarArchivo(item, doc.soarNcorr)">Eliminar</ion-button>
+              <ion-button fill="outline" slot="end" size="small" color="danger" (click)="eliminarArchivo(item, doc.soarNcorr)">Eliminar</ion-button>
             </ion-item>
-            <ion-item lines="none" (click)="adjuntarArchivo(archivoInput, item)"
-              *ngIf="resolverMostrarAdjuntar(item.archivos)">
+            <ion-item lines="none" (click)="adjuntarArchivo(archivoInput, item)" *ngIf="resolverMostrarAdjuntar(item.archivos)">
               <ion-icon slot="start" src="assets/icon/add_a_photo.svg" color="medium"></ion-icon>
               <ion-label>Adjuntar foto o documento</ion-label>
             </ion-item>

@@ -9,7 +9,6 @@ import { Auth } from '../interfaces/auth.interfaces';
 import { EventsService } from './events.service';
 import { Device } from '@capacitor/device';
 import { Directory, Filesystem } from '@capacitor/filesystem';
-import { FingerprintAIO } from '@awesome-cordova-plugins/fingerprint-aio/ngx';
 import * as moment from 'moment';
 
 @Injectable({
@@ -24,7 +23,6 @@ export class AuthService {
   private events = inject(EventsService);
   private action = inject(ActionSheetController);
   private pt = inject(Platform);
-  private faio = inject(FingerprintAIO);
   private global = inject(AppGlobal);
 
   constructor() { }
@@ -241,46 +239,46 @@ export class AuthService {
   async clearUserCache() {
     await Preferences.remove({ key: `${this.storageAuth}-cache` });
   }
-  validateFaceID(): Promise<boolean> {
+  // validateFaceID(): Promise<boolean> {
 
-    if (this.pt.is('mobileweb')) {
-      return Promise.resolve(true);
-    }
+  //   if (this.pt.is('mobileweb')) {
+  //     return Promise.resolve(true);
+  //   }
 
-    return new Promise(async (resolve) => {
-      this.faio.isAvailable({ requireStrongBiometrics: false }).then((available) => {
-        console.log('*** available');
-        console.log(available);
+  //   return new Promise(async (resolve) => {
+  //     this.faio.isAvailable({ requireStrongBiometrics: false }).then((available) => {
+  //       console.log('*** available');
+  //       console.log(available);
 
-        this.faio.show({
-          //clientId: 'Fingerprint-Demo',
-          //clientSecret: 'password',
-          disableBackup: false,
-          //localizedFallbackTitle: 'Ingrese el código',
-          //localizedReason: 'Ingrese el código'
-        }).then(() => {
-          resolve(true)
-        }).catch((error) => {
-          // alert('error show');
-          // alert(JSON.stringify(error));
-          resolve(false)
-        });
+  //       this.faio.show({
+  //         //clientId: 'Fingerprint-Demo',
+  //         //clientSecret: 'password',
+  //         disableBackup: false,
+  //         //localizedFallbackTitle: 'Ingrese el código',
+  //         //localizedReason: 'Ingrese el código'
+  //       }).then(() => {
+  //         resolve(true)
+  //       }).catch((error) => {
+  //         // alert('error show');
+  //         // alert(JSON.stringify(error));
+  //         resolve(false)
+  //       });
 
-      }).catch((error) => {
-        // alert('error isAvailable');
-        // alert(JSON.stringify(error));
-        console.log('*** error');
-        console.log(error);
+  //     }).catch((error) => {
+  //       // alert('error isAvailable');
+  //       // alert(JSON.stringify(error));
+  //       console.log('*** error');
+  //       console.log(error);
 
-        // this.faio.loadBiometricSecret({}).then(result => {
-        //   resolve(true)
-        // }).catch(error => {
-        //   // alert('error loadBiometricSecret');
-        //   // alert(JSON.stringify(error));
-        //   resolve(false)
-        // });
-      })
-    });
-  }
+  //       // this.faio.loadBiometricSecret({}).then(result => {
+  //       //   resolve(true)
+  //       // }).catch(error => {
+  //       //   // alert('error loadBiometricSecret');
+  //       //   // alert(JSON.stringify(error));
+  //       //   resolve(false)
+  //       // });
+  //     })
+  //   });
+  // }
 
 }

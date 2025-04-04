@@ -34,6 +34,8 @@ import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import { environment } from 'src/environments/environment.proxy';
 import { Device } from '@capacitor/device';
 import { register } from 'swiper/element/bundle';
+import { AppShortcuts, ClickEvent } from '@capawesome/capacitor-app-shortcuts';
+import { CredencialVirtualPage } from './pages/privado/dashboard-alumno/perfil/credencial-virtual/credencial-virtual.page';
 // import { AppShortcuts, ClickEvent } from '@capawesome/capacitor-app-shortcuts';
 
 // Registramos el componente Swiper
@@ -96,46 +98,62 @@ export class AppComponent {
         await Keyboard.setAccessoryBarVisible({ isVisible: true });
       }
 
-      // await AppShortcuts.set({
-      //   shortcuts: [
-      //     {
-      //       id: 'inacapmail',
-      //       title: 'INACAPMail'
-      //     }
-      //     // ,
-      //     // {
-      //     //   id: 'horario',
-      //     //   title: 'Mi Horario'
-      //     // },
-      //     // {
-      //     //   id: 'credencial-virtual',
-      //     //   title: 'Credencial Virtual'
-      //     // },
-      //     // {
-      //     //   id: 'certificados',
-      //     //   title: 'Mis Certificados'
-      //     // }
-      //   ]
-      // });
+      await AppShortcuts.set({
+        shortcuts: [
+          {
+            id: 'inacapmail',
+            title: 'INACAPMail',
+            icon: 0
+          }
+          ,
+          {
+            id: 'horario',
+            title: 'Mi Horario',
+            icon: 1
+          },
+          {
+            id: 'credencial-virtual',
+            title: 'Credencial Virtual',
+            icon: 3
+          },
+          {
+            id: 'certificados',
+            title: 'Mis Certificados',
+            icon: 2
+          }
+        ]
+      });
 
-      // AppShortcuts.addListener('click', async (event: ClickEvent) => {
-      //   console.log('Shortcut clicked:', event.shortcutId);
-      //   alert(JSON.stringify(event));
+      AppShortcuts.addListener('click', async (event: ClickEvent) => {
+        console.log('Shortcut clicked:', event.shortcutId);
+        //alert(JSON.stringify(event));
 
-      //   if (event.shortcutId == 'inacapmail') {
-      //     await this.nav.navigateForward('/dashboard-alumno/inicio/inacapmail');
-      //   }
-      //   if (event.shortcutId == 'horario') {
-      //     await this.nav.navigateForward('/dashboard-alumno/inicio/horario');
-      //   }
-      //   if (event.shortcutId == 'credencial-virtual') {
-      //     //await this.nav.navigateForward('/dashboard-alumno/inicio/inacapmail');
-      //   }
-      //   if (event.shortcutId == 'certificados') {
-      //     await this.nav.navigateForward('/dashboard-alumno/inicio/certificados');
-      //   }
+        if (event.shortcutId == 'inacapmail') {
+          await this.nav.navigateForward('/dashboard-alumno/inicio/inacapmail');
+        }
+        if (event.shortcutId == 'horario') {
+          await this.nav.navigateForward('/dashboard-alumno/inicio/horario');
+        }
+        if (event.shortcutId == 'credencial-virtual') {
 
-      // });
+          if (await this.auth.isAuthenticated()) {
+            const perfil = await this.auth.getProfile();
+
+            if (perfil == '/alumno') {
+              await this.dialog.showModal({
+                cssClass: 'modal-credencial-virtual',
+                component: CredencialVirtualPage,
+                animated: false
+              });
+            }
+          }
+
+        }
+        if (event.shortcutId == 'certificados') {
+          await this.nav.navigateForward('/dashboard-alumno/inicio/certificados');
+        }
+
+      });
 
     }
     else {

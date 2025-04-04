@@ -165,7 +165,6 @@ export class ComunicacionesPage implements OnInit {
         }
       }
     }
-    // input.click();
   }
   async uploadBase64Fragmented(base64String: string, fileName: string): Promise<void> {
     const fragments = this.utils.divideBase64(base64String);

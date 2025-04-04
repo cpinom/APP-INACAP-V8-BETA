@@ -1,6 +1,5 @@
 import { Component, OnInit, Output, ViewChild, EventEmitter, ElementRef, Renderer2, OnDestroy, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { DomSanitizer } from '@angular/platform-browser';
 import { IonInput, IonTextarea, Platform } from '@ionic/angular';
 import { ErrorHandlerService } from '../../services/error-handler.service';
 import { InacapMailService } from '../../services/http/inacapmail.service';
@@ -59,7 +58,6 @@ export class MensajeComponent implements OnInit, OnDestroy {
   private dialog = inject(DialogService);
   private api = inject(InacapMailService);
   private utils = inject(UtilsService);
-  private domSanitizer = inject(DomSanitizer);
   private snackbar = inject(SnackbarService);
   private error = inject(ErrorHandlerService);
   private renderer = inject(Renderer2);
@@ -328,43 +326,6 @@ export class MensajeComponent implements OnInit, OnDestroy {
           await this.presentError('Cargar Archivos', 'No se pudo procesar el archivo. Vuelve a intentarlo.');
         }
       }
-      // let file = await this.media.getMedia();
-
-      // if (file) {
-      //   let fileSize = file.size / 1024 / 1024;
-      //   let index = this.adjuntos.length;
-
-      //   if (fileSize <= 3) {
-      //     this.adjuntos.push({});
-      //     this.updatingMessage = true;
-      //     this.mostrarCargando = true;
-
-      //     try {
-      //       let response: any = await this.api.addAttachment(file.path, file.name, { messageId: this.messageId });
-      //       let result = response.data;
-      //       let base64 = await this.media.getBase64String(file.path);
-
-      //       this.adjuntos[index] = {
-      //         id: result.id,
-      //         name: file.name,
-      //         type: result.type,
-      //         size: result.size,
-      //         content: base64.replace(/^data:(.*,)?/, '')
-      //       };
-      //     }
-      //     catch (error: any) {
-      //       this.adjuntos.splice(index, 1);
-      //       this.snackbar.showToast('No fue posible cargar el archivo.', 2000);
-      //     }
-      //     finally {
-      //       this.updatingMessage = false;
-      //       this.mostrarCargando = false;
-      //     }
-      //   }
-      //   else {
-      //     this.snackbar.showToast('Los documentos no pueden exceder los 3 MB.', 2000);
-      //   }
-      // }
     }
   }
   async adjuntar(event: any) {
@@ -394,41 +355,6 @@ export class MensajeComponent implements OnInit, OnDestroy {
         this.adjuntarEl.nativeElement.value = '';
       }
     }
-    // let formData = new FormData();
-    // let file = event.target.files[0];
-    // var fileSize = file.size / 1024 / 1024;
-    // let index = this.adjuntos.length;
-
-    // if (fileSize <= 3) {
-    //   formData.append('file', file);
-    //   this.adjuntos.push({});
-    //   this.updatingMessage = true;
-    //   this.mostrarCargando = true;
-
-    //   try {
-    //     let result = await this.api.addAttachmentWeb(formData, { messageId: this.messageId });
-    //     let base64 = await this.utils.createImageFromFile(file);
-
-    //     this.adjuntos[index] = {
-    //       id: result.id,
-    //       name: file.name,
-    //       type: file.type,
-    //       size: result.size,
-    //       content: base64.replace(/^data:(.*,)?/, '')
-    //     };
-    //   }
-    //   catch (error: any) {
-    //     this.adjuntos.splice(index, 1);
-    //     this.snackbar.showToast('No fue posible cargar el archivo.', 2000);
-    //   }
-    //   finally {
-    //     this.updatingMessage = false;
-    //     this.mostrarCargando = false;
-    //   }
-    // }
-    // else {
-    //   this.snackbar.showToast('Los documentos no pueden exceder los 3 MB.', 2000);
-    // }
   }
   async uploadBase64Fragmented(base64String: string, fileName: string): Promise<void> {
     const fragments = this.utils.divideBase64(base64String);
@@ -526,7 +452,7 @@ export class MensajeComponent implements OnInit, OnDestroy {
     const loading = await this.dialog.showLoading({ message: 'Eliminando adjunto...' });
     const attachmentId = this.adjuntos[index].id;
     const params = { messageId: this.messageId, attachmentId: attachmentId };
-    
+
     this.updatingMessage = true;
     this.mostrarCargando = true;
 
@@ -544,7 +470,7 @@ export class MensajeComponent implements OnInit, OnDestroy {
     finally {
       this.updatingMessage = false;
       this.mostrarCargando = false;
-      
+
       await loading.dismiss();
     }
 

@@ -182,81 +182,92 @@ section.ramos {
     }
 }
 
-div.tabs {
-    margin: 0 10px;
-}
+section.agenda-tabs {
+    margin: 0;
 
-section.agenda {
-    margin-top: 10px;
-    box-shadow: var(--ion-box-shadow);
+    div.tabs {
+        margin: 0 10px;
 
-    .section-header {
-        padding-left: 20px;
+        ion-segment {
+            padding: 2px;
+            border-radius: 8px 8px 0 0;
+        }
     }
-    .section-content {
-        margin-inline: 10px;
 
-        .fecha {
-            margin: 10px 10px 0;
-            background: var(--ion-color-1-background);
-            border-radius: 7px;
-            padding: 5px 10px;
-            position: relative;
+    section.agenda {
+        margin-top: 0;
+        box-shadow: var(--ion-box-shadow);
 
-            h3 {
-                margin: 0 0 3px;
-                color: var(--ion-color-1-foreground);
-                font-size: 12px;
-            }
-
-            h2 {
-                margin: 0;
-                color: var(--ion-text-color);
-                font-size: 18px;
-                font-weight: 500;
-            }
-
-            ion-icon {
-                position: absolute;
-                right: 10px;
-                top: 5px;
-                font-size: 20px;
-                color: var(--ion-color-1-foreground);
-            }
+        .section-header {
+            padding-left: 20px;
         }
+        .section-content {
+            margin-inline: 10px;
+            border-radius: 0 0 8px 8px;
 
-        .cargando {
-            text-align: center;
-            padding: 15px;
+            .fecha {
+                margin: 10px 10px 0;
+                background: var(--ion-color-1-background);
+                border-radius: 7px;
+                padding: 5px 10px;
+                position: relative;
 
-            span {
-                display: block;
-                line-height: 32px;
-                font-size: var(--FS14);
+                h3 {
+                    margin: 0 0 3px;
+                    color: var(--ion-color-1-foreground);
+                    font-size: 12px;
+                }
+
+                h2 {
+                    margin: 0;
+                    color: var(--ion-text-color);
+                    font-size: 18px;
+                    font-weight: 500;
+                }
+
+                ion-icon {
+                    position: absolute;
+                    right: 10px;
+                    top: 5px;
+                    font-size: 20px;
+                    color: var(--ion-color-1-foreground);
+                }
             }
-        }
 
-        ion-item {
-            --padding-top: 5px;
-            --padding-bottom: 5px;
+            .cargando {
+                text-align: center;
+                padding: 15px;
 
-            ion-label {
-                margin: 10px 0;
+                span {
+                    display: block;
+                    line-height: 32px;
+                    font-size: var(--FS14);
+                }
+            }
 
-                p.estado-actividad {
-                    padding: 2px 6px;
-                    margin-top: 0;
-                    margin-bottom: 10px;
-                    font-size: var(--FS11) !important;
-                    font-weight: 700;
+            ion-item {
+                --padding-top: 5px;
+                --padding-bottom: 5px;
+
+                ion-label {
+                    margin: 10px 0;
+
+                    p.estado-actividad {
+                        padding: 2px 6px;
+                        margin-top: 0;
+                        margin-bottom: 10px;
+                        font-size: var(--FS11) !important;
+                        font-weight: 700;
+                    }
                 }
             }
         }
     }
-}
 
-ion-list.evaluaciones {
-    margin: 10px;
+    ion-list.evaluaciones {
+        margin: 0 10px 0;
+        border-radius: 0 0 8px 8px;
+    }
 }
 
 section.ramos + section.horario {
@@ -534,19 +545,20 @@ section.horario {
 }
 
 section.accesos-directos {
-    margin-inline: 3px;
+    margin-inline: 5px;
 
     ion-row {
         ion-col {
             ion-button {
                 --background-focused: transparent;
                 width: 100%;
-                height: 112px;
+                height: 95px;
+                margin: 0;
                 --border-radius: 8px;
-                --padding-bottom: 11px;
-                --padding-end: 11px;
-                --padding-start: 11px;
-                --padding-top: 11px;
+                --padding-top: 10px;
+                --padding-bottom: 10px;
+                --padding-start: 10px;
+                --padding-end: 10px;
                 --box-shadow: none;
                 margin-top: 0;
                 margin-bottom: 0;
@@ -562,9 +574,10 @@ section.accesos-directos {
                     text-transform: none;
 
                     .rounded {
-                        padding: 10px;
-                        margin: 0 0 10px;
-                        flex: 0 0 24px;
+                        padding: 6px;
+                        margin: 0 0 5px;
+                        flex: 0 0 18px;
+                        font-size: 18px;
                     }
 
                     .launch {

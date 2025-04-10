@@ -107,17 +107,17 @@ export class ResultadosPage implements OnInit {
           break;
         }
         case Vistas.sala: {
-          if (this.pt.is('mobileweb')) {
-            debugger
-            const principal = await this.profile.getStorage('principal');
-            const periodo = principal.periodos.find((t: any) => t.periCcod == principal.periodoActual);
-            this.salaFecha = moment(periodo.acpeFinicio, 'DD/MM/YYYY').toDate();
-            this.data.fecha = moment(periodo.acpeFinicio, 'DD/MM/YYYY').toDate();
-          }
-          else {
-            this.salaFecha = moment().startOf('isoWeek').toDate();
-            this.data.fecha = moment().startOf('isoWeek').toDate();
-          }
+          // if (this.pt.is('mobileweb')) {
+          //   debugger
+          //   const principal = await this.profile.getStorage('principal');
+          //   const periodo = principal.periodos.find((t: any) => t.periCcod == principal.periodoActual);
+          //   this.salaFecha = moment(periodo.acpeFinicio, 'DD/MM/YYYY').toDate();
+          //   this.data.fecha = moment(periodo.acpeFinicio, 'DD/MM/YYYY').toDate();
+          // }
+          // else {
+          this.salaFecha = moment().startOf('isoWeek').toDate();
+          this.data.fecha = moment().startOf('isoWeek').toDate();
+          // }
 
           this.nombreSala = `${this.data.salaTdesc}`;
           this.mostrarSala = true;

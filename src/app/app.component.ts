@@ -36,7 +36,6 @@ import { Device } from '@capacitor/device';
 import { register } from 'swiper/element/bundle';
 import { AppShortcuts, ClickEvent } from '@capawesome/capacitor-app-shortcuts';
 import { CredencialVirtualPage } from './pages/privado/dashboard-alumno/perfil/credencial-virtual/credencial-virtual.page';
-// import { AppShortcuts, ClickEvent } from '@capawesome/capacitor-app-shortcuts';
 
 // Registramos el componente Swiper
 register();
@@ -123,8 +122,6 @@ export class AppComponent {
         }
 
       });
-
-
     }
     else {
       await this.notificacionsWeb();
@@ -163,7 +160,6 @@ export class AppComponent {
     }
   }
   async onAppLogin(data: Ingreso) {
-    debugger
     try {
       let preferencias = await this.api.getPreferencias();
 
@@ -195,35 +191,6 @@ export class AppComponent {
       }
 
       await this.profile.setStorage('preferencias', preferencias);
-      await AppShortcuts.clear();
-
-      if (data.diacTtipo == 'alumno') {
-        await AppShortcuts.set({
-          shortcuts: [
-            {
-              id: 'inacapmail',
-              title: 'INACAPMail',
-              icon: 0
-            }
-            ,
-            {
-              id: 'horario',
-              title: 'Mi Horario',
-              icon: 1
-            },
-            {
-              id: 'credencial-virtual',
-              title: 'Credencial Virtual',
-              icon: 3
-            },
-            {
-              id: 'certificados',
-              title: 'Mis Certificados',
-              icon: 2
-            }
-          ]
-        });
-      }
 
       const params = { uuid: data.uuid, sedeCcod: data.sedeCcod, carrCcod: data.carrCcod, diacTtipo: data.diacTtipo };
       this.api.registrarAcceso(params).catch(error => console.log(error));
@@ -249,7 +216,9 @@ export class AppComponent {
     this.accessibilitySetup();
     this.clearCacheFolder();
 
-    await AppShortcuts.clear();
+    if (this.pt.is('capacitor')) {
+      await AppShortcuts.clear();
+    }
     await this.snackbar.showToast('Se ha cerrado tu sesión correctamente.');
 
     this.api.registrarSalida(data.uuid).catch(error => console.log(error));
@@ -459,6 +428,44 @@ export class AppComponent {
         bodyElement.classList.toggle('contrast', contrastMode);
 
         await this.profile.setStorage('preferencias', preferencias);
+
+        if (this.pt.is('capacitor')) {
+          await AppShortcuts.clear();
+
+          const perfil = await this.auth.getProfile();
+
+          if (perfil == '/alumno') {
+            await AppShortcuts.set({
+              shortcuts: [
+                {
+                  id: 'certificados',
+                  title: 'Mis Certificados',
+                  description: '',
+                  icon: 25
+                },
+                {
+                  id: 'inacapmail',
+                  title: 'INACAPMail',
+                  description: '',
+                  icon: 16
+                }
+                ,
+                {
+                  id: 'horario',
+                  title: 'Mi Horario',
+                  description: '',
+                  icon: 18
+                },
+                {
+                  id: 'credencial-virtual',
+                  title: 'Credencial Virtual',
+                  description: '',
+                  icon: 8
+                }
+              ]
+            });
+          }
+        }
 
       }
       else {

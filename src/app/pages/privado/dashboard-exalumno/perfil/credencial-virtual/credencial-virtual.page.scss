@@ -30,7 +30,7 @@ ion-content.credencial-virtual-content {
     display: flex;
     height: 100%;
     width: 100%;
-    border-radius: 10px 62px 10px 10px;
+    border-radius: 10px 82px 10px 10px;
     flex-direction: row;
     overflow: hidden;
     position: relative;
@@ -43,15 +43,15 @@ ion-content.credencial-virtual-content {
         right: 0;
 
         ion-avatar {
-          background-image: url("./../../../../../../assets/images/mesh-gradient.png");
+          background-image: url("./../../../../../../assets/images/mesh-gradient.svg");
           padding: 10px;
-          width: 120px;
-          height: 120px;
+          width: 165px;
+          height: 165px;
         }
       }
 
       .info {
-        margin: 25px 70px 10px 10px;
+        margin: 25px 110px 10px 10px;
 
         h2 {
           margin: 0;

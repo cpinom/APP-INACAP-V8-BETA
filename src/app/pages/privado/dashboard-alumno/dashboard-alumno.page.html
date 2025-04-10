@@ -17,11 +17,34 @@
       <ion-icon src="assets/icon/list_alt.svg"></ion-icon>
       <ion-label>Servicios</ion-label>
     </ion-tab-button>
-    <ion-tab-button tab="perfil" (click)="checkTap($event, 4)" appLongPress (longPress)="longPressTap($event)">
+    <ion-tab-button tab="perfil" (click)="checkTap($event, 4)">
       <avatar-comp></avatar-comp>
-      <!-- <ion-icon src="assets/icon/account_circle.svg"></ion-icon> -->
       <ion-label>Perfil</ion-label>
     </ion-tab-button>
+    <!-- <ion-tab-button tab="perfil" (click)="checkTap($event, 4)" appLongPress (longPress)="longPressTap($event, cuentasModal)">
+      <avatar-comp></avatar-comp>
+      <ion-label>Perfil</ion-label>
+    </ion-tab-button> -->
   </ion-tab-bar>
 
 </ion-tabs>
+
+<!-- <ion-modal class="usuario-modal" #cuentasModal [breakpoints]="[0, 0.4]" [initialBreakpoint]="0.4">
+  <ng-template>
+    <ion-content>
+      <ion-list inset="true">
+        <ion-item>
+          <ion-label>Estudiante</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Exalumno</ion-label>
+        </ion-item>
+      </ion-list>
+      <section>
+        <ion-button>
+          Cerrar Sesión
+        </ion-button>
+      </section>
+    </ion-content>
+  </ng-template>
+</ion-modal> -->

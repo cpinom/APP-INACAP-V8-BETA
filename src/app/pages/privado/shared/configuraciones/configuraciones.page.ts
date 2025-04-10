@@ -52,7 +52,7 @@ export class ConfiguracionesPage implements OnInit {
     this.icono = icono;
 
     if (icono == 'oscuro') {
-      await AppIcon.change({ name: 'normal-dark', suppressNotification: false });
+      await AppIcon.change({ name: 'normal-dark', suppressNotification: true });
     }
     else {
       await AppIcon.reset({ suppressNotification: true });
@@ -426,9 +426,20 @@ export class ConfiguracionesPage implements OnInit {
   // }
   get backUrl() { return this.router.url.replace('/configuraciones', ''); }
   get Vista() {
-    return this.router.url.startsWith('/dashboard-alumno')
-      ? this.router.url.startsWith('/dashboard-docente') ? VISTAS_ALUMNO.CONFIGURACIONES : VISTAS_DOCENTE.CONFIGURACIONES
-      : VISTAS_EXALUMNO.CONFIGURACIONES;
+
+    if (this.router.url.startsWith('/dashboard-alumno')) {
+      return VISTAS_ALUMNO.CONFIGURACIONES;
+    }
+    else if (this.router.url.startsWith('/dashboard-docente')) {
+      return VISTAS_DOCENTE.CONFIGURACIONES;
+    }
+    else if (this.router.url.startsWith('/dashboard-exalumno')) {
+      return VISTAS_EXALUMNO.CONFIGURACIONES;
+    }
+
+    return '';
+
+    //return this.router.url.startsWith('/dashboard-alumno') ? this.router.url.startsWith('/dashboard-docente') ? VISTAS_ALUMNO.CONFIGURACIONES : VISTAS_DOCENTE.CONFIGURACIONES : VISTAS_EXALUMNO.CONFIGURACIONES;
   }
 
 }

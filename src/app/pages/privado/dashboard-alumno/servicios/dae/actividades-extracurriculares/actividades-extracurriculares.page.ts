@@ -63,33 +63,32 @@ export class ActividadesExtracurricularesPage implements OnInit {
     }
   }
   procesarActividades(data: any[]) {
-    if (data.length == 0 && this.pt.is('mobile')) {
-      return [
-        { 
-          reacTnombre: 'Selección de fútbol', 
-          reacFinicio: '13/08/2018', 
-          reacTermino: '27/11/2024',
-          inscrito: 0, 
-          diasTdesc: 'Lunes, Miércoles y Viernes', 
-          aehsHora: '16:00 - 18:00', 
-          reacObjetivo: 'El objetivo de los talleres deportivos es generar oportunidades en los jóvenes, que puedan vivenciar experiencias con sus compañeros y la comunidad Inacapina , así también obtener todos los beneficios físicos, cognitivos y sociales que nos entrega el deporte y la participación en actividades de gran nivel deportivo.', 
-          reacTcomentario: 'El taller es ejecutado por el Profesor De Educación Física, Salud Y Calidad De Vida Fernando Flores , este taller busca entregar todos los conocimientos del futsal para luego ponerlos a prueba en amistosos, partidos de liga , y en las olimpiadas . el taller es para todo el publico que quiera disfrutar de este  hermoso deporte.',
-          persTnombre: 'multicancha sede'
-        },
-        { 
-          reacTnombre: 'Selección de fútbol', 
-          reacFinicio: '13/08/2018', 
-          reacTermino: '27/11/2024',
-          inscrito: 1, 
-          diasTdesc: 'Lunes, Miércoles y Viernes', 
-          aehsHora: '16:00 - 18:00', 
-          reacObjetivo: 'El objetivo de los talleres deportivos es generar oportunidades en los jóvenes, que puedan vivenciar experiencias con sus compañeros y la comunidad Inacapina , así también obtener todos los beneficios físicos, cognitivos y sociales que nos entrega el deporte y la participación en actividades de gran nivel deportivo.', 
-          reacTcomentario: 'El taller es ejecutado por el Profesor De Educación Física, Salud Y Calidad De Vida Fernando Flores , este taller busca entregar todos los conocimientos del futsal para luego ponerlos a prueba en amistosos, partidos de liga , y en las olimpiadas . el taller es para todo el publico que quiera disfrutar de este  hermoso deporte.',
-          persTnombre: 'multicancha sede'
-        }
-      ];
-    }
-
+    // if (data.length == 0 && this.pt.is('mobileweb')) {
+    //   return [
+    //     { 
+    //       reacTnombre: 'Selección de fútbol', 
+    //       reacFinicio: '13/08/2018', 
+    //       reacTermino: '27/11/2024',
+    //       inscrito: 0, 
+    //       diasTdesc: 'Lunes, Miércoles y Viernes', 
+    //       aehsHora: '16:00 - 18:00', 
+    //       reacObjetivo: 'El objetivo de los talleres deportivos es generar oportunidades en los jóvenes, que puedan vivenciar experiencias con sus compañeros y la comunidad Inacapina , así también obtener todos los beneficios físicos, cognitivos y sociales que nos entrega el deporte y la participación en actividades de gran nivel deportivo.', 
+    //       reacTcomentario: 'El taller es ejecutado por el Profesor De Educación Física, Salud Y Calidad De Vida Fernando Flores , este taller busca entregar todos los conocimientos del futsal para luego ponerlos a prueba en amistosos, partidos de liga , y en las olimpiadas . el taller es para todo el publico que quiera disfrutar de este  hermoso deporte.',
+    //       persTnombre: 'multicancha sede'
+    //     },
+    //     { 
+    //       reacTnombre: 'Selección de fútbol', 
+    //       reacFinicio: '13/08/2018', 
+    //       reacTermino: '27/11/2024',
+    //       inscrito: 1, 
+    //       diasTdesc: 'Lunes, Miércoles y Viernes', 
+    //       aehsHora: '16:00 - 18:00', 
+    //       reacObjetivo: 'El objetivo de los talleres deportivos es generar oportunidades en los jóvenes, que puedan vivenciar experiencias con sus compañeros y la comunidad Inacapina , así también obtener todos los beneficios físicos, cognitivos y sociales que nos entrega el deporte y la participación en actividades de gran nivel deportivo.', 
+    //       reacTcomentario: 'El taller es ejecutado por el Profesor De Educación Física, Salud Y Calidad De Vida Fernando Flores , este taller busca entregar todos los conocimientos del futsal para luego ponerlos a prueba en amistosos, partidos de liga , y en las olimpiadas . el taller es para todo el publico que quiera disfrutar de este  hermoso deporte.',
+    //       persTnombre: 'multicancha sede'
+    //     }
+    //   ];
+    // }
     return data;
   }
   async inscripcion(data: any) {

@@ -30,6 +30,12 @@
     <ion-button color="primary" shape="round" expand="block" routerLink="nueva-solicitud">
       Solicitar Reembolso
     </ion-button>
+    @if (data.telefono) {
+    <ion-button color="primary" shape="round" expand="block" fill="outline" [href]="'tel:' + data.telefono">
+      <ion-icon src="assets/icon/call.svg" slot="start"></ion-icon>
+      Solicitar Asistencia
+    </ion-button>
+    }
   </section>
 
   @if (solicitudes) {
@@ -55,7 +61,7 @@
   <section class="empty-state">
     <div>
       <ion-icon class="folder" src="assets/images/folder.svg"></ion-icon>
-      <p>No hay solicitudesistóricas en este momento.</p>
+      <p>No hay solicitudes históricas en este momento.</p>
     </div>
   </section>
   }

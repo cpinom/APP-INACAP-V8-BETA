@@ -36,8 +36,8 @@
   </div>
 </section> -->
 
-<mbsc-eventcalendar class="horario-comp" [theme]="theme" [themeVariant]="themeVariant" [(selectedDate)]="fecha" [data]="eventos"
-  [view]="myView" (onEventClick)="onEventClick($event)" (onPageChange)="onSelectedDateChange($event)"
+<mbsc-eventcalendar class="horario-comp" [theme]="theme" [themeVariant]="themeVariant" [(selectedDate)]="fecha"
+  [data]="eventos" [view]="myView" (onEventClick)="onEventClick($event)" (onPageChange)="onSelectedDateChange($event)"
   [locale]="pickerLocale" [agendaEmptyTemplate]="horarioEmptyTpl" [eventTemplate]="eventTemplate">
   <ng-template #eventTemplate let-data>
     <ion-item lines="none" *ngIf="data.original.data as item">
@@ -67,6 +67,7 @@
         <p class="desc">Sala: {{item['salaEjecucion'] || item['salaProgramada']}}</p>
         }
         @else {
+        <p class="desc">Sección: {{item.seccion}}</p>
         <p class="desc">Docente: {{item.profesor}}</p>
         <p class="desc">Sala: {{item.sala}}</p>
         }

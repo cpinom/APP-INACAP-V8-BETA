@@ -89,7 +89,12 @@
         <ion-select label="Asignatura" labelPlacement="stacked" interface="action-sheet" placeholder="Seleccionar"
           formControlName="asigCcod" okText="Aceptar" cancelText="Cancelar">
           @for (item of asignaturas; track $index) {
+          @if (item.asigCcod != '-1') {
+          <ion-select-option [value]="item.asigCcod">{{item.asigCcod}} - {{item.asigTdesc}}</ion-select-option>
+          }
+          @else {
           <ion-select-option [value]="item.asigCcod">{{item.asigTdesc}}</ion-select-option>
+          }
           }
         </ion-select>
         <div class="invalid" *ngIf="submitted && asignatura?.invalid">Campo Obligatorio</div>

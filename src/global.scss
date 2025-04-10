@@ -118,19 +118,19 @@
   --bg-gradient-green: linear-gradient(to right, #5aaf5e, #66bb6a);
 
   // Tamaños letras
-  --FS9: 9px;
-  --FS10: 10px;
-  --FS11: 11px;
-  --FS12: 12px;
-  --FS13: 13px;
-  --FS14: 14px;
-  --FS15: 15px;
-  --FS16: 16px;
-  --FS18: 18px;
-  --FS20: 20px;
-  --FS22: 22px;
-  --FS24: 24px;
-  --FS26: 26px;
+  // --FS9: 9px;
+  // --FS10: 10px;
+  // --FS11: 11px;
+  // --FS12: 12px;
+  // --FS13: 13px;
+  // --FS14: 14px;
+  // --FS15: 15px;
+  // --FS16: 16px;
+  // --FS18: 18px;
+  // --FS20: 20px;
+  // --FS22: 22px;
+  // --FS24: 24px;
+  // --FS26: 26px;
 
   --ion-color-step-900: #f2f2f3;
   --ion-color-step-800: #d5d6dd;
@@ -173,6 +173,22 @@
 }
 body {
   font-family: "Roboto", sans-serif;
+
+  // Tamaños letras
+  --FS9: 9px;
+  --FS10: 10px;
+  --FS11: 11px;
+  --FS12: 12px;
+  --FS13: 13px;
+  --FS14: 14px;
+  --FS15: 15px;
+  --FS16: 16px;
+  --FS17: 17px;
+  --FS18: 18px;
+  --FS20: 20px;
+  --FS22: 22px;
+  --FS24: 24px;
+  --FS26: 26px;
 
   a {
     color: var(--ion-color-link, --ion-color-primary);
@@ -235,7 +251,7 @@ body {
       --box-shadow: none;
       font-size: var(--FS16);
       font-weight: 400;
-      letter-spacing: 0;;
+      letter-spacing: 0;
 
       &.button-small {
         font-size: var(--FS12);
@@ -266,10 +282,18 @@ body {
       &.md {
         text-transform: none;
       }
+      &.md::part(text) {
+        font-size: var(--FS14);
+      }
+      &.ios::part(text) {
+        font-size: var(--FS17);
+      }
     }
   }
 
   ion-title {
+    font-size: var(--FS20);
+
     &.md {
       text-align: center;
     }
@@ -731,6 +755,7 @@ body {
     --FS14: 13px;
     --FS15: 14px;
     --FS16: 15px;
+    --FS17: 16px;
     --FS18: 17px;
     --FS20: 19px;
     --FS22: 21px;
@@ -747,6 +772,7 @@ body {
     --FS14: 12px;
     --FS15: 13px;
     --FS16: 14px;
+    --FS17: 15px;
     --FS18: 16px;
     --FS20: 18px;
     --FS22: 20px;
@@ -763,6 +789,7 @@ body {
     --FS14: 16px;
     --FS15: 17px;
     --FS16: 18px;
+    --FS17: 19px;
     --FS18: 20px;
     --FS20: 22px;
     --FS22: 24px;
@@ -779,6 +806,7 @@ body {
     --FS14: 17px;
     --FS15: 18px;
     --FS16: 19px;
+    --FS17: 20px;
     --FS18: 21px;
     --FS20: 23px;
     --FS22: 25px;

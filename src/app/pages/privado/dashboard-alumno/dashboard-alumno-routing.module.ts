@@ -45,11 +45,7 @@ const routes: Routes = [
         loadChildren: () => import('./perfil/perfil.module').then(m => m.PerfilPageModule)
       }
     ]
-  },  {
-    path: 'notificaciones',
-    loadChildren: () => import('./notificaciones/notificaciones.module').then( m => m.NotificacionesPageModule)
   }
-
 ];
 
 @NgModule({

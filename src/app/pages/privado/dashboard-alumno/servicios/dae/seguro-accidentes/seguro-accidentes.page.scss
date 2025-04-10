@@ -1,4 +1,10 @@
-
 section.solicitar {
   margin: 15px;
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+
+  ion-button {
+    margin: 0;
+  }
 }

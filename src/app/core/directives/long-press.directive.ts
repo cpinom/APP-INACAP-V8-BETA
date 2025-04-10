@@ -4,8 +4,8 @@ import { Directive, EventEmitter, HostListener, Output } from '@angular/core';
   selector: '[appLongPress]'
 })
 export class LongPressDirective {
-  
-  @Output() longPress = new EventEmitter<void>();
+
+  @Output() longPress = new EventEmitter<void | any>();
 
   private timeoutId: any;
   private isLongPress = false;
@@ -15,7 +15,7 @@ export class LongPressDirective {
     this.isLongPress = false;
     this.timeoutId = setTimeout(() => {
       this.isLongPress = true;
-      this.longPress.emit();
+      this.longPress.emit(event);
     }, 500); // tiempo en ms para considerar como "long press"
   }
 
@@ -30,7 +30,7 @@ export class LongPressDirective {
     this.isLongPress = false;
     this.timeoutId = setTimeout(() => {
       this.isLongPress = true;
-      this.longPress.emit();
+      this.longPress.emit(event);
     }, 500);
   }
 

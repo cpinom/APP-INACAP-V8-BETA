@@ -112,7 +112,7 @@ export class InicioPage implements OnInit, AfterViewInit {
     {
       key: 'PRACTICA_PROFESIONAL',
       icon: 'assets/icon/assignment_ind.svg',
-      label: 'Practica Profesional',
+      label: 'Práctica Profesional',
       visible: true
     },
     {

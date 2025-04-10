@@ -1,11 +1,12 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { IonRouterOutlet } from '@ionic/angular';
+import { IonModal, IonRouterOutlet } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { AppEvent } from 'src/app/core/interfaces/auth.interfaces';
 import { DialogService } from 'src/app/core/services/dialog.service';
 import { EventsService } from 'src/app/core/services/events.service';
 import { ProfileService } from 'src/app/core/services/profile.service';
 import { NotificacionesPage } from './notificaciones/notificaciones.page';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-dashboard-alumno',
@@ -18,6 +19,7 @@ export class DashboardAlumnoPage implements OnInit, OnDestroy {
   private dialog = inject(DialogService);
   private routerOutlet = inject(IonRouterOutlet);
   private profile = inject(ProfileService);
+  private authService = inject(AuthService);
 
   deshabilitarTabs = false;
   scrollObs: Subscription;
@@ -58,6 +60,15 @@ export class DashboardAlumnoPage implements OnInit, OnDestroy {
       presentingElement: this.routerOutlet.nativeEl
     });
   }
-  longPressTap(ev: any) { }
+  async longPressTap(ev: any, modal: IonModal) {
+    const auth = await this.authService.getAuth();
+    const user = auth.user;
+    
+    await modal.present();
+    return true;
+  }
+  get routerOutletEl() {
+    return this.routerOutlet.nativeEl;
+  }
 
 }

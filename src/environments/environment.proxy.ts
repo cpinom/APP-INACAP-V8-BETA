@@ -5,8 +5,6 @@ export const environment = {
   version: '8.0.7',
   compilation: '202504040138',
   environmentTitle: 'Desarrollo',
-  disabledToken: false,
-  mapsKey: 'AIzaSyBoGvWsUMvPL0glLPRSx-7V5GRWSEnC-Ns',
   notificationTopic: 'app-movil-public-desa',
   firebase: {
     apiKey: "AIzaSyCnF5xTxxVZgEBaByR_ZLnpzYdB8PXVi34",

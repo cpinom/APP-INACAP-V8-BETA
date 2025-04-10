@@ -5,7 +5,5 @@ export const environment = {
   version: '8.0.7',
   compilation: '202504040145',
   environmentTitle: 'Producción',
-  disabledToken: false,
-  mapsKey: 'AIzaSyBoGvWsUMvPL0glLPRSx-7V5GRWSEnC-Ns',
   notificationTopic: 'app-movil-public'
 };

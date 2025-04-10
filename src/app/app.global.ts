@@ -13,7 +13,6 @@ export class AppGlobal {
   public Compilation = environment.compilation;
   public Integration = !environment.production;
   public Environment = environment.environmentTitle;
-  public DisabledToken = environment.disabledToken;
   public NotificationFlag = false;
   public NotificationTopic = environment.notificationTopic;
   public PublicOutlet: IonRouterOutlet | undefined;
